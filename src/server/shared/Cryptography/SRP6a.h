@@ -28,51 +28,51 @@ namespace BNet2 {
     /// SRP6a encryption helper (RSA based)
     class SRP6a
     {
-    public:
-        /// Constructor
+        public:
+            /// Constructor
         SRP6a(const std::string& p_Salt, const std::string& p_AccountName, const std::string p_PasswordVerifier);
 
-        /// Compute public b key
-        void ComputePublicB();
-        /// Compute U
+            /// Compute public b key
+            void ComputePublicB();
+            /// Compute U
         void ComputeU(uint8_t* p_A, uint32_t p_ASize);
-        /// Compute S
+            /// Compute S
         void ComputeS(BigNumber& p_U);
-        /// Compute session key
-        void ComputeSessionKey();
-        /// Compute client M
+            /// Compute session key
+            void ComputeSessionKey();
+            /// Compute client M
         void ComputeClientM(uint8_t* p_A, uint32_t p_ASize);
-        /// Compute server M
+            /// Compute server M
         void ComputeServerM(uint8_t* p_ClientM, uint32_t p_ClientMSize);
 
-        /// Compare two bytes array
+            /// Compare two bytes array
         bool Compare(uint8_t* l_Left, uint8_t* l_Right, uint32_t p_Size);
 
-    private:
-        /// String to big number
+        private:
+            /// String to big number
         BigNumber MakeBigNumber(const std::string& p_Str);
-        /// Str to byte array
+            /// Str to byte array
         void ToByteArray(const std::string& p_Str, uint8_t* p_Dest);
-        /// SHA256 of string
+            /// SHA256 of string
         void Sha256(const std::string& p_Str, uint8_t* p_Dest);
-        /// SHA256 of data
+            /// SHA256 of data
         void Sha256(uint8_t* p_Data, uint32_t p_DataSize, uint8_t* p_Dest);
 
-    public:
-        BigNumber N;
-        BigNumber G;
-        BigNumber V;
-        BigNumber K;
-        BigNumber A;
-        BigNumber S;
-        BigNumber PrivateB;
-        BigNumber SessionKey;
+        public:
+            BigNumber N;
+            BigNumber G;
+            BigNumber V;
+            BigNumber K;
+            BigNumber A;
+            BigNumber S;
+            BigNumber PrivateB;
+            BigNumber SessionKey;
 
-        uint8_t I[SHA256_DIGEST_LENGTH];
-        uint8_t Salt[SHA256_DIGEST_LENGTH];
-        uint8_t PublicB[4 * SHA256_DIGEST_LENGTH];
-        uint8_t ClientM[SHA256_DIGEST_LENGTH];
-        uint8_t ServerM[SHA256_DIGEST_LENGTH];
+            uint8_t I[SHA256_DIGEST_LENGTH];
+            uint8_t Salt[SHA256_DIGEST_LENGTH];
+            uint8_t PublicB[4 * SHA256_DIGEST_LENGTH];
+            uint8_t ClientM[SHA256_DIGEST_LENGTH];
+            uint8_t ServerM[SHA256_DIGEST_LENGTH];
 
     };
 

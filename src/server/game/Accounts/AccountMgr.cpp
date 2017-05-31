@@ -34,22 +34,16 @@ namespace AccountMgr
         shaIdentitySalt.UpdateData(email);
         shaIdentitySalt.Finalize();
 
-        std::string identitySalt = ByteArrayToHexStr(shaIdentitySalt.GetDigest(), shaIdentitySalt.GetLength());
-
         SHA256Hash shaPBytes;
         shaPBytes.Initialize();
-        shaPBytes.UpdateData(identitySalt);
+        shaPBytes.UpdateData(shaIdentitySalt.GetDigest(), shaIdentitySalt.GetLength());
         shaPBytes.UpdateData(":");
         shaPBytes.UpdateData(password);
         shaPBytes.Finalize();
 
-        uint8_t saltBytes[32];
-        for (int i = 0; i < 32; i++)
-            saltBytes[i] = std::stoi(salt.substr(i * 2, 2), nullptr, 16);
-
         SHA256Hash shaX;
         shaX.Initialize();
-        shaX.UpdateData(saltBytes, 32);
+        shaX.UpdateData(salt);
         shaX.UpdateData(shaPBytes.GetDigest(), shaPBytes.GetLength());
         shaX.Finalize();
 
@@ -60,9 +54,8 @@ namespace AccountMgr
         BigNumber X;
         X.SetBinary(shaX.GetDigest(), shaX.GetLength());
         BigNumber res = G.ModExp(X, N);
-        std::string temp = ByteArrayToHexStr(X.AsByteArray(), 32);
 
-        return ByteArrayToHexStr(res.AsByteArray(), res.GetNumBytes());
+        return std::string(res.AsHexStr());
     }
 
 #ifndef CROSS
@@ -80,14 +73,8 @@ namespace AccountMgr
         if (GetId(username))
             return AOR_NAME_ALREDY_EXIST;                       // Username does already exist
 
-        // SRP6aCalculatePasswordVerifier requires a lowercase email
-        normalizeString(username, false);
-
         std::string salt = SRP6aGenerateSalt32();
         std::string passwordVerifier = SRP6aCalculatePasswordVerifier(username, password, salt);
-
-        // everything else requires an uppercase email
-        normalizeString(username, true);
 
         PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_ACCOUNT);
 
@@ -201,9 +188,6 @@ namespace AccountMgr
         std::string salt = SRP6aGenerateSalt32();
         std::string passwordVerifier = SRP6aCalculatePasswordVerifier(newUsername, newPassword, salt);
 
-        // everything else requires an uppercase email
-        normalizeString(newUsername, true);
-
         stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_USERNAME);
 
         stmt->setString(0, newUsername);
@@ -233,9 +217,6 @@ namespace AccountMgr
 
         std::string salt = SRP6aGenerateSalt32();
         std::string passwordVerifier = SRP6aCalculatePasswordVerifier(username, newPassword, salt);
-
-        // everything else requires an uppercase email
-        normalizeString(username, true);
 
         PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_PASSWORD);
 
