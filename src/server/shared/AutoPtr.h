@@ -11,7 +11,7 @@
 
 #include <ace/Bound_Ptr.h>
 
-namespace JadeCore
+namespace Trinity
 {
     template <class Pointer, class Lock>
     class AutoPtr : public ACE_Strong_Bound_Ptr<Pointer, Lock>

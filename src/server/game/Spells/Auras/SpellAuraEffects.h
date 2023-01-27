@@ -354,7 +354,7 @@ class AuraEffect
         void HandleAuraAdaptation(AuraApplication const* p_AurApp, uint8 p_Mode, bool p_Apply) const;
 };
 
-namespace JadeCore
+namespace Trinity
 {
     // Binary predicate for sorting the priority of absorption aura effects
     class AbsorbAuraOrderPred

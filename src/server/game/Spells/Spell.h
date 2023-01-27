@@ -949,7 +949,7 @@ protected:
 #endif
 };
 
-namespace JadeCore
+namespace Trinity
 {
     struct WorldObjectSpellTargetCheck
     {

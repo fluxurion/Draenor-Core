@@ -878,7 +878,7 @@ class boss_generic_guardian : public CreatureScript
                                         if (tempPlayerList.size() < 2)
                                             break;
 
-                                        JadeCore::Containers::RandomResizeList(tempPlayerList, 2);
+                                        Trinity::Containers::RandomResizeList(tempPlayerList, 2);
                                     
                                         Player* firstPlayer  = *tempPlayerList.begin();
                                         Player* SecondPlayer = *(++(tempPlayerList.begin()));

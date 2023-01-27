@@ -228,8 +228,8 @@ void CreatureGroup::LeaderMoveTo(float x, float y, float z)
         float dy = y +  std::sin(angle + pathangle) * dist;
         float dz = z;
 
-        JadeCore::NormalizeMapCoord(dx);
-        JadeCore::NormalizeMapCoord(dy);
+        Trinity::NormalizeMapCoord(dx);
+        Trinity::NormalizeMapCoord(dy);
 
 		/// Don't set positionZ to ground for flying creatures.
 		if (!member->IsFlying())

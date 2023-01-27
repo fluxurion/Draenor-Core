@@ -11,7 +11,7 @@
 
 #include <ace/Event_Handler.h>
 
-namespace JadeCore
+namespace Trinity
 {
 
 /// Handle termination signals

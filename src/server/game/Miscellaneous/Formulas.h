@@ -13,7 +13,7 @@
 #include "SharedDefines.h"
 #include "ScriptMgr.h"
 
-namespace JadeCore
+namespace Trinity
 {
     namespace Honor
     {

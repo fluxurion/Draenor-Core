@@ -177,7 +177,7 @@ class spell_ex_5581 : public SpellScriptLoader
                 // bind handler to AfterHit event of the spell
                 AfterHit += SpellHitFn(spell_ex_5581SpellScript::HandleAfterHit);
                 // bind handler to OnUnitTargetSelect event of the spell
-                //OnUnitTargetSelect += SpellUnitTargetFn(spell_ex_5581SpellScript::FilterTargets, EFFECT_0, TARGET_UNIT_CASTER);
+                //OnObjectAreaTargetSelect += SpellObjectAreaTargetSelectFn(spell_ex_5581SpellScript::FilterTargets, EFFECT_0, TARGET_UNIT_CASTER);
             }
         };
 

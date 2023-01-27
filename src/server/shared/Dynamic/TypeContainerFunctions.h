@@ -19,7 +19,7 @@
 #include "Dynamic/TypeList.h"
 #include "Common.h"
 
-namespace JadeCore
+namespace Trinity
 {
     /* ContainerMapList Helpers */
     // count functions
