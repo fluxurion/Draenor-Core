@@ -89,7 +89,7 @@ bool Corpse::Create(uint32 guidlow, Player* owner)
 
     loot.SetSource(GetGUID());
 
-    _gridCoord = JadeCore::ComputeGridCoord(GetPositionX(), GetPositionY());
+    _gridCoord = Trinity::ComputeGridCoord(GetPositionX(), GetPositionY());
 
     loot.Context = GetMap()->GetLootItemContext();
 
@@ -202,7 +202,7 @@ bool Corpse::LoadCorpseFromDB(uint32 guid, Field* fields)
         return false;
     }
 
-    _gridCoord = JadeCore::ComputeGridCoord(GetPositionX(), GetPositionY());
+    _gridCoord = Trinity::ComputeGridCoord(GetPositionX(), GetPositionY());
     return true;
 }
 

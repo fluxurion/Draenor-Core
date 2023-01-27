@@ -1,11 +1,3 @@
-////////////////////////////////////////////////////////////////////////////////
-//
-// Project-Hellscream https://hellscream.org
-// Copyright (C) 2018-2020 Project-Hellscream-6.2
-// Discord https://discord.gg/CWCF3C9
-//
-////////////////////////////////////////////////////////////////////////////////
-
 #include "ScriptPCH.h"
 #include "Spell.h"
 #include "throne_of_the_tides.h"
@@ -16,7 +8,7 @@ enum ScriptTexts
     SAY_KILL    = 1,
     SAY_DEATH   = 2,
     SAY_66      = 3,
-    SAY_33      = 4
+    SAY_33      = 4,
 };
 
 enum Spells
@@ -48,7 +40,7 @@ enum Spells
     SPELL_CHAIN_LIGHTNING_H     = 91450,
     SPELL_LIGHTNING_SURGE       = 75992,
     SPELL_LIGHTNING_SURGE_DMG   = 75993,
-    SPELL_LIGHTNING_SURGE_DMG_H = 91451
+    SPELL_LIGHTNING_SURGE_DMG_H = 91451,
 };
 
 enum Events
@@ -61,14 +53,14 @@ enum Events
     EVENT_START_ATTACK      = 6,
     EVENT_ARC_SLASH         = 7,
     EVENT_LIGHTNING_SURGE   = 8,
-    EVENT_CHAIN_LIGHTNING   = 9
+    EVENT_CHAIN_LIGHTNING   = 9,
 };
 
 enum Points
 {
     POINT_CENTER_1      = 1,
     POINT_CENTER_2      = 2,
-    POINT_WATERSPOUT    = 3
+    POINT_WATERSPOUT    = 3,
 };
 
 enum Adds
@@ -76,8 +68,8 @@ enum Adds
     NPC_TEMPEST_WITCH       = 44404,
     NPC_HONNOR_GUARD        = 40633,
     NPC_WATERSPOUT          = 48571,
-    NPC_WATERSPOUT_H        = 49108,
-    NPC_GEYSER              = 40597
+	NPC_WATERSPOUT_H        = 49108,
+	NPC_GEYSER              = 40597,
 };
 
 const Position summonPos[3] =
@@ -138,7 +130,7 @@ class boss_lady_nazjar : public CreatureScript
                 events.Reset();
             }
 
-            void SummonedCreatureDies(Creature* summon, Unit* /*killer*/)
+            void SummonedCreatureDies(Creature* summon, Unit* killer)
             {
                 switch(summon->GetEntry())
                 {
@@ -154,14 +146,14 @@ class boss_lady_nazjar : public CreatureScript
                 Talk(SAY_KILL);
             }
 
-            void SpellHit(Unit* /*caster*/, SpellInfo const* spell)
+            void SpellHit(Unit* caster, SpellInfo const* spell)
             {
                 if (me->GetCurrentSpell(CURRENT_GENERIC_SPELL))
                     if (me->GetCurrentSpell(CURRENT_GENERIC_SPELL)->m_spellInfo->Id == SPELL_SHOCK_BLAST
                         || me->GetCurrentSpell(CURRENT_GENERIC_SPELL)->m_spellInfo->Id == SPELL_SHOCK_BLAST_H)
                         for (uint8 i = 0; i < 3; ++i)
-                            if (spell->Effects[i].Effect == SPELL_EFFECT_INTERRUPT_CAST)
-                                me->InterruptSpell(CURRENT_GENERIC_SPELL);
+						    if (spell->Effects[i].Effect == SPELL_EFFECT_INTERRUPT_CAST)
+							    me->InterruptSpell(CURRENT_GENERIC_SPELL);
             }
 
             void JustSummoned(Creature* summon)
@@ -266,7 +258,7 @@ class boss_lady_nazjar : public CreatureScript
                 }
 
                 if (me->HealthBelowPct(66) && uiPhase == 0)
-                {
+                {              
                     uiPhase = 1;
                     uiSpawnCount = 3;
                     me->InterruptNonMeleeSpells(false);
@@ -275,14 +267,14 @@ class boss_lady_nazjar : public CreatureScript
                     return;
                 }
                 if (me->HealthBelowPct(33) && uiPhase == 2)
-                {
+                {              
                     uiPhase = 3;
                     uiSpawnCount = 3;
                     me->InterruptNonMeleeSpells(false);
                     me->SetReactState(REACT_PASSIVE);
                     me->GetMotionMaster()->MovePoint(POINT_CENTER_2, centerPos);
                     return;
-                }
+                } 
 
                 switch (uiPhase)
                 {
@@ -392,7 +384,7 @@ class npc_lady_nazjar_honnor_guard : public CreatureScript
                         break;
                     }
                 }
-                DoMeleeAttackIfReady();
+                DoMeleeAttackIfReady();                
             }
         };
 };
@@ -488,7 +480,7 @@ class npc_lady_nazjar_waterspout : public CreatureScript
                 }
             }
 
-            void UpdateAI(const uint32 /*diff*/)
+            void UpdateAI(const uint32 diff)
             {
                 if (bHit)
                     return;
@@ -547,7 +539,6 @@ class npc_lady_nazjar_geyser : public CreatureScript
         };
 };
 
-#ifndef __clang_analyzer__
 void AddSC_boss_lady_nazjar()
 {
     new boss_lady_nazjar();
@@ -556,4 +547,3 @@ void AddSC_boss_lady_nazjar()
     new npc_lady_nazjar_waterspout();
     new npc_lady_nazjar_geyser();
 }
-#endif

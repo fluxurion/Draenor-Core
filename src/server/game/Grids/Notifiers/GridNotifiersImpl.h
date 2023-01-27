@@ -18,7 +18,7 @@
 #include "SpellAuras.h"
 
 template<class T>
-inline void JadeCore::VisibleNotifier::Visit(GridRefManager<T> &m)
+inline void Trinity::VisibleNotifier::Visit(GridRefManager<T> &m)
 {
     for (typename GridRefManager<T>::iterator iter = m.begin(); iter != m.end(); ++iter)
     {
@@ -27,14 +27,14 @@ inline void JadeCore::VisibleNotifier::Visit(GridRefManager<T> &m)
     }
 }
 
-inline void JadeCore::ObjectUpdater::Visit(CreatureMapType &m)
+inline void Trinity::ObjectUpdater::Visit(CreatureMapType &m)
 {
     for (CreatureMapType::iterator iter = m.begin(); iter != m.end(); ++iter)
         if (iter->getSource()->IsInWorld())
             iter->getSource()->Update(i_timeDiff);
 }
 
-inline void JadeCore::ObjectUpdater::Visit(GameObjectMapType &m)
+inline void Trinity::ObjectUpdater::Visit(GameObjectMapType &m)
 {
     for (GameObjectMapType::iterator iter = m.begin(); iter != m.end(); ++iter)
         if (iter->getSource()->IsInWorld() && !iter->getSource()->IsTransport())
@@ -46,7 +46,7 @@ inline void JadeCore::ObjectUpdater::Visit(GameObjectMapType &m)
 // WorldObject searchers & workers
 
 template<class Check>
-void JadeCore::WorldObjectSearcher<Check>::Visit(GameObjectMapType &m)
+void Trinity::WorldObjectSearcher<Check>::Visit(GameObjectMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_GAMEOBJECT))
         return;
@@ -69,7 +69,7 @@ void JadeCore::WorldObjectSearcher<Check>::Visit(GameObjectMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectSearcher<Check>::Visit(PlayerMapType &m)
+void Trinity::WorldObjectSearcher<Check>::Visit(PlayerMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_PLAYER))
         return;
@@ -92,7 +92,7 @@ void JadeCore::WorldObjectSearcher<Check>::Visit(PlayerMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectSearcher<Check>::Visit(CreatureMapType &m)
+void Trinity::WorldObjectSearcher<Check>::Visit(CreatureMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_CREATURE))
         return;
@@ -115,7 +115,7 @@ void JadeCore::WorldObjectSearcher<Check>::Visit(CreatureMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectSearcher<Check>::Visit(CorpseMapType &m)
+void Trinity::WorldObjectSearcher<Check>::Visit(CorpseMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_CORPSE))
         return;
@@ -138,7 +138,7 @@ void JadeCore::WorldObjectSearcher<Check>::Visit(CorpseMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectSearcher<Check>::Visit(DynamicObjectMapType &m)
+void Trinity::WorldObjectSearcher<Check>::Visit(DynamicObjectMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_DYNAMICOBJECT))
         return;
@@ -161,7 +161,7 @@ void JadeCore::WorldObjectSearcher<Check>::Visit(DynamicObjectMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectSearcher<Check>::Visit(AreaTriggerMapType &m)
+void Trinity::WorldObjectSearcher<Check>::Visit(AreaTriggerMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_AREATRIGGER))
         return;
@@ -184,7 +184,7 @@ void JadeCore::WorldObjectSearcher<Check>::Visit(AreaTriggerMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectSearcher<Check>::Visit(ConversationMapType &m)
+void Trinity::WorldObjectSearcher<Check>::Visit(ConversationMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_CONVERSATION))
         return;
@@ -207,7 +207,7 @@ void JadeCore::WorldObjectSearcher<Check>::Visit(ConversationMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectLastSearcher<Check>::Visit(GameObjectMapType &m)
+void Trinity::WorldObjectLastSearcher<Check>::Visit(GameObjectMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_GAMEOBJECT))
         return;
@@ -223,7 +223,7 @@ void JadeCore::WorldObjectLastSearcher<Check>::Visit(GameObjectMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectLastSearcher<Check>::Visit(PlayerMapType &m)
+void Trinity::WorldObjectLastSearcher<Check>::Visit(PlayerMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_PLAYER))
         return;
@@ -239,7 +239,7 @@ void JadeCore::WorldObjectLastSearcher<Check>::Visit(PlayerMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectLastSearcher<Check>::Visit(CreatureMapType &m)
+void Trinity::WorldObjectLastSearcher<Check>::Visit(CreatureMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_CREATURE))
         return;
@@ -255,7 +255,7 @@ void JadeCore::WorldObjectLastSearcher<Check>::Visit(CreatureMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectLastSearcher<Check>::Visit(CorpseMapType &m)
+void Trinity::WorldObjectLastSearcher<Check>::Visit(CorpseMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_CORPSE))
         return;
@@ -271,7 +271,7 @@ void JadeCore::WorldObjectLastSearcher<Check>::Visit(CorpseMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectLastSearcher<Check>::Visit(DynamicObjectMapType &m)
+void Trinity::WorldObjectLastSearcher<Check>::Visit(DynamicObjectMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_DYNAMICOBJECT))
         return;
@@ -287,7 +287,7 @@ void JadeCore::WorldObjectLastSearcher<Check>::Visit(DynamicObjectMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectLastSearcher<Check>::Visit(AreaTriggerMapType  &m)
+void Trinity::WorldObjectLastSearcher<Check>::Visit(AreaTriggerMapType  &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_AREATRIGGER))
         return;
@@ -303,7 +303,7 @@ void JadeCore::WorldObjectLastSearcher<Check>::Visit(AreaTriggerMapType  &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectLastSearcher<Check>::Visit(ConversationMapType  &m)
+void Trinity::WorldObjectLastSearcher<Check>::Visit(ConversationMapType  &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_CONVERSATION))
         return;
@@ -319,7 +319,7 @@ void JadeCore::WorldObjectLastSearcher<Check>::Visit(ConversationMapType  &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectListSearcher<Check>::Visit(PlayerMapType &m)
+void Trinity::WorldObjectListSearcher<Check>::Visit(PlayerMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_PLAYER))
         return;
@@ -330,7 +330,7 @@ void JadeCore::WorldObjectListSearcher<Check>::Visit(PlayerMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectListSearcher<Check>::Visit(CreatureMapType &m)
+void Trinity::WorldObjectListSearcher<Check>::Visit(CreatureMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_CREATURE))
         return;
@@ -341,7 +341,7 @@ void JadeCore::WorldObjectListSearcher<Check>::Visit(CreatureMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectListSearcher<Check>::Visit(CorpseMapType &m)
+void Trinity::WorldObjectListSearcher<Check>::Visit(CorpseMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_CORPSE))
         return;
@@ -352,7 +352,7 @@ void JadeCore::WorldObjectListSearcher<Check>::Visit(CorpseMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectListSearcher<Check>::Visit(GameObjectMapType &m)
+void Trinity::WorldObjectListSearcher<Check>::Visit(GameObjectMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_GAMEOBJECT))
         return;
@@ -363,7 +363,7 @@ void JadeCore::WorldObjectListSearcher<Check>::Visit(GameObjectMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectListSearcher<Check>::Visit(DynamicObjectMapType &m)
+void Trinity::WorldObjectListSearcher<Check>::Visit(DynamicObjectMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_DYNAMICOBJECT))
         return;
@@ -374,7 +374,7 @@ void JadeCore::WorldObjectListSearcher<Check>::Visit(DynamicObjectMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectListSearcher<Check>::Visit(AreaTriggerMapType &m)
+void Trinity::WorldObjectListSearcher<Check>::Visit(AreaTriggerMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_AREATRIGGER))
         return;
@@ -385,7 +385,7 @@ void JadeCore::WorldObjectListSearcher<Check>::Visit(AreaTriggerMapType &m)
 }
 
 template<class Check>
-void JadeCore::WorldObjectListSearcher<Check>::Visit(ConversationMapType &m)
+void Trinity::WorldObjectListSearcher<Check>::Visit(ConversationMapType &m)
 {
     if (!(i_mapTypeMask & GRID_MAP_TYPE_MASK_CONVERSATION))
         return;
@@ -399,7 +399,7 @@ void JadeCore::WorldObjectListSearcher<Check>::Visit(ConversationMapType &m)
 
 /// AreaTrigger searchers
 template<class Check>
-void JadeCore::AreaTriggerListSearcher<Check>::Visit(AreaTriggerMapType& p_AreaTriggerMap)
+void Trinity::AreaTriggerListSearcher<Check>::Visit(AreaTriggerMapType& p_AreaTriggerMap)
 {
     for (AreaTriggerMapType::iterator l_Iterator = p_AreaTriggerMap.begin(); l_Iterator != p_AreaTriggerMap.end(); ++l_Iterator)
     {
@@ -412,7 +412,7 @@ void JadeCore::AreaTriggerListSearcher<Check>::Visit(AreaTriggerMapType& p_AreaT
 }
 
 template<class Check>
-void JadeCore::AreaTriggerSearcher<Check>::Visit(AreaTriggerMapType& p_AreatriggerMap)
+void Trinity::AreaTriggerSearcher<Check>::Visit(AreaTriggerMapType& p_AreatriggerMap)
 {
     // already found
     if (i_object)
@@ -433,7 +433,7 @@ void JadeCore::AreaTriggerSearcher<Check>::Visit(AreaTriggerMapType& p_Areatrigg
 
 /// Conversation searchers
 template<class Check>
-void JadeCore::ConversationSearcher<Check>::Visit(ConversationMapType& p_ConversationMap)
+void Trinity::ConversationSearcher<Check>::Visit(ConversationMapType& p_ConversationMap)
 {
     /// Already found
     if (i_object)
@@ -453,7 +453,7 @@ void JadeCore::ConversationSearcher<Check>::Visit(ConversationMapType& p_Convers
 }
 
 template<class Check>
-void JadeCore::ConversationListSearcher<Check>::Visit(ConversationMapType& p_ConversationMap)
+void Trinity::ConversationListSearcher<Check>::Visit(ConversationMapType& p_ConversationMap)
 {
     for (ConversationMapType::iterator l_Iterator = p_ConversationMap.begin(); l_Iterator != p_ConversationMap.end(); ++l_Iterator)
     {
@@ -467,7 +467,7 @@ void JadeCore::ConversationListSearcher<Check>::Visit(ConversationMapType& p_Con
 
 /// Gameobject searchers
 template<class Check>
-void JadeCore::GameObjectSearcher<Check>::Visit(GameObjectMapType &m)
+void Trinity::GameObjectSearcher<Check>::Visit(GameObjectMapType &m)
 {
     // already found
     if (i_object)
@@ -487,7 +487,7 @@ void JadeCore::GameObjectSearcher<Check>::Visit(GameObjectMapType &m)
 }
 
 template<class Check>
-void JadeCore::GameObjectLastSearcher<Check>::Visit(GameObjectMapType &m)
+void Trinity::GameObjectLastSearcher<Check>::Visit(GameObjectMapType &m)
 {
     for (GameObjectMapType::iterator itr=m.begin(); itr != m.end(); ++itr)
     {
@@ -500,7 +500,7 @@ void JadeCore::GameObjectLastSearcher<Check>::Visit(GameObjectMapType &m)
 }
 
 template<class Check>
-void JadeCore::GameObjectListSearcher<Check>::Visit(GameObjectMapType &m)
+void Trinity::GameObjectListSearcher<Check>::Visit(GameObjectMapType &m)
 {
     for (GameObjectMapType::iterator itr=m.begin(); itr != m.end(); ++itr)
         if (itr->getSource()->InSamePhase(i_phaseMask))
@@ -511,7 +511,7 @@ void JadeCore::GameObjectListSearcher<Check>::Visit(GameObjectMapType &m)
 // Unit searchers
 
 template<class Check>
-void JadeCore::UnitSearcher<Check>::Visit(CreatureMapType &m)
+void Trinity::UnitSearcher<Check>::Visit(CreatureMapType &m)
 {
     // already found
     if (i_object)
@@ -531,7 +531,7 @@ void JadeCore::UnitSearcher<Check>::Visit(CreatureMapType &m)
 }
 
 template<class Check>
-void JadeCore::UnitSearcher<Check>::Visit(PlayerMapType &m)
+void Trinity::UnitSearcher<Check>::Visit(PlayerMapType &m)
 {
     // already found
     if (i_object)
@@ -551,7 +551,7 @@ void JadeCore::UnitSearcher<Check>::Visit(PlayerMapType &m)
 }
 
 template<class Check>
-void JadeCore::UnitLastSearcher<Check>::Visit(CreatureMapType &m)
+void Trinity::UnitLastSearcher<Check>::Visit(CreatureMapType &m)
 {
     for (CreatureMapType::iterator itr=m.begin(); itr != m.end(); ++itr)
     {
@@ -564,7 +564,7 @@ void JadeCore::UnitLastSearcher<Check>::Visit(CreatureMapType &m)
 }
 
 template<class Check>
-void JadeCore::UnitLastSearcher<Check>::Visit(PlayerMapType &m)
+void Trinity::UnitLastSearcher<Check>::Visit(PlayerMapType &m)
 {
     for (PlayerMapType::iterator itr=m.begin(); itr != m.end(); ++itr)
     {
@@ -577,7 +577,7 @@ void JadeCore::UnitLastSearcher<Check>::Visit(PlayerMapType &m)
 }
 
 template<class Check>
-void JadeCore::UnitListSearcher<Check>::Visit(PlayerMapType &m)
+void Trinity::UnitListSearcher<Check>::Visit(PlayerMapType &m)
 {
     for (PlayerMapType::iterator itr=m.begin(); itr != m.end(); ++itr)
         if (itr->getSource()->InSamePhase(i_phaseMask))
@@ -586,7 +586,7 @@ void JadeCore::UnitListSearcher<Check>::Visit(PlayerMapType &m)
 }
 
 template<class Check>
-void JadeCore::UnitListSearcher<Check>::Visit(CreatureMapType &m)
+void Trinity::UnitListSearcher<Check>::Visit(CreatureMapType &m)
 {
     for (CreatureMapType::iterator itr=m.begin(); itr != m.end(); ++itr)
         if (itr->getSource()->InSamePhase(i_phaseMask))
@@ -596,7 +596,7 @@ void JadeCore::UnitListSearcher<Check>::Visit(CreatureMapType &m)
 
 // Creature searchers
 template<class Check>
-void JadeCore::CreatureSearcher<Check>::Visit(CreatureMapType &m)
+void Trinity::CreatureSearcher<Check>::Visit(CreatureMapType &m)
 {
     // already found
     if (i_object)
@@ -616,7 +616,7 @@ void JadeCore::CreatureSearcher<Check>::Visit(CreatureMapType &m)
 }
 
 template<class Check>
-void JadeCore::CreatureLastSearcher<Check>::Visit(CreatureMapType &m)
+void Trinity::CreatureLastSearcher<Check>::Visit(CreatureMapType &m)
 {
     for (CreatureMapType::iterator itr=m.begin(); itr != m.end(); ++itr)
     {
@@ -629,7 +629,7 @@ void JadeCore::CreatureLastSearcher<Check>::Visit(CreatureMapType &m)
 }
 
 template<class Check>
-void JadeCore::CreatureListSearcher<Check>::Visit(CreatureMapType &m)
+void Trinity::CreatureListSearcher<Check>::Visit(CreatureMapType &m)
 {
     for (CreatureMapType::iterator itr=m.begin(); itr != m.end(); ++itr)
         if (itr->getSource()->InSamePhase(i_phaseMask))
@@ -638,7 +638,7 @@ void JadeCore::CreatureListSearcher<Check>::Visit(CreatureMapType &m)
 }
 
 template<class Check>
-void JadeCore::PlayerListSearcher<Check>::Visit(PlayerMapType &m)
+void Trinity::PlayerListSearcher<Check>::Visit(PlayerMapType &m)
 {
     for (PlayerMapType::iterator itr=m.begin(); itr != m.end(); ++itr)
     {
@@ -652,7 +652,7 @@ void JadeCore::PlayerListSearcher<Check>::Visit(PlayerMapType &m)
 }
 
 template<class Check>
-void JadeCore::PlayerSearcher<Check>::Visit(PlayerMapType &m)
+void Trinity::PlayerSearcher<Check>::Visit(PlayerMapType &m)
 {
     // already found
     if (i_object)
@@ -672,7 +672,7 @@ void JadeCore::PlayerSearcher<Check>::Visit(PlayerMapType &m)
 }
 
 template<class Check>
-void JadeCore::PlayerLastSearcher<Check>::Visit(PlayerMapType& m)
+void Trinity::PlayerLastSearcher<Check>::Visit(PlayerMapType& m)
 {
     for (PlayerMapType::iterator itr = m.begin(); itr != m.end(); ++itr)
     {
@@ -685,7 +685,7 @@ void JadeCore::PlayerLastSearcher<Check>::Visit(PlayerMapType& m)
 }
 
 template<class Builder>
-void JadeCore::LocalizedPacketDo<Builder>::operator()(Player* p)
+void Trinity::LocalizedPacketDo<Builder>::operator()(Player* p)
 {
     LocaleConstant loc_idx = p->GetSession()->GetSessionDbLocaleIndex();
     uint32 cache_idx = loc_idx+1;
@@ -710,7 +710,7 @@ void JadeCore::LocalizedPacketDo<Builder>::operator()(Player* p)
 }
 
 template<class Builder>
-void JadeCore::LocalizedPacketListDo<Builder>::operator()(Player* p)
+void Trinity::LocalizedPacketListDo<Builder>::operator()(Player* p)
 {
     LocaleConstant loc_idx = p->GetSession()->GetSessionDbLocaleIndex();
     uint32 cache_idx = loc_idx+1;

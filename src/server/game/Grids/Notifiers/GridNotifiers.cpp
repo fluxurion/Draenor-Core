@@ -18,7 +18,7 @@
 #include "CellImpl.h"
 #include "SpellInfo.h"
 
-using namespace JadeCore;
+using namespace Trinity;
 
 void VisibleNotifier::SendToSelf()
 {

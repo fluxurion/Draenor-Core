@@ -1,11 +1,3 @@
-////////////////////////////////////////////////////////////////////////////////
-//
-// Project-Hellscream https://hellscream.org
-// Copyright (C) 2018-2020 Project-Hellscream-6.2
-// Discord https://discord.gg/CWCF3C9
-//
-////////////////////////////////////////////////////////////////////////////////
-
 #include "ScriptPCH.h"
 #include "throne_of_the_tides.h"
 
@@ -20,7 +12,7 @@ enum Spells
     SPELL_DARK_FISSURE_AURA_H   = 91371,
     SPELL_DARK_FISSURE_DMG      = 76085,
     SPELL_DARK_FISSURE_DMG_H    = 91375,
-    SPELL_ULTHOK_INTRO          = 82960
+    SPELL_ULTHOK_INTRO          = 82960,
 };
 
 enum Events
@@ -28,17 +20,17 @@ enum Events
     EVENT_DARK_FISSURE      = 1,
     EVENT_SQUEEZE           = 2,
     EVENT_CURSE_OF_FATIGUE  = 3,
-    EVENT_ENRAGE            = 4
+    EVENT_ENRAGE            = 4,
 };
 
 enum Actions
 {
-    ACTION_COMMANDER_ULTHOK_START_EVENT = 2
+    ACTION_COMMANDER_ULTHOK_START_EVENT = 2,
 };
 
 enum Adds
 {
-    NPC_DARK_FISSURE = 40784
+    NPC_DARK_FISSURE = 40784,
 };
 
 class boss_commander_ulthok : public CreatureScript
@@ -105,7 +97,7 @@ class boss_commander_ulthok : public CreatureScript
                 instance->SetBossState(DATA_COMMANDER_ULTHOK, IN_PROGRESS);
             }
 
-            void JustDied(Unit* /*pKiller*/)
+            void JustDied(Unit* pKiller)
             {
                 _JustDied();
             }
@@ -174,7 +166,7 @@ class npc_ulthok_dark_fissure : public CreatureScript
                 DoCast(me, IsHeroic()? SPELL_DARK_FISSURE_AURA_H: SPELL_DARK_FISSURE_AURA, true);
             }
 
-            void UpdateAI(const uint32 /*diff*/)
+            void UpdateAI(const uint32 diff)
             {
             }
         };
@@ -187,27 +179,26 @@ class at_tott_commander_ulthok : public AreaTriggerScript
 
         bool OnTrigger(Player* pPlayer, const AreaTriggerEntry* /*pAt*/)
         {
-            if (InstanceScript* pInstance = pPlayer->GetInstanceScript())
-            {
-                if (pInstance->GetData(DATA_COMMANDER_ULTHOK_EVENT) != DONE
+            sLog->outError(LOG_FILTER_SERVER_LOADING, "ulthok");
+		    if (InstanceScript* pInstance = pPlayer->GetInstanceScript())
+		    {
+			    if (pInstance->GetData(DATA_COMMANDER_ULTHOK_EVENT) != DONE
                     && pInstance->GetBossState(DATA_LADY_NAZJAR) != DONE)
-                {
+			    {
                     pInstance->SetData(DATA_COMMANDER_ULTHOK_EVENT, DONE);
                     if (Creature* pUlthok = ObjectAccessor::GetCreature(*pPlayer, pInstance->GetData64(DATA_COMMANDER_ULTHOK)))
                     {
                         pUlthok->AI()->DoAction(ACTION_COMMANDER_ULTHOK_START_EVENT);
                     }
-                }
-            }
+			    }
+		    }
             return true;
         }
 };
 
-#ifndef __clang_analyzer__
 void AddSC_boss_commander_ulthok()
 {
     new boss_commander_ulthok();
     new npc_ulthok_dark_fissure();
     new at_tott_commander_ulthok();
 }
-#endif
