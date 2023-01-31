@@ -19567,6 +19567,9 @@ void Player::RewardQuest(Quest const* p_Quest, uint32 p_Reward, Object* p_QuestG
         }
     }
 
+    if (uint32 skill = p_Quest->GetRewardSkillId())
+        UpdateSkillPro(skill, 1000, p_Quest->GetRewardSkillPoints());
+
     RewardReputation(p_Quest);
     RewardGuildReputation(p_Quest);
     RewardSkill(p_Quest);
