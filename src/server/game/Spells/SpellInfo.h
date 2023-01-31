@@ -657,6 +657,11 @@ public:
     void SetRangeIndex(uint32 index);
     void SetCastTimeIndex(uint32 index);
 
+    // correction helpers
+    void SetDurationIndex(uint32 index);
+    void SetRangeIndex(uint32 index);
+    void SetCastTimeIndex(uint32 index);
+
     // unloading helpers
     void _UnloadImplicitTargetConditionLists();
 
@@ -672,6 +677,7 @@ public:
 
     uint32 GetSpellXSpellVisualId(Unit const* p_Caster = nullptr) const;
     uint32 GetSpellVisualID(Unit const* p_caster) const;
+    bool IsSealSpell() const;
 };
 
 #endif // _SPELLINFO_H

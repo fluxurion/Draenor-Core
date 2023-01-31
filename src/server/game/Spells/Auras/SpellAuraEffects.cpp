@@ -3006,8 +3006,8 @@ void AuraEffect::HandleFeignDeath(AuraApplication const* aurApp, uint8 mode, boo
             */
 
             UnitList targets;
-            JadeCore::AnyUnfriendlyUnitInObjectRangeCheck u_check(target, target, target->GetMap()->GetVisibilityRange());
-            JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(target, targets, u_check);
+            Trinity::AnyUnfriendlyUnitInObjectRangeCheck u_check(target, target, target->GetMap()->GetVisibilityRange());
+            Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> searcher(target, targets, u_check);
             target->VisitNearbyObject(target->GetMap()->GetVisibilityRange(), searcher);
             for (UnitList::iterator iter = targets.begin(); iter != targets.end(); ++iter)
             {
@@ -6930,6 +6930,37 @@ void AuraEffect::HandlePeriodicDummyAuraTick(Unit* target, Unit* caster) const
                     if (!target->HasAuraType(SPELL_AURA_MOD_STEALTH))
                         target->RemoveAurasDueToSpell(31665);
                     break;
+                // Killing Spree
+                case 51690:
+                {
+                    // TODO: this should use effect[1] of 51690
+                    UnitList targets;
+                    {
+                        // eff_radius == 0
+                        float radius = GetSpellInfo()->GetMaxRange(false);
+
+                        CellCoord p(Trinity::ComputeCellCoord(target->GetPositionX(), target->GetPositionY()));
+                        Cell cell(p);
+
+                        Trinity::AnyUnfriendlyAttackableVisibleUnitInObjectRangeCheck u_check(target, radius);
+                        Trinity::UnitListSearcher<Trinity::AnyUnfriendlyAttackableVisibleUnitInObjectRangeCheck> checker(target, targets, u_check);
+
+                        TypeContainerVisitor<Trinity::UnitListSearcher<Trinity::AnyUnfriendlyAttackableVisibleUnitInObjectRangeCheck>, GridTypeMapContainer > grid_object_checker(checker);
+                        TypeContainerVisitor<Trinity::UnitListSearcher<Trinity::AnyUnfriendlyAttackableVisibleUnitInObjectRangeCheck>, WorldTypeMapContainer > world_object_checker(checker);
+
+                        cell.Visit(p, grid_object_checker,  *GetBase()->GetOwner()->GetMap(), *target, radius);
+                        cell.Visit(p, world_object_checker, *GetBase()->GetOwner()->GetMap(), *target, radius);
+                    }
+
+                    if (targets.empty())
+                        return;
+
+                    Unit* spellTarget = Trinity::Containers::SelectRandomContainerElement(targets);
+
+                    target->CastSpell(spellTarget, 57840, true);
+                    target->CastSpell(spellTarget, 57841, true);
+                    break;
+                }
                 // Overkill
                 case 58428:
                     if (!target->HasAuraType(SPELL_AURA_MOD_STEALTH))
@@ -7485,7 +7516,7 @@ void AuraEffect::HandlePeriodicDamageAurasTick(Unit* target, Unit* caster) const
 
                 if (groupList.size() > 1)
                 {
-                    groupList.sort(JadeCore::HealthPctOrderPred());
+                    groupList.sort(Trinity::HealthPctOrderPred());
                     groupList.resize(1);
                 }
 

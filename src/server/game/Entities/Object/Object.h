@@ -1220,7 +1220,7 @@ class WorldObject : public Object, public WorldLocation
         uint16 m_MeleeAnimKitId;
 };
 
-namespace JadeCore
+namespace Trinity
 {
     template<class T>
     void RandomResizeList(std::list<T> &_list, uint32 _size)

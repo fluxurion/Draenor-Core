@@ -3374,23 +3374,23 @@ void UnitAura::FillTargetMap(std::map<Unit*, uint32> & targets, Unit* caster)
                     case SPELL_EFFECT_APPLY_AREA_AURA_RAID:
                     {
                         targetList.push_back(GetUnitOwner());
-                        JadeCore::AnyGroupedPlayerInObjectRangeCheck u_check(GetUnitOwner(), GetUnitOwner(), radius, GetSpellInfo()->Effects[effIndex].Effect == SPELL_EFFECT_APPLY_AREA_AURA_RAID);
-                        JadeCore::UnitListSearcher<JadeCore::AnyGroupedPlayerInObjectRangeCheck> searcher(GetUnitOwner(), targetList, u_check);
+                        Trinity::AnyGroupedPlayerInObjectRangeCheck u_check(GetUnitOwner(), GetUnitOwner(), radius, GetSpellInfo()->Effects[effIndex].Effect == SPELL_EFFECT_APPLY_AREA_AURA_RAID);
+                        Trinity::UnitListSearcher<Trinity::AnyGroupedPlayerInObjectRangeCheck> searcher(GetUnitOwner(), targetList, u_check);
                         GetUnitOwner()->VisitNearbyObject(radius, searcher);
                         break;
                     }
                     case SPELL_EFFECT_APPLY_AREA_AURA_FRIEND:
                     {
                         targetList.push_back(GetUnitOwner());
-                        JadeCore::AnyFriendlyUnitInObjectRangeCheck u_check(GetUnitOwner(), GetUnitOwner(), radius);
-                        JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(GetUnitOwner(), targetList, u_check);
+                        Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(GetUnitOwner(), GetUnitOwner(), radius);
+                        Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(GetUnitOwner(), targetList, u_check);
                         GetUnitOwner()->VisitNearbyObject(radius, searcher);
                         break;
                     }
                     case SPELL_EFFECT_APPLY_AREA_AURA_ENEMY:
                     {
-                        JadeCore::AnyAoETargetUnitInObjectRangeCheck u_check(GetUnitOwner(), (GetCaster() ? GetCaster() : GetUnitOwner()), radius); // No GetCharmer in searcher
-                        JadeCore::UnitListSearcher<JadeCore::AnyAoETargetUnitInObjectRangeCheck> searcher(GetUnitOwner(), targetList, u_check);
+                        Trinity::AnyAoETargetUnitInObjectRangeCheck u_check(GetUnitOwner(), (GetCaster() ? GetCaster() : GetUnitOwner()), radius); // No GetCharmer in searcher
+                        Trinity::UnitListSearcher<Trinity::AnyAoETargetUnitInObjectRangeCheck> searcher(GetUnitOwner(), targetList, u_check);
                         GetUnitOwner()->VisitNearbyObject(radius, searcher);
                         break;
                     }
@@ -3449,15 +3449,203 @@ void DynObjAura::FillTargetMap(std::map<Unit*, uint32> & targets, Unit* /*caster
         if (GetSpellInfo()->Effects[effIndex].TargetB.GetTarget() == TARGET_DEST_DYNOBJ_ALLY
             || GetSpellInfo()->Effects[effIndex].TargetB.GetTarget() == TARGET_UNIT_DEST_AREA_ALLY)
         {
-            JadeCore::AnyFriendlyUnitInObjectRangeCheck u_check(GetDynobjOwner(), dynObjOwnerCaster, radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(GetDynobjOwner(), targetList, u_check);
+            Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(GetDynobjOwner(), dynObjOwnerCaster, radius);
+            Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(GetDynobjOwner(), targetList, u_check);
             GetDynobjOwner()->VisitNearbyObject(radius, searcher);
         }
         else if (GetSpellInfo()->Effects[effIndex].Effect != SPELL_EFFECT_CREATE_AREATRIGGER)
         {
-            JadeCore::AnyAoETargetUnitInObjectRangeCheck u_check(GetDynobjOwner(), dynObjOwnerCaster, radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyAoETargetUnitInObjectRangeCheck> searcher(GetDynobjOwner(), targetList, u_check);
+            Trinity::AnyAoETargetUnitInObjectRangeCheck u_check(GetDynobjOwner(), dynObjOwnerCaster, radius);
+            Trinity::UnitListSearcher<Trinity::AnyAoETargetUnitInObjectRangeCheck> searcher(GetDynobjOwner(), targetList, u_check);
             GetDynobjOwner()->VisitNearbyObject(radius, searcher);
+        }
+        else
+        {
+            // Custom MoP Script
+            switch (GetSpellInfo()->Id)
+            {
+                case 121286: // Chi Sphere (Afterlife)
+                {
+                    std::list<Unit*> targetList;
+                    radius = 1.0f;
+
+                    Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(GetDynobjOwner(), dynObjOwnerCaster, radius);
+                    Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(GetDynobjOwner(), targetList, u_check);
+                    GetDynobjOwner()->VisitNearbyObject(radius, searcher);
+
+                    if (!targetList.empty())
+                    {
+                        for (auto itr : targetList)
+                        {
+                            if (itr->GetGUID() == dynObjOwnerCaster->GetGUID())
+                            {
+                                dynObjOwnerCaster->CastSpell(itr, 121283, true); // Restore 1 Chi
+                                GetDynobjOwner()->SetDuration(0);
+                                return;
+                            }
+                        }
+                    }
+
+                    break;
+                }
+                case 117032: // Healing Sphere (Afterlife)
+                {
+                    std::list<Unit*> targetList;
+                    radius = 1.0f;
+
+                    Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(GetDynobjOwner(), dynObjOwnerCaster, radius);
+                    Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(GetDynobjOwner(), targetList, u_check);
+                    GetDynobjOwner()->VisitNearbyObject(radius, searcher);
+
+                    if (!targetList.empty())
+                    {
+                        for (auto itr : targetList)
+                        {
+                            if (itr->GetGUID() == dynObjOwnerCaster->GetGUID())
+                            {
+                                dynObjOwnerCaster->CastSpell(itr, 125355, true); // Heal for 15% of life
+                                GetDynobjOwner()->SetDuration(0);
+                                return;
+                            }
+                        }
+                    }
+
+                    break;
+                }
+                case 121536: // Angelic Feather
+                {
+                    std::list<Unit*> targetList;
+                    radius = 1.0f;
+
+                    Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(GetDynobjOwner(), dynObjOwnerCaster, radius);
+                    Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(GetDynobjOwner(), targetList, u_check);
+                    GetDynobjOwner()->VisitNearbyObject(radius, searcher);
+
+                    if (!targetList.empty())
+                    {
+                        for (auto itr : targetList)
+                        {
+                            dynObjOwnerCaster->CastSpell(itr, 121557, true); // Angelic Feather increase speed
+                            GetDynobjOwner()->SetDuration(0);
+                            return;
+                        }
+                    }
+
+                    break;
+                }
+                case 115460: // Healing Sphere
+                {
+                    std::list<Unit*> targetList;
+                    radius = 1.0f;
+
+                    Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(GetDynobjOwner(), dynObjOwnerCaster, radius);
+                    Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(GetDynobjOwner(), targetList, u_check);
+                    GetDynobjOwner()->VisitNearbyObject(radius, searcher);
+
+                    if (!targetList.empty())
+                    {
+                        for (auto itr : targetList)
+                        {
+                            dynObjOwnerCaster->CastSpell(itr, 115464, true); // Healing Sphere heal
+                            GetDynobjOwner()->SetDuration(0);
+                            return;
+                        }
+                    }
+
+                    break;
+                }
+                case 119031: // Gift of the Serpent (Mastery)
+                {
+                    std::list<Unit*> targetList;
+                    radius = 1.0f;
+
+                    Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(GetDynobjOwner(), dynObjOwnerCaster, radius);
+                    Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(GetDynobjOwner(), targetList, u_check);
+                    GetDynobjOwner()->VisitNearbyObject(radius, searcher);
+
+                    if (!targetList.empty())
+                    {
+                        for (auto itr : targetList)
+                        {
+                            dynObjOwnerCaster->CastSpell(itr, 124041, true); // Gift of the Serpent heal
+                            GetDynobjOwner()->SetDuration(0);
+                            return;
+                        }
+                    }
+
+                    break;
+                }
+                case 122035: // Path of Blossom
+                {
+                    std::list<Unit*> targetList;
+                    radius = 1.0f;
+
+                    Trinity::NearestAttackableUnitInObjectRangeCheck u_check(GetDynobjOwner(), dynObjOwnerCaster, radius);
+                    Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> searcher(GetDynobjOwner(), targetList, u_check);
+                    GetDynobjOwner()->VisitNearbyObject(radius, searcher);
+
+                    if (!targetList.empty())
+                    {
+                        for (auto itr : targetList)
+                        {
+                            dynObjOwnerCaster->CastSpell(itr, 122036, true); // Path of Blossom damage
+                            GetDynobjOwner()->SetDuration(0);
+                            return;
+                        }
+                    }
+
+                    break;
+                }
+                case 116011: // Rune of Power
+                {
+                    std::list<Unit*> targetList;
+                    bool affected = false;
+                    radius = 2.25f;
+
+                    Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(GetDynobjOwner(), dynObjOwnerCaster, radius);
+                    Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(GetDynobjOwner(), targetList, u_check);
+                    GetDynobjOwner()->VisitNearbyObject(radius, searcher);
+
+                    if (!targetList.empty())
+                    {
+                        for (auto itr : targetList)
+                        {
+                            if (itr->GetGUID() == dynObjOwnerCaster->GetGUID())
+                            {
+                                dynObjOwnerCaster->CastSpell(itr, 116014, true); // Rune of Power
+                                affected = true;
+
+                                if (dynObjOwnerCaster->ToPlayer())
+                                    dynObjOwnerCaster->ToPlayer()->UpdateManaRegen();
+
+                                return;
+                            }
+                        }
+                    }
+
+                    if (!affected)
+                        dynObjOwnerCaster->RemoveAura(116014);
+
+                    break;
+                }
+                case 115817: // Cancel Barrier
+                {
+                    std::list<Unit*> targetList;
+                    radius = 6.0f;
+
+                    Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(GetDynobjOwner(), dynObjOwnerCaster, radius);
+                    Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(GetDynobjOwner(), targetList, u_check);
+                    GetDynobjOwner()->VisitNearbyObject(radius, searcher);
+
+                    if (!targetList.empty())
+                        for (auto itr : targetList)
+                            itr->CastSpell(itr, 115856, true);
+
+                    break;
+                }
+                default:
+                    break;
+            }
         }
 
         for (UnitList::iterator itr = targetList.begin(); itr!= targetList.end();++itr)

@@ -2222,8 +2222,8 @@ void WorldObject::GetRandomPoint(const Position &pos, float distance, float &ran
     rand_y = pos.m_positionY + new_dist * std::sin(angle);
     rand_z = pos.m_positionZ;
 
-    JadeCore::NormalizeMapCoord(rand_x);
-    JadeCore::NormalizeMapCoord(rand_y);
+    Trinity::NormalizeMapCoord(rand_x);
+    Trinity::NormalizeMapCoord(rand_y);
     UpdateGroundPositionZ(rand_x, rand_y, rand_z);            // update to LOS height if available
 }
 
@@ -2300,7 +2300,7 @@ void WorldObject::UpdateAllowedPositionZ(float x, float y, float &z) const
 
 bool Position::IsPositionValid() const
 {
-    return JadeCore::IsValidMapCoord(m_positionX, m_positionY, m_positionZ, m_orientation);
+    return Trinity::IsValidMapCoord(m_positionX, m_positionY, m_positionZ, m_orientation);
 }
 
 float WorldObject::GetGridActivationRange() const
@@ -2614,7 +2614,7 @@ void Object::ForceValuesUpdateAtIndex(uint32 i)
     }
 }
 
-namespace JadeCore
+namespace Trinity
 {
     class MonsterChatBuilder
     {
@@ -2655,68 +2655,68 @@ namespace JadeCore
             uint32 i_language;
             uint64 i_targetGUID;
     };
-}                                                           // namespace JadeCore
+}                                                           // namespace Trinity
 
 void WorldObject::MonsterSay(const char* text, uint32 language, uint64 TargetGuid)
 {
-    CellCoord p = JadeCore::ComputeCellCoord(GetPositionX(), GetPositionY());
+    CellCoord p = Trinity::ComputeCellCoord(GetPositionX(), GetPositionY());
 
     Cell cell(p);
     cell.SetNoCreate();
 
-    JadeCore::MonsterCustomChatBuilder say_build(*this, CHAT_MSG_MONSTER_SAY, text, language, TargetGuid);
-    JadeCore::LocalizedPacketDo<JadeCore::MonsterCustomChatBuilder> say_do(say_build);
-    JadeCore::PlayerDistWorker<JadeCore::LocalizedPacketDo<JadeCore::MonsterCustomChatBuilder> > say_worker(this, sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_SAY), say_do);
-    TypeContainerVisitor<JadeCore::PlayerDistWorker<JadeCore::LocalizedPacketDo<JadeCore::MonsterCustomChatBuilder> >, WorldTypeMapContainer > message(say_worker);
+    Trinity::MonsterCustomChatBuilder say_build(*this, CHAT_MSG_MONSTER_SAY, text, language, TargetGuid);
+    Trinity::LocalizedPacketDo<Trinity::MonsterCustomChatBuilder> say_do(say_build);
+    Trinity::PlayerDistWorker<Trinity::LocalizedPacketDo<Trinity::MonsterCustomChatBuilder> > say_worker(this, sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_SAY), say_do);
+    TypeContainerVisitor<Trinity::PlayerDistWorker<Trinity::LocalizedPacketDo<Trinity::MonsterCustomChatBuilder> >, WorldTypeMapContainer > message(say_worker);
     cell.Visit(p, message, *GetMap(), *this, sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_SAY));
 }
 
 void WorldObject::MonsterSay(int32 textId, uint32 language, uint64 TargetGuid)
 {
-    CellCoord p = JadeCore::ComputeCellCoord(GetPositionX(), GetPositionY());
+    CellCoord p = Trinity::ComputeCellCoord(GetPositionX(), GetPositionY());
 
     Cell cell(p);
     cell.SetNoCreate();
 
-    JadeCore::MonsterChatBuilder say_build(*this, CHAT_MSG_MONSTER_SAY, textId, language, TargetGuid);
-    JadeCore::LocalizedPacketDo<JadeCore::MonsterChatBuilder> say_do(say_build);
-    JadeCore::PlayerDistWorker<JadeCore::LocalizedPacketDo<JadeCore::MonsterChatBuilder> > say_worker(this, sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_SAY), say_do);
-    TypeContainerVisitor<JadeCore::PlayerDistWorker<JadeCore::LocalizedPacketDo<JadeCore::MonsterChatBuilder> >, WorldTypeMapContainer > message(say_worker);
+    Trinity::MonsterChatBuilder say_build(*this, CHAT_MSG_MONSTER_SAY, textId, language, TargetGuid);
+    Trinity::LocalizedPacketDo<Trinity::MonsterChatBuilder> say_do(say_build);
+    Trinity::PlayerDistWorker<Trinity::LocalizedPacketDo<Trinity::MonsterChatBuilder> > say_worker(this, sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_SAY), say_do);
+    TypeContainerVisitor<Trinity::PlayerDistWorker<Trinity::LocalizedPacketDo<Trinity::MonsterChatBuilder> >, WorldTypeMapContainer > message(say_worker);
     cell.Visit(p, message, *GetMap(), *this, sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_SAY));
 }
 
 void WorldObject::MonsterYell(const char* text, uint32 language, uint64 TargetGuid)
 {
-    CellCoord p = JadeCore::ComputeCellCoord(GetPositionX(), GetPositionY());
+    CellCoord p = Trinity::ComputeCellCoord(GetPositionX(), GetPositionY());
 
     Cell cell(p);
     cell.SetNoCreate();
 
-    JadeCore::MonsterCustomChatBuilder say_build(*this, CHAT_MSG_MONSTER_YELL, text, language, TargetGuid);
-    JadeCore::LocalizedPacketDo<JadeCore::MonsterCustomChatBuilder> say_do(say_build);
-    JadeCore::PlayerDistWorker<JadeCore::LocalizedPacketDo<JadeCore::MonsterCustomChatBuilder> > say_worker(this, sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_YELL), say_do);
-    TypeContainerVisitor<JadeCore::PlayerDistWorker<JadeCore::LocalizedPacketDo<JadeCore::MonsterCustomChatBuilder> >, WorldTypeMapContainer > message(say_worker);
+    Trinity::MonsterCustomChatBuilder say_build(*this, CHAT_MSG_MONSTER_YELL, text, language, TargetGuid);
+    Trinity::LocalizedPacketDo<Trinity::MonsterCustomChatBuilder> say_do(say_build);
+    Trinity::PlayerDistWorker<Trinity::LocalizedPacketDo<Trinity::MonsterCustomChatBuilder> > say_worker(this, sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_YELL), say_do);
+    TypeContainerVisitor<Trinity::PlayerDistWorker<Trinity::LocalizedPacketDo<Trinity::MonsterCustomChatBuilder> >, WorldTypeMapContainer > message(say_worker);
     cell.Visit(p, message, *GetMap(), *this, sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_YELL));
 }
 
 void WorldObject::MonsterYell(int32 textId, uint32 language, uint64 TargetGuid)
 {
-    CellCoord p = JadeCore::ComputeCellCoord(GetPositionX(), GetPositionY());
+    CellCoord p = Trinity::ComputeCellCoord(GetPositionX(), GetPositionY());
 
     Cell cell(p);
     cell.SetNoCreate();
 
-    JadeCore::MonsterChatBuilder say_build(*this, CHAT_MSG_MONSTER_YELL, textId, language, TargetGuid);
-    JadeCore::LocalizedPacketDo<JadeCore::MonsterChatBuilder> say_do(say_build);
-    JadeCore::PlayerDistWorker<JadeCore::LocalizedPacketDo<JadeCore::MonsterChatBuilder> > say_worker(this, sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_YELL), say_do);
-    TypeContainerVisitor<JadeCore::PlayerDistWorker<JadeCore::LocalizedPacketDo<JadeCore::MonsterChatBuilder> >, WorldTypeMapContainer > message(say_worker);
+    Trinity::MonsterChatBuilder say_build(*this, CHAT_MSG_MONSTER_YELL, textId, language, TargetGuid);
+    Trinity::LocalizedPacketDo<Trinity::MonsterChatBuilder> say_do(say_build);
+    Trinity::PlayerDistWorker<Trinity::LocalizedPacketDo<Trinity::MonsterChatBuilder> > say_worker(this, sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_YELL), say_do);
+    TypeContainerVisitor<Trinity::PlayerDistWorker<Trinity::LocalizedPacketDo<Trinity::MonsterChatBuilder> >, WorldTypeMapContainer > message(say_worker);
     cell.Visit(p, message, *GetMap(), *this, sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_YELL));
 }
 
 void WorldObject::MonsterYellToZone(int32 textId, uint32 language, uint64 TargetGuid)
 {
-    JadeCore::MonsterChatBuilder say_build(*this, CHAT_MSG_MONSTER_YELL, textId, language, TargetGuid);
-    JadeCore::LocalizedPacketDo<JadeCore::MonsterChatBuilder> say_do(say_build);
+    Trinity::MonsterChatBuilder say_build(*this, CHAT_MSG_MONSTER_YELL, textId, language, TargetGuid);
+    Trinity::LocalizedPacketDo<Trinity::MonsterChatBuilder> say_do(say_build);
 
     uint32 zoneid = GetZoneId();
 
@@ -2735,15 +2735,15 @@ void WorldObject::MonsterTextEmote(const char* text, uint64 TargetGuid, bool IsB
 
 void WorldObject::MonsterTextEmote(int32 textId, uint64 TargetGuid, bool IsBossEmote)
 {
-    CellCoord p = JadeCore::ComputeCellCoord(GetPositionX(), GetPositionY());
+    CellCoord p = Trinity::ComputeCellCoord(GetPositionX(), GetPositionY());
 
     Cell cell(p);
     cell.SetNoCreate();
 
-    JadeCore::MonsterChatBuilder say_build(*this, IsBossEmote ? CHAT_MSG_RAID_BOSS_EMOTE : CHAT_MSG_MONSTER_EMOTE, textId, LANG_UNIVERSAL, TargetGuid);
-    JadeCore::LocalizedPacketDo<JadeCore::MonsterChatBuilder> say_do(say_build);
-    JadeCore::PlayerDistWorker<JadeCore::LocalizedPacketDo<JadeCore::MonsterChatBuilder> > say_worker(this, sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_TEXTEMOTE), say_do);
-    TypeContainerVisitor<JadeCore::PlayerDistWorker<JadeCore::LocalizedPacketDo<JadeCore::MonsterChatBuilder> >, WorldTypeMapContainer > message(say_worker);
+    Trinity::MonsterChatBuilder say_build(*this, IsBossEmote ? CHAT_MSG_RAID_BOSS_EMOTE : CHAT_MSG_MONSTER_EMOTE, textId, LANG_UNIVERSAL, TargetGuid);
+    Trinity::LocalizedPacketDo<Trinity::MonsterChatBuilder> say_do(say_build);
+    Trinity::PlayerDistWorker<Trinity::LocalizedPacketDo<Trinity::MonsterChatBuilder> > say_worker(this, sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_TEXTEMOTE), say_do);
+    TypeContainerVisitor<Trinity::PlayerDistWorker<Trinity::LocalizedPacketDo<Trinity::MonsterChatBuilder> >, WorldTypeMapContainer > message(say_worker);
     cell.Visit(p, message, *GetMap(), *this, sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_TEXTEMOTE));
 }
 
@@ -2828,7 +2828,7 @@ void WorldObject::SendMessageToSetInRange(WorldPacket* data, float dist, bool /*
             return;
 
 #endif /* CROSS */
-    JadeCore::MessageDistDeliverer notifier(this, data, dist, false, nullptr, p_IgnoredList);
+    Trinity::MessageDistDeliverer notifier(this, data, dist, false, nullptr, p_IgnoredList);
     VisitNearbyWorldObject(dist, notifier);
 }
 
@@ -2840,7 +2840,7 @@ void WorldObject::SendMessageToSet(WorldPacket* data, Player const* skipped_rcvr
             return;
     
 #endif /* CROSS */
-    JadeCore::MessageDistDeliverer notifier(this, data, GetVisibilityRange(), false, skipped_rcvr, p_IgnoredList);
+    Trinity::MessageDistDeliverer notifier(this, data, GetVisibilityRange(), false, skipped_rcvr, p_IgnoredList);
     VisitNearbyWorldObject(GetVisibilityRange(), notifier);
 }
 
@@ -3429,8 +3429,8 @@ void WorldObject::SummonCreatureGroup(uint8 group, std::list<TempSummon*>& list)
 Creature* WorldObject::FindNearestCreature(uint32 entry, float range, bool alive) const
 {
     Creature* creature = NULL;
-    JadeCore::NearestCreatureEntryWithLiveStateInObjectRangeCheck checker(*this, entry, alive, range);
-    JadeCore::CreatureLastSearcher<JadeCore::NearestCreatureEntryWithLiveStateInObjectRangeCheck> searcher(this, creature, checker);
+    Trinity::NearestCreatureEntryWithLiveStateInObjectRangeCheck checker(*this, entry, alive, range);
+    Trinity::CreatureLastSearcher<Trinity::NearestCreatureEntryWithLiveStateInObjectRangeCheck> searcher(this, creature, checker);
     VisitNearbyObject(range, searcher);
     return creature;
 }
@@ -3438,8 +3438,8 @@ Creature* WorldObject::FindNearestCreature(uint32 entry, float range, bool alive
 GameObject* WorldObject::FindNearestGameObject(uint32 entry, float range) const
 {
     GameObject* go = NULL;
-    JadeCore::NearestGameObjectEntryInObjectRangeCheck checker(*this, entry, range);
-    JadeCore::GameObjectLastSearcher<JadeCore::NearestGameObjectEntryInObjectRangeCheck> searcher(this, go, checker);
+    Trinity::NearestGameObjectEntryInObjectRangeCheck checker(*this, entry, range);
+    Trinity::GameObjectLastSearcher<Trinity::NearestGameObjectEntryInObjectRangeCheck> searcher(this, go, checker);
     VisitNearbyGridObject(range, searcher);
     return go;
 }
@@ -3448,8 +3448,8 @@ GameObject* WorldObject::FindNearestGameObject(float p_Range) const
 {
     GameObject* l_GameObject = nullptr;
 
-    JadeCore::NearestGameObjectInObjectRangeCheck l_Checker(*this, p_Range);
-    JadeCore::GameObjectLastSearcher<JadeCore::NearestGameObjectInObjectRangeCheck> l_Searcher(this, l_GameObject, l_Checker);
+    Trinity::NearestGameObjectInObjectRangeCheck l_Checker(*this, p_Range);
+    Trinity::GameObjectLastSearcher<Trinity::NearestGameObjectInObjectRangeCheck> l_Searcher(this, l_GameObject, l_Checker);
     VisitNearbyGridObject(p_Range, l_Searcher);
 
     return l_GameObject;
@@ -3458,8 +3458,8 @@ GameObject* WorldObject::FindNearestGameObject(float p_Range) const
 GameObject* WorldObject::FindNearestGameObjectOfType(GameobjectTypes type, float range) const
 {
     GameObject* go = NULL;
-    JadeCore::NearestGameObjectTypeInObjectRangeCheck checker(*this, type, range);
-    JadeCore::GameObjectLastSearcher<JadeCore::NearestGameObjectTypeInObjectRangeCheck> searcher(this, go, checker);
+    Trinity::NearestGameObjectTypeInObjectRangeCheck checker(*this, type, range);
+    Trinity::GameObjectLastSearcher<Trinity::NearestGameObjectTypeInObjectRangeCheck> searcher(this, go, checker);
     VisitNearbyGridObject(range, searcher);
     return go;
 }
@@ -3467,8 +3467,8 @@ GameObject* WorldObject::FindNearestGameObjectOfType(GameobjectTypes type, float
 Player* WorldObject::FindNearestPlayer(float range, bool alive)
 {
     Player* player = NULL;
-    JadeCore::AnyPlayerInObjectRangeCheck check(this, range, alive);
-    JadeCore::PlayerSearcher<JadeCore::AnyPlayerInObjectRangeCheck> searcher(this, player, check);
+    Trinity::AnyPlayerInObjectRangeCheck check(this, range, alive);
+    Trinity::PlayerSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(this, player, check);
     VisitNearbyWorldObject(range, searcher);
     return player;
 }
@@ -3476,55 +3476,55 @@ Player* WorldObject::FindNearestPlayer(float range, bool alive)
 AreaTrigger* WorldObject::FindNearestAreaTrigger(uint32 p_SpellID, float p_Range) const
 {
     AreaTrigger* l_AreaTrigger = nullptr;
-    JadeCore::NearestAreaTriggerWithIDInObjectRangeCheck l_Check(*this, p_SpellID, p_Range);
-    JadeCore::AreaTriggerSearcher<JadeCore::NearestAreaTriggerWithIDInObjectRangeCheck>l_Searcher(this, l_AreaTrigger, l_Check);
+    Trinity::NearestAreaTriggerWithIDInObjectRangeCheck l_Check(*this, p_SpellID, p_Range);
+    Trinity::AreaTriggerSearcher<Trinity::NearestAreaTriggerWithIDInObjectRangeCheck>l_Searcher(this, l_AreaTrigger, l_Check);
     VisitNearbyObject(p_Range, l_Searcher);
     return l_AreaTrigger;
 }
 
 void WorldObject::GetGameObjectListWithEntryInGrid(std::list<GameObject*>& gameobjectList, uint32 entry, float maxSearchRange) const
 {
-    CellCoord pair(JadeCore::ComputeCellCoord(this->GetPositionX(), this->GetPositionY()));
+    CellCoord pair(Trinity::ComputeCellCoord(this->GetPositionX(), this->GetPositionY()));
     Cell cell(pair);
     cell.SetNoCreate();
 
-    JadeCore::AllGameObjectsWithEntryInRange check(this, entry, maxSearchRange);
-    JadeCore::GameObjectListSearcher<JadeCore::AllGameObjectsWithEntryInRange> searcher(this, gameobjectList, check);
-    TypeContainerVisitor<JadeCore::GameObjectListSearcher<JadeCore::AllGameObjectsWithEntryInRange>, GridTypeMapContainer> visitor(searcher);
+    Trinity::AllGameObjectsWithEntryInRange check(this, entry, maxSearchRange);
+    Trinity::GameObjectListSearcher<Trinity::AllGameObjectsWithEntryInRange> searcher(this, gameobjectList, check);
+    TypeContainerVisitor<Trinity::GameObjectListSearcher<Trinity::AllGameObjectsWithEntryInRange>, GridTypeMapContainer> visitor(searcher);
 
     cell.Visit(pair, visitor, *(this->GetMap()), *this, maxSearchRange);
 }
 
 void WorldObject::GetCreatureListWithEntryInGrid(std::list<Creature*>& creatureList, uint32 entry, float maxSearchRange) const
 {
-    CellCoord pair(JadeCore::ComputeCellCoord(this->GetPositionX(), this->GetPositionY()));
+    CellCoord pair(Trinity::ComputeCellCoord(this->GetPositionX(), this->GetPositionY()));
     Cell cell(pair);
     cell.SetNoCreate();
 
-    JadeCore::AllCreaturesOfEntryInRange check(this, entry, maxSearchRange);
-    JadeCore::CreatureListSearcher<JadeCore::AllCreaturesOfEntryInRange> searcher(this, creatureList, check);
-    TypeContainerVisitor<JadeCore::CreatureListSearcher<JadeCore::AllCreaturesOfEntryInRange>, GridTypeMapContainer> visitor(searcher);
+    Trinity::AllCreaturesOfEntryInRange check(this, entry, maxSearchRange);
+    Trinity::CreatureListSearcher<Trinity::AllCreaturesOfEntryInRange> searcher(this, creatureList, check);
+    TypeContainerVisitor<Trinity::CreatureListSearcher<Trinity::AllCreaturesOfEntryInRange>, GridTypeMapContainer> visitor(searcher);
 
     cell.Visit(pair, visitor, *(this->GetMap()), *this, maxSearchRange);
 }
 
 void WorldObject::GetCreatureListInGrid(std::list<Creature*>& creatureList, float maxSearchRange) const
 {
-    CellCoord pair(JadeCore::ComputeCellCoord(this->GetPositionX(), this->GetPositionY()));
+    CellCoord pair(Trinity::ComputeCellCoord(this->GetPositionX(), this->GetPositionY()));
     Cell cell(pair);
     cell.SetNoCreate();
 
-    JadeCore::AllCreaturesInRange check(this, maxSearchRange);
-    JadeCore::CreatureListSearcher<JadeCore::AllCreaturesInRange> searcher(this, creatureList, check);
-    TypeContainerVisitor<JadeCore::CreatureListSearcher<JadeCore::AllCreaturesInRange>, GridTypeMapContainer> visitor(searcher);
+    Trinity::AllCreaturesInRange check(this, maxSearchRange);
+    Trinity::CreatureListSearcher<Trinity::AllCreaturesInRange> searcher(this, creatureList, check);
+    TypeContainerVisitor<Trinity::CreatureListSearcher<Trinity::AllCreaturesInRange>, GridTypeMapContainer> visitor(searcher);
 
     cell.Visit(pair, visitor, *(this->GetMap()), *this, maxSearchRange);
 }
 
 void WorldObject::GetPlayerListInGrid(std::list<Player*>& playerList, float maxSearchRange, bool p_Self /*= false*/) const
 {
-    JadeCore::AnyPlayerInObjectRangeCheck checker(this, maxSearchRange, true, p_Self);
-    JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> searcher(this, playerList, checker);
+    Trinity::AnyPlayerInObjectRangeCheck checker(this, maxSearchRange, true, p_Self);
+    Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(this, playerList, checker);
     VisitNearbyWorldObject(maxSearchRange, searcher);
 }
 
@@ -3553,13 +3553,13 @@ std::list<Creature*> WorldObject::FindAllCreaturesInRange(float range)
 	float x, y, z;
 	this->GetPosition(x, y, z);
 
-	CellCoord pair(JadeCore::ComputeCellCoord(x, y));
+	CellCoord pair(Trinity::ComputeCellCoord(x, y));
 	Cell cell(pair);
 	cell.SetNoCreate();
 
-	JadeCore::AllCreaturesInRange check(this, 100);
-	JadeCore::CreatureListSearcher<JadeCore::AllCreaturesInRange> searcher(this, templist, check);
-	TypeContainerVisitor<JadeCore::CreatureListSearcher<JadeCore::AllCreaturesInRange>, GridTypeMapContainer> cSearcher(searcher);
+	Trinity::AllCreaturesInRange check(this, 100);
+	Trinity::CreatureListSearcher<Trinity::AllCreaturesInRange> searcher(this, templist, check);
+	TypeContainerVisitor<Trinity::CreatureListSearcher<Trinity::AllCreaturesInRange>, GridTypeMapContainer> cSearcher(searcher);
 	cell.Visit(pair, cSearcher, *(this->GetMap()), *this, this->GetGridActivationRange());
 
 	return templist;
@@ -3573,13 +3573,13 @@ std::list<Creature*> WorldObject::FindAllFriendlyCreaturesInRange(float range)
 		float x, y, z;
 		unit->GetPosition(x, y, z);
 
-		CellCoord pair(JadeCore::ComputeCellCoord(x, y));
+		CellCoord pair(Trinity::ComputeCellCoord(x, y));
 		Cell cell(pair);
 		cell.SetNoCreate();
 
-		JadeCore::AllFriendlyCreaturesInRange check(unit, 100);
-		JadeCore::CreatureListSearcher<JadeCore::AllFriendlyCreaturesInRange> searcher(unit, templist, check);
-		TypeContainerVisitor<JadeCore::CreatureListSearcher<JadeCore::AllFriendlyCreaturesInRange>, GridTypeMapContainer> cSearcher(searcher);
+		Trinity::AllFriendlyCreaturesInRange check(unit, 100);
+		Trinity::CreatureListSearcher<Trinity::AllFriendlyCreaturesInRange> searcher(unit, templist, check);
+		TypeContainerVisitor<Trinity::CreatureListSearcher<Trinity::AllFriendlyCreaturesInRange>, GridTypeMapContainer> cSearcher(searcher);
 		cell.Visit(pair, cSearcher, *(unit->GetMap()), *unit, unit->GetGridActivationRange());
 	}
 	return templist;
@@ -3593,20 +3593,20 @@ std::list<Creature*> WorldObject::FindAllUnfriendlyCreaturesInRange(float range)
 		float x, y, z;
 		unit->GetPosition(x, y, z);
 
-		CellCoord pair(JadeCore::ComputeCellCoord(x, y));
+		CellCoord pair(Trinity::ComputeCellCoord(x, y));
 		Cell cell(pair);
 		cell.SetNoCreate();
 
-		JadeCore::AllUnfriendlyCreaturesInRange check(unit, 100);
-		JadeCore::CreatureListSearcher<JadeCore::AllUnfriendlyCreaturesInRange> searcher(unit, templist, check);
-		TypeContainerVisitor<JadeCore::CreatureListSearcher<JadeCore::AllUnfriendlyCreaturesInRange>, GridTypeMapContainer> cSearcher(searcher);
+		Trinity::AllUnfriendlyCreaturesInRange check(unit, 100);
+		Trinity::CreatureListSearcher<Trinity::AllUnfriendlyCreaturesInRange> searcher(unit, templist, check);
+		TypeContainerVisitor<Trinity::CreatureListSearcher<Trinity::AllUnfriendlyCreaturesInRange>, GridTypeMapContainer> cSearcher(searcher);
 		cell.Visit(pair, cSearcher, *(unit->GetMap()), *unit, unit->GetGridActivationRange());
 	}
 	return templist;
 }
 
 /*
-namespace JadeCore
+namespace Trinity
 {
     class NearUsedPosDo
     {
@@ -3675,7 +3675,7 @@ namespace JadeCore
             float              i_angle;
             ObjectPosSelector& i_selector;
     };
-}                                                           // namespace JadeCore
+}                                                           // namespace Trinity
 */
 
 //===================================================================================================
@@ -3685,8 +3685,8 @@ void WorldObject::GetNearPoint2D(float &x, float &y, float distance2d, float abs
     x = GetPositionX() + (GetObjectSize() + distance2d) * std::cos(absAngle);
     y = GetPositionY() + (GetObjectSize() + distance2d) * std::sin(absAngle);
 
-    JadeCore::NormalizeMapCoord(x);
-    JadeCore::NormalizeMapCoord(y);
+    Trinity::NormalizeMapCoord(x);
+    Trinity::NormalizeMapCoord(y);
 }
 
 void WorldObject::GetNearPoint(WorldObject const* /*p_Searcher*/, float &p_InOutX, float &p_InOutY, float &p_InOutZ, float p_SearcherSize, float p_Distance2D, float p_AbsAngle) const
@@ -3777,7 +3777,7 @@ void WorldObject::MovePosition(Position &pos, float dist, float angle)
     desty = pos.m_positionY + dist * std::sin(angle);
 
     // Prevent invalid coordinates here, position is unchanged
-    if (!JadeCore::IsValidMapCoord(destx, desty, pos.m_positionZ))
+    if (!Trinity::IsValidMapCoord(destx, desty, pos.m_positionZ))
     {
         sLog->outFatal(LOG_FILTER_GENERAL, "WorldObject::MovePosition invalid coordinates X: %f and Y: %f were passed!", destx, desty);
         return;
@@ -3808,8 +3808,8 @@ void WorldObject::MovePosition(Position &pos, float dist, float angle)
         }
     }
 
-    JadeCore::NormalizeMapCoord(pos.m_positionX);
-    JadeCore::NormalizeMapCoord(pos.m_positionY);
+    Trinity::NormalizeMapCoord(pos.m_positionX);
+    Trinity::NormalizeMapCoord(pos.m_positionY);
     UpdateGroundPositionZ(pos.m_positionX, pos.m_positionY, pos.m_positionZ);
     pos.SetOrientation(GetOrientation());
 }
@@ -3824,7 +3824,7 @@ void WorldObject::MovePositionToFirstCollision(Position &pos, float dist, float 
     desty = pos.m_positionY + dist * std::sin(angle);
 
     // Prevent invalid coordinates here, position is unchanged
-    if (!JadeCore::IsValidMapCoord(destx, desty))
+    if (!Trinity::IsValidMapCoord(destx, desty))
     {
         sLog->outFatal(LOG_FILTER_GENERAL, "WorldObject::MovePositionToFirstCollision invalid coordinates X: %f and Y: %f were passed!", destx, desty);
         return;
@@ -3888,8 +3888,8 @@ void WorldObject::MovePositionToFirstCollision(Position &pos, float dist, float 
         }
     }
 
-    JadeCore::NormalizeMapCoord(pos.m_positionX);
-    JadeCore::NormalizeMapCoord(pos.m_positionY);
+    Trinity::NormalizeMapCoord(pos.m_positionX);
+    Trinity::NormalizeMapCoord(pos.m_positionY);
     UpdateAllowedPositionZ(pos.m_positionX, pos.m_positionY, pos.m_positionZ);
     pos.SetOrientation(GetOrientation());
 
@@ -3910,7 +3910,7 @@ void WorldObject::MovePositionToCollisionBetween(Position &pos, float distMin, f
     desty = pos.m_positionY + distMax * std::sin(angle);
 
     // Prevent invalid coordinates here, position is unchanged
-    if (!JadeCore::IsValidMapCoord(destx, desty))
+    if (!Trinity::IsValidMapCoord(destx, desty))
     {
         sLog->outFatal(LOG_FILTER_GENERAL, "WorldObject::MovePositionToFirstCollision invalid coordinates X: %f and Y: %f were passed!", destx, desty);
         return;
@@ -3963,8 +3963,8 @@ void WorldObject::MovePositionToCollisionBetween(Position &pos, float distMin, f
         }
     }
 
-    JadeCore::NormalizeMapCoord(pos.m_positionX);
-    JadeCore::NormalizeMapCoord(pos.m_positionY);
+    Trinity::NormalizeMapCoord(pos.m_positionX);
+    Trinity::NormalizeMapCoord(pos.m_positionY);
     UpdateAllowedPositionZ(pos.m_positionX, pos.m_positionY, pos.m_positionZ);
     pos.SetOrientation(GetOrientation());
 }
@@ -4015,8 +4015,8 @@ void WorldObject::DestroyForNearbyPlayers()
         return;
 
     std::list<Player*> targets;
-    JadeCore::AnyPlayerInObjectRangeCheck check(this, GetVisibilityRange(), false);
-    JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> searcher(this, targets, check);
+    Trinity::AnyPlayerInObjectRangeCheck check(this, GetVisibilityRange(), false);
+    Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(this, targets, check);
     VisitNearbyWorldObject(GetVisibilityRange(), searcher);
     for (std::list<Player*>::const_iterator iter = targets.begin(); iter != targets.end(); ++iter)
     {
@@ -4040,7 +4040,7 @@ void WorldObject::DestroyForNearbyPlayers()
 void WorldObject::UpdateObjectVisibility(bool /*forced*/)
 {
     //updates object's visibility for nearby players
-    JadeCore::VisibleChangesNotifier notifier(*this);
+    Trinity::VisibleChangesNotifier notifier(*this);
     VisitNearbyWorldObject(GetVisibilityRange(), notifier);
 }
 
@@ -4124,7 +4124,7 @@ void WorldObject::BuildUpdate(UpdateDataMapType& data_map)
     }
     else
     {
-        CellCoord p = JadeCore::ComputeCellCoord(GetPositionX(), GetPositionY());
+        CellCoord p = Trinity::ComputeCellCoord(GetPositionX(), GetPositionY());
         Cell cell(p);
         cell.SetNoCreate();
         WorldObjectChangeAccumulator notifier(*this, data_map);

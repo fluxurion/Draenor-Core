@@ -1173,9 +1173,9 @@ void Spell::SelectImplicitConeTargets(SpellEffIndex p_EffIndex, SpellImplicitTar
 
     if (uint32 l_ContainerTypeMask = GetSearcherTypeMask(l_ObjectType, l_ConditionsList))
     {
-        JadeCore::WorldObjectSpellConeTargetCheck l_Check(l_ConeAngle, l_Radius, m_caster, m_spellInfo, l_SelectionType, l_ConditionsList);
-        JadeCore::WorldObjectListSearcher<JadeCore::WorldObjectSpellConeTargetCheck> l_Searcher(m_caster, l_Targets, l_Check, l_ContainerTypeMask);
-        SearchTargets<JadeCore::WorldObjectListSearcher<JadeCore::WorldObjectSpellConeTargetCheck> >(l_Searcher, l_ContainerTypeMask, m_caster, m_caster, l_Radius);
+        Trinity::WorldObjectSpellConeTargetCheck l_Check(l_ConeAngle, l_Radius, m_caster, m_spellInfo, l_SelectionType, l_ConditionsList);
+        Trinity::WorldObjectListSearcher<Trinity::WorldObjectSpellConeTargetCheck> l_Searcher(m_caster, l_Targets, l_Check, l_ContainerTypeMask);
+        SearchTargets<Trinity::WorldObjectListSearcher<Trinity::WorldObjectSpellConeTargetCheck> >(l_Searcher, l_ContainerTypeMask, m_caster, m_caster, l_Radius);
 
         CallScriptObjectAreaTargetSelectHandlers(l_Targets, p_EffIndex);
 
@@ -1183,7 +1183,7 @@ void Spell::SelectImplicitConeTargets(SpellEffIndex p_EffIndex, SpellImplicitTar
         {
             // Other special target selection goes here
             if (uint32 l_MaxTargets = m_spellValue->MaxAffectedTargets)
-                JadeCore::Containers::RandomResizeList(l_Targets, l_MaxTargets);
+                Trinity::Containers::RandomResizeList(l_Targets, l_MaxTargets);
 
             // for compability with older code - add only unit and go targets
             // TODO: remove this
@@ -1208,7 +1208,7 @@ void Spell::SelectImplicitConeTargets(SpellEffIndex p_EffIndex, SpellImplicitTar
                 l_UnitTargets.push_back(m_caster);
                 if (l_UnitTargets.size() > l_MaxSize)
                 {
-                    l_UnitTargets.sort(JadeCore::HealthPctOrderPred());
+                    l_UnitTargets.sort(Trinity::HealthPctOrderPred());
                     l_UnitTargets.resize(l_MaxSize);
                 }
             }
@@ -1484,7 +1484,7 @@ void Spell::SelectImplicitAreaTargets(SpellEffIndex p_EffIndex, SpellImplicitTar
                             }
                             else
                             {
-                                l_UnitTargets.sort(JadeCore::WorldObjectDistanceCompareOrderPred(m_caster));
+                                l_UnitTargets.sort(Trinity::WorldObjectDistanceCompareOrderPred(m_caster));
                                 Unit* l_Victim = (*l_UnitTargets.begin())->ToUnit();
 
                                 if (l_Victim)
@@ -1582,7 +1582,7 @@ void Spell::SelectImplicitAreaTargets(SpellEffIndex p_EffIndex, SpellImplicitTar
             {
                 if (l_UnitTargets.size() > l_MaxSize)
                 {
-                    l_UnitTargets.sort(JadeCore::HealthPctOrderPred());
+                    l_UnitTargets.sort(Trinity::HealthPctOrderPred());
                     l_UnitTargets.resize(l_MaxSize);
                 }
             }
@@ -1596,7 +1596,7 @@ void Spell::SelectImplicitAreaTargets(SpellEffIndex p_EffIndex, SpellImplicitTar
 
                 if (l_UnitTargets.size() > l_MaxSize)
                 {
-                    l_UnitTargets.sort(JadeCore::PowerPctOrderPred((Powers)l_Power));
+                    l_UnitTargets.sort(Trinity::PowerPctOrderPred((Powers)l_Power));
                     l_UnitTargets.resize(l_MaxSize);
                 }
             }
@@ -1614,7 +1614,7 @@ void Spell::SelectImplicitAreaTargets(SpellEffIndex p_EffIndex, SpellImplicitTar
 
         // Other special target selection goes here
         if (uint32 l_MaxTargets = m_spellValue->MaxAffectedTargets)
-            JadeCore::Containers::RandomResizeList(l_UnitTargets, l_MaxTargets);
+            Trinity::Containers::RandomResizeList(l_UnitTargets, l_MaxTargets);
 
         for (std::list<Unit*>::iterator l_Iterator = l_UnitTargets.begin(); l_Iterator != l_UnitTargets.end(); ++l_Iterator)
             AddUnitTarget(*l_Iterator, p_EffMask, false);
@@ -1623,7 +1623,7 @@ void Spell::SelectImplicitAreaTargets(SpellEffIndex p_EffIndex, SpellImplicitTar
     if (!l_GObjTargets.empty())
     {
         if (uint32 l_MaxTargets = m_spellValue->MaxAffectedTargets)
-            JadeCore::Containers::RandomResizeList(l_GObjTargets, l_MaxTargets);
+            Trinity::Containers::RandomResizeList(l_GObjTargets, l_MaxTargets);
 
         for (std::list<GameObject*>::iterator l_Iterator = l_GObjTargets.begin(); l_Iterator != l_GObjTargets.end(); ++l_Iterator)
             AddGOTarget(*l_Iterator, p_EffMask);
@@ -1632,7 +1632,7 @@ void Spell::SelectImplicitAreaTargets(SpellEffIndex p_EffIndex, SpellImplicitTar
     if (!l_AreaTriggerTargets.empty())
     {
         if (uint32 l_MaxTargets = m_spellValue->MaxAffectedTargets)
-            JadeCore::Containers::RandomResizeList(l_AreaTriggerTargets, l_MaxTargets);
+            Trinity::Containers::RandomResizeList(l_AreaTriggerTargets, l_MaxTargets);
 
         for (std::list<AreaTrigger*>::iterator l_Iterator = l_AreaTriggerTargets.begin(); l_Iterator != l_AreaTriggerTargets.end(); ++l_Iterator)
             AddAreaTriggerTarget(*l_Iterator, p_EffMask);
@@ -1682,9 +1682,9 @@ void Spell::SelectImplicitCylinderTargets(SpellEffIndex p_EffIndex, SpellImplici
 
     if (uint32 l_ContainerTypeMask = GetSearcherTypeMask(l_ObjectType, l_ConditionsList))
     {
-        JadeCore::WorldObjectSpellWidthTargetCheck l_Check(l_Width, l_Radius, m_caster, m_spellInfo, l_SelectionType, l_ConditionsList);
-        JadeCore::WorldObjectListSearcher<JadeCore::WorldObjectSpellWidthTargetCheck> l_Searcher(m_caster, l_Targets, l_Check, l_ContainerTypeMask);
-        SearchTargets<JadeCore::WorldObjectListSearcher<JadeCore::WorldObjectSpellWidthTargetCheck> >(l_Searcher, l_ContainerTypeMask, m_caster, m_caster, l_Radius);
+        Trinity::WorldObjectSpellWidthTargetCheck l_Check(l_Width, l_Radius, m_caster, m_spellInfo, l_SelectionType, l_ConditionsList);
+        Trinity::WorldObjectListSearcher<Trinity::WorldObjectSpellWidthTargetCheck> l_Searcher(m_caster, l_Targets, l_Check, l_ContainerTypeMask);
+        SearchTargets<Trinity::WorldObjectListSearcher<Trinity::WorldObjectSpellWidthTargetCheck> >(l_Searcher, l_ContainerTypeMask, m_caster, m_caster, l_Radius);
 
         CallScriptObjectAreaTargetSelectHandlers(l_Targets, p_EffIndex);
 
@@ -1692,7 +1692,7 @@ void Spell::SelectImplicitCylinderTargets(SpellEffIndex p_EffIndex, SpellImplici
         {
             /// Other special target selection goes here
             if (uint32 l_MaxTargets = m_spellValue->MaxAffectedTargets)
-                JadeCore::Containers::RandomResizeList(l_Targets, l_MaxTargets);
+                Trinity::Containers::RandomResizeList(l_Targets, l_MaxTargets);
         }
 
         std::list<Unit*>        l_UnitTargets;
@@ -1925,7 +1925,7 @@ void Spell::SelectImplicitCasterObjectTargets(SpellEffIndex effIndex, SpellImpli
                 if (!l_UnitTargets.empty())
                 {
                     if (uint32 l_MaxTargets = m_spellValue->MaxAffectedTargets)
-                        JadeCore::Containers::RandomResizeList(l_UnitTargets, l_MaxTargets);
+                        Trinity::Containers::RandomResizeList(l_UnitTargets, l_MaxTargets);
 
                     for (Unit* l_Iterator : l_UnitTargets)
                         AddUnitTarget(l_Iterator, 1 << l_I, false);
@@ -2032,7 +2032,7 @@ void Spell::SelectImplicitTargetObjectTargets(SpellEffIndex p_EffIndex, SpellImp
                     {
                         // Other special target selection goes here
                         if (uint32 l_MaxTargets = m_spellValue->MaxAffectedTargets)
-                            JadeCore::Containers::RandomResizeList(l_UnitTargets, l_MaxTargets);
+                            Trinity::Containers::RandomResizeList(l_UnitTargets, l_MaxTargets);
 
                         for (std::list<Unit*>::iterator l_Iterator = l_UnitTargets.begin(); l_Iterator != l_UnitTargets.end(); ++l_Iterator)
                             AddUnitTarget(*l_Iterator, 1 << l_I, false);
@@ -2150,13 +2150,13 @@ void Spell::SelectImplicitTrajTargets()
     float srcToDestDelta = m_targets.GetDstPos()->m_positionZ - m_targets.GetSrcPos()->m_positionZ;
 
     std::list<WorldObject*> targets;
-    JadeCore::WorldObjectSpellTrajTargetCheck check(dist2d, m_targets.GetSrcPos(), m_caster, m_spellInfo);
-    JadeCore::WorldObjectListSearcher<JadeCore::WorldObjectSpellTrajTargetCheck> searcher(m_caster, targets, check, GRID_MAP_TYPE_MASK_ALL);
-    SearchTargets<JadeCore::WorldObjectListSearcher<JadeCore::WorldObjectSpellTrajTargetCheck> > (searcher, GRID_MAP_TYPE_MASK_ALL, m_caster, m_targets.GetSrcPos(), dist2d);
+    Trinity::WorldObjectSpellTrajTargetCheck check(dist2d, m_targets.GetSrcPos(), m_caster, m_spellInfo);
+    Trinity::WorldObjectListSearcher<Trinity::WorldObjectSpellTrajTargetCheck> searcher(m_caster, targets, check, GRID_MAP_TYPE_MASK_ALL);
+    SearchTargets<Trinity::WorldObjectListSearcher<Trinity::WorldObjectSpellTrajTargetCheck> > (searcher, GRID_MAP_TYPE_MASK_ALL, m_caster, m_targets.GetSrcPos(), dist2d);
     if (targets.empty())
         return;
 
-    targets.sort(JadeCore::ObjectDistanceOrderPred(m_caster));
+    targets.sort(Trinity::ObjectDistanceOrderPred(m_caster));
 
     float b = tangent(m_targets.GetElevation());
     float a = (srcToDestDelta - dist2d * b) / (dist2d * dist2d);
@@ -2401,7 +2401,7 @@ void Spell::SearchTargets(SEARCHER& searcher, uint32 containerMask, Unit* refere
         x = pos->GetPositionX();
         y = pos->GetPositionY();
 
-        CellCoord p(JadeCore::ComputeCellCoord(x, y));
+        CellCoord p(Trinity::ComputeCellCoord(x, y));
         Cell cell(p);
         cell.SetNoCreate();
 
@@ -2426,9 +2426,9 @@ WorldObject* Spell::SearchNearbyTarget(float range, SpellTargetObjectTypes objec
     uint32 containerTypeMask = GetSearcherTypeMask(objectType, condList);
     if (!containerTypeMask)
         return NULL;
-    JadeCore::WorldObjectSpellNearbyTargetCheck check(range, m_caster, m_spellInfo, selectionType, condList);
-    JadeCore::WorldObjectLastSearcher<JadeCore::WorldObjectSpellNearbyTargetCheck> searcher(m_caster, target, check, containerTypeMask);
-    SearchTargets<JadeCore::WorldObjectLastSearcher<JadeCore::WorldObjectSpellNearbyTargetCheck> > (searcher, containerTypeMask, m_caster, m_caster, range);
+    Trinity::WorldObjectSpellNearbyTargetCheck check(range, m_caster, m_spellInfo, selectionType, condList);
+    Trinity::WorldObjectLastSearcher<Trinity::WorldObjectSpellNearbyTargetCheck> searcher(m_caster, target, check, containerTypeMask);
+    SearchTargets<Trinity::WorldObjectLastSearcher<Trinity::WorldObjectSpellNearbyTargetCheck> > (searcher, containerTypeMask, m_caster, m_caster, range);
     return target;
 }
 
@@ -2437,9 +2437,9 @@ void Spell::SearchAreaTargets(std::list<WorldObject*>& targets, float range, Pos
     uint32 containerTypeMask = GetSearcherTypeMask(objectType, condList);
     if (!containerTypeMask)
         return;
-    JadeCore::WorldObjectSpellAreaTargetCheck check(range, position, m_caster, referer, m_spellInfo, selectionType, condList);
-    JadeCore::WorldObjectListSearcher<JadeCore::WorldObjectSpellAreaTargetCheck> searcher(m_caster, targets, check, containerTypeMask);
-    SearchTargets<JadeCore::WorldObjectListSearcher<JadeCore::WorldObjectSpellAreaTargetCheck> > (searcher, containerTypeMask, m_caster, position, range);
+    Trinity::WorldObjectSpellAreaTargetCheck check(range, position, m_caster, referer, m_spellInfo, selectionType, condList);
+    Trinity::WorldObjectListSearcher<Trinity::WorldObjectSpellAreaTargetCheck> searcher(m_caster, targets, check, containerTypeMask);
+    SearchTargets<Trinity::WorldObjectListSearcher<Trinity::WorldObjectSpellAreaTargetCheck> > (searcher, containerTypeMask, m_caster, position, range);
 }
 
 void Spell::SearchChainTargets(std::list<WorldObject*>& targets, uint32 chainTargets, WorldObject* target, SpellTargetObjectTypes objectType, SpellTargetCheckTypes selectType, ConditionContainer* condList, bool isChainHeal)
@@ -8142,14 +8142,14 @@ SpellCastResult Spell::CheckItems()
     // check spell focus object
     if (m_spellInfo->RequiresSpellFocus)
     {
-        CellCoord p(JadeCore::ComputeCellCoord(m_caster->GetPositionX(), m_caster->GetPositionY()));
+        CellCoord p(Trinity::ComputeCellCoord(m_caster->GetPositionX(), m_caster->GetPositionY()));
         Cell cell(p);
 
         GameObject* ok = NULL;
-        JadeCore::GameObjectFocusCheck go_check(m_caster, m_spellInfo->RequiresSpellFocus);
-        JadeCore::GameObjectSearcher<JadeCore::GameObjectFocusCheck> checker(m_caster, ok, go_check);
+        Trinity::GameObjectFocusCheck go_check(m_caster, m_spellInfo->RequiresSpellFocus);
+        Trinity::GameObjectSearcher<Trinity::GameObjectFocusCheck> checker(m_caster, ok, go_check);
 
-        TypeContainerVisitor<JadeCore::GameObjectSearcher<JadeCore::GameObjectFocusCheck>, GridTypeMapContainer > object_checker(checker);
+        TypeContainerVisitor<Trinity::GameObjectSearcher<Trinity::GameObjectFocusCheck>, GridTypeMapContainer > object_checker(checker);
         Map& map = *m_caster->GetMap();
         cell.Visit(p, object_checker, map, *m_caster, m_caster->GetVisibilityRange());
 
@@ -9920,7 +9920,7 @@ bool Spell::IsSpellTriggeredAfterCast() const
     return false;
 }
 
-namespace JadeCore
+namespace Trinity
 {
 
 WorldObjectSpellTargetCheck::WorldObjectSpellTargetCheck(Unit* caster, Unit* referer, SpellInfo const* spellInfo,
@@ -10101,4 +10101,4 @@ bool WorldObjectSpellTrajTargetCheck::operator()(WorldObject* target)
     return WorldObjectSpellAreaTargetCheck::operator ()(target);
 }
 
-} //namespace JadeCore
+} //namespace Trinity

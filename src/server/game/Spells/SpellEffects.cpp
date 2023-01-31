@@ -824,7 +824,7 @@ void Spell::EffectDummy(SpellEffIndex effIndex)
                     uint32 maxTargets = std::min<uint32>(3, attackers.size());
                     for (uint32 i = 0; i < maxTargets; ++i)
                     {
-                        Unit* attacker = JadeCore::Containers::SelectRandomContainerElement(attackers);
+                        Unit* attacker = Trinity::Containers::SelectRandomContainerElement(attackers);
                         AddUnitTarget(attacker, 1 << 1);
                         attackers.erase(attacker);
                     }
@@ -1065,8 +1065,8 @@ void Spell::EffectDummy(SpellEffIndex effIndex)
         case 120165:// Conflagrate
         {
             UnitList friends;
-            JadeCore::AnyFriendlyUnitInObjectRangeCheck u_check(m_caster, m_caster, 5.0f);
-            JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(m_caster, friends, u_check);
+            Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(m_caster, m_caster, 5.0f);
+            Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(m_caster, friends, u_check);
             m_caster->VisitNearbyObject(5.0f, searcher);
 
             for (auto unit : friends)
@@ -2515,7 +2515,7 @@ void Spell::EffectEnergize(SpellEffIndex effIndex)
         if (!avalibleElixirs.empty())
         {
             // cast random elixir on target
-            m_caster->CastSpell(unitTarget, JadeCore::Containers::SelectRandomContainerElement(avalibleElixirs), true, m_CastItem);
+            m_caster->CastSpell(unitTarget, Trinity::Containers::SelectRandomContainerElement(avalibleElixirs), true, m_CastItem);
         }
     }
 }
@@ -7630,7 +7630,7 @@ void Spell::EffectCreateAreatrigger(SpellEffIndex effIndex)
 
                 if (!angelicFeatherList.empty())
                 {
-                    angelicFeatherList.sort(JadeCore::AreaTriggerDurationPctOrderPred());
+                    angelicFeatherList.sort(Trinity::AreaTriggerDurationPctOrderPred());
 
                     for (auto itr : angelicFeatherList)
                     {
@@ -7657,7 +7657,7 @@ void Spell::EffectCreateAreatrigger(SpellEffIndex effIndex)
 
                     if (!runeOfPowerList.empty())
                     {
-                        runeOfPowerList.sort(JadeCore::AreaTriggerDurationPctOrderPred());
+                        runeOfPowerList.sort(Trinity::AreaTriggerDurationPctOrderPred());
 
                         for (auto itr : runeOfPowerList)
                         {
@@ -7769,7 +7769,7 @@ void Spell::EffectTeleportToDigsite(SpellEffIndex /*p_EffectIndex*/)
     if (l_LootListTemp.empty())
         return;
 
-    l_LootList.push_back(JadeCore::Containers::SelectRandomContainerElement(l_LootListTemp));
+    l_LootList.push_back(Trinity::Containers::SelectRandomContainerElement(l_LootListTemp));
     if (l_LootList.empty())
         return;
 
@@ -8406,13 +8406,13 @@ void Spell::EffectDespawnAreaTrigger(SpellEffIndex p_EffIndex)
     {
         float l_Radius = m_spellInfo->Effects[p_EffIndex].CalcRadius(m_caster, this);
 
-        CellCoord l_Pair(JadeCore::ComputeCellCoord(m_caster->GetPositionX(), m_caster->GetPositionY()));
+        CellCoord l_Pair(Trinity::ComputeCellCoord(m_caster->GetPositionX(), m_caster->GetPositionY()));
         Cell l_Cell(l_Pair);
         l_Cell.SetNoCreate();
 
-        JadeCore::AllAreaTriggersInRangeCheck l_Check(m_caster, l_Radius);
-        JadeCore::AreaTriggerListSearcher<JadeCore::AllAreaTriggersInRangeCheck> l_Searcher(m_caster, l_AreaTriggers, l_Check);
-        TypeContainerVisitor<JadeCore::AreaTriggerListSearcher<JadeCore::AllAreaTriggersInRangeCheck>, GridTypeMapContainer> l_Visitor(l_Searcher);
+        Trinity::AllAreaTriggersInRangeCheck l_Check(m_caster, l_Radius);
+        Trinity::AreaTriggerListSearcher<Trinity::AllAreaTriggersInRangeCheck> l_Searcher(m_caster, l_AreaTriggers, l_Check);
+        TypeContainerVisitor<Trinity::AreaTriggerListSearcher<Trinity::AllAreaTriggersInRangeCheck>, GridTypeMapContainer> l_Visitor(l_Searcher);
 
         l_Cell.Visit(l_Pair, l_Visitor, *m_caster->GetMap(), *m_caster, l_Radius);
     }

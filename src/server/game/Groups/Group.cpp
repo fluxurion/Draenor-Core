@@ -3387,3 +3387,23 @@ void Group::FinishGame(int32 rating_change, uint8 slot)
         }
     }
 }
+	
+bool Group::leaderInstanceCheckFail()
+{
+    if (Player *leader = ObjectAccessor::FindPlayer(GetLeaderGUID()))
+    {
+        const uint32 leaderInstanceID = leader->GetInstanceId();
+        if (leaderInstanceID == 0)
+        {
+            Player *pMember = NULL;
+            for (member_citerator citr = m_memberSlots.begin(); citr != m_memberSlots.end(); ++citr)
+            {
+                pMember = ObjectAccessor::FindPlayer(citr->guid);
+                if ( pMember && (pMember->GetInstanceId() != leaderInstanceID) )
+                    return true;
+            }
+        }       
+    }
+
+    return false;
+}

@@ -2078,8 +2078,8 @@ class npc_ebon_gargoyle : public CreatureScript
 
                 // Find victim of Summon Gargoyle spell
                 std::list<Unit*> targets;
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck u_check(me, me, 30);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(me, targets, u_check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck u_check(me, me, 30);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> searcher(me, targets, u_check);
                 me->VisitNearbyObject(30, searcher);
                 for (std::list<Unit*>::const_iterator iter = targets.begin(); iter != targets.end(); ++iter)
                     if ((*iter)->GetAura(49206, owner->GetGUID()))
@@ -3483,8 +3483,8 @@ class npc_ring_of_frost : public CreatureScript
                 /// Find all the enemies
                 std::list<Unit*> l_Targets;
 
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, g_RingOfFrostMaxRadius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_Targets, l_Check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, g_RingOfFrostMaxRadius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_Targets, l_Check);
                 me->VisitNearbyObject(g_RingOfFrostMaxRadius, l_Searcher);
 
                 for (Unit* l_Target : l_Targets)

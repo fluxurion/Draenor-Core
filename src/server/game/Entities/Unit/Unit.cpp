@@ -2320,7 +2320,7 @@ SpellSchoolMask Unit::CalcAbsorbResist(Unit* victim, SpellSchoolMask schoolMask,
     // We're going to call functions which can modify content of the list during iteration over it's elements
     // Let's copy the list so we can prevent iterator invalidation
     AuraEffectList vSchoolAbsorbCopy(victim->GetAuraEffectsByType(SPELL_AURA_SCHOOL_ABSORB));
-    vSchoolAbsorbCopy.sort(JadeCore::AbsorbAuraOrderPred());
+    vSchoolAbsorbCopy.sort(Trinity::AbsorbAuraOrderPred());
 
     // absorb without mana cost
     for (AuraEffectList::iterator itr = vSchoolAbsorbCopy.begin(); (itr != vSchoolAbsorbCopy.end()) && (dmgInfo.GetDamage() > 0); ++itr)
@@ -4344,7 +4344,7 @@ void Unit::RemoveAurasDueToSpell(uint32 spellId, uint64 casterGUID, uint32 reqEf
     }
 }
 
-void Unit::RemoveAuraFromStack(uint32 spellId, uint64 casterGUID, AuraRemoveMode removeMode)
+void Unit::RemoveAuraFromStack(uint32 spellId, uint64 casterGUID, AuraRemoveMode removeMode, int32 num)
 {
     for (AuraMap::iterator iter = m_ownedAuras.lower_bound(spellId); iter != m_ownedAuras.upper_bound(spellId);)
     {
@@ -4352,7 +4352,7 @@ void Unit::RemoveAuraFromStack(uint32 spellId, uint64 casterGUID, AuraRemoveMode
         if ((aura->GetType() == UNIT_AURA_TYPE)
             && (!casterGUID || aura->GetCasterGUID() == casterGUID))
         {
-            aura->ModStackAmount(-1, removeMode);
+            aura->ModStackAmount(-num, removeMode);
             return;
         }
         else
@@ -6148,7 +6148,7 @@ void Unit::SendSpellDamageResist(Unit * p_Target, uint32 p_SpellID)
 // We need to analyze UnfriendlyMessageDistDeliverer, because it's use delete pointer in somes cases
 void Unit::SendMessageUnfriendlyToSetInRange(WorldPacket* data, float /*fist*/)
 {
-    JadeCore::UnfriendlyMessageDistDeliverer notifier(this, data, GetVisibilityRange());
+    Trinity::UnfriendlyMessageDistDeliverer notifier(this, data, GetVisibilityRange());
     VisitNearbyWorldObject(GetVisibilityRange(), notifier);
 }
 
@@ -7524,7 +7524,7 @@ bool Unit::HandleDummyAuraProc(Unit* victim, uint32 damage, AuraEffect* triggere
 
 					if (l_Party.size() > 1)
 					{
-						l_Party.sort(JadeCore::HealthPctOrderPred());
+						l_Party.sort(Trinity::HealthPctOrderPred());
 						l_Party.resize(1);
 					}
 
@@ -7549,8 +7549,8 @@ bool Unit::HandleDummyAuraProc(Unit* victim, uint32 damage, AuraEffect* triggere
                         return false;
 
                     std::list<Player*> plrList;
-                    JadeCore::AnyFriendlyUnitInObjectRangeCheck check(this, this, 15.0f);
-                    JadeCore::PlayerListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(this, plrList, check);
+                    Trinity::AnyFriendlyUnitInObjectRangeCheck check(this, this, 15.0f);
+                    Trinity::PlayerListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(this, plrList, check);
                     VisitNearbyObject(15.0f, searcher);
                     if (plrList.empty())
                         return false;
@@ -7560,7 +7560,7 @@ bool Unit::HandleDummyAuraProc(Unit* victim, uint32 damage, AuraEffect* triggere
                     if (plrList.empty())
                         return false;
 
-                    plrList.sort(JadeCore::HealthPctOrderPred());
+                    plrList.sort(Trinity::HealthPctOrderPred());
                     plrList.resize(1);
 
                     int32 bp0 = damage;
@@ -7974,8 +7974,8 @@ bool Unit::HandleDummyAuraProc(Unit* victim, uint32 damage, AuraEffect* triggere
                         return false;
 
                     std::list<Player*> plrList;
-                    JadeCore::AnyFriendlyUnitInObjectRangeCheck check(this, this, 15.0f);
-                    JadeCore::PlayerListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(this, plrList, check);
+                    Trinity::AnyFriendlyUnitInObjectRangeCheck check(this, this, 15.0f);
+                    Trinity::PlayerListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(this, plrList, check);
                     VisitNearbyObject(15.0f, searcher);
                     if (plrList.empty())
                         return false;
@@ -7985,7 +7985,7 @@ bool Unit::HandleDummyAuraProc(Unit* victim, uint32 damage, AuraEffect* triggere
                     if (plrList.empty())
                         return false;
 
-                    plrList.sort(JadeCore::HealthPctOrderPred());
+                    plrList.sort(Trinity::HealthPctOrderPred());
                     plrList.resize(1);
 
                     int32 bp0 = int32(CalculatePct(damage, 10));
@@ -11397,8 +11397,8 @@ int32 Unit::DealHeal(Unit* victim, uint32 addhealth, SpellInfo const* spellProto
         {
             std::list<Unit*> targetList;
 
-            JadeCore::AnyFriendlyUnitInObjectRangeCheck u_check(unit, unit, 6.0f);
-            JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(unit, targetList, u_check);
+            Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(unit, unit, 6.0f);
+            Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(unit, targetList, u_check);
             unit->VisitNearbyObject(6.0f, searcher);
 
             targetList.remove_if([this, unit](WorldObject* p_Object) -> bool
@@ -11414,7 +11414,7 @@ int32 Unit::DealHeal(Unit* victim, uint32 addhealth, SpellInfo const* spellProto
 
             if (!targetList.empty())
             {
-                targetList.sort(JadeCore::HealthPctOrderPred());
+                targetList.sort(Trinity::HealthPctOrderPred());
 
                 for (auto itr : targetList)
                 {
@@ -17905,15 +17905,15 @@ void Unit::UpdateStackOnDuration(uint32 p_Time)
 
 void Unit::GetAttackableUnitListInRange(std::list<Unit*> &list, float fMaxSearchRange) const
 {
-    CellCoord p(JadeCore::ComputeCellCoord(GetPositionX(), GetPositionY()));
+    CellCoord p(Trinity::ComputeCellCoord(GetPositionX(), GetPositionY()));
     Cell cell(p);
     cell.SetNoCreate();
 
-    JadeCore::AnyUnitInObjectRangeCheck u_check(this, fMaxSearchRange);
-    JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck> searcher(this, list, u_check);
+    Trinity::AnyUnitInObjectRangeCheck u_check(this, fMaxSearchRange);
+    Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck> searcher(this, list, u_check);
 
-    TypeContainerVisitor<JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck>, WorldTypeMapContainer > world_unit_searcher(searcher);
-    TypeContainerVisitor<JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck>, GridTypeMapContainer >  grid_unit_searcher(searcher);
+    TypeContainerVisitor<Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck>, WorldTypeMapContainer > world_unit_searcher(searcher);
+    TypeContainerVisitor<Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck>, GridTypeMapContainer >  grid_unit_searcher(searcher);
 
     cell.Visit(p, world_unit_searcher, *GetMap(), *this, fMaxSearchRange);
     cell.Visit(p, grid_unit_searcher, *GetMap(), *this, fMaxSearchRange);
@@ -17921,15 +17921,15 @@ void Unit::GetAttackableUnitListInRange(std::list<Unit*> &list, float fMaxSearch
 
 void Unit::GetAreatriggerListInRange(std::list<AreaTrigger*>& p_List, float p_Range) const
 {
-    CellCoord l_Coords(JadeCore::ComputeCellCoord(GetPositionX(), GetPositionY()));
+    CellCoord l_Coords(Trinity::ComputeCellCoord(GetPositionX(), GetPositionY()));
     Cell l_Cell(l_Coords);
     l_Cell.SetNoCreate();
 
-    JadeCore::AnyAreatriggerInObjectRangeCheck l_Check(this, p_Range);
-    JadeCore::AreaTriggerListSearcher<JadeCore::AnyAreatriggerInObjectRangeCheck> searcher(this, p_List, l_Check);
+    Trinity::AnyAreatriggerInObjectRangeCheck l_Check(this, p_Range);
+    Trinity::AreaTriggerListSearcher<Trinity::AnyAreatriggerInObjectRangeCheck> searcher(this, p_List, l_Check);
 
-    TypeContainerVisitor<JadeCore::AreaTriggerListSearcher<JadeCore::AnyAreatriggerInObjectRangeCheck>, WorldTypeMapContainer> l_WorldSearcher(searcher);
-    TypeContainerVisitor<JadeCore::AreaTriggerListSearcher<JadeCore::AnyAreatriggerInObjectRangeCheck>, GridTypeMapContainer>  l_GridSearcher(searcher);
+    TypeContainerVisitor<Trinity::AreaTriggerListSearcher<Trinity::AnyAreatriggerInObjectRangeCheck>, WorldTypeMapContainer> l_WorldSearcher(searcher);
+    TypeContainerVisitor<Trinity::AreaTriggerListSearcher<Trinity::AnyAreatriggerInObjectRangeCheck>, GridTypeMapContainer>  l_GridSearcher(searcher);
 
     l_Cell.Visit(l_Coords, l_WorldSearcher, *GetMap(), *this, p_Range);
     l_Cell.Visit(l_Coords, l_GridSearcher, *GetMap(), *this, p_Range);
@@ -17937,15 +17937,15 @@ void Unit::GetAreatriggerListInRange(std::list<AreaTrigger*>& p_List, float p_Ra
 
 void Unit::GetConversationListInRange(std::list<Conversation*>& p_List, float p_Range) const
 {
-    CellCoord l_Coords(JadeCore::ComputeCellCoord(GetPositionX(), GetPositionY()));
+    CellCoord l_Coords(Trinity::ComputeCellCoord(GetPositionX(), GetPositionY()));
     Cell l_Cell(l_Coords);
     l_Cell.SetNoCreate();
 
-    JadeCore::AnyConversationInObjectRangeCheck l_Check(this, p_Range);
-    JadeCore::ConversationListSearcher<JadeCore::AnyConversationInObjectRangeCheck> searcher(this, p_List, l_Check);
+    Trinity::AnyConversationInObjectRangeCheck l_Check(this, p_Range);
+    Trinity::ConversationListSearcher<Trinity::AnyConversationInObjectRangeCheck> searcher(this, p_List, l_Check);
 
-    TypeContainerVisitor<JadeCore::ConversationListSearcher<JadeCore::AnyConversationInObjectRangeCheck>, WorldTypeMapContainer> l_WorldSearcher(searcher);
-    TypeContainerVisitor<JadeCore::ConversationListSearcher<JadeCore::AnyConversationInObjectRangeCheck>, GridTypeMapContainer>  l_GridSearcher(searcher);
+    TypeContainerVisitor<Trinity::ConversationListSearcher<Trinity::AnyConversationInObjectRangeCheck>, WorldTypeMapContainer> l_WorldSearcher(searcher);
+    TypeContainerVisitor<Trinity::ConversationListSearcher<Trinity::AnyConversationInObjectRangeCheck>, GridTypeMapContainer>  l_GridSearcher(searcher);
 
     l_Cell.Visit(l_Coords, l_WorldSearcher, *GetMap(), *this, p_Range);
     l_Cell.Visit(l_Coords, l_GridSearcher, *GetMap(), *this, p_Range);
@@ -17953,15 +17953,15 @@ void Unit::GetConversationListInRange(std::list<Conversation*>& p_List, float p_
 
 void Unit::GetAreaTriggerListWithSpellIDInRange(std::list<AreaTrigger*>& p_List, uint32 p_SpellID, float p_Range) const
 {
-    CellCoord l_Coords(JadeCore::ComputeCellCoord(GetPositionX(), GetPositionY()));
+    CellCoord l_Coords(Trinity::ComputeCellCoord(GetPositionX(), GetPositionY()));
     Cell l_Cell(l_Coords);
     l_Cell.SetNoCreate();
 
-    JadeCore::AnyAreatriggerInObjectRangeCheck l_Check(this, p_Range);
-    JadeCore::AreaTriggerListSearcher<JadeCore::AnyAreatriggerInObjectRangeCheck> searcher(this, p_List, l_Check);
+    Trinity::AnyAreatriggerInObjectRangeCheck l_Check(this, p_Range);
+    Trinity::AreaTriggerListSearcher<Trinity::AnyAreatriggerInObjectRangeCheck> searcher(this, p_List, l_Check);
 
-    TypeContainerVisitor<JadeCore::AreaTriggerListSearcher<JadeCore::AnyAreatriggerInObjectRangeCheck>, WorldTypeMapContainer> l_WorldSearcher(searcher);
-    TypeContainerVisitor<JadeCore::AreaTriggerListSearcher<JadeCore::AnyAreatriggerInObjectRangeCheck>, GridTypeMapContainer>  l_GridSearcher(searcher);
+    TypeContainerVisitor<Trinity::AreaTriggerListSearcher<Trinity::AnyAreatriggerInObjectRangeCheck>, WorldTypeMapContainer> l_WorldSearcher(searcher);
+    TypeContainerVisitor<Trinity::AreaTriggerListSearcher<Trinity::AnyAreatriggerInObjectRangeCheck>, GridTypeMapContainer>  l_GridSearcher(searcher);
 
     l_Cell.Visit(l_Coords, l_WorldSearcher, *GetMap(), *this, p_Range);
     l_Cell.Visit(l_Coords, l_GridSearcher, *GetMap(), *this, p_Range);
@@ -17981,8 +17981,8 @@ void Unit::GetAreaTriggerListWithSpellIDInRange(std::list<AreaTrigger*>& p_List,
 Unit* Unit::SelectNearbyTarget(Unit* exclude /*= NULL*/, float dist /*= NOMINAL_MELEE_RANGE*/, uint32 p_ExludeAuraID /*= 0*/, bool p_ExcludeVictim /*= true*/, bool p_Alive /*= true*/, bool p_ExcludeStealthVictim /*=false*/, bool p_CheckValidAttack /*= false*/) const
 {
     std::list<Unit*> l_Targets;
-    JadeCore::AnyUnfriendlyUnitInObjectRangeCheck u_check(this, this, dist);
-    JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(this, l_Targets, u_check);
+    Trinity::AnyUnfriendlyUnitInObjectRangeCheck u_check(this, this, dist);
+    Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> searcher(this, l_Targets, u_check);
     VisitNearbyObject(dist, searcher);
 
     // remove current target
@@ -18013,7 +18013,7 @@ Unit* Unit::SelectNearbyTarget(Unit* exclude /*= NULL*/, float dist /*= NOMINAL_
         return nullptr;
 
     if (p_ExludeAuraID)
-        l_Targets.remove_if(JadeCore::UnitAuraCheck(true, p_ExludeAuraID));
+        l_Targets.remove_if(Trinity::UnitAuraCheck(true, p_ExludeAuraID));
 
     // no appropriate targets
     if (l_Targets.empty())
@@ -18038,14 +18038,14 @@ Unit* Unit::SelectNearbyTarget(Unit* exclude /*= NULL*/, float dist /*= NOMINAL_
         return nullptr;
 
     // select random
-    return JadeCore::Containers::SelectRandomContainerElement(l_Targets);
+    return Trinity::Containers::SelectRandomContainerElement(l_Targets);
 }
 
 Unit* Unit::SelectNearbyAlly(Unit* exclude, float dist, bool p_CheckValidAssist /*= false*/) const
 {
     std::list<Unit*> targets;
-    JadeCore::AnyFriendlyUnitInObjectRangeCheck u_check(this, this, dist);
-    JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(this, targets, u_check);
+    Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(this, this, dist);
+    Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(this, targets, u_check);
     VisitNearbyObject(dist, searcher);
 
     if (exclude)
@@ -18067,14 +18067,14 @@ Unit* Unit::SelectNearbyAlly(Unit* exclude, float dist, bool p_CheckValidAssist 
         return NULL;
 
     // select random
-    return JadeCore::Containers::SelectRandomContainerElement(targets);
+    return Trinity::Containers::SelectRandomContainerElement(targets);
 }
 
 Unit* Unit::SelectNearbyMostInjuredAlly(Unit* p_Exclude /*= nullptr*/, float p_Dist /*= NOMINAL_MELEE_RANGE*/, uint32 p_ExcludeEntry /*= 0*/) const
 {
     std::list<Unit*> l_Targets;
-    JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(this, this, p_Dist);
-    JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(this, l_Targets, l_Check);
+    Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(this, this, p_Dist);
+    Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(this, l_Targets, l_Check);
     VisitNearbyObject(p_Dist, l_Searcher);
 
     if (p_Exclude)
@@ -18105,7 +18105,7 @@ Unit* Unit::SelectNearbyMostInjuredAlly(Unit* p_Exclude /*= nullptr*/, float p_D
     if (l_Targets.empty())
         return nullptr;
 
-    l_Targets.sort(JadeCore::HealthPctOrderPred(true));
+    l_Targets.sort(Trinity::HealthPctOrderPred(true));
 
     /// Select most injured
     return l_Targets.front();
@@ -20262,7 +20262,7 @@ public:
 
     virtual bool Execute(uint64 , uint32)
     {
-        JadeCore::AIRelocationNotifier notifier(m_owner);
+        Trinity::AIRelocationNotifier notifier(m_owner);
         m_owner.VisitNearbyObject(60.0f, notifier);
         return true;
     }
@@ -22117,7 +22117,7 @@ void Unit::SendTeleportPacket(Position &p_NewPosition)
 bool Unit::UpdatePosition(float x, float y, float z, float orientation, bool teleport)
 {
     // prevent crash when a bad coord is sent by the client
-    if (!JadeCore::IsValidMapCoord(x, y, z, orientation))
+    if (!Trinity::IsValidMapCoord(x, y, z, orientation))
         return false;
 
     bool turn = (GetOrientation() != orientation);
