@@ -1,6 +1,3 @@
-I joined a WoW private server project in late 2019 up until late 2020 wherein I worked with a small team of developers and learnt the basics of WoW emulation. As you'll undoubtedly see in the commits, mine were almost exclusively quests fixes and reworks. More importantly, I have learnt the usefulness of bitwise application in game development, OOP in C++, the abstract idea of how a game is designed (or more specifically emulated); core, client, database, opcodes, prerequisite flags, and much much more.
-
-
 Warlords of Draenor 6.2.3 is a core project based off TrinityCore 6.04TDB/6.2 (Firestorm Leak); a MMORPG Framework based mostly in C++.
 For those scarce few interested in the continuation of WoD emulation development: feel free to cherrypick the commits. This core was sold for a high sum and the buyer was no longer interested in the project. A list of immediate things to fix in this core:
 * Pathfinding and movement generators - must be updated to support smooth pathing.
