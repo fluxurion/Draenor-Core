@@ -269,19 +269,19 @@ extern int main(int argc, char** argv)
             if (affinity & (1 << i))
                 CPU_SET(i, &mask);
 
-        if (int err = sched_setaffinity(0, sizeof(mask), &mask))
+        if (sched_setaffinity(0, sizeof(mask), &mask))
             TC_LOG_ERROR(LOG_FILTER_AUTHSERVER, "Can't set used processors (hex): %x, error: %s", affinity, strerror(errno));
         else
         {
             CPU_ZERO(&mask);
             sched_getaffinity(0, sizeof(mask), &mask);
-            TC_LOG_INFO(LOG_FILTER_AUTHSERVER, "Using processors (bitmask, hex): %x", *(uint32*)(&mask))
+            TC_LOG_INFO(LOG_FILTER_AUTHSERVER, "Using processors (bitmask, hex): %x", *(uint32*)(&mask));
         }
     }
 
     if (highPriority)
     {
-        if (int err = setpriority(PRIO_PROCESS, 0, PROCESS_HIGH_PRIORITY))
+        if (setpriority(PRIO_PROCESS, 0, PROCESS_HIGH_PRIORITY))
             TC_LOG_ERROR(LOG_FILTER_AUTHSERVER, "Can't set authserver process priority class, error: %s", strerror(errno));
         else
             TC_LOG_INFO(LOG_FILTER_AUTHSERVER, "authserver process priority class set to %i", getpriority(PRIO_PROCESS, 0));

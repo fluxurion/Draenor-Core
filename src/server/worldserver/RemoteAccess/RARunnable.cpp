@@ -69,7 +69,7 @@ void RARunnable::run()
         // don't be too smart to move this outside the loop
         // the run_reactor_event_loop will modify interval
         ACE_Time_Value interval(0, 100000);
-        if (m_Reactor->run_reactor_event_loop(ACE_Time_Value(0, 100000)) == -1) 
+        if (m_Reactor->run_reactor_event_loop(interval) == -1)
             break;
     }
 
