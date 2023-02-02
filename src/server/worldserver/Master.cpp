@@ -555,7 +555,7 @@ int Master::Run()
 
 #ifndef CROSS
     ///- Launch the world listener socket
-    uint16 wsport = sWorld->getIntConfig(CONFIG_PORT_WORLD);
+    uint16 wsport = uint16(sWorld->getIntConfig(CONFIG_PORT_WORLD));
     std::string bind_ip = ConfigMgr::GetStringDefault("BindIP", "0.0.0.0");
 #else /* CROSS */
     uint16 wsport = ConfigMgr::GetIntDefault("InterRealmServer.Port", 12345);
@@ -770,7 +770,7 @@ bool Master::_StartDB()
             return false;
         }
 
-        async_threads = ConfigMgr::GetIntDefault("LoginMoPDatabaseInfo.WorkerThreads", 1);
+        async_threads = uint8(ConfigMgr::GetIntDefault("LoginMoPDatabaseInfo.WorkerThreads", 1));
         if (async_threads < 1 || async_threads > 32)
         {
             sLog->outError(LOG_FILTER_WORLDSERVER, "Login mop database: invalid number of worker threads specified. "
@@ -778,7 +778,7 @@ bool Master::_StartDB()
             return false;
         }
 
-        synch_threads = ConfigMgr::GetIntDefault("LoginMoPDatabaseInfo.SynchThreads", 1);
+        async_threads = uint8(ConfigMgr::GetIntDefault("LoginMoPDatabaseInfo.WorkerThreads", 1));
         ///- Initialize the login database
         if (!LoginMopDatabase.Open(dbstring, async_threads, synch_threads))
         {
@@ -796,7 +796,7 @@ bool Master::_StartDB()
             return false;
         }
 
-        async_threads = ConfigMgr::GetIntDefault("WebDatabaseInfo.WorkerThreads", 1);
+        async_threads = uint8(ConfigMgr::GetIntDefault("WebDatabaseInfo.WorkerThreads", 1));
         if (async_threads < 1 || async_threads > 32)
         {
             sLog->outError(LOG_FILTER_WORLDSERVER, "Web database: invalid number of worker threads specified. "
@@ -804,7 +804,7 @@ bool Master::_StartDB()
             return false;
         }
 
-        synch_threads = ConfigMgr::GetIntDefault("WebDatabaseInfo.SynchThreads", 1);
+        synch_threads = uint8(ConfigMgr::GetIntDefault("WebDatabaseInfo.SynchThreads", 1));
         ///- Initialize the login database
         if (!WebDatabase.Open(dbstring, async_threads, synch_threads))
         {

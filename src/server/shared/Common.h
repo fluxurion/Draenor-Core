@@ -188,7 +188,7 @@ enum LocaleConstant
 };
 
 const uint8 TOTAL_LOCALES = 11;
-const LocaleConstant DEFAULT_LOCALE = LOCALE_enUS;
+#define DEFAULT_LOCALE LOCALE_enUS
 
 #define MAX_LOCALES TOTAL_LOCALES
 #define MAX_ACCOUNT_TUTORIAL_VALUES 8

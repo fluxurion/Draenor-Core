@@ -1067,8 +1067,8 @@ struct SpellAuraOptionsEntry
     uint32    procChance;                                   // 4        m_procChance
     uint32    procCharges;                                  // 5        m_procCharges
     uint32    procFlags;                                    // 6        m_procTypeMask
-    uint32    InternalCooldown;                             // 7       m_internalCooldown
-    uint32    ProcsPerMinuteEntry;                          // 8       m_procsPerMinuteEntry
+    uint32    InternalCooldown;                             // 7        m_internalCooldown
+    uint32    ProcsPerMinuteEntry;                          // 8        m_procsPerMinuteEntry
 };
 
 struct SpellEntry
