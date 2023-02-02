@@ -271,9 +271,9 @@ bool Condition::Meets(ConditionSourceInfo& sourceInfo) const
             condMeets = ConditionValue2 == sWorld->getWorldState(ConditionValue1);
             break;
         }
-        case CONDITION_PHASEMASK:
+        case CONDITION_PHASEID:
         {
-            condMeets = object->GetPhaseMask() & ConditionValue1;
+            condMeets = object->IsInPhase(ConditionValue1);
             break;
         }
         case CONDITION_TITLE:
@@ -483,7 +483,7 @@ uint32 Condition::GetSearcherTypeMaskForCondition() const
         case CONDITION_WORLD_STATE:
             mask |= GRID_MAP_TYPE_MASK_ALL;
             break;
-        case CONDITION_PHASEMASK:
+        case CONDITION_PHASEID:
             mask |= GRID_MAP_TYPE_MASK_ALL;
             break;
         case CONDITION_TITLE:
@@ -2028,12 +2028,17 @@ bool ConditionMgr::isConditionTypeValid(Condition* cond) const
                 sLog->outError(LOG_FILTER_SQL, "World state condition has useless data in value3 (%u)!", cond->ConditionValue3);
             break;
         }
-        case CONDITION_PHASEMASK:
+        case CONDITION_PHASEID:
         {
+            if (!sPhaseStore.LookupEntry(cond->ConditionValue1))
+            {
+                TC_LOG_ERROR("sql.sql", "Phase condition has nonexistent phaseid in value1 (%u), skipped", cond->ConditionValue1);
+                return false;
+            }
             if (cond->ConditionValue2)
-                sLog->outError(LOG_FILTER_SQL, "Phasemask condition has useless data in value2 (%u)!", cond->ConditionValue2);
+                TC_LOG_ERROR("sql.sql", "Phase condition has useless data in value2 (%u)!", cond->ConditionValue2);
             if (cond->ConditionValue3)
-                sLog->outError(LOG_FILTER_SQL, "Phasemask condition has useless data in value3 (%u)!", cond->ConditionValue3);
+                TC_LOG_ERROR("sql.sql", "Phase condition has useless data in value3 (%u)!", cond->ConditionValue3);
             break;
         }
         case CONDITION_TITLE:
