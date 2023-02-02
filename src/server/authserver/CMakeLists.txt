@@ -110,6 +110,7 @@ target_link_libraries(authserver
   ${OSX_LIBS}
   ${CURL_LIBRARIES}
   ${MSFRAMEWORK_LIBRARIES}
+  ${Boost_LIBRARIES}
 )
 
 if( WIN32 )
