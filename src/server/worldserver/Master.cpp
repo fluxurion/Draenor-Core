@@ -122,7 +122,7 @@ public:
             ACE_Based::Thread::Sleep(1000);
             uint32 curtime = getMSTime();
             // normal work
-            uint32 worldLoopCounter = World::m_worldLoopCounter;
+            uint32 worldLoopCounter = World::m_worldLoopCounter.value();
             if (_loops != worldLoopCounter)
             {
                 _lastChange = curtime;
