@@ -36,6 +36,7 @@
 #include "Util.h"
 
 #include "BigNumber.h"
+#include "OpenSSLCrypto.h"
 
 #ifdef CROSS
 #include "Cross/IRSocketMgr.h"
@@ -413,6 +414,7 @@ Master::~Master() { }
 /// Main function
 int Master::Run()
 {
+    OpenSSLCrypto::threadsSetup();
     init_sfmt();
     BigNumber seed1;
     seed1.SetRand(16 * 8);
@@ -667,6 +669,7 @@ int Master::Run()
     if (fdr)
         fdr->SetCanStop();
 
+    OpenSSLCrypto::threadsCleanup();
     // Exit the process with specified return value
     return World::GetExitCode();
 }
