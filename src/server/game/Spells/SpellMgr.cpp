@@ -8264,7 +8264,7 @@ void SpellMgr::LoadSpellAurasNotSave()
     QueryResult l_Result = WorldDatabase.Query("SELECT SpellID FROM spell_aura_not_saved");
     if (!l_Result)
     {
-        sLog->outInfo(LogFilterType::LOG_FILTER_SERVER_LOADING, ">> Loaded 0 spell auras not save records. DB table `spell_aura_not_save` is empty.");
+        TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 spell auras not save records. DB table `spell_aura_not_save` is empty.");
         return;
     }
 
@@ -8276,7 +8276,7 @@ void SpellMgr::LoadSpellAurasNotSave()
         SpellInfo const* l_SpellInfo = GetSpellInfo(l_SpellID);
         if (!l_SpellInfo)
         {
-            sLog->outError(LogFilterType::LOG_FILTER_SQL, "spellId %u in `spell_aura_not_save` table is not found in dbc, skipped", l_SpellID);
+            TC_LOG_ERROR(LOG_FILTER_SQL, "spellId %u in `spell_aura_not_save` table is not found in dbc, skipped", l_SpellID);
             continue;
         }
 
@@ -8284,5 +8284,5 @@ void SpellMgr::LoadSpellAurasNotSave()
     }
     while (l_Result->NextRow());
 
-    sLog->outInfo(LogFilterType::LOG_FILTER_SERVER_LOADING, ">> Loaded %u spell auras not save records in %u ms", m_SpellAurasNotSave.size(), GetMSTimeDiffToNow(l_OldMSTime));
+    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded %u spell auras not save records in %u ms", m_SpellAurasNotSave.size(), GetMSTimeDiffToNow(l_OldMSTime));
 }

@@ -11,9 +11,10 @@
 
 std::string LogMessage::getTimeStr(time_t time)
 {
-    tm* aTm = localtime(&time);
+    tm aTm;
+    ACE_OS::localtime_r(&time, &aTm);
     char buf[20];
-    snprintf(buf, 20, "%04d-%02d-%02d_%02d:%02d:%02d", aTm->tm_year+1900, aTm->tm_mon+1, aTm->tm_mday, aTm->tm_hour, aTm->tm_min, aTm->tm_sec);
+    snprintf(buf, 20, "%04d-%02d-%02d_%02d:%02d:%02d", aTm.tm_year + 1900, aTm.tm_mon + 1, aTm.tm_mday, aTm.tm_hour, aTm.tm_min, aTm.tm_sec);
     return std::string(buf);
 }
 
@@ -71,7 +72,7 @@ void Appender::write(LogMessage& message)
 
     message.prefix.clear();
     if (flags & APPENDER_FLAGS_PREFIX_TIMESTAMP)
-        message.prefix.append(message.getTimeStr().c_str());
+        message.prefix.append(message.getTimeStr());
 
     if (flags & APPENDER_FLAGS_PREFIX_LOGLEVEL)
     {
@@ -88,9 +89,9 @@ void Appender::write(LogMessage& message)
         if (!message.prefix.empty())
             message.prefix.push_back(' ');
 
-        char text[MAX_QUERY_LEN];
-        snprintf(text, MAX_QUERY_LEN, "[%s]", Appender::getLogFilterTypeString(message.type));
-        message.prefix.append(text);
+        message.prefix.push_back('[');
+        message.prefix.append(message.type);
+        message.prefix.push_back(']');
     }
 
     if (!message.prefix.empty())
@@ -118,98 +119,4 @@ const char* Appender::getLogLevelString(LogLevel level)
         default:
             return "DISABLED";
     }
-}
-
-char const* Appender::getLogFilterTypeString(LogFilterType type)
-{
-    switch (type)
-    {
-        case LOG_FILTER_GENERAL:
-            return "GENERAL";
-        case LOG_FILTER_UNITS:
-            return "UNITS";
-        case LOG_FILTER_PETS:
-            return "PETS";
-        case LOG_FILTER_VEHICLES:
-            return "VEHICLES";
-        case LOG_FILTER_TSCR:
-            return "TSCR";
-        case LOG_FILTER_DATABASE_AI:
-            return "DATABASE_AI";
-        case LOG_FILTER_MAPSCRIPTS:
-            return "MAPSCRIPTS";
-        case LOG_FILTER_NETWORKIO:
-            return "NETWORKIO";
-        case LOG_FILTER_SPELLS_AURAS:
-            return "SPELLS_AURAS";
-        case LOG_FILTER_ACHIEVEMENTSYS:
-            return "ACHIEVEMENTSYS";
-        case LOG_FILTER_CONDITIONSYS:
-            return "CONDITIONSYS";
-        case LOG_FILTER_POOLSYS:
-            return "POOLSYS";
-        case LOG_FILTER_AUCTIONHOUSE:
-            return "AUCTIONHOUSE";
-        case LOG_FILTER_BATTLEGROUND:
-            return "BATTLEGROUND";
-        case LOG_FILTER_OUTDOORPVP:
-            return "OUTDOORPVP";
-        case LOG_FILTER_CHATSYS:
-            return "CHATSYS";
-        case LOG_FILTER_LFG:
-            return "LFG";
-        case LOG_FILTER_MAPS:
-            return "MAPS";
-        case LOG_FILTER_PLAYER:
-            return "PLAYER";
-        case LOG_FILTER_PLAYER_LOADING:
-            return "PLAYER LOADING";
-        case LOG_FILTER_PLAYER_ITEMS:
-            return "PLAYER ITEMS";
-        case LOG_FILTER_PLAYER_SKILLS:
-            return "PLAYER SKILLS";
-        case LOG_FILTER_PLAYER_CHATLOG:
-            return "PLAYER CHATLOG";
-        case LOG_FILTER_LOOT:
-            return "LOOT";
-        case LOG_FILTER_GUILD:
-            return "GUILD";
-        case LOG_FILTER_TRANSPORTS:
-            return "TRANSPORTS";
-        case LOG_FILTER_SQL:
-            return "SQL";
-        case LOG_FILTER_GMCOMMAND:
-            return "GMCOMMAND";
-        case LOG_FILTER_REMOTECOMMAND:
-            return "REMOTECOMMAND";
-        case LOG_FILTER_WARDEN:
-            return "WARDEN";
-        case LOG_FILTER_AUTHSERVER:
-            return "AUTHSERVER";
-        case LOG_FILTER_WORLDSERVER:
-            return "WORLDSERVER";
-        case LOG_FILTER_GAMEEVENTS:
-            return "GAMEEVENTS";
-        case LOG_FILTER_CALENDAR:
-            return "CALENDAR";
-        case LOG_FILTER_CHARACTER:
-            return "CHARACTER";
-        case LOG_FILTER_ARENAS:
-            return "ARENAS";
-        case LOG_FILTER_SQL_DRIVER:
-            return "SQL DRIVER";
-        case LOG_FILTER_SQL_DEV:
-            return "SQL DEV";
-        case LOG_FILTER_PLAYER_DUMP:
-            return "PLAYER DUMP";
-        case LOG_FILTER_BATTLEFIELD:
-            return "BATTLEFIELD";
-        case LOG_FILTER_SERVER_LOADING:
-            return "SERVER LOADING";
-        case LOG_FILTER_OPCODES:
-            return "OPCODE";
-        default:
-            break;
-    }
-    return "???";
 }

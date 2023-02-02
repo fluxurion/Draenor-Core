@@ -5735,9 +5735,10 @@ void ObjectMgr::ReturnOrDeleteOldMails(bool serverUp)
 	uint32 oldMSTime = getMSTime();
 
 	time_t curTime = time(NULL);
-	tm* lt = localtime(&curTime);
+    tm lt;
+    ACE_OS::localtime_r(&curTime, &lt);
 	uint64 basetime(curTime);
-	sLog->outInfo(LOG_FILTER_GENERAL, "Returning mails current time: hour: %d, minute: %d, second: %d ", lt->tm_hour, lt->tm_min, lt->tm_sec);
+    TC_LOG_INFO(LOG_FILTER_GENERAL, "Returning mails current time: hour: %d, minute: %d, second: %d ", lt.tm_hour, lt.tm_min, lt.tm_sec);
 
 	// Delete all old mails without item and without body immediately, if starting server
 	if (!serverUp)
@@ -11289,7 +11290,7 @@ void ObjectMgr::LoadConversationTemplates()
 		/// Conversation with no lines must not be loaded
 		if (!l_LinesResult)
 		{
-			sLog->outError(LogFilterType::LOG_FILTER_SERVER_LOADING, "Conversation %u doesn't have any record in conversation_lines!", l_Conversation.Entry);
+			TC_LOG_ERROR(LOG_FILTER_SERVER_LOADING, "Conversation %u doesn't have any record in conversation_lines!", l_Conversation.Entry);
 			continue;
 		}
 

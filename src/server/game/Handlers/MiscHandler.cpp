@@ -77,7 +77,7 @@ void WorldSession::HandleRepopRequestOpcode(WorldPacket& p_RecvData)
     /// Release spirit after he's killed but before he is updated
     if (m_Player->getDeathState() == DeathState::JUST_DIED)
     {
-        sLog->outDebug(LogFilterType::LOG_FILTER_NETWORKIO, "HandleRepopRequestOpcode: got request after player %s(%d) was killed and before he was updated", m_Player->GetName(), m_Player->GetGUIDLow());
+        TC_LOG_DEBUG(LOG_FILTER_NETWORKIO, "HandleRepopRequestOpcode: got request after player %s(%d) was killed and before he was updated", m_Player->GetName(), m_Player->GetGUIDLow());
         m_Player->KillPlayer();
     }
 

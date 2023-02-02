@@ -291,7 +291,7 @@ bool MySQLPreparedStatement::CheckValidIndex(uint8 index)
 {
     if (index >= m_paramCount)
     {
-        sLog->outError(LogFilterType::LOG_FILTER_SQL, "Invalid index %u for prepared statement %u", index, m_stmt->m_index);
+        TC_LOG_ERROR(LOG_FILTER_SQL_DRIVER, "Invalid index %u for prepared statement %u", index, m_stmt->m_index);
         ASSERT(false);
     }
 

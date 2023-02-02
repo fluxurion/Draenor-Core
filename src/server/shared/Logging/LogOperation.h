@@ -15,9 +15,8 @@ struct LogMessage;
 class LogOperation
 {
     public:
-        LogOperation(Logger* _logger, LogMessage* _msg)
-            : logger(_logger)
-            , msg(_msg)
+        LogOperation(Logger const* _logger, LogMessage* _msg)
+            : logger(_logger), msg(_msg)
         { }
 
         ~LogOperation();
@@ -25,8 +24,8 @@ class LogOperation
         int call();
 
     protected:
-        Logger *logger;
-        LogMessage *msg;
+        Logger const* logger;
+        LogMessage* msg;
 };
 
 #endif

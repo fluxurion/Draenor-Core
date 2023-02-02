@@ -65,9 +65,9 @@ uint32 AuctionHouseMgr::GetAuctionDeposit(uint32 p_DepositTime, Item* p_Item, ui
     uint32 l_RunTime    = p_DepositTime / 60;
     uint32 l_Deposit    = p_ItemCount * uint32(l_RunTime * l_Multiplier * floor(l_SellPrice * 5.0f / 100.0f)) * sWorld->getRate(Rates::RATE_AUCTION_DEPOSIT);
 
-    sLog->outDebug(LogFilterType::LOG_FILTER_AUCTIONHOUSE, "SellPrice:  %u", l_SellPrice);
-    sLog->outDebug(LogFilterType::LOG_FILTER_AUCTIONHOUSE, "Items:      %u", p_ItemCount);
-    sLog->outDebug(LogFilterType::LOG_FILTER_AUCTIONHOUSE, "Deposit:    %u", l_Deposit);
+    TC_LOG_DEBUG(LOG_FILTER_AUCTIONHOUSE, "SellPrice:  %u", l_SellPrice);
+    TC_LOG_DEBUG(LOG_FILTER_AUCTIONHOUSE, "Items:      %u", p_ItemCount);
+    TC_LOG_DEBUG(LOG_FILTER_AUCTIONHOUSE, "Deposit:    %u", l_Deposit);
 
     if (l_Deposit < eAuctionHouse::AH_MINIMUM_DEPOSIT * sWorld->getRate(Rates::RATE_AUCTION_DEPOSIT))
         return eAuctionHouse::AH_MINIMUM_DEPOSIT * sWorld->getRate(Rates::RATE_AUCTION_DEPOSIT);
