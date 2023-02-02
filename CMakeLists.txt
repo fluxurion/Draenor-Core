@@ -64,6 +64,8 @@ find_package(OpenSSL REQUIRED)
 # FIND_PACKAGE(msFramework REQUIRED)
 find_package(MySQL REQUIRED)
 
+include(ConfigureBoost)
+
 if( UNIX )
   find_package(Readline)
   find_package(ZLIB)
