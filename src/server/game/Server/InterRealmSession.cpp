@@ -143,8 +143,8 @@ InterRealmSession::~InterRealmSession()
 
 int InterRealmSession::OnSocketOpen(IRSocket* socket)
 {
-    m_SockOutKBuff = ConfigMgr::GetIntDefault ("Network.OutKBuff", -1);
-    m_SockOutUBuff = ConfigMgr::GetIntDefault ("Network.OutUBuff", 65536);
+    m_SockOutKBuff = sConfigMgr->GetIntDefault ("Network.OutKBuff", -1);
+    m_SockOutUBuff = sConfigMgr->GetIntDefault ("Network.OutUBuff", 65536);
 
     // set some options here
     if (m_SockOutKBuff >= 0)
@@ -266,9 +266,9 @@ void InterRealmSession::run()
         return;
     }
 
-    m_IP = ConfigMgr::GetStringDefault("InterRealm.IP", "0.0.0.0");
-    m_port = uint16(ConfigMgr::GetIntDefault("InterRealm.Port", 12345));
-    m_ir_id = ConfigMgr::GetIntDefault("InterRealm.Id", 1);
+    m_IP = sConfigMgr->GetStringDefault("InterRealm.IP", "0.0.0.0");
+    m_port = uint16(sConfigMgr->GetIntDefault("InterRealm.Port", 12345));
+    m_ir_id = sConfigMgr->GetIntDefault("InterRealm.Id", 1);
 
     sLog->outError(LOG_FILTER_INTERREALM, "Loaded InterRealm configuration, %s:%u, id %u", m_IP.c_str(), m_port, m_ir_id);    
 

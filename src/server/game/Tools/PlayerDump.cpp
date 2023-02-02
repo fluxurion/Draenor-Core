@@ -1152,7 +1152,7 @@ void PlayerDump::LoadColumnsName()
 
         if (g_DumpTables[l_I].type == DTT_ACC_SPELL)
         {
-            MySQLConnectionInfo l_Info = MySQLConnectionInfo(ConfigMgr::GetStringDefault("LoginDatabaseInfo", ""));
+            MySQLConnectionInfo l_Info = MySQLConnectionInfo(sConfigMgr->GetStringDefault("LoginDatabaseInfo", ""));
             std::string l_DatabaseName = l_Info.database;
 
             QueryResult l_TableInfoResult = LoginDatabase.PQuery("SELECT `COLUMN_NAME`  FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='%s' AND `TABLE_NAME`='%s'", l_DatabaseName.c_str(), l_TableName.c_str());
@@ -1169,7 +1169,7 @@ void PlayerDump::LoadColumnsName()
             continue;
         }
 
-        MySQLConnectionInfo l_Info = MySQLConnectionInfo(ConfigMgr::GetStringDefault("CharacterDatabaseInfo", ""));
+        MySQLConnectionInfo l_Info = MySQLConnectionInfo(sConfigMgr->GetStringDefault("CharacterDatabaseInfo", ""));
         std::string l_DatabaseName = l_Info.database;
 
         QueryResult l_TableInfoResult = CharacterDatabase.PQuery("SELECT `COLUMN_NAME`  FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='%s' AND `TABLE_NAME`='%s'", l_DatabaseName.c_str(), l_TableName.c_str());

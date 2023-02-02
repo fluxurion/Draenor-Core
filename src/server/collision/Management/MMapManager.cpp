@@ -75,7 +75,7 @@ namespace MMAP
 
         // load and init dtNavMesh - read parameters from file
         char l_Buffer[4096];
-        sprintf(l_Buffer, MAP_FILE_NAME_FORMAT, ConfigMgr::GetStringDefault("DataDir", ".").c_str(), mapId);
+        sprintf(l_Buffer, MAP_FILE_NAME_FORMAT, sConfigMgr->GetStringDefault("DataDir", ".").c_str(), mapId);
 
         std::string fileName = l_Buffer;
         FILE* file = fopen(fileName.c_str(), "rb");
@@ -134,7 +134,7 @@ namespace MMAP
 
         // load this tile :: mmaps/MMMMXXYY.mmtile
         char l_Buffer[4096];
-        sprintf(l_Buffer, TILE_FILE_NAME_FORMAT, ConfigMgr::GetStringDefault("DataDir", ".").c_str(), mapId, x, y);
+        sprintf(l_Buffer, TILE_FILE_NAME_FORMAT, sConfigMgr->GetStringDefault("DataDir", ".").c_str(), mapId, x, y);
         std::string fileName = l_Buffer;
         FILE* file = fopen(fileName.c_str(), "rb");
         if (!file)
@@ -199,7 +199,7 @@ namespace MMAP
     {
         // load this tile :: mmaps/MMMXXYY.mmtile
         char l_Buffer[4096];
-        sprintf(l_Buffer, TILE_FILE_NAME_FORMAT, ConfigMgr::GetStringDefault("DataDir", ".").c_str(), mapId, x, y);
+        sprintf(l_Buffer, TILE_FILE_NAME_FORMAT, sConfigMgr->GetStringDefault("DataDir", ".").c_str(), mapId, x, y);
 
         std::string fileName = l_Buffer;
         FILE* file = fopen(fileName.c_str(), "rb");

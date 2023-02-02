@@ -36,8 +36,8 @@ Creature** ObjectAccessor::m_CreaturesCache;
 
 ObjectAccessor::ObjectAccessor()
 {
-    k_PlayerCacheMaxGuid    = ConfigMgr::GetIntDefault("PlayersCache.Size",    1000000);
-    k_CreaturesCacheMaxGuid = ConfigMgr::GetIntDefault("CreaturesCache.Size", 30000000);
+    k_PlayerCacheMaxGuid    = sConfigMgr->GetIntDefault("PlayersCache.Size",    1000000);
+    k_CreaturesCacheMaxGuid = sConfigMgr->GetIntDefault("CreaturesCache.Size", 30000000);
 
     m_PlayersCache = new Player*[k_PlayerCacheMaxGuid];
     memset(m_PlayersCache, 0, sizeof(Player*) * k_PlayerCacheMaxGuid);

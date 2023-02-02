@@ -47,7 +47,7 @@ RARunnable::~RARunnable()
 
 void RARunnable::run()
 {
-    if (!ConfigMgr::GetBoolDefault("Ra.Enable", false))
+    if (!sConfigMgr->GetBoolDefault("Ra.Enable", false))
         return;
 
     ACE_Acceptor<RASocket, ACE_SOCK_ACCEPTOR> acceptor;

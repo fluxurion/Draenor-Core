@@ -10367,7 +10367,7 @@ void ObjectMgr::LoadSkipUpdateZone()
 {
 	skipData.clear();
 
-	_skipUpdateCount = ConfigMgr::GetIntDefault("ZoneSkipUpdate.count", 1);
+    _skipUpdateCount = sConfigMgr->GetIntDefault("ZoneSkipUpdate.count", 1);
 
 	QueryResult result = WorldDatabase.PQuery("SELECT zone FROM zone_skip_update");
 	if (!result)

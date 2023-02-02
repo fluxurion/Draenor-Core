@@ -419,7 +419,6 @@ int Master::Run()
 
     sLog->outInfo(LOG_FILTER_WORLDSERVER, "%s (worldserver-daemon)", GitRevision::GetFullVersion());
     sLog->outInfo(LOG_FILTER_WORLDSERVER, "<Ctrl-C> to stop.\n");
-    
     sLog->outInfo(LOG_FILTER_WORLDSERVER, "               _                      _____                      ");
     sLog->outInfo(LOG_FILTER_WORLDSERVER, "     /\\       | |                    / ____|                    ");
     sLog->outInfo(LOG_FILTER_WORLDSERVER, "    /  \\   ___| |__  _ __ __ _ _ __ | |     ___  _ __ ___       ");
@@ -427,9 +426,8 @@ int Master::Run()
     sLog->outInfo(LOG_FILTER_WORLDSERVER, "  / ____ \\\\__ | | | | | | (_| | | | | |___| (_) | | |  __/     ");
     sLog->outInfo(LOG_FILTER_WORLDSERVER, " /_/    \\_|___|_| |_|_|  \\__,_|_| |_|\\_____\\___/|_|  \\___|  ");
     sLog->outInfo(LOG_FILTER_WORLDSERVER, " MILLENIUM STUDIO SARL\n");
-
     /// worldserver PID file creation
-    std::string pidfile = ConfigMgr::GetStringDefault("PidFile", "");
+    std::string pidfile = sConfigMgr->GetStringDefault("PidFile", "");
     if (!pidfile.empty())
     {
         if (uint32 pid = CreatePIDFile(pidFile))
@@ -476,7 +474,7 @@ int Master::Run()
     ACE_Based::Thread* cliThread = NULL;
 
 #ifdef _WIN32
-    if (ConfigMgr::GetBoolDefault("Console.Enable", true) && (m_ServiceStatus == -1)/* need disable console in service mode*/)
+    if (sConfigMgr->GetBoolDefault("Console.Enable", true) && (m_ServiceStatus == -1)/* need disable console in service mode*/)
 #else
     if (ConfigMgr::GetBoolDefault("Console.Enable", true))
 #endif
@@ -500,6 +498,7 @@ int Master::Run()
     {
         HANDLE hProcess = GetCurrentProcess();
 
+        uint32 affinity = sConfigMgr->GetIntDefault("UseProcessors", 0);
         if (affinity > 0)
         {
             ULONG_PTR appAff;
@@ -563,14 +562,13 @@ int Master::Run()
     //Start soap serving thread
     ACE_Based::Thread* soapThread = NULL;
 
-    if (ConfigMgr::GetBoolDefault("SOAP.Enabled", false))
+    if (sConfigMgr->GetBoolDefault("SOAP.Enabled", false))
     {
         TCSoapRunnable* runnable = new TCSoapRunnable();
         runnable->SetListenArguments(sConfigMgr->GetStringDefault("SOAP.IP", "127.0.0.1"), uint16(sConfigMgr->GetIntDefault("SOAP.Port", 7878)));
         soapThread = new ACE_Based::Thread(runnable, "SoapRunnable");
     }
 
-    ///- Start up freeze catcher thread
     if (uint32 freezeDelay = sConfigMgr->GetIntDefault("MaxCoreStuckTime", 0))
     {
         FreezeDetectorRunnable* fdr = nullptr;
@@ -789,7 +787,7 @@ bool Master::_StartDB()
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
 
-    if (ConfigMgr::GetBoolDefault("MopTransfer.enable", false))
+    if (sConfigMgr->GetBoolDefault("MopTransfer.enable", false))
     {
         ///- Get MoP login database info from configuration file
         dbString = sConfigMgr->GetStringDefault("LoginMoPDatabaseInfo", "");
@@ -816,7 +814,7 @@ bool Master::_StartDB()
         }
     }
 
-    if (ConfigMgr::GetBoolDefault("WebDatabase.enable", false))
+    if (sConfigMgr->GetBoolDefault("WebDatabase.enable", false))
     {
         dbString = sConfigMgr->GetStringDefault("WebDatabaseInfo", "");
         if (dbString.empty())
@@ -873,7 +871,7 @@ bool Master::_StartDB()
     //////////////////////////////////////////////////////////////////////////
 
     /// Get the realm Id from the configuration file
-    g_RealmID = ConfigMgr::GetIntDefault("RealmID", 0);
+    g_RealmID = sConfigMgr->GetIntDefault("RealmID", 0);
     if (!g_RealmID)
     {
         sLog->outError(LOG_FILTER_WORLDSERVER, "Realm ID not defined in configuration file");

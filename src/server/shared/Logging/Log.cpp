@@ -48,13 +48,13 @@ uint8 Log::NextAppenderId()
 int32 GetConfigIntDefault(std::string base, const char* name, int32 value)
 {
     base.append(name);
-    return ConfigMgr::GetIntDefault(base.c_str(), value);
+    return sConfigMgr->GetIntDefault(base.c_str(), value);
 }
 
 std::string GetConfigStringDefault(std::string base, const char* name, const char* value)
 {
     base.append(name);
-    return ConfigMgr::GetStringDefault(base.c_str(), value);
+    return sConfigMgr->GetStringDefault(base.c_str(), value);
 }
 
 Appender* Log::GetAppenderByName(std::string const& name)
@@ -76,7 +76,7 @@ void Log::CreateAppenderFromConfig(const char* name)
     // if type = Console. optional1 = Color
     std::string options = "Appender.";
     options.append(name);
-    options = ConfigMgr::GetStringDefault(options.c_str(), "");
+    options = sConfigMgr->GetStringDefault(options.c_str(), "");
     Tokenizer tokens(options, ',');
     Tokenizer::const_iterator iter = tokens.begin();
 
@@ -162,7 +162,7 @@ void Log::CreateLoggerFromConfig(const char* name)
 
     std::string options = "Logger.";
     options.append(name);
-    options = ConfigMgr::GetStringDefault(options.c_str(), "");
+    options = sConfigMgr->GetStringDefault(options.c_str(), "");
 
     if (options.empty())
     {
@@ -230,7 +230,7 @@ void Log::CreateLoggerFromConfig(const char* name)
 
 void Log::ReadAppendersFromConfig()
 {
-    std::istringstream ss(ConfigMgr::GetStringDefault("Appenders", ""));
+    std::istringstream ss(sConfigMgr->GetStringDefault("Appenders", ""));
     std::string name;
 
     do
@@ -244,7 +244,7 @@ void Log::ReadAppendersFromConfig()
 
 void Log::ReadLoggersFromConfig()
 {
-    std::istringstream ss(ConfigMgr::GetStringDefault("Loggers", ""));
+    std::istringstream ss(sConfigMgr->GetStringDefault("Loggers", ""));
     std::string name;
 
     do
@@ -389,7 +389,7 @@ void Log::LoadFromConfig()
     lowestLogLevel = LOG_LEVEL_FATAL;
     AppenderId = 0;
     worker = new LogWorker();
-    m_logsDir = ConfigMgr::GetStringDefault("LogsDir", "");
+    m_logsDir = sConfigMgr->GetStringDefault("LogsDir", "");
     if (!m_logsDir.empty())
         if ((m_logsDir.at(m_logsDir.length() - 1) != '/') && (m_logsDir.at(m_logsDir.length() - 1) != '\\'))
             m_logsDir.push_back('/');
@@ -397,9 +397,9 @@ void Log::LoadFromConfig()
     ReadLoggersFromConfig();
 
     /// Init slack
-    m_SlackEnable  = ConfigMgr::GetBoolDefault("Slack.Enable", false);
-    m_SlackApiUrl  = ConfigMgr::GetStringDefault("Slack.ApiUrl", "");
-    m_SlackAppName = ConfigMgr::GetStringDefault("Slack.AppName", "Firestorm - WoD");
+    m_SlackEnable  = sConfigMgr->GetBoolDefault("Slack.Enable", false);
+    m_SlackApiUrl  = sConfigMgr->GetStringDefault("Slack.ApiUrl", "");
+    m_SlackAppName = sConfigMgr->GetStringDefault("Slack.AppName", "Firestorm - WoD");
 }
 
 void Log::outGmChat( uint32 message_type,
