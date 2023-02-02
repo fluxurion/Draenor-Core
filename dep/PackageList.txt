@@ -14,7 +14,7 @@ G3D (a commercial-grade C++ 3D engine available as Open Source (BSD License)
 
 jemalloc (a general-purpose scalable concurrent malloc-implementation)
   http://www.canonware.com/jemalloc/
-  Version: 2.2.5
+  Version: 3.6.0
 
 SFMT (SIMD-oriented Fast Mersenne Twister)
   Based on http://agner.org/random/
@@ -31,6 +31,10 @@ zlib (A Massively Spiffy Yet Delicately Unobtrusive Compression Library)
 gSOAP (a portable development toolkit for C and C++ XML Web services and XML data bindings)
   http://gsoap2.sourceforge.net/
   Version: 2.8.2
+
+recastnavigation (Recast is state of the art navigation mesh construction toolset for games)
+  https://github.com/memononen/recastnavigation
+  Version: 740a7ba51600a3c87ce5667ae276a38284a1ce75
 
 CURL (command line tool and library for transferring data with URL syntax)
 https://curl.haxx.se/

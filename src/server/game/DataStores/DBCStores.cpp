@@ -233,7 +233,7 @@ inline void LoadDBC(uint32& availableDbcLocales, StoreProblemList& errors, DBCSt
         if (FILE* f = fopen(dbcFilename.c_str(), "rb"))
         {
             char buf[100];
-            snprintf(buf, 100, " (exists, but has %u fields instead of " SIZEFMTD ") Possible wrong client version.", storage.GetFieldCount(), strlen(storage.GetFormat()));
+            snprintf(buf, 100, " (exists, but has %u fields instead of %zu) Possible wrong client version.", storage.GetFieldCount(), strlen(storage.GetFormat()));
             errors.push_back(dbcFilename + buf);
             fclose(f);
         }

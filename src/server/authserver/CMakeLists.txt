@@ -47,16 +47,17 @@ ENDMACRO( auto_group )
 
 auto_group("${CMAKE_CURRENT_SOURCE_DIR}" "${authserver_SRCS}")
 
-set(authserver_SRCS
-  ${authserver_SRCS}
-)
-
 if( WIN32 )
-set(authserver_SRCS
+  set(authserver_SRCS
     ${authserver_SRCS}
     ${sources_Debugging}
-    authserver.rc
-)
+  )
+  if ( MSVC )
+    set(authserver_SRCS
+      ${authserver_SRCS}
+      authserver.rc
+    )
+  endif ()
 endif()
 
 include_directories(

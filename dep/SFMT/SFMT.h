@@ -209,6 +209,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define SFMT_PARITY 0x00000001, 0x00000000, 0x00000000, 0x5986f054  // Period certification vector
 #endif
 
+namespace boost {
+    template <typename T> class thread_specific_ptr;
+}
+
 // Class for SFMT generator with or without Mother-Of-All generator
 class CRandomSFMT {                              // Encapsulate random number generator
 public:

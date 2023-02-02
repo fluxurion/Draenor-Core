@@ -52,16 +52,17 @@ ENDMACRO( auto_group )
 
 auto_group("${CMAKE_CURRENT_SOURCE_DIR}" "${worldserver_SRCS}")
 
-set(worldserver_SRCS
-  ${worldserver_SRCS}
-)
-
 if( WIN32 )
   set(worldserver_SRCS
     ${worldserver_SRCS}
-    ${sources_Debugging}
-    worldserver.rc
+    ${sources_windows_Debugging}
   )
+  if ( MSVC )
+    set(worldserver_SRCS
+      ${worldserver_SRCS}
+      worldserver.rc
+    )
+  endif()
 endif()
 
 include_directories(
