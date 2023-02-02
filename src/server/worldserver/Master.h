@@ -19,8 +19,6 @@
 class Master
 {
     public:
-        Master();
-        ~Master();
         int Run();
 
     private:
@@ -32,5 +30,7 @@ class Master
 };
 
 #define sMaster ACE_Singleton<Master, ACE_Null_Mutex>::instance()
+
 #endif
+
 /// @}

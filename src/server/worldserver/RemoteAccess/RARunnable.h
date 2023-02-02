@@ -22,7 +22,7 @@ class RARunnable : public ACE_Based::Runnable
 public:
     RARunnable();
     virtual ~RARunnable();
-    void run();
+    void run() override;
 
 private:
     ACE_Reactor* m_Reactor;
@@ -30,4 +30,5 @@ private:
 };
 
 #endif /* _TRINITY_RARUNNABLE_H_ */
+
 /// @}

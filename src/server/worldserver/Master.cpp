@@ -64,9 +64,9 @@ enum RealmFlags
 class WorldServerSignalHandler : public Trinity::SignalHandler
 {
     public:
-        virtual void HandleSignal(int SigNum)
+        virtual void HandleSignal(int sigNum)
         {
-            switch (SigNum)
+            switch (sigNum)
             {
                 case SIGINT:
                     World::StopNow(RESTART_EXIT_CODE);
@@ -84,28 +84,26 @@ class WorldServerSignalHandler : public Trinity::SignalHandler
 
 class FreezeDetectorRunnable : public ACE_Based::Runnable
 {
+private:
+    uint32 _loops;
+    uint32 _lastChange;
+    uint32 _delaytime;
+    bool _canstop;
 public:
     FreezeDetectorRunnable()
     {
-        m_Delaytime = 0;
-        m_CanStop = false;
+        _delaytime = 0;
+        _canstop = false;
     }
 
-    uint32 m_loops, m_lastchange;
-    uint32 w_loops, w_lastchange;
-    uint32 m_Delaytime;
+    void SetDelayTime(uint32 t) { _delaytime = t; }
 
-    bool m_CanStop;
-
-    void SetDelayTime(uint32 t) { m_Delaytime = t; }
-    void SetCanStop() { m_CanStop = true; }
-
-    void run(void)
+    void run() override
     {
-        if (!m_Delaytime)
+        if (!_delaytime)
             return;
 
-        sLog->outInfo(LOG_FILTER_WORLDSERVER, "Starting up anti-freeze thread (%u seconds max stuck time)...", m_Delaytime/1000);
+        TC_LOG_INFO(LOG_FILTER_WORLDSERVER, "Starting up anti-freeze thread (%u seconds max stuck time)...", _delaytime/1000);
 
         m_loops = 0;
         w_loops = 0;
@@ -119,24 +117,23 @@ public:
             uint32 curtime = getMSTime();
             // normal work
             uint32 worldLoopCounter = World::m_worldLoopCounter;
-            if (w_loops != worldLoopCounter)
+            if (_loops != worldLoopCounter)
             {
-                w_lastchange = curtime;
-                w_loops = worldLoopCounter;
+                _lastChange = curtime;
+                _loops = worldLoopCounter;
             }
             // possible freeze
-            else if (getMSTimeDiff(w_lastchange, curtime) > m_Delaytime)
+            else if (getMSTimeDiff(_lastChange, curtime) > _delaytime)
             {
-                //sLog->outError(LOG_FILTER_WORLDSERVER, "World Thread hangs, kicking out server!");
-               // assert(false);
-                //abort();
+                TC_LOG_ERROR(LOG_FILTER_WORLDSERVER, "World Thread hangs, kicking out server!");
+                assert(false);
             }
         }
 
         /// Protect against freeze on shutdown
         uint32 l_WorldStopTime = time(nullptr);
 
-        while (!m_CanStop)
+        while (!_canstop)
         {
             ACE_Based::Thread::Sleep(1000);
 
@@ -349,8 +346,7 @@ public:
 class ArenaLogToDBRunnable : public ACE_Based::Runnable
 {
 public:
-
-    void run ()
+    void run()
     {
         while (!World::IsStopped())
         {
@@ -407,10 +403,6 @@ const char* dumpTables[32] =
     "pet_spell_cooldown"
 };
 
-Master::Master() { }
-
-Master::~Master() { }
-
 /// Main function
 int Master::Run()
 {
@@ -434,10 +426,11 @@ int Master::Run()
     std::string pidfile = ConfigMgr::GetStringDefault("PidFile", "");
     if (!pidfile.empty())
     {
-        uint32 pid = CreatePIDFile(pidfile);
-        if (!pid)
+        if (uint32 pid = CreatePIDFile(pidFile))
+            TC_LOG_INFO(LOG_FILTER_WORLDSERVER, "Daemon PID: %u\n", pid);
+        else
         {
-            sLog->outError(LOG_FILTER_WORLDSERVER, "Cannot create PID file %s.\n", pidfile.c_str());
+            TC_LOG_ERROR(LOG_FILTER_WORLDSERVER, "Cannot create PID file %s.\n", pidFile.c_str());
             return 1;
         }
 
@@ -457,22 +450,22 @@ int Master::Run()
     sWorld->SetInitialWorldSettings();
 
     ///- Initialize the signal handlers
-    WorldServerSignalHandler SignalINT, SignalTERM;
-    #ifdef _WIN32
-    WorldServerSignalHandler SignalBREAK;
-    #endif /* _WIN32 */
+    WorldServerSignalHandler signalINT, signalTERM;
+#ifdef _WIN32
+    WorldServerSignalHandler signalBREAK;
+#endif
 
     ///- Register worldserver's signal handlers
-    ACE_Sig_Handler Handler;
-    Handler.register_handler(SIGINT, &SignalINT);
-    Handler.register_handler(SIGTERM, &SignalTERM);
+    ACE_Sig_Handler handle;
+    handle.register_handler(SIGINT, &signalINT);
+    handle.register_handler(SIGTERM, &signalTERM);
     #ifdef _WIN32
-    Handler.register_handler(SIGBREAK, &SignalBREAK);
+    handle.register_handler(SIGBREAK, &signalBREAK);
     #endif /* _WIN32 */
 
     ///- Launch WorldRunnable thread
-    ACE_Based::Thread world_thread(new WorldRunnable, "WorldRunnable");
-    world_thread.setPriority(ACE_Based::Highest);
+    ACE_Based::Thread worldThread(new WorldRunnable, "WorldRunnable");
+    worldThread.setPriority(ACE_Based::Highest);
 
     ACE_Based::Thread* cliThread = NULL;
 
@@ -486,7 +479,7 @@ int Master::Run()
         cliThread = new ACE_Based::Thread(new CliRunnable, "CliRunnable");
     }
 
-    ACE_Based::Thread rar_thread(new RARunnable, "RARunnable");
+    ACE_Based::Thread rarThread(new RARunnable, "RARunnable");
 #ifndef CROSS
     ACE_Based::Thread gmLogToDB_thread(new GmLogToDBRunnable, "GmLogToDBRunnable");
     ACE_Based::Thread gmChatLogToDB_thread(new GmChatLogToDBRunnable, "GmChatLogToDBRunnable");
@@ -494,35 +487,30 @@ int Master::Run()
 #endif /* not CROSS */
 
     ///- Handle affinity for multiple processors and process priority on Windows
-    #ifdef _WIN32
+#ifdef _WIN32
     {
         HANDLE hProcess = GetCurrentProcess();
 
-        uint32 Aff = ConfigMgr::GetIntDefault("UseProcessors", 0);
-        if (Aff > 0)
+        uint32 affinity = sConfigMgr->GetIntDefault("UseProcessors", 0);
+        if (affinity > 0)
         {
             ULONG_PTR appAff;
             ULONG_PTR sysAff;
 
             if (GetProcessAffinityMask(hProcess, &appAff, &sysAff))
             {
-                ULONG_PTR curAff = Aff & appAff;            // remove non accessible processors
+                ULONG_PTR currentAffinity = affinity & appAff; // remove non accessible processors
 
-                if (!curAff)
-                {
-                    sLog->outError(LOG_FILTER_WORLDSERVER, "Processors marked in UseProcessors bitmask (hex) %x are not accessible for the worldserver. Accessible processors bitmask (hex): %x", Aff, appAff);
-                }
+                if (!currentAffinity)
+                    TC_LOG_ERROR(LOG_FILTER_WORLDSERVER, "Processors marked in UseProcessors bitmask (hex) %x are not accessible for the worldserver. Accessible processors bitmask (hex): %x", affinity, appAff);
+                else if (SetProcessAffinityMask(hProcess, currentAffinity))
+                    TC_LOG_INFO(LOG_FILTER_WORLDSERVER, "Using processors (bitmask, hex): %x", currentAffinity);
                 else
-                {
-                    if (SetProcessAffinityMask(hProcess, curAff))
-                        sLog->outInfo(LOG_FILTER_WORLDSERVER, "Using processors (bitmask, hex): %x", curAff);
-                    else
-                        sLog->outError(LOG_FILTER_WORLDSERVER, "Can't set used processors (hex): %x", curAff);
-                }
+                    TC_LOG_ERROR(LOG_FILTER_WORLDSERVER, "Can't set used processors (hex): %x", currentAffinity);
             }
         }
 
-        bool Prio = ConfigMgr::GetBoolDefault("ProcessPriority", false);
+        if (bool priority = sConfigMgr->GetBoolDefault("ProcessPriority", false))
 
         //if (Prio && (m_ServiceStatus == -1)  /* need set to default process priority class in service mode*/)
         if (Prio)
@@ -533,40 +521,40 @@ int Master::Run()
                 sLog->outError(LOG_FILTER_WORLDSERVER, "Can't set worldserver process priority class.");
         }
     }
-    #endif
+#endif
+
     //Start soap serving thread
-    ACE_Based::Thread* soap_thread = NULL;
+    ACE_Based::Thread* soapThread = NULL;
 
     if (ConfigMgr::GetBoolDefault("SOAP.Enabled", false))
     {
         TCSoapRunnable* runnable = new TCSoapRunnable();
-        runnable->setListenArguments(ConfigMgr::GetStringDefault("SOAP.IP", "127.0.0.1"), uint16(ConfigMgr::GetIntDefault("SOAP.Port", 7878)));
-        soap_thread = new ACE_Based::Thread(runnable, "SoapRunnable");
+        runnable->SetListenArguments(sConfigMgr->GetStringDefault("SOAP.IP", "127.0.0.1"), uint16(sConfigMgr->GetIntDefault("SOAP.Port", 7878)));
+        soapThread = new ACE_Based::Thread(runnable, "SoapRunnable");
     }
 
-    FreezeDetectorRunnable* fdr = nullptr;
-
     ///- Start up freeze catcher thread
-    if (uint32 freeze_delay = ConfigMgr::GetIntDefault("MaxCoreStuckTime", 0))
+    if (uint32 freezeDelay = sConfigMgr->GetIntDefault("MaxCoreStuckTime", 0))
     {
+        FreezeDetectorRunnable* fdr = nullptr;
         fdr = new FreezeDetectorRunnable();
-        fdr->SetDelayTime(freeze_delay * 1000);
-        ACE_Based::Thread freeze_thread(fdr, "FreezeDetector");
-        freeze_thread.setPriority(ACE_Based::Highest);
+        fdr->SetDelayTime(freezeDelay * 1000);
+        ACE_Based::Thread freezeThread(fdr, "FreezeDetector");
+        freezeThread.setPriority(ACE_Based::Highest);
     }
 
 #ifndef CROSS
     ///- Launch the world listener socket
-    uint16 wsport = uint16(sWorld->getIntConfig(CONFIG_PORT_WORLD));
-    std::string bind_ip = ConfigMgr::GetStringDefault("BindIP", "0.0.0.0");
+    uint16 worldPort = uint16(sWorld->getIntConfig(CONFIG_PORT_WORLD));
+    std::string bindIp = sConfigMgr->GetStringDefault("BindIP", "0.0.0.0");
 #else /* CROSS */
-    uint16 wsport = ConfigMgr::GetIntDefault("InterRealmServer.Port", 12345);
+    uint16 worldPort = ConfigMgr::GetIntDefault("InterRealmServer.Port", 12345);
 #endif /* CROSS */
 
 #ifndef CROSS
-    if (sWorldSocketMgr->StartNetwork(wsport, bind_ip.c_str()) == -1)
+    if (sWorldSocketMgr->StartNetwork(worldPort, bindIp.c_str()) == -1)
 #else /* CROSS */
-    if (sIRSocketMgr->StartNetwork(wsport) == -1)
+    if (sIRSocketMgr->StartNetwork(worldPort) == -1)
 #endif /* CROSS */
     {
 #ifndef CROSS
@@ -592,14 +580,14 @@ int Master::Run()
 
     // when the main thread closes the singletons get unloaded
     // since worldrunnable uses them, it will crash if unloaded after master
-    world_thread.wait();
-    rar_thread.wait();
+    worldThread.wait();
+    rarThread.wait();
 
-    if (soap_thread)
+    if (soapThread)
     {
-        soap_thread->wait();
-        soap_thread->destroy();
-        delete soap_thread;
+        soapThread->wait();
+        soapThread->destroy();
+        delete soapThread;
     }
 
     // set server offline
@@ -619,7 +607,7 @@ int Master::Run()
         // this only way to terminate CLI thread exist at Win32 (alt. way exist only in Windows Vista API)
         //_exit(1);
         // send keyboard input to safely unblock the CLI thread
-        INPUT_RECORD b[5];
+        INPUT_RECORD b[4];
         HANDLE hStdIn = GetStdHandle(STD_INPUT_HANDLE);
         b[0].EventType = KEY_EVENT;
         b[0].Event.KeyEvent.bKeyDown = TRUE;
@@ -670,6 +658,7 @@ int Master::Run()
         fdr->SetCanStop();
 
     OpenSSLCrypto::threadsCleanup();
+
     // Exit the process with specified return value
     return World::GetExitCode();
 }
@@ -679,29 +668,29 @@ bool Master::_StartDB()
 {
     MySQL::Library_Init();
 
-    std::string dbstring;
-    uint8 async_threads, synch_threads;
+    std::string dbString;
+    uint8 asyncThreads, synchThreads;
 
-    dbstring = ConfigMgr::GetStringDefault("WorldDatabaseInfo", "");
-    if (dbstring.empty())
+    dbString = sConfigMgr->GetStringDefault("WorldDatabaseInfo", "");
+    if (dbString.empty())
     {
         sLog->outError(LOG_FILTER_WORLDSERVER, "World database not specified in configuration file");
         return false;
     }
 
-    async_threads = uint8(ConfigMgr::GetIntDefault("WorldDatabase.WorkerThreads", 1));
-    if (async_threads < 1 || async_threads > 32)
+    asyncThreads = uint8(sConfigMgr->GetIntDefault("WorldDatabase.WorkerThreads", 1));
+    if (asyncThreads < 1 || asyncThreads > 32)
     {
         sLog->outError(LOG_FILTER_WORLDSERVER, "World database: invalid number of worker threads specified. "
             "Please pick a value between 1 and 32.");
         return false;
     }
 
-    synch_threads = uint8(ConfigMgr::GetIntDefault("WorldDatabase.SynchThreads", 1));
+    synchThreads = uint8(sConfigMgr->GetIntDefault("WorldDatabase.SynchThreads", 1));
     ///- Initialize the world database
-    if (!WorldDatabase.Open(dbstring, async_threads, synch_threads))
+    if (!WorldDatabase.Open(dbString, asyncThreads, synchThreads))
     {
-        sLog->outError(LOG_FILTER_WORLDSERVER, "Cannot connect to world database %s", dbstring.c_str());
+        TC_LOG_ERROR(LOG_FILTER_WORLDSERVER, "Cannot connect to world database %s", dbString.c_str());
         return false;
     }
 
@@ -709,27 +698,27 @@ bool Master::_StartDB()
     //////////////////////////////////////////////////////////////////////////
 
     ///- Get character database info from configuration file
-    dbstring = ConfigMgr::GetStringDefault("CharacterDatabaseInfo", "");
-    if (dbstring.empty())
+    dbString = sConfigMgr->GetStringDefault("CharacterDatabaseInfo", "");
+    if (dbString.empty())
     {
         sLog->outError(LOG_FILTER_WORLDSERVER, "Character database not specified in configuration file");
         return false;
     }
 
-    async_threads = uint8(ConfigMgr::GetIntDefault("CharacterDatabase.WorkerThreads", 1));
-    if (async_threads < 1 || async_threads > 32)
+    asyncThreads = uint8(sConfigMgr->GetIntDefault("CharacterDatabase.WorkerThreads", 1));
+    if (asyncThreads < 1 || asyncThreads > 32)
     {
         sLog->outError(LOG_FILTER_WORLDSERVER, "Character database: invalid number of worker threads specified. "
             "Please pick a value between 1 and 32.");
         return false;
     }
 
-    synch_threads = uint8(ConfigMgr::GetIntDefault("CharacterDatabase.SynchThreads", 2));
+    synchThreads = uint8(sConfigMgr->GetIntDefault("CharacterDatabase.SynchThreads", 2));
 
     ///- Initialize the Character database
-    if (!CharacterDatabase.Open(dbstring, async_threads, synch_threads))
+    if (!CharacterDatabase.Open(dbString, asyncThreads, synchThreads))
     {
-        sLog->outError(LOG_FILTER_WORLDSERVER, "Cannot connect to Character database %s", dbstring.c_str());
+        TC_LOG_ERROR(LOG_FILTER_WORLDSERVER, "Cannot connect to Character database %s", dbString.c_str());
         return false;
     }
 
@@ -737,26 +726,26 @@ bool Master::_StartDB()
     //////////////////////////////////////////////////////////////////////////
 
     ///- Get login database info from configuration file
-    dbstring = ConfigMgr::GetStringDefault("LoginDatabaseInfo", "");
-    if (dbstring.empty())
+    dbString = sConfigMgr->GetStringDefault("LoginDatabaseInfo", "");
+    if (dbString.empty())
     {
         sLog->outError(LOG_FILTER_WORLDSERVER, "Login database not specified in configuration file");
         return false;
     }
 
-    async_threads = uint8(ConfigMgr::GetIntDefault("LoginDatabase.WorkerThreads", 1));
-    if (async_threads < 1 || async_threads > 32)
+    asyncThreads = uint8(sConfigMgr->GetIntDefault("LoginDatabase.WorkerThreads", 1));
+    if (asyncThreads < 1 || asyncThreads > 32)
     {
         sLog->outError(LOG_FILTER_WORLDSERVER, "Login database: invalid number of worker threads specified. "
             "Please pick a value between 1 and 32.");
         return false;
     }
 
-    synch_threads = uint8(ConfigMgr::GetIntDefault("LoginDatabase.SynchThreads", 1));
+    synchThreads = uint8(sConfigMgr->GetIntDefault("LoginDatabase.SynchThreads", 1));
     ///- Initialize the login database
-    if (!LoginDatabase.Open(dbstring, async_threads, synch_threads))
+    if (!LoginDatabase.Open(dbString, asyncThreads, synchThreads))
     {
-        sLog->outError(LOG_FILTER_WORLDSERVER, "Cannot connect to login database %s", dbstring.c_str());
+        TC_LOG_ERROR(LOG_FILTER_WORLDSERVER, "Cannot connect to login database %s", dbString.c_str());
         return false;
     }
 
@@ -766,52 +755,52 @@ bool Master::_StartDB()
     if (ConfigMgr::GetBoolDefault("MopTransfer.enable", false))
     {
         ///- Get MoP login database info from configuration file
-        dbstring = ConfigMgr::GetStringDefault("LoginMoPDatabaseInfo", "");
-        if (dbstring.empty())
+        dbString = sConfigMgr->GetStringDefault("LoginMoPDatabaseInfo", "");
+        if (dbString.empty())
         {
             sLog->outError(LOG_FILTER_WORLDSERVER, "Login mop database not specified in configuration file");
             return false;
         }
 
-        async_threads = uint8(ConfigMgr::GetIntDefault("LoginMoPDatabaseInfo.WorkerThreads", 1));
-        if (async_threads < 1 || async_threads > 32)
+        asyncThreads = uint8(sConfigMgr->GetIntDefault("LoginMoPDatabaseInfo.WorkerThreads", 1));
+        if (asyncThreads < 1 || asyncThreads > 32)
         {
             sLog->outError(LOG_FILTER_WORLDSERVER, "Login mop database: invalid number of worker threads specified. "
                 "Please pick a value between 1 and 32.");
             return false;
         }
 
-        async_threads = uint8(ConfigMgr::GetIntDefault("LoginMoPDatabaseInfo.WorkerThreads", 1));
+        asyncThreads = uint8(sConfigMgr->GetIntDefault("LoginMoPDatabaseInfo.WorkerThreads", 1));
         ///- Initialize the login database
-        if (!LoginMopDatabase.Open(dbstring, async_threads, synch_threads))
+        if (!LoginMopDatabase.Open(dbString, asyncThreads, synchThreads))
         {
-            sLog->outError(LOG_FILTER_WORLDSERVER, "Cannot connect to login mop database %s", dbstring.c_str());
+            TC_LOG_ERROR(LOG_FILTER_WORLDSERVER, "Cannot connect to login mop database %s", dbString.c_str());
             return false;
         }
     }
 
     if (ConfigMgr::GetBoolDefault("WebDatabase.enable", false))
     {
-        dbstring = ConfigMgr::GetStringDefault("WebDatabaseInfo", "");
-        if (dbstring.empty())
+        dbString = sConfigMgr->GetStringDefault("WebDatabaseInfo", "");
+        if (dbString.empty())
         {
             sLog->outError(LOG_FILTER_WORLDSERVER, "Web database not specified in configuration file");
             return false;
         }
 
-        async_threads = uint8(ConfigMgr::GetIntDefault("WebDatabaseInfo.WorkerThreads", 1));
-        if (async_threads < 1 || async_threads > 32)
+        asyncThreads = uint8(sConfigMgr->GetIntDefault("WebDatabaseInfo.WorkerThreads", 1));
+        if (asyncThreads < 1 || asyncThreads > 32)
         {
             sLog->outError(LOG_FILTER_WORLDSERVER, "Web database: invalid number of worker threads specified. "
                 "Please pick a value between 1 and 32.");
             return false;
         }
 
-        synch_threads = uint8(ConfigMgr::GetIntDefault("WebDatabaseInfo.SynchThreads", 1));
+        synchThreads = uint8(sConfigMgr->GetIntDefault("WebDatabaseInfo.SynchThreads", 1));
         ///- Initialize the login database
-        if (!WebDatabase.Open(dbstring, async_threads, synch_threads))
+        if (!WebDatabase.Open(dbString, asyncThreads, synchThreads))
         {
-            sLog->outError(LOG_FILTER_WORLDSERVER, "Cannot connect to web database %s", dbstring.c_str());
+            TC_LOG_ERROR(LOG_FILTER_WORLDSERVER, "Cannot connect to web database %s", dbString.c_str());
             return false;
         }
     }
@@ -819,27 +808,27 @@ bool Master::_StartDB()
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
 
-    dbstring = ConfigMgr::GetStringDefault("HotfixDatabaseInfo", "");
-    if (dbstring.empty())
+    dbString = sConfigMgr->GetStringDefault("HotfixDatabaseInfo", "");
+    if (dbString.empty())
     {
         sLog->outError(LOG_FILTER_WORLDSERVER, "Hotfix database not specified in configuration file");
         return false;
     }
 
-    async_threads = uint8(ConfigMgr::GetIntDefault("HotfixDatabase.WorkerThreads", 1));
-    if (async_threads < 1 || async_threads > 32)
+    asyncThreads = uint8(sConfigMgr->GetIntDefault("HotfixDatabase.WorkerThreads", 1));
+    if (asyncThreads < 1 || asyncThreads > 32)
     {
         sLog->outError(LOG_FILTER_WORLDSERVER, "Hotfix database: invalid number of worker threads specified. "
                        "Please pick a value between 1 and 32.");
         return false;
     }
 
-    synch_threads = uint8(ConfigMgr::GetIntDefault("HotfixDatabase.SynchThreads", 1));
+    synchThreads = uint8(sConfigMgr->GetIntDefault("HotfixDatabase.SynchThreads", 1));
 
     ///- Initialize the hotfix database
-    if (!HotfixDatabase.Open(dbstring, async_threads, synch_threads))
+    if (!HotfixDatabase.Open(dbString, asyncThreads, synchThreads))
     {
-        sLog->outError(LOG_FILTER_WORLDSERVER, "Cannot connect to Hotfix database %s", dbstring.c_str());
+        TC_LOG_ERROR(LOG_FILTER_WORLDSERVER, "Cannot connect to Hotfix database %s", dbString.c_str());
         return false;
     }
 
