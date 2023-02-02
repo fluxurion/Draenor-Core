@@ -18,10 +18,11 @@
 
 #include <ace/Dev_Poll_Reactor.h>
 #include <ace/TP_Reactor.h>
+#include <ace/ACE.h>
+#include <ace/Sig_Handler.h>
 #include <openssl/opensslv.h>
 #include <openssl/crypto.h>
 #include <thread>
-#include <boost/asio/signal_set.hpp>
 
 //#include <Reporting/Reporter.hpp>
 
@@ -51,20 +52,21 @@ bool stopEvent = false;                                     // Setting it to tru
 
 LoginDatabaseWorkerPool LoginDatabase;                      // Accessor to the auth server database
 
-void SignalHandler(const boost::system::error_code& error, int signalNumber)
+// Handle authserver's termination signals
+class AuthServerSignalHandler : public Trinity::SignalHandler
 {
-	//TC_LOG_ERROR("server.authserver", "SIGNAL HANDLER WORKING");
-	if (!error)
-	{
-		switch (signalNumber)
-		{
-		case SIGINT:
-		case SIGTERM:
-			stopEvent = true;
-			break;
-		}
-	}
-}
+public:
+    virtual void HandleSignal(int SigNum)
+    {
+        switch (SigNum)
+        {
+        case SIGINT:
+        case SIGTERM:
+            stopEvent = true;
+            break;
+        }
+    }
+};
 
 /// Print out the usage string for this program on the console.
 void usage(const char *prog)
@@ -212,11 +214,13 @@ extern int main(int argc, char **argv)
     //sLog->outInfo(LOG_FILTER_WORLDSERVER, "REPORTER: Creating instance.");
     //sReporter->SetAddresses({ ConfigMgr::GetStringDefault("ReporterAddress", "localhost:3000") });
 
-	boost::asio::io_service io_service;
+    // Initialise the signal handlers
+    AuthServerSignalHandler SignalINT, SignalTERM;
 
-	boost::asio::signal_set signals(io_service, SIGINT, SIGTERM);
-
-	signals.async_wait(SignalHandler);
+    // Register authservers's signal handlers
+    ACE_Sig_Handler Handler;
+    Handler.register_handler(SIGINT, &SignalINT);
+    Handler.register_handler(SIGTERM, &SignalTERM);
 
     ///- Handle affinity for multiple processors and process priority on Windows
 #ifdef _WIN32
@@ -268,8 +272,6 @@ extern int main(int argc, char **argv)
 
         if (ACE_Reactor::instance()->run_reactor_event_loop(interval) == -1)
             break;
-
-		io_service.run();
 
         if ((++loopCounter) == numLoops)
         {
