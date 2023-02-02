@@ -76,7 +76,7 @@ struct PhaseInfo
     bool NeedsClientSideUpdate() const { return terrainswapmap || phaseId || worldmaparea; }
 };
 
-typedef std::unordered_map<uint32 /*spellId*/, PhaseInfo> PhaseInfoContainer;
+typedef std::unordered_map<uint32 /*spellId*/, std::list<PhaseInfo>> PhaseInfoContainer;
 
 struct PhaseData
 {
