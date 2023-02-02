@@ -1203,6 +1203,9 @@ void AddSC_boss_xeritac();
 void AddSC_boss_archmage_sol();
 void AddSC_boss_yalnu();
 
+// Events
+void AddSC_event_childrens_week();
+
 /// Battlegrounds
 void AddSC_BattlegroundAVcripts();
 void AddSC_BattlegroundDGScripts();
@@ -2281,6 +2284,13 @@ void AddDraenorScripts()
     /// Draenor Scenario
     AddSC_instance_scenario_fate_of_karabor();
     AddSC_instance_scenario_black_temple();
+#endif
+}
+
+void AddEventScripts()
+{
+#ifdef SCRIPTS
+    AddSC_event_childrens_week();
 #endif
 }
 

@@ -6,8 +6,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef LOG_H
-#define LOG_H
+#ifndef TRINITYCORE_LOG_H
+#define TRINITYCORE_LOG_H
 
 #include "Common.h"
 #include "Define.h"

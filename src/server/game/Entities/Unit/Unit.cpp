@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 //
 // Project-Hellscream https://hellscream.org
 // Copyright (C) 2018-2020 Project-Hellscream-6.2
@@ -1056,7 +1056,10 @@ uint32 Unit::DealDamage(Unit* victim, uint32 damage, CleanDamage const* cleanDam
         }
     }
 
+    sLog->outDebug(LOG_FILTER_UNITS, "DealDamageStart");
+
     uint32 health = victim->GetHealth();
+    sLog->outDebug(LOG_FILTER_UNITS, "Unit " UI64FMTD " dealt %u damage to unit " UI64FMTD, GetGUID(), damage, victim->GetGUID());
 
     // duel ends when player has 1 or less hp
     bool duel_hasEnded = false;
@@ -21491,7 +21494,7 @@ bool Unit::HandleSpellClick(Unit* clicker, int8 seatId)
             else    // This can happen during Player::_LoadAuras
             {
                 int32 bp0[SpellEffIndex::MAX_EFFECTS];
-                for (uint8 eff = 0; eff < SpellEffIndex::MAX_EFFECTS; eff++)
+                for (uint32 eff = 0; eff < SpellEffIndex::MAX_EFFECTS; eff++)
                     bp0[eff] = spellEntry->Effects[i].BasePoints;
                 bp0[i] = seatId + 1;
                 Aura::TryRefreshStackOrCreate(spellEntry, MAX_EFFECT_MASK, this, clicker, &bp0[0], NULL, origCasterGUID);

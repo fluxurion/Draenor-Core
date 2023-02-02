@@ -111,7 +111,7 @@ class DB2StorageBase
             {
                 switch (m_Format[l_I])
                 {
-                    case FT_INDEX:
+                    case FT_IND:
                     case FT_INT:
                         p_Buffer << *(uint32*)l_Raw;
                         l_Raw += 4;
@@ -319,7 +319,7 @@ template<class T> class DB2Storage : public DB2StorageBase
                                         *((float*)(&l_WritePtr[l_WritePosition])) = 0.0f;
                                         l_WritePosition += 4;
                                         break;
-                                    case FT_INDEX:
+                                    case FT_IND:
                                     case FT_INT:
                                         *((uint32*)(&l_WritePtr[l_WritePosition])) = uint32(0);
                                         l_WritePosition += 4;
@@ -352,7 +352,7 @@ template<class T> class DB2Storage : public DB2StorageBase
                                         *((float*)(&l_WritePtr[l_WritePosition])) = l_SQLFields[l_SQLColumnNumber].GetFloat();
                                         l_WritePosition += 4;
                                         break;
-                                    case FT_INDEX:
+                                    case FT_IND:
                                     case FT_INT:
                                         *((uint32*)(&l_WritePtr[l_WritePosition])) = l_SQLFields[l_SQLColumnNumber].GetUInt32();
                                         l_WritePosition += 4;
@@ -450,7 +450,7 @@ template<class T> class DB2Storage : public DB2StorageBase
                             switch (m_Format[l_I])
                             {
                                 case FT_FLOAT:
-                                case FT_INDEX:
+                                case FT_IND:
                                 case FT_INT:
                                     l_WritePosition += 4;
                                     break;
@@ -553,7 +553,7 @@ template<class T> class DB2Storage : public DB2StorageBase
                                     *((float*)(&l_WritePtr[l_WritePosition])) = 0.0f;
                                     l_WritePosition += 4;
                                     break;
-                                case FT_INDEX:
+                                case FT_IND:
                                 case FT_INT:
                                     *((uint32*)(&l_WritePtr[l_WritePosition])) = uint32(0);
                                     l_WritePosition += 4;
@@ -586,7 +586,7 @@ template<class T> class DB2Storage : public DB2StorageBase
                                     *((float*)(&l_WritePtr[l_WritePosition])) = l_SQLFields[l_SQLColumnNumber].GetFloat();
                                     l_WritePosition += 4;
                                     break;
-                                case FT_INDEX:
+                                case FT_IND:
                                 case FT_INT:
                                     *((uint32*)(&l_WritePtr[l_WritePosition])) = l_SQLFields[l_SQLColumnNumber].GetUInt32();
                                     l_WritePosition += 4;
@@ -683,7 +683,7 @@ template<class T> class DB2Storage : public DB2StorageBase
                             switch (m_Format[l_I])
                             {
                                 case FT_FLOAT:
-                                case FT_INDEX:
+                                case FT_IND:
                                 case FT_INT:
                                     l_WritePosition += 4;
                                     break;

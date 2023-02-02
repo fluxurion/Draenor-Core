@@ -17,7 +17,7 @@ enum Encounters
     BOSS_BURU                   = 3,
     BOSS_AYAMISS                = 4,
     BOSS_OSSIRIAN               = 5,
-    MAX_ENCOUNTER
+    MAX_ENCOUNTER               = 6
 };
 
 enum Creatures
@@ -30,7 +30,14 @@ enum Creatures
     NPC_OSSIRIAN                = 15339,
     NPC_HIVEZARA_HORNET         = 15934,
     NPC_HIVEZARA_SWARMER        = 15546,
-    NPC_HIVEZARA_LARVA          = 15555
+    NPC_HIVEZARA_LARVA          = 15555,
+    NPC_SAND_VORTEX             = 15428,
+    NPC_OSSIRIAN_TRIGGER        = 15590,
+};
+
+enum GameObjects
+{
+    GO_OSSIRIAN_CRYSTAL = 180619,
 };
 
 #endif

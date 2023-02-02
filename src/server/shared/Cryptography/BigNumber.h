@@ -16,73 +16,77 @@ struct bignum_st;
 
 class BigNumber
 {
-    public:
-        BigNumber();
-        BigNumber(const BigNumber &bn);
-        BigNumber(uint32);
-        ~BigNumber();
+public:
+    BigNumber();
+    BigNumber(BigNumber const& bn);
+    BigNumber(uint32);
+    ~BigNumber();
 
-        void SetDword(uint32);
-        void SetQword(uint64);
-        void SetBinary(const uint8 *bytes, int len);
-        void SetHexStr(const char *str);
+    void SetDword(uint32);
+    void SetQword(uint64);
+    void SetBinary(uint8 const* bytes, int32 len);
+    void SetHexStr(char const* str);
 
-        void SetRand(int numbits);
+    void SetRand(int32 numbits);
 
-        BigNumber& operator=(const BigNumber &bn);
+    BigNumber& operator=(BigNumber const& bn);
 
-        BigNumber operator+=(const BigNumber &bn);
-        BigNumber operator+(const BigNumber &bn)
-        {
-            BigNumber t(*this);
-            return t += bn;
-        }
-        BigNumber operator-=(const BigNumber &bn);
-        BigNumber operator-(const BigNumber &bn)
-        {
-            BigNumber t(*this);
-            return t -= bn;
-        }
-        BigNumber operator*=(const BigNumber &bn);
-        BigNumber operator*(const BigNumber &bn)
-        {
-            BigNumber t(*this);
-            return t *= bn;
-        }
-        BigNumber operator/=(const BigNumber &bn);
-        BigNumber operator/(const BigNumber &bn)
-        {
-            BigNumber t(*this);
-            return t /= bn;
-        }
-        BigNumber operator%=(const BigNumber &bn);
-        BigNumber operator%(const BigNumber &bn)
-        {
-            BigNumber t(*this);
-            return t %= bn;
-        }
+    BigNumber operator+=(BigNumber const& bn);
+    BigNumber operator+(BigNumber const& bn)
+    {
+        BigNumber t(*this);
+        return t += bn;
+    }
 
-        bool isZero() const;
+    BigNumber operator-=(BigNumber const& bn);
+    BigNumber operator-(BigNumber const& bn)
+    {
+        BigNumber t(*this);
+        return t -= bn;
+    }
 
-        BigNumber ModExp(const BigNumber &bn1, const BigNumber &bn2);
-        BigNumber Exp(const BigNumber &);
+    BigNumber operator*=(BigNumber const& bn);
+    BigNumber operator*(BigNumber const& bn)
+    {
+        BigNumber t(*this);
+        return t *= bn;
+    }
 
-        int GetNumBytes(void);
+    BigNumber operator/=(BigNumber const& bn);
+    BigNumber operator/(BigNumber const& bn)
+    {
+        BigNumber t(*this);
+        return t /= bn;
+    }
 
-        struct bignum_st *BN() { return _bn; }
+    BigNumber operator%=(BigNumber const& bn);
+    BigNumber operator%(BigNumber const& bn)
+    {
+        BigNumber t(*this);
+        return t %= bn;
+    }
 
-        uint32 AsDword();
-        uint8* AsByteArray(int minSize = 0, bool reverse = true);
+    bool isZero() const;
 
-        const char *AsHexStr();
-        const char *AsDecStr();
+    BigNumber ModExp(BigNumber const& bn1, BigNumber const& bn2);
+    BigNumber Exp(BigNumber const&);
 
-    private:
-        struct bignum_st *_bn;
-        uint8 *_array;
+    int32 GetNumBytes(void);
 
-        // This mutex only controls thread-safe access to AsByteArray() and should be replaced with a thread-safe implementation of BigNumber
-        ACE_Mutex _lock;
+    struct bignum_st* BN() { return _bn; }
+
+    uint32 AsDword();
+    uint8* AsByteArray(int32 minSize = 0, bool reverse = true);
+
+    char* AsHexStr() const;
+    char* AsDecStr() const;
+
+private:
+    struct bignum_st* _bn;
+    uint8* _array;
+
+    // This mutex only controls thread-safe access to AsByteArray() and should be replaced with a thread-safe implementation of BigNumber
+    ACE_Mutex _lock;
 
 };
 #endif

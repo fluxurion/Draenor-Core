@@ -204,7 +204,7 @@ namespace Battlepay
 
             Manager()
             {
-                m_WalletName      = "Firestorm points";     ///< @TODO: Take it from server conf
+                m_WalletName      = "Battle Coin";     ///< @TODO: Take it from server conf
                 m_PurchaseIDCount = 0;
             }
 

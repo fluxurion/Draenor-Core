@@ -849,7 +849,7 @@ class World
         /// Get the maximum skill level a player can reach
         uint16 GetConfigMaxSkillValue() const
         {
-            uint8 lvl = uint8(getIntConfig(CONFIG_MAX_PLAYER_LEVEL));
+            uint16 lvl = uint16(getIntConfig(CONFIG_MAX_PLAYER_LEVEL));
 
             if (lvl >= 1 && lvl < 10)
                 return 75;

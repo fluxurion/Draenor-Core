@@ -112,7 +112,7 @@ struct map_liquidHeader
     float  liquidLevel;
 };
 
-enum ZLiquidStatus
+enum ZLiquidStatus : uint32
 {
     LIQUID_MAP_NO_WATER     = 0x00000000,
     LIQUID_MAP_ABOVE_WATER  = 0x00000001,

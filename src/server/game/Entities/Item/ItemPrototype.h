@@ -714,6 +714,13 @@ struct _Socket
     uint32 Content;
 };
 
+// GCC have alternative #pragma pack() syntax and old gcc version not support pack(pop), also any gcc version not support it at some platform
+#if defined(__GNUC__)
+#pragma pack()
+#else
+#pragma pack(pop)
+#endif
+
 #define MAX_ITEM_PROTO_DAMAGES 2                            // changed in 3.1.0
 #define MAX_ITEM_PROTO_SOCKETS 3
 #define MAX_ITEM_PROTO_SPELLS  5
@@ -1063,10 +1070,4 @@ struct ItemLocale
     StringVector Description;
 };
 
-// GCC have alternative #pragma pack() syntax and old gcc version not support pack(pop), also any gcc version not support it at some platform
-#if defined(__GNUC__)
-#pragma pack()
-#else
-#pragma pack(pop)
-#endif
 #endif
