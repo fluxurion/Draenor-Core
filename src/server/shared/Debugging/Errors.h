@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ////////////////////////////////////////////////////////////////////////////////
 //
 // Project-Hellscream https://hellscream.org
@@ -6,8 +7,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ERRORS_H
-#define ERRORS_H
+#ifndef TRINITYCORE_ERRORS_H
+#define TRINITYCORE_ERRORS_H
 
 #include "Common.h"
 #include "Log.h"
@@ -21,3 +22,4 @@
 
 #define ASSERT WPAssert
 #endif
+
