@@ -1978,7 +1978,7 @@ void WorldSession::LoadCharacter(CharacterPortData const& p_CharacterPortData)
 
         m_playerLoading = false;
 
-        TC_LOG_INFO(LOG_FILTER_WORLDSERVER, "Cannot initialize query holder.");
+        TC_LOG_INFO("server.worldserver", "Cannot initialize query holder.");
         return;
     }
 
@@ -1990,7 +1990,7 @@ void WorldSession::LoadCharacterDone(LoginQueryHolder* p_CharHolder, LoginDBQuer
 {
     if (!p_CharHolder || !p_AuthHolder)
     {
-        TC_LOG_INFO(LOG_FILTER_WORLDSERVER, "There is no query holder in WorldSession::LoadCharacterDone.");
+        TC_LOG_INFO("server.worldserver", "There is no query holder in WorldSession::LoadCharacterDone.");
         return;
     }
 
@@ -1999,7 +1999,7 @@ void WorldSession::LoadCharacterDone(LoginQueryHolder* p_CharHolder, LoginDBQuer
         delete p_CharHolder;
         delete p_AuthHolder;
 
-        TC_LOG_INFO(LOG_FILTER_WORLDSERVER, "There is no player in WorldSession::LoadCharacterDone.");
+        TC_LOG_INFO("server.worldserver", "There is no player in WorldSession::LoadCharacterDone.");
 
         return;
     }

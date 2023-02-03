@@ -2332,7 +2332,7 @@ void World::SetInitialWorldSettings()
     if (l_Result)
         m_LastAccountLogId = l_Result->Fetch()[0].GetUInt64();
 
-    TC_LOG_INFO(LOG_FILTER_WORLDSERVER, "World initialized in %u minutes %u seconds", (startupDuration / 60000), ((startupDuration % 60000) / 1000));
+    TC_LOG_INFO("server.worldserver", "World initialized in %u minutes %u seconds", (startupDuration / 60000), ((startupDuration % 60000) / 1000));
     sLog->EnableDBAppenders();
 
     sWildBattlePetMgr->PopulateAll();
@@ -4428,7 +4428,7 @@ void World::_updateTransfers()
 
                 if (l_Error)
                 {
-                    TC_LOG_TRACE(LOG_FILTER_WORLDSERVER, "PlayerDump fail ! (guid %u)", l_CharGUID);
+                    TC_LOG_TRACE("server.worldserver", "PlayerDump fail ! (guid %u)", l_CharGUID);
                     LoginDatabase.PExecute("UPDATE webshop_delivery_interrealm_transfer SET nb_attempt = nb_attempt + 1 WHERE id = %u", l_Transaction);
                     continue;
                 }

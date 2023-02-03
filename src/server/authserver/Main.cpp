@@ -211,7 +211,7 @@ extern int main(int argc, char** argv)
     }
 
     ///- Initializing the Reporter.
-    //TC_LOG_INFO(LOG_FILTER_WORLDSERVER, "REPORTER: Creating instance.");
+    //TC_LOG_INFO("server.worldserver", "REPORTER: Creating instance.");
     //sReporter->SetAddresses({ ConfigMgr::GetStringDefault("ReporterAddress", "localhost:3000") });
 
     // Initialize the signal handlers

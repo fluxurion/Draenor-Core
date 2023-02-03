@@ -389,7 +389,7 @@ class npc_energized_phoenix : public CreatureScript
 
                         if (!l_PlayerList.empty())
                         {
-                            JadeCore::RandomResizeList(l_PlayerList, 1);
+                            Trinity::RandomResizeList(l_PlayerList, 1);
 
                             if (Player* l_Player = l_PlayerList.front())
                             {
