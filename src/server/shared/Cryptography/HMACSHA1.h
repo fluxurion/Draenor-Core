@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Project-Hellscream https://hellscream.org
-// Copyright (C) 2018-2020 Project-Hellscream-6.2
-// Discord https://discord.gg/CWCF3C9
+//  MILLENIUM-STUDIO
+//  Copyright 2016 Millenium-studio SARL
+//  All Rights Reserved.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -30,7 +30,7 @@ class HmacHash
         uint8 *GetDigest() { return (uint8*)m_digest; }
         int GetLength() const { return SHA_DIGEST_LENGTH; }
     private:
-        HMAC_CTX m_ctx;
+        HMAC_CTX *ctx;
         uint8 m_digest[SHA_DIGEST_LENGTH];
 };
 
@@ -51,9 +51,8 @@ class HmacHash256
         return SHA256_DIGEST_LENGTH;
     }
     private:
-    HMAC_CTX m_ctx;
+    HMAC_CTX *ctx;
     uint8 m_digest[SHA256_DIGEST_LENGTH];
 };
 
 #endif
-
