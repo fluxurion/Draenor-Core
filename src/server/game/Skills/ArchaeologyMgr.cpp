@@ -12,7 +12,7 @@
 
 const static int q_patt[2][2] = { { 0, 1 }, { 3, 2 } };
 
-namespace JadeCore
+namespace Trinity
 {
     bool IsPointInZone(const ResearchPOIPoint &test, const ResearchPOIPoints &polygon)
     {

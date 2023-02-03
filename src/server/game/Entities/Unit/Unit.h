@@ -2774,6 +2774,8 @@ class Unit : public WorldObject
         uint64 GetPersonnalChauffeur() const { return m_PersonnalChauffeur; }
         uint64 m_PersonnalChauffeur;
 
+        uint8 m_cloudStacks;
+		
         void SetRooted(bool apply);
 
         Position m_LastAreaPosition;

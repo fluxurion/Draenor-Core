@@ -18,6 +18,7 @@ public:
     ~AppenderDB();
 
     void setRealmId(uint32 realmId);
+    void getRealmId(uint32 realmId);
 
 private:
     uint32 realmId;

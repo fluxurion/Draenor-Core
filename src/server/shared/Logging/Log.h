@@ -33,6 +33,7 @@ public:
     void outCharDump(char const* str, uint32 account_id, uint32 guid, char const* name);
 
     void SetRealmId(uint32 id);
+    uint32 GetRealmID() const { return 1; } //hackfix, set realm as ID 1, need more work on howto identifi player's realm id
 
     void outGmChat(uint32 message_type,
         uint32 from_account_id, std::string from_account_name,

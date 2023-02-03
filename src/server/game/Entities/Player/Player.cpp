@@ -272,13 +272,6 @@ uint32 PlayerTaxi::GetCurrentTaxiPath() const
     return path;
 }
 
-std::ostringstream& operator<< (std::ostringstream& ss, PlayerTaxi const& taxi)
-{
-    for (uint8 i = 0; i < TaxiMaskSize; ++i)
-        ss << uint32(taxi.m_taximask[i]) << ' ';
-    return ss;
-}
-
 //== TradeData =================================================
 
 TradeData* TradeData::GetTraderData() const
@@ -626,20 +619,6 @@ void KillRewarder::Reward()
     if (_killer->getClass() == CLASS_MAGE && _killer->HasSpell(108843))
         if (_killer->isHonorOrXPTarget(_victim))
             _killer->CastSpell(_killer, 113853, true); // Blazing Speed aurastate
-
-
-    // 5. Credit instance encounter.
-    // 6. Update guild achievements.
-    if (Creature* victim = _victim->ToCreature())
-    {
-        if (victim->IsDungeonBoss())
-            if (InstanceScript* instance = _victim->GetInstanceScript())
-                instance->UpdateEncounterState(ENCOUNTER_CREDIT_KILL_CREATURE, _victim->GetEntry(), _victim);
-
-        if (uint32 guildId = victim->GetMap()->GetOwnerGuildId())
-            if (Guild* guild = sGuildMgr->GetGuildById(guildId))
-                guild->GetAchievementMgr().UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_KILL_CREATURE, victim->GetEntry(), 1, victim, _killer);
-    }
 
 }
 

@@ -29,6 +29,12 @@ void AppenderDB::_write(LogMessage const& message)
     LoginDatabase.Execute(stmt);
 }
 
+void AppenderDB::getRealmId(uint32 _realmId)
+{
+    //enabled = true;
+    realmId = _realmId;
+}
+
 void AppenderDB::setRealmId(uint32 _realmId)
 {
     enabled = true;

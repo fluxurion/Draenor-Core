@@ -60,15 +60,15 @@ uint32 g_RealmID;                                             ///< Id of the rea
 /// Print out the usage string for this program on the console.
 void usage(const char* prog)
 {
-    TC_LOG_INFO("server.worldserver", "Usage: \n %s [<options>]\n"
-        "    -c config_file           use config_file as configuration file\n\r"
-        #ifdef _WIN32
-        "    Running as service functions:\n\r"
-        "    --service                run as service\n\r"
-        "    -s install               install service\n\r"
-        "    -s uninstall             uninstall service\n\r"
-        #endif
-        , prog);
+    printf("Usage:\n");
+    printf(" %s [<options>]\n", prog);
+    printf("    -c config_file           use config_file as configuration file\n");
+#ifdef _WIN32
+    printf("    Running as service functions:\n");
+    printf("    --service                run as service\n");
+    printf("    -s install               install service\n");
+    printf("    -s uninstall             uninstall service\n");
+#endif
 }
 
 /// Launch the Trinity server
