@@ -33,6 +33,7 @@ public:
     void outCharDump(char const* str, uint32 account_id, uint32 guid, char const* name);
 
     void SetRealmId(uint32 id);
+    uint32 GetRealmID() const { return realm; }
 
     void outGmChat(uint32 message_type,
         uint32 from_account_id, std::string from_account_name,
@@ -62,6 +63,7 @@ private:
     std::string m_logsTimestamp;
 
     LogWorker* worker;
+    uint32 realm;
 };
 
 inline Logger const* Log::GetLoggerByType(std::string const& type) const
