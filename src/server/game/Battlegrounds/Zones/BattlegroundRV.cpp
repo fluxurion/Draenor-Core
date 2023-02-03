@@ -121,7 +121,7 @@ void BattlegroundRV::HandleKillPlayer(Player* player, Player* killer)
 
     if (!killer)
     {
-        TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BattlegroundRV: Killer player not found");
+        TC_LOG_ERROR("bg.battleground", "BattlegroundRV: Killer player not found");
         return;
     }
 

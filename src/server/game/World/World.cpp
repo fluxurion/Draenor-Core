@@ -4429,7 +4429,7 @@ void World::_updateTransfers()
 
                 if (l_Error)
                 {
-                    sLog->outTrace(LOG_FILTER_WORLDSERVER, "PlayerDump fail ! (guid %u)", l_CharGUID);
+                    TC_LOG_TRACE(LOG_FILTER_WORLDSERVER, "PlayerDump fail ! (guid %u)", l_CharGUID);
                     LoginDatabase.PExecute("UPDATE webshop_delivery_interrealm_transfer SET nb_attempt = nb_attempt + 1 WHERE id = %u", l_Transaction);
                     continue;
                 }

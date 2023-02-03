@@ -2238,7 +2238,7 @@ SpellCastResult SpellInfo::CheckShapeshift(uint32 p_Shapeshift) const
         shapeInfo = sSpellShapeshiftFormStore.LookupEntry(p_Shapeshift);
         if (!shapeInfo)
         {
-            TC_LOG_ERROR(LOG_FILTER_SPELLS_AURAS, "GetErrorAtShapeshiftedCast: unknown shapeshift %u", p_Shapeshift);
+            TC_LOG_ERROR("spells", "GetErrorAtShapeshiftedCast: unknown shapeshift %u", p_Shapeshift);
             return SPELL_CAST_OK;
         }
         actAsShifted = !(shapeInfo->m_Flags & 1);            // shapeshift acts as normal form for spells
@@ -3380,7 +3380,7 @@ void SpellInfo::CalcPowerCost(Unit const* caster, SpellSchoolMask schoolMask, in
                     break;
                 case POWER_RUNES:
                 case POWER_RUNIC_POWER:
-                    TC_LOG_DEBUG(LOG_FILTER_SPELLS_AURAS, "CalculateManaCost: Not implemented yet!");
+                    TC_LOG_DEBUG("spells", "CalculateManaCost: Not implemented yet!");
                     break;
                 default:
                     TC_LOG_ERROR("server.worldserver", "SpellInfo::CalcPowerCost: Unknown power type [%u] with spell [%u]", PowerType, Id);
@@ -3406,7 +3406,7 @@ void SpellInfo::CalcPowerCost(Unit const* caster, SpellSchoolMask schoolMask, in
                     break;
                 case POWER_RUNES:
                 case POWER_RUNIC_POWER:
-                    TC_LOG_DEBUG(LOG_FILTER_SPELLS_AURAS, "CalculateManaCost: Not implemented yet!");
+                    TC_LOG_DEBUG("spells", "CalculateManaCost: Not implemented yet!");
                     break;
                 default:
                     TC_LOG_ERROR("server.worldserver", "SpellInfo::CalcPowerCost: Unknown power type [%u] with spell [%u]", PowerType, Id);

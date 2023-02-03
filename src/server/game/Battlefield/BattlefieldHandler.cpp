@@ -118,7 +118,7 @@ void WorldSession::HandleBfQueueInviteResponse(WorldPacket & p_Packet)
     p_Packet >> l_QueueID;
     l_AcceptedInvite = p_Packet.ReadBit();
 
-    sLog->outTrace("misc", "HandleQueueInviteResponse: GUID:" UI64FMTD " Accepted:%u", (uint64)l_QueueID, l_AcceptedInvite);
+    TC_LOG_TRACE("misc", "HandleQueueInviteResponse: GUID:" UI64FMTD " Accepted:%u", (uint64)l_QueueID, l_AcceptedInvite);
 
     if (!l_AcceptedInvite)
         return;
@@ -140,7 +140,7 @@ void WorldSession::HandleBfEntryInviteResponse(WorldPacket & p_Packet)
     p_Packet >> l_QueueID;
     l_AcceptedInvite = p_Packet.ReadBit();
 
-    sLog->outTrace("misc", "HandleBattlefieldInviteResponse: GUID:" UI64FMTD " Accepted:%u", uint64(l_QueueID), l_AcceptedInvite);
+    TC_LOG_TRACE("misc", "HandleBattlefieldInviteResponse: GUID:" UI64FMTD " Accepted:%u", uint64(l_QueueID), l_AcceptedInvite);
 
     OutdoorPvP* l_OutdoorPVP = nullptr;
     uint32 l_GuidLow = GUID_LOPART(l_QueueID);
@@ -199,7 +199,7 @@ void WorldSession::HandleBfExitQueueRequest(WorldPacket & p_Packet)
 
     p_Packet >> l_QueueID;
 
-    sLog->outTrace("misc", "HandleBfExitQueueRequest: GUID:" UI64FMTD " ", (uint64)l_QueueID);
+    TC_LOG_TRACE("misc", "HandleBfExitQueueRequest: GUID:" UI64FMTD " ", (uint64)l_QueueID);
 
     SendBfLeaveMessage(l_QueueID);
 
@@ -223,11 +223,11 @@ void WorldSession::HandleReportPvPAFK(WorldPacket& recvData)
     Player* l_ReportedPlayer = ObjectAccessor::FindPlayer(l_PlayerGUID);
     if (!l_ReportedPlayer)
     {
-        TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "WorldSession::HandleReportPvPAFK: player not found");
+        TC_LOG_DEBUG("bg.battleground", "WorldSession::HandleReportPvPAFK: player not found");
         return;
     }
 
-    TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "WorldSession::HandleReportPvPAFK: %s reported %s", m_Player->GetName(), l_ReportedPlayer->GetName());
+    TC_LOG_DEBUG("bg.battleground", "WorldSession::HandleReportPvPAFK: %s reported %s", m_Player->GetName(), l_ReportedPlayer->GetName());
 
     l_ReportedPlayer->ReportedAfkBy(m_Player);
 }

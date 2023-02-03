@@ -245,7 +245,7 @@ IRSocketMgr::StartReactiveIO (ACE_UINT16 port)
 int
 IRSocketMgr::StartNetwork(ACE_UINT16 port)
 {
-    if (!sLog->ShouldLog("misc", LOG_LEVEL_DEBUG))
+    if (!sLog->ShouldLog("misc", LogLevel::LOG_LEVEL_DEBUG))
         ACE_Log_Msg::instance()->priority_mask (LM_ERROR, ACE_Log_Msg::PROCESS);
 
     if (StartReactiveIO(port) == -1)

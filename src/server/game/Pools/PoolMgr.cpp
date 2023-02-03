@@ -356,7 +356,7 @@ void PoolGroup<Creature>::Spawn1Object(PoolObject* obj)
             if (!l_Map->Instanceable() && l_Map->IsGridLoaded(data->posX, data->posY))
             {
                 Creature* creature = new Creature;
-                //TC_LOG_DEBUG(LOG_FILTER_POOLSYS, "Spawning creature %u", guid);
+                //TC_LOG_DEBUG("pool", "Spawning creature %u", guid);
                 if (!creature->LoadCreatureFromDB(obj->guid, l_Map))
                 {
                     delete creature;
@@ -381,7 +381,7 @@ void PoolGroup<GameObject>::Spawn1Object(PoolObject* obj)
         if (!map->Instanceable() && map->IsGridLoaded(data->posX, data->posY))
         {
             GameObject* pGameobject = new GameObject;
-            //TC_LOG_DEBUG(LOG_FILTER_POOLSYS, "Spawning gameobject %u", guid);
+            //TC_LOG_DEBUG("pool", "Spawning gameobject %u", guid);
             if (!pGameobject->LoadGameObjectFromDB(obj->guid, map, false))
             {
                 delete pGameobject;
@@ -413,7 +413,7 @@ void PoolGroup<Quest>::Spawn1Object(PoolObject* obj)
     PooledQuestRelationBoundsNC qr = sPoolMgr->mQuestCreatureRelation.equal_range(obj->guid);
     for (PooledQuestRelation::iterator itr = qr.first; itr != qr.second; ++itr)
     {
-        TC_LOG_DEBUG(LOG_FILTER_POOLSYS, "PoolGroup<Quest>: Adding quest %u to creature %u", itr->first, itr->second);
+        TC_LOG_DEBUG("pool", "PoolGroup<Quest>: Adding quest %u to creature %u", itr->first, itr->second);
         questMap->insert(QuestRelations::value_type(itr->second, itr->first));
     }
 
@@ -422,7 +422,7 @@ void PoolGroup<Quest>::Spawn1Object(PoolObject* obj)
     qr = sPoolMgr->mQuestGORelation.equal_range(obj->guid);
     for (PooledQuestRelation::iterator itr = qr.first; itr != qr.second; ++itr)
     {
-        TC_LOG_DEBUG(LOG_FILTER_POOLSYS, "PoolGroup<Quest>: Adding quest %u to GO %u", itr->first, itr->second);
+        TC_LOG_DEBUG("pool", "PoolGroup<Quest>: Adding quest %u to GO %u", itr->first, itr->second);
         questMap->insert(QuestRelations::value_type(itr->second, itr->first));
     }
 }
@@ -430,7 +430,7 @@ void PoolGroup<Quest>::Spawn1Object(PoolObject* obj)
 template <>
 void PoolGroup<Quest>::SpawnObject(ActivePoolData& spawns, uint32 limit, uint32 triggerFrom)
 {
-    TC_LOG_DEBUG(LOG_FILTER_POOLSYS, "PoolGroup<Quest>: Spawning pool %u", poolId);
+    TC_LOG_DEBUG("pool", "PoolGroup<Quest>: Spawning pool %u", poolId);
     // load state from db
     if (!triggerFrom)
     {
@@ -930,7 +930,7 @@ void PoolMgr::LoadFromDB()
             }
             while (result->NextRow());
 
-            TC_LOG_DEBUG(LOG_FILTER_POOLSYS, "Pool handling system initialized, %u pools spawned in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+            TC_LOG_DEBUG("pool", "Pool handling system initialized, %u pools spawned in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 
         }
     }

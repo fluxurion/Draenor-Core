@@ -30,7 +30,7 @@ bool Condition::Meets(ConditionSourceInfo& sourceInfo) const
     // object not present, return false
     if (!object)
     {
-        TC_LOG_DEBUG(LOG_FILTER_CONDITIONSYS, "Condition object not found for condition (Entry: %u Type: %u Group: %u)", SourceEntry, SourceType, SourceGroup);
+        TC_LOG_DEBUG("condition", "Condition object not found for condition (Entry: %u Type: %u Group: %u)", SourceEntry, SourceType, SourceGroup);
         return false;
     }
     bool condMeets = false;
@@ -590,7 +590,7 @@ bool ConditionMgr::IsObjectMeetToConditionList(ConditionSourceInfo& sourceInfo, 
     std::map<uint32, bool> elseGroupStore;
     for (Condition const* condition : conditions)
     {
-        TC_LOG_DEBUG(LOG_FILTER_CONDITIONSYS, "ConditionMgr::IsPlayerMeetToConditionList condType: %u val1: %u", condition->ConditionType, condition->ConditionValue1);
+        TC_LOG_DEBUG("condition", "ConditionMgr::IsPlayerMeetToConditionList condType: %u val1: %u", condition->ConditionType, condition->ConditionValue1);
         if (condition->isLoaded())
         {
             //! Find ElseGroup in ElseGroupStore
@@ -611,7 +611,7 @@ bool ConditionMgr::IsObjectMeetToConditionList(ConditionSourceInfo& sourceInfo, 
                 }
                 else
                 {
-                    TC_LOG_DEBUG(LOG_FILTER_CONDITIONSYS, "IsPlayerMeetToConditionList: Reference template -%u not found",
+                    TC_LOG_DEBUG("condition", "IsPlayerMeetToConditionList: Reference template -%u not found",
                         condition->ReferenceId);//checked at loading, should never happen
                 }
 
@@ -648,7 +648,7 @@ bool ConditionMgr::IsObjectMeetToConditions(ConditionSourceInfo& sourceInfo, Con
     if (conditions.empty())
         return true;
 
-    TC_LOG_DEBUG(LOG_FILTER_CONDITIONSYS, "ConditionMgr::IsObjectMeetToConditions");
+    TC_LOG_DEBUG("condition", "ConditionMgr::IsObjectMeetToConditions");
     return IsObjectMeetToConditionList(sourceInfo, conditions);
 }
 
@@ -688,7 +688,7 @@ bool ConditionMgr::IsObjectMeetingNotGroupedConditions(ConditionSourceType sourc
         ConditionsByEntryMap::const_iterator i = ConditionStore[sourceType].find(entry);
         if (i != ConditionStore[sourceType].end())
         {
-            TC_LOG_DEBUG(LOG_FILTER_CONDITIONSYS, "GetConditionsForNotGroupedEntry: found conditions for type %u and entry %u", uint32(sourceType), entry);
+            TC_LOG_DEBUG("condition", "GetConditionsForNotGroupedEntry: found conditions for type %u and entry %u", uint32(sourceType), entry);
             return IsObjectMeetToConditions(sourceInfo, i->second);
         }
     }
@@ -720,7 +720,7 @@ bool ConditionMgr::IsObjectMeetingSpellClickConditions(uint32 creatureId, uint32
         ConditionsByEntryMap::const_iterator i = itr->second.find(spellId);
         if (i != itr->second.end())
         {
-            TC_LOG_DEBUG(LOG_FILTER_CONDITIONSYS, "GetConditionsForSpellClickEvent: found conditions for Vehicle entry %u spell %u", creatureId, spellId);
+            TC_LOG_DEBUG("condition", "GetConditionsForSpellClickEvent: found conditions for Vehicle entry %u spell %u", creatureId, spellId);
             ConditionSourceInfo sourceInfo(clicker, target);
             return IsObjectMeetToConditions(sourceInfo, i->second);
         }
@@ -736,7 +736,7 @@ ConditionContainer const* ConditionMgr::GetConditionsForSpellClickEvent(uint32 c
         ConditionsByEntryMap::const_iterator i = itr->second.find(spellId);
         if (i != itr->second.end())
         {
-            TC_LOG_DEBUG(LOG_FILTER_CONDITIONSYS, "GetConditionsForSpellClickEvent: found conditions for SpellClickEvent entry %u spell %u", creatureId, spellId);
+            TC_LOG_DEBUG("condition", "GetConditionsForSpellClickEvent: found conditions for SpellClickEvent entry %u spell %u", creatureId, spellId);
             return &i->second;
         }
     }
@@ -751,7 +751,7 @@ bool ConditionMgr::IsObjectMeetingVehicleSpellConditions(uint32 creatureId, uint
         ConditionsByEntryMap::const_iterator i = itr->second.find(spellId);
         if (i != itr->second.end())
         {
-            TC_LOG_DEBUG(LOG_FILTER_CONDITIONSYS, "GetConditionsForVehicleSpell: found conditions for Vehicle entry %u spell %u", creatureId, spellId);
+            TC_LOG_DEBUG("condition", "GetConditionsForVehicleSpell: found conditions for Vehicle entry %u spell %u", creatureId, spellId);
             ConditionSourceInfo sourceInfo(player, vehicle);
             return IsObjectMeetToConditions(sourceInfo, i->second);
         }
@@ -767,7 +767,7 @@ bool ConditionMgr::IsObjectMeetingSmartEventConditions(int32 entryOrGuid, uint32
         ConditionsByEntryMap::const_iterator i = itr->second.find(eventId + 1);
         if (i != itr->second.end())
         {
-            TC_LOG_DEBUG(LOG_FILTER_CONDITIONSYS, "GetConditionsForSmartEvent: found conditions for Smart Event entry or guid %d event_id %u", entryOrGuid, eventId);
+            TC_LOG_DEBUG("condition", "GetConditionsForSmartEvent: found conditions for Smart Event entry or guid %d event_id %u", entryOrGuid, eventId);
             ConditionSourceInfo sourceInfo(unit, baseObject);
             return IsObjectMeetToConditions(sourceInfo, i->second);
         }
@@ -783,7 +783,7 @@ bool ConditionMgr::IsObjectMeetingVendorItemConditions(uint32 creatureId, uint32
         ConditionsByEntryMap::const_iterator i = (*itr).second.find(itemId);
         if (i != (*itr).second.end())
         {
-            TC_LOG_DEBUG(LOG_FILTER_CONDITIONSYS, "GetConditionsForNpcVendorEvent: found conditions for creature entry %u item %u", creatureId, itemId);
+            TC_LOG_DEBUG("condition", "GetConditionsForNpcVendorEvent: found conditions for creature entry %u item %u", creatureId, itemId);
             ConditionSourceInfo sourceInfo(player, vendor);
             return IsObjectMeetToConditions(sourceInfo, i->second);
         }
@@ -799,7 +799,7 @@ bool ConditionMgr::IsObjectMeetPhaseCondition(uint32 zone, uint32 entry, WorldOb
         ConditionsByEntryMap::const_iterator i = itr->second.find(entry);
         if (i != itr->second.end())
         {
-            TC_LOG_DEBUG(LOG_FILTER_CONDITIONSYS, "GetConditionsForPhaseDefinition: found conditions for zone %u entry %u", zone, entry);
+            TC_LOG_DEBUG("condition", "GetConditionsForPhaseDefinition: found conditions for zone %u entry %u", zone, entry);
             return IsObjectMeetToConditions(object, i->second);
         }
     }
@@ -815,7 +815,7 @@ ConditionContainer  const* ConditionMgr::GetConditionsForPhaseDefinition(uint32 
         ConditionsByEntryMap::const_iterator i = itr->second.find(entry);
         if (i != itr->second.end())
         {
-            TC_LOG_DEBUG(LOG_FILTER_CONDITIONSYS, "GetConditionsForPhaseDefinition: found conditions for zone %u entry %u", zone, entry);
+            TC_LOG_DEBUG("condition", "GetConditionsForPhaseDefinition: found conditions for zone %u entry %u", zone, entry);
             return &i->second;
         }
     }

@@ -779,7 +779,7 @@ int WorldSocket::ProcessIncoming(WorldPacket* new_pct)
     /// Remove log for latency
     ///std::string opcodeName = GetOpcodeNameForLogging(opcode, WOW_CLIENT_TO_SERVER);
     ///if (opcode != CMSG_MOVE_START_FORWARD)
-    ///    TC_LOG_INFO(LOG_FILTER_OPCODES, "C->S: %s", opcodeName.c_str());
+    ///    TC_LOG_INFO("network.opcode", "C->S: %s", opcodeName.c_str());
 
     try
     {
@@ -831,7 +831,7 @@ int WorldSocket::ProcessIncoming(WorldPacket* new_pct)
                 ACE_GUARD_RETURN(LockType, Guard, m_SessionLock, -1);
                 if (!m_Session)
                 {
-                    TC_LOG_ERROR(LOG_FILTER_OPCODES, "ProcessIncoming: Client not authed opcode = %u", uint32(opcode));
+                    TC_LOG_ERROR("network.opcode", "ProcessIncoming: Client not authed opcode = %u", uint32(opcode));
                     return -1;
                 }
 
@@ -842,7 +842,7 @@ int WorldSocket::ProcessIncoming(WorldPacket* new_pct)
                 OpcodeHandler* handler = g_OpcodeTable[WOW_CLIENT_TO_SERVER][opcode];
                 if (!handler || handler->status == STATUS_UNHANDLED)
                 {
-                    //TC_LOG_ERROR(LOG_FILTER_OPCODES, "No defined handler for opcode %s sent by %s", GetOpcodeNameForLogging(new_pct->GetOpcode(), WOW_CLIENT_TO_SERVER).c_str(), m_Session->GetPlayerName(false).c_str());
+                    //TC_LOG_ERROR("network.opcode", "No defined handler for opcode %s sent by %s", GetOpcodeNameForLogging(new_pct->GetOpcode(), WOW_CLIENT_TO_SERVER).c_str(), m_Session->GetPlayerName(false).c_str());
                     return 0;
                 }
 

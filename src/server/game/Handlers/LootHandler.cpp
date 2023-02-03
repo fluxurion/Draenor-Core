@@ -568,7 +568,7 @@ void WorldSession::HandleDoMasterLootRollOpcode(WorldPacket & p_Packet)
 
     if (l_LootListID >= l_Loot->Items.size() + l_Loot->QuestItems.size())
     {
-        TC_LOG_DEBUG(LOG_FILTER_LOOT, "MasterLootItem: Player %s might be using a hack! (slot %d, size %lu)", GetPlayer()->GetName(), l_LootListID, (unsigned long)l_Loot->Items.size());
+        TC_LOG_DEBUG("loot", "MasterLootItem: Player %s might be using a hack! (slot %d, size %lu)", GetPlayer()->GetName(), l_LootListID, (unsigned long)l_Loot->Items.size());
         return;
     }
 
@@ -653,7 +653,7 @@ void WorldSession::HandleMasterLootItemOpcode(WorldPacket & p_Packet)
 
         if (l_SlotID >= l_Loot->Items.size() + l_Loot->QuestItems.size())
         {
-            TC_LOG_DEBUG(LOG_FILTER_LOOT, "MasterLootItem: Player %s might be using a hack! (slot %d, size %lu)", GetPlayer()->GetName(), l_SlotID, (unsigned long)l_Loot->Items.size());
+            TC_LOG_DEBUG("loot", "MasterLootItem: Player %s might be using a hack! (slot %d, size %lu)", GetPlayer()->GetName(), l_SlotID, (unsigned long)l_Loot->Items.size());
             return;
         }
 

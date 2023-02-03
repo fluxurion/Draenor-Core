@@ -925,7 +925,7 @@ void InterRealmClient::Handle_RegisterRated(WorldPacket& p_Packet)
         MS::Battlegrounds::PacketFactory::Status(&l_Data, l_Battleground, l_Member, l_QueueSlot, STATUS_WAIT_QUEUE, l_AvgTime, l_GroupQueue->m_JoinTime, l_GroupQueue->m_ArenaType, false);
         l_Member->GetSession()->SendPacket(&l_Data);
 
-        TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Battleground: player joined queue for rated battleground as group bg queue type %u bg type %u: GUID %u, NAME %s", l_BgQueueTypeId, l_BgTypeId, l_Member->GetGUIDLow(), l_Member->GetName());
+        TC_LOG_DEBUG("bg.battleground", "Battleground: player joined queue for rated battleground as group bg queue type %u bg type %u: GUID %u, NAME %s", l_BgQueueTypeId, l_BgTypeId, l_Member->GetGUIDLow(), l_Member->GetName());
     }
 
     if (l_Error)
@@ -1116,7 +1116,7 @@ void InterRealmClient::Handle_BattlefieldPort(WorldPacket& packet)
 
             l_Action = 0;
 
-            TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Battleground: player %s (%u) has a deserter debuff, do not port him to battleground!", l_Player->GetName(), l_Player->GetGUIDLow());
+            TC_LOG_DEBUG("bg.battleground", "Battleground: player %s (%u) has a deserter debuff, do not port him to battleground!", l_Player->GetName(), l_Player->GetGUIDLow());
         }
         /// If player don't match battleground max level, then do not allow him to enter! (this might happen when player leveled up during his waiting in queue
         if (l_Player->getLevel() > l_BG->GetMaxLevel())
@@ -1169,7 +1169,7 @@ void InterRealmClient::Handle_BattlefieldPort(WorldPacket& packet)
             l_PortData.bgZoneId = l_BG->GetZoneId() ? l_BG->GetZoneId() : 1;
 
             l_Player->GetSession()->LoadCharacter(l_PortData);
-            TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Battleground: player %s (%u) joined battle for bg %u, bgtype %u, queue type %u.", l_Player->GetName(), l_Player->GetGUIDLow(), l_BG->GetInstanceID(), l_BG->GetTypeID(), l_BGQueueTypeID);
+            TC_LOG_DEBUG("bg.battleground", "Battleground: player %s (%u) joined battle for bg %u, bgtype %u, queue type %u.", l_Player->GetName(), l_Player->GetGUIDLow(), l_BG->GetInstanceID(), l_BG->GetTypeID(), l_BGQueueTypeID);
             TC_LOG_ERROR("server.worldserver", "Battleground: player %s (%u) joined battle for bg %u, bgtype %u, queue type %u.", l_Player->GetName(), l_Player->GetGUIDLow(), l_BG->GetInstanceID(), l_BG->GetTypeID(), l_BGQueueTypeID);
             break;
 

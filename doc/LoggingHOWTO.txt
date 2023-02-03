@@ -204,7 +204,7 @@ the messages. Console should prefix type and log level.
     Logger.Root=0,5,Console Server
 
 Lets trace how system will log two different messages:
-    1) TC_LOG_ERROR(LOG_FILTER_GUILD, "Guild 1 created");
+    1) TC_LOG_ERROR("guild", "Guild 1 created");
     System will try to find logger of type GUILD, as no logger is configured
     for GUILD it will use Root logger. As message Log Level is equal or higher
     than the Log level of logger the message is sent to the Appenders
@@ -212,7 +212,7 @@ Lets trace how system will log two different messages:
     Console will write: "ERROR [GUILD     ] Guild 1 created"
     Server will write to file "2012-08-15 ERROR [GUILD     ] Guild 1 created"
 
-    2) TC_LOG_INFO(LOG_FILTER_CHARACTER, "Player Name Logged in");
+    2) TC_LOG_INFO("character", "Player Name Logged in");
     System will try to find logger of type CHARACTER, as no logger is
     configured for CHARACTER it will use Root logger. As message Log Level is
     not equal or higher than the Log level of logger the message its discarted.
@@ -229,9 +229,9 @@ file and server file should add timestamp on creation.
     Logger.Root=0,4,Console Server
 
 Lets trace how system will log two different messages:
-    1) TC_LOG_ERROR(LOG_FILTER_GUILD, "Guild 1 created");
+    1) TC_LOG_ERROR("guild", "Guild 1 created");
     Performs exactly as example 1.
-    2) TC_LOG_INFO(LOG_FILTER_CHARACTER, "Player Name Logged in");
+    2) TC_LOG_INFO("character", "Player Name Logged in");
     System will try to find logger of type CHARACTER, as no logger is
     configured for CHARACTER it will use Root logger. As message Log Level is
     equal or higher than the Log level of logger the message is sent to the
