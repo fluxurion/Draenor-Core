@@ -1115,13 +1115,13 @@ class ObjectMgr
 
         void LoadQuestRelations()
         {
-            sLog->outInfo(LOG_FILTER_SERVER_LOADING, "Loading GO Start Quest Data...");
+            TC_LOG_INFO("server.loading", "Loading GO Start Quest Data...");
             LoadGameobjectQuestStarters();
-            sLog->outInfo(LOG_FILTER_SERVER_LOADING, "Loading GO End Quest Data...");
+            TC_LOG_INFO("server.loading", "Loading GO End Quest Data...");
             LoadGameobjectQuestEnders();
-            sLog->outInfo(LOG_FILTER_SERVER_LOADING, "Loading Creature Start Quest Data...");
+            TC_LOG_INFO("server.loading", "Loading Creature Start Quest Data...");
             LoadCreatureQuestStarters();
-            sLog->outInfo(LOG_FILTER_SERVER_LOADING, "Loading Creature End Quest Data...");
+            TC_LOG_INFO("server.loading", "Loading Creature End Quest Data...");
             LoadCreatureQuestEnders();
         }
         void LoadFollowerQuests();

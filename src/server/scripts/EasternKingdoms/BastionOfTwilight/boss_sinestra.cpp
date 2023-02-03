@@ -484,7 +484,7 @@ class boss_sinestra : public CreatureScript
                             if (targetList.size() < 2)
                                 return;
 
-                            JadeCore::RandomResizeList<Unit*>(targetList, 2);
+                            Trinity::RandomResizeList<Unit*>(targetList, 2);
 
                             std::list<Unit*>::const_iterator iter = targetList.begin();
                             if (Creature*c = me->SummonCreature(NPC_SHADOW_ORB, (*iter)->GetPositionX(), (*iter)->GetPositionY(), (*iter)->GetPositionZ(), (*iter)->GetOrientation(), TEMPSUMMON_TIMED_DESPAWN, 14000))
@@ -1153,10 +1153,10 @@ class spell_sinestra_wrack: public SpellScriptLoader
                     return;
 
                 std::list<Player*> targets;
-                JadeCore::AnyPlayerInObjectRangeCheck checker(GetTarget(), 100.0f, true);
-                JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> searcher(GetTarget(), targets, checker);
+                Trinity::AnyPlayerInObjectRangeCheck checker(GetTarget(), 100.0f, true);
+                Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(GetTarget(), targets, checker);
                 GetTarget()->VisitNearbyWorldObject(100.0f, searcher);
-                targets.sort(JadeCore::ObjectDistanceOrderPred(GetTarget()));
+                targets.sort(Trinity::ObjectDistanceOrderPred(GetTarget()));
                 uint8 count = 0;
                 if (!targets.empty())
                     for (std::list<Player*>::const_iterator itr = targets.begin(); itr != targets.end(); ++itr)

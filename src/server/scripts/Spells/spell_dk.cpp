@@ -328,7 +328,7 @@ class spell_dk_dark_transformation_form: public SpellScriptLoader
                             if (l_LstRunesUsed.empty())
                                 return;
 
-                            uint8 l_RuneRandom = JadeCore::Containers::SelectRandomContainerElement(l_LstRunesUsed);
+                            uint8 l_RuneRandom = Trinity::Containers::SelectRandomContainerElement(l_LstRunesUsed);
 
                             l_Player->SetRuneCooldown(l_RuneRandom, 0);
                             l_Player->ConvertRune(l_RuneRandom, RUNE_DEATH);
@@ -1187,7 +1187,7 @@ class spell_dk_plague_leech: public SpellScriptLoader
 
                 for (uint8 l_I = 0; l_I < 2; l_I++)
                 {
-                    uint8 l_RuneRandom = JadeCore::Containers::SelectRandomContainerElement(m_LstRunesUsed);
+                    uint8 l_RuneRandom = Trinity::Containers::SelectRandomContainerElement(m_LstRunesUsed);
 
                     if (l_Player->GetRuneCooldown(l_RuneRandom))
                     {
@@ -1450,8 +1450,8 @@ class spell_dk_anti_magic_shell_self: public SpellScriptLoader
                 std::list<Unit*> l_TargetList;
                 float l_Radius = 30.0f;
 
-                JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Ucheck(l_Target, l_Target, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Target, l_TargetList, l_Ucheck);
+                Trinity::AnyFriendlyUnitInObjectRangeCheck l_Ucheck(l_Target, l_Target, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Target, l_TargetList, l_Ucheck);
                 l_Target->VisitNearbyObject(l_Radius, l_Searcher);
 
                 l_TargetList.remove_if([this, l_Caster, l_Target](Unit* p_Unit) -> bool
@@ -1468,7 +1468,7 @@ class spell_dk_anti_magic_shell_self: public SpellScriptLoader
                     return false;
                 });
 
-                l_TargetList.sort(JadeCore::WorldObjectDistanceCompareOrderPred(l_Caster));
+                l_TargetList.sort(Trinity::WorldObjectDistanceCompareOrderPred(l_Caster));
 
                 if (l_TargetList.size() > 2)
                 l_TargetList.resize(2);
@@ -2213,8 +2213,8 @@ class spell_dk_necrotic_plague_aura: public SpellScriptLoader
                 float l_Radius = 8.0f;
 
                 /// Friendly target for the target (your target) not for you
-                JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Ucheck(l_Target, l_Target, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Target, l_TargetList, l_Ucheck);
+                Trinity::AnyFriendlyUnitInObjectRangeCheck l_Ucheck(l_Target, l_Target, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Target, l_TargetList, l_Ucheck);
                 l_Target->VisitNearbyObject(l_Radius, l_Searcher);
 
                 l_TargetList.remove_if([this, l_Caster, l_Target](Unit* p_Unit) -> bool
@@ -2234,7 +2234,7 @@ class spell_dk_necrotic_plague_aura: public SpellScriptLoader
                 if (l_TargetList.empty())
                     return;
 
-                if (Unit* l_NewTarget = JadeCore::Containers::SelectRandomContainerElement(l_TargetList))
+                if (Unit* l_NewTarget = Trinity::Containers::SelectRandomContainerElement(l_TargetList))
                 {
                     l_Caster->AddAura(NecroticPlagueAura, l_NewTarget);
 					l_Target->CastSpell(l_NewTarget, NecroticPlagueVisual, true);
@@ -2366,7 +2366,7 @@ class spell_dk_runic_empowerment : public PlayerScript
                     if (l_LstRunesUsed.empty())
                         return;
 
-                    uint8 l_RuneRandom = JadeCore::Containers::SelectRandomContainerElement(l_LstRunesUsed);
+                    uint8 l_RuneRandom = Trinity::Containers::SelectRandomContainerElement(l_LstRunesUsed);
 
                     p_Player->SetRuneCooldown(l_RuneRandom, 0);
                     p_Player->ResyncRunes(MAX_RUNES);

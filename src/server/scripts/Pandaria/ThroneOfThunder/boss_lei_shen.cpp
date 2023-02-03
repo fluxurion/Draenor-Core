@@ -818,7 +818,7 @@ class boss_lei_shen : public CreatureScript
                         GetPlayerListInGrid(l_PlayerList, me, 200.0f);
 
                         if (l_PlayerList.size() > l_PillarLevel)
-                            JadeCore::RandomResizeList(l_PlayerList, l_PillarLevel);
+                            Trinity::RandomResizeList(l_PlayerList, l_PillarLevel);
 
                         for (Player* l_Target : l_PlayerList)
                             me->AddAura(SPELL_STATIC_SHOCK, l_Target);
@@ -836,7 +836,7 @@ class boss_lei_shen : public CreatureScript
                         GetPlayerListInGrid(l_PlayerList, me, 200.0f);
 
                         if (l_PlayerList.size() > l_PillarLevel)
-                            JadeCore::RandomResizeList(l_PlayerList, l_PillarLevel);
+                            Trinity::RandomResizeList(l_PlayerList, l_PillarLevel);
 
                         for (Player* l_Target : l_PlayerList)
                             me->AddAura(SPELL_OVERCHARGE_AURA, l_Target);
@@ -850,7 +850,7 @@ class boss_lei_shen : public CreatureScript
                         GetCreatureListWithEntryInGrid(l_QuadrantList, me, NPC_QUADRANT_STALKER, 100.0f);
 
                         if (l_QuadrantList.size() > l_PillarLevel)
-                            JadeCore::RandomResizeList(l_QuadrantList, l_PillarLevel);
+                            Trinity::RandomResizeList(l_QuadrantList, l_PillarLevel);
 
                         for (Creature* l_Target : l_QuadrantList)
                             me->CastSpell(l_Target, SPELL_BOUNCING_BOLT_MISSILE, true);
@@ -1314,7 +1314,7 @@ class boss_lei_shen : public CreatureScript
 
                         if (!l_PlayerList.empty())
                         {
-                            l_PlayerList.sort(JadeCore::DistanceCompareOrderPred(me));
+                            l_PlayerList.sort(Trinity::DistanceCompareOrderPred(me));
                             AttackStart(l_PlayerList.front());
                         }
                     }
@@ -1789,7 +1789,7 @@ class mob_ball_lightning : public CreatureScript
 
                 if (!l_PlayerList.empty())
                 {
-                    JadeCore::RandomResizeList(l_PlayerList, 1);
+                    Trinity::RandomResizeList(l_PlayerList, 1);
                     if (Player* l_Target = l_PlayerList.front())
                         me->CastSpell(l_Target, SPELL_BALL_LIGHTNING_JUMP, true);
                 }
@@ -2091,8 +2091,8 @@ class spell_bouncing_bolt : public SpellScriptLoader
                             return;
 
                         std::list<WorldObject*> l_TargetList;
-                        JadeCore::WorldObjectSpellAreaTargetCheck l_Checker(6.0f, l_Pos, l_Caster, l_Caster, GetSpellInfo(), TARGET_CHECK_DEFAULT, NULL);
-                        JadeCore::WorldObjectListSearcher<JadeCore::WorldObjectSpellAreaTargetCheck> l_Searcher(l_Caster, l_TargetList, l_Checker);
+                        Trinity::WorldObjectSpellAreaTargetCheck l_Checker(6.0f, l_Pos, l_Caster, l_Caster, GetSpellInfo(), TARGET_CHECK_DEFAULT, NULL);
+                        Trinity::WorldObjectListSearcher<Trinity::WorldObjectSpellAreaTargetCheck> l_Searcher(l_Caster, l_TargetList, l_Checker);
                         l_Caster->GetMap()->VisitAll(l_Pos->m_positionX, l_Pos->m_positionY, 6.0f, l_Searcher);
 
                         if (!l_TargetList.empty())
@@ -2468,8 +2468,8 @@ class at_crashing_thunder : public AreaTriggerEntityScript
             std::list<Unit*> l_TargetList;
             float l_Radius = 4.0f;
 
-            JadeCore::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             if (!l_TargetList.empty())
@@ -2511,8 +2511,8 @@ class at_lightning_whip : public AreaTriggerEntityScript
             std::list<Unit*> l_TargetList;
             float l_Radius = 20.0f;
 
-            JadeCore::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             float l_X = p_AreaTrigger->GetPositionX();

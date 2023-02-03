@@ -951,8 +951,8 @@ class npc_highmaul_night_twisted_brute : public CreatureScript
                 {
                     std::list<Unit*> l_Allies;
 
-                    JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(me, me, 50.0f);
-                    JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(me, l_Allies, l_Check);
+                    Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(me, me, 50.0f);
+                    Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(me, l_Allies, l_Check);
                     me->VisitNearbyObject(50.0f, l_Searcher);
 
                     for (Unit* l_Unit : l_Allies)
@@ -3738,7 +3738,7 @@ class spell_highmaul_chain_grip : public SpellScriptLoader
                 if (p_Targets.empty())
                     return;
 
-                p_Targets.sort(JadeCore::ObjectDistanceOrderPred(GetCaster(), false));
+                p_Targets.sort(Trinity::ObjectDistanceOrderPred(GetCaster(), false));
 
                 WorldObject* l_Object = p_Targets.front();
                 p_Targets.clear();
@@ -4027,8 +4027,8 @@ class spell_highmaul_shield_charge : public SpellScriptLoader
                             std::list<Unit*> l_TargetList;
                             float l_Radius = 1.0f;
 
-                            JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
-                            JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_TargetList, l_Check);
+                            Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
+                            Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_TargetList, l_Check);
                             l_Caster->VisitNearbyObject(l_Radius, l_Searcher);
 
                             for (Unit* l_Iter : l_TargetList)
@@ -4357,8 +4357,8 @@ class areatrigger_highmaul_rune_of_disintegration : public AreaTriggerEntityScri
                 std::list<Unit*> l_TargetList;
                 float l_Radius = 4.0f;
 
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 std::set<uint64> l_Targets;
@@ -4431,8 +4431,8 @@ class areatrigger_highmaul_arcane_residue : public AreaTriggerEntityScript
                 std::list<Unit*> l_TargetList;
                 float l_Radius = 8.0f;
 
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 for (Unit* l_Unit : l_TargetList)

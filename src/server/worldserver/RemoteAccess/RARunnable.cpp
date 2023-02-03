@@ -73,5 +73,5 @@ void RARunnable::run()
             break;
     }
 
-    sLog->outDebug(LOG_FILTER_WORLDSERVER, "Trinity RA thread exiting");
+    TC_LOG_DEBUG(LOG_FILTER_WORLDSERVER, "Trinity RA thread exiting");
 }

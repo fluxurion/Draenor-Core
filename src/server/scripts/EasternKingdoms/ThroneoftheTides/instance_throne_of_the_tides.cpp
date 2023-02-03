@@ -78,15 +78,15 @@ public:
                 break;
             case NPC_COMMANDER_ULTHOK:
                 uiCommanderUlthokGUID = pCreature->GetGUID();
-                sLog->outError(LOG_FILTER_SERVER_LOADING, "ulthok1");
+                TC_LOG_ERROR("server.loading", "ulthok1");
                 if (GetData(DATA_COMMANDER_ULTHOK_EVENT) == DONE)
                 {
-                    sLog->outError(LOG_FILTER_SERVER_LOADING, "ulthok2");
+                    TC_LOG_ERROR("server.loading", "ulthok2");
                     pCreature->SetPhaseMask(PHASEMASK_NORMAL, true);
                 }
                 else
                 {
-                    sLog->outError(LOG_FILTER_SERVER_LOADING, "ulthok3");
+                    TC_LOG_ERROR("server.loading", "ulthok3");
                     pCreature->SetPhaseMask(2, true);
                 }
                 break;

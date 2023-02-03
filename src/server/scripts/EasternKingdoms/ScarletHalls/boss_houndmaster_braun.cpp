@@ -456,7 +456,7 @@ public:
 
 		void FilterTargets(std::list<WorldObject*>& targets)
 		{
-			JadeCore::Containers::RandomResizeList(targets, 1);
+			Trinity::Containers::RandomResizeList(targets, 1);
 		}
 
 		void HandleHitTarget(SpellEffIndex effIndex)
@@ -566,7 +566,7 @@ public:
 
 		void FilterTargets(std::list<WorldObject*>& targets)
 		{
-			JadeCore::Containers::RandomResizeList(targets, 1);
+			Trinity::Containers::RandomResizeList(targets, 1);
 		}
 
 		void Register()

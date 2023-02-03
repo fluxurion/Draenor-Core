@@ -216,7 +216,7 @@ class gobject_commandscript: public CommandScript
             if (objectInfo->displayId && !sGameObjectDisplayInfoStore.LookupEntry(objectInfo->displayId))
             {
                 // report to DB errors log as in loading case
-                sLog->outError(LOG_FILTER_SQL, "Gameobject (Entry %u GoType: %u) have invalid displayId (%u), not spawned.", objectId, objectInfo->type, objectInfo->displayId);
+                TC_LOG_ERROR("sql.sql", "Gameobject (Entry %u GoType: %u) have invalid displayId (%u), not spawned.", objectId, objectInfo->type, objectInfo->displayId);
                 handler->PSendSysMessage(LANG_GAMEOBJECT_HAVE_INVALID_DATA, objectId);
                 handler->SetSentErrorMessage(true);
                 return false;

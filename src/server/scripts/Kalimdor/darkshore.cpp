@@ -483,8 +483,8 @@ public:
 			me->FindNearestCreature(NPC_SHATTERSPER_STRUCTURES, 20.0f);
 
 			std::list<Creature*> pTriggerList;
-			JadeCore::AllCreaturesOfEntryInRange checker(me, NPC_SHATTERSPER_STRUCTURES, 20.0f);
-			JadeCore::CreatureListSearcher<JadeCore::AllCreaturesOfEntryInRange> searcher(me, pTriggerList, checker);
+			Trinity::AllCreaturesOfEntryInRange checker(me, NPC_SHATTERSPER_STRUCTURES, 20.0f);
+			Trinity::CreatureListSearcher<Trinity::AllCreaturesOfEntryInRange> searcher(me, pTriggerList, checker);
 			me->VisitNearbyObject(20.0f, searcher);
 
 			if (pTriggerList.empty())

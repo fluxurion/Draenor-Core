@@ -940,7 +940,7 @@ class debug_commandscript: public CommandScript
             Battleground* bg = sBattlegroundMgr->GetBattlegroundTemplate(MS::Battlegrounds::BattlegroundType::RatedBg10v10);
             if (!bg)
             {
-                sLog->outError(LOG_FILTER_NETWORKIO, "Battleground: template bg (10 vs 10) not found");
+                TC_LOG_ERROR("network", "Battleground: template bg (10 vs 10) not found");
                 return false;
             }
 
@@ -997,7 +997,7 @@ class debug_commandscript: public CommandScript
             err = grp->CanJoinBattlegroundQueue(bg, bgQueueTypeId, 2);
             if (!err)
             {
-                sLog->outDebug(LOG_FILTER_BATTLEGROUND, "Battleground: leader %s queued", handler->GetSession()->GetPlayer()->GetName());
+                TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Battleground: leader %s queued", handler->GetSession()->GetPlayer()->GetName());
 
                 ginfo = l_Scheduler.AddGroup(handler->GetSession()->GetPlayer(), grp, bgQueueTypeId, nullptr, bracketEntry, ArenaType::None, true, personalRating, matchmakerRating, false);
                 avgTime = l_InvitationsMgr.GetAverageQueueWaitTime(ginfo, bracketEntry->m_Id);
@@ -1027,7 +1027,7 @@ class debug_commandscript: public CommandScript
                 MS::Battlegrounds::PacketFactory::Status(&data, bg, member, queueSlot, STATUS_WAIT_QUEUE, avgTime, ginfo->m_JoinTime, ginfo->m_ArenaType, false);
                 member->GetSession()->SendPacket(&data);
 
-                sLog->outDebug(LOG_FILTER_BATTLEGROUND, "Battleground: player joined queue for rated battleground as group bg queue type %u bg type %u: GUID %u, NAME %s", bgQueueTypeId, bgTypeId, member->GetGUIDLow(), member->GetName());
+                TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Battleground: player joined queue for rated battleground as group bg queue type %u bg type %u: GUID %u, NAME %s", bgQueueTypeId, bgTypeId, member->GetGUIDLow(), member->GetName());
             }
 
             //sBattlegroundMgr->ScheduleQueueUpdate(matchmakerRating, 0, bgQueueTypeId, bgTypeId, bracketEntry->GetBracketId());
@@ -1743,11 +1743,11 @@ class debug_commandscript: public CommandScript
                 }
                 else
                 {
-                    sLog->outError(LOG_FILTER_GENERAL, "Sending opcode that has unknown type '%s'", type.c_str());
+                    TC_LOG_ERROR("server.worldserver", "Sending opcode that has unknown type '%s'", type.c_str());
                     break;
                 }
             }
-            sLog->outDebug(LOG_FILTER_NETWORKIO, "Sending opcode %u", data.GetOpcode());
+            TC_LOG_DEBUG("network", "Sending opcode %u", data.GetOpcode());
             data.hexlike();
             player->GetSession()->SendPacket(&data, true);
             handler->PSendSysMessage(LANG_COMMAND_OPCODESENT, data.GetOpcode(), unit->GetName());
@@ -2253,8 +2253,8 @@ class debug_commandscript: public CommandScript
             else
             {
                 Creature* passenger = NULL;
-                JadeCore::AllCreaturesOfEntryInRange check(handler->GetSession()->GetPlayer(), entry, 20.0f);
-                JadeCore::CreatureSearcher<JadeCore::AllCreaturesOfEntryInRange> searcher(handler->GetSession()->GetPlayer(), passenger, check);
+                Trinity::AllCreaturesOfEntryInRange check(handler->GetSession()->GetPlayer(), entry, 20.0f);
+                Trinity::CreatureSearcher<Trinity::AllCreaturesOfEntryInRange> searcher(handler->GetSession()->GetPlayer(), passenger, check);
                 handler->GetSession()->GetPlayer()->VisitNearbyObject(30.0f, searcher);
                 if (!passenger || passenger == target)
                     return false;
@@ -2716,7 +2716,7 @@ class debug_commandscript: public CommandScript
         {
             Player* player = handler->GetSession()->GetPlayer();
 
-            sLog->outInfo(LOG_FILTER_SQL_DEV, "(@PATH, XX, %.3f, %.3f, %.5f, 0, 0, 0, 100, 0),", player->GetPositionX(), player->GetPositionY(), player->GetPositionZ());
+             TC_LOG_INFO("sql.sql"_DEV, "(@PATH, XX, %.3f, %.3f, %.5f, 0, 0, 0, 100, 0),", player->GetPositionX(), player->GetPositionY(), player->GetPositionZ());
 
             handler->PSendSysMessage("Waypoint SQL written to SQL Developer log");
             return true;

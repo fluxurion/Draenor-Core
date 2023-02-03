@@ -53,7 +53,7 @@ class Field
             {
                 ACE_Stack_Trace l_Trace;
                 printf("%s\n", l_Trace.c_str());
-                sLog->outFatal(LOG_FILTER_SQL, "FATAL: GetUInt8() on non-tinyint field %s.%s (%s.%s) at index %u. Using type: %s.",
+                TC_LOG_FATAL(LOG_FILTER_SQL, "FATAL: GetUInt8() on non-tinyint field %s.%s (%s.%s) at index %u. Using type: %s.",
                               meta.TableAlias, meta.Alias, meta.TableName, meta.Name, meta.Index, meta.Type);
                 return 0;
             }
@@ -72,7 +72,7 @@ class Field
             #ifdef TRINITY_DEBUG
             if (!IsType(MYSQL_TYPE_TINY))
             {
-                sLog->outFatal(LOG_FILTER_SQL, "FATAL: GetInt8() on non-tinyint field %s.%s (%s.%s) at index %u. Using type: %s.",
+                TC_LOG_FATAL(LOG_FILTER_SQL, "FATAL: GetInt8() on non-tinyint field %s.%s (%s.%s) at index %u. Using type: %s.",
                               meta.TableAlias, meta.Alias, meta.TableName, meta.Name, meta.Index, meta.Type);
                 return 0;
             }
@@ -91,7 +91,7 @@ class Field
             #ifdef TRINITY_DEBUG
             if (!IsType(MYSQL_TYPE_SHORT) && !IsType(MYSQL_TYPE_YEAR))
             {
-                sLog->outFatal(LOG_FILTER_SQL, "FATAL: GetUInt16() on non-smallint field %s.%s (%s.%s) at index %u. Using type: %s.",
+                TC_LOG_FATAL(LOG_FILTER_SQL, "FATAL: GetUInt16() on non-smallint field %s.%s (%s.%s) at index %u. Using type: %s.",
                               meta.TableAlias, meta.Alias, meta.TableName, meta.Name, meta.Index, meta.Type);
                 return 0;
             }
@@ -110,7 +110,7 @@ class Field
             #ifdef TRINITY_DEBUG
             if (!IsType(MYSQL_TYPE_SHORT) && !IsType(MYSQL_TYPE_YEAR))
             {
-                sLog->outFatal(LOG_FILTER_SQL, "FATAL: GetInt16() on non-smallint field %s.%s (%s.%s) at index %u. Using type: %s.",
+                TC_LOG_FATAL(LOG_FILTER_SQL, "FATAL: GetInt16() on non-smallint field %s.%s (%s.%s) at index %u. Using type: %s.",
                               meta.TableAlias, meta.Alias, meta.TableName, meta.Name, meta.Index, meta.Type);
                 return 0;
             }
@@ -129,7 +129,7 @@ class Field
             #ifdef TRINITY_DEBUG
             if (!IsType(MYSQL_TYPE_INT24) && !IsType(MYSQL_TYPE_LONG))
             {
-                sLog->outFatal(LOG_FILTER_SQL, "FATAL: GetUInt32() on non-(medium)int field %s.%s (%s.%s) at index %u. Using type: %s.",
+                TC_LOG_FATAL(LOG_FILTER_SQL, "FATAL: GetUInt32() on non-(medium)int field %s.%s (%s.%s) at index %u. Using type: %s.",
                               meta.TableAlias, meta.Alias, meta.TableName, meta.Name, meta.Index, meta.Type);
                 return 0;
             }
@@ -148,7 +148,7 @@ class Field
             #ifdef TRINITY_DEBUG
             if (!IsType(MYSQL_TYPE_INT24) && !IsType(MYSQL_TYPE_LONG))
             {
-                sLog->outFatal(LOG_FILTER_SQL, "FATAL: GetInt32() on non-(medium)int field %s.%s (%s.%s) at index %u. Using type: %s.",
+                TC_LOG_FATAL(LOG_FILTER_SQL, "FATAL: GetInt32() on non-(medium)int field %s.%s (%s.%s) at index %u. Using type: %s.",
                               meta.TableAlias, meta.Alias, meta.TableName, meta.Name, meta.Index, meta.Type);
                 return 0;
             }
@@ -167,7 +167,7 @@ class Field
             #ifdef TRINITY_DEBUG
             if (!IsType(MYSQL_TYPE_LONGLONG) && !IsType(MYSQL_TYPE_BIT))
             {
-                sLog->outFatal(LOG_FILTER_SQL, "FATAL: GetUInt64() on non-bigint field %s.%s (%s.%s) at index %u. Using type: %s.",
+                TC_LOG_FATAL(LOG_FILTER_SQL, "FATAL: GetUInt64() on non-bigint field %s.%s (%s.%s) at index %u. Using type: %s.",
                               meta.TableAlias, meta.Alias, meta.TableName, meta.Name, meta.Index, meta.Type);
                 return 0;
             }
@@ -186,7 +186,7 @@ class Field
             #ifdef TRINITY_DEBUG
             if (!IsType(MYSQL_TYPE_LONGLONG) && !IsType(MYSQL_TYPE_BIT))
             {
-                sLog->outFatal(LOG_FILTER_SQL, "FATAL: GetInt64() on non-bigint field %s.%s (%s.%s) at index %u. Using type: %s.",
+                TC_LOG_FATAL(LOG_FILTER_SQL, "FATAL: GetInt64() on non-bigint field %s.%s (%s.%s) at index %u. Using type: %s.",
                               meta.TableAlias, meta.Alias, meta.TableName, meta.Name, meta.Index, meta.Type);
                 return 0;
             }
@@ -205,7 +205,7 @@ class Field
             #ifdef TRINITY_DEBUG
             if (!IsType(MYSQL_TYPE_FLOAT))
             {
-                sLog->outFatal(LOG_FILTER_SQL, "FATAL: GetFloat() on non-float field %s.%s (%s.%s) at index %u. Using type: %s.",
+                TC_LOG_FATAL(LOG_FILTER_SQL, "FATAL: GetFloat() on non-float field %s.%s (%s.%s) at index %u. Using type: %s.",
                               meta.TableAlias, meta.Alias, meta.TableName, meta.Name, meta.Index, meta.Type);
                 return 0.0f;
             }
@@ -224,7 +224,7 @@ class Field
             #ifdef TRINITY_DEBUG
             if (!IsType(MYSQL_TYPE_DOUBLE))
             {
-                sLog->outFatal(LOG_FILTER_SQL, "FATAL: GetDouble() on non-double field %s.%s (%s.%s) at index %u. Using type: %s.",
+                TC_LOG_FATAL(LOG_FILTER_SQL, "FATAL: GetDouble() on non-double field %s.%s (%s.%s) at index %u. Using type: %s.",
                               meta.TableAlias, meta.Alias, meta.TableName, meta.Name, meta.Index, meta.Type);
                 return 0.0f;
             }
@@ -243,7 +243,7 @@ class Field
             #ifdef TRINITY_DEBUG
             if (IsNumeric())
             {
-                sLog->outFatal(LOG_FILTER_SQL, "FATAL: GetCString() on numeric field %s.%s (%s.%s) at index %u. Using type: %s.",
+                TC_LOG_FATAL(LOG_FILTER_SQL, "FATAL: GetCString() on numeric field %s.%s (%s.%s) at index %u. Using type: %s.",
                               meta.TableAlias, meta.Alias, meta.TableName, meta.Name, meta.Index, meta.Type);
                 return NULL;
             }
@@ -354,7 +354,7 @@ class Field
                 MYSQL_TYPE_SET:
                 */
                 default:
-                    sLog->outWarn(LOG_FILTER_SQL, "SQL::SizeForType(): invalid field type %u", uint32(field->type));
+                    TC_LOG_WARN("sql.sql", "SQL::SizeForType(): invalid field type %u", uint32(field->type));
                     return 0;
             }
         }

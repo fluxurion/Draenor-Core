@@ -1691,7 +1691,7 @@ class spell_warr_intervene: public SpellScriptLoader
                             l_MemberListInRange.push_back(l_Itr);
                     }
 
-                    l_MemberListInRange.sort(JadeCore::HealthPctOrderPred());
+                    l_MemberListInRange.sort(Trinity::HealthPctOrderPred());
                     
                     if (l_MemberListInRange.front())
                         l_Target = l_MemberListInRange.front();

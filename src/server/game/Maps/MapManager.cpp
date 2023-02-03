@@ -68,7 +68,7 @@ void MapManager::checkAndCorrectGridStatesArray()
     {
         if (i_GridStates[i] != si_GridStates[i])
         {
-            sLog->outError(LOG_FILTER_MAPS, "MapManager::checkGridStates(), GridState: si_GridStates is currupt !!!");
+            TC_LOG_ERROR("maps", "MapManager::checkGridStates(), GridState: si_GridStates is currupt !!!");
             ok = false;
             si_GridStates[i] = i_GridStates[i];
         }
@@ -207,16 +207,16 @@ bool MapManager::CanPlayerEnter(uint32 mapid, Player* player, bool loginCheck)
             {
                 WorldPacket l_Data(SMSG_AREA_TRIGGER_NO_CORPSE);
                 player->GetSession()->SendPacket(&l_Data);
-                sLog->outDebug(LOG_FILTER_MAPS, "MAP: Player '%s' does not have a corpse in instance '%s' and cannot enter.", player->GetName(), mapName);
+                TC_LOG_DEBUG("maps", "MAP: Player '%s' does not have a corpse in instance '%s' and cannot enter.", player->GetName(), mapName);
                 return false;
             }
 
-            sLog->outDebug(LOG_FILTER_MAPS, "MAP: Player '%s' has corpse in instance '%s' and can enter.", player->GetName(), mapName);
+            TC_LOG_DEBUG("maps", "MAP: Player '%s' has corpse in instance '%s' and can enter.", player->GetName(), mapName);
             player->ResurrectPlayer(0.5f, false);
             player->SpawnCorpseBones();
         }
         else
-            sLog->outDebug(LOG_FILTER_MAPS, "Map::CanPlayerEnter - player '%s' is dead but does not have a corpse!", player->GetName());
+            TC_LOG_DEBUG("maps", "Map::CanPlayerEnter - player '%s' is dead but does not have a corpse!", player->GetName());
     }
 
     Group* group = player->GetGroup();
@@ -225,7 +225,7 @@ bool MapManager::CanPlayerEnter(uint32 mapid, Player* player, bool loginCheck)
 		// Can only enter in a raid group except for any raid pre-WoD.
         if ((!group || !group->isRaidGroup()) && !sWorld->getBoolConfig(CONFIG_INSTANCE_IGNORE_RAID))
         {
-            sLog->outDebug(LOG_FILTER_MAPS, "MAP: Player '%s' must be in a raid group to enter instance '%s'", player->GetName(), mapName);
+            TC_LOG_DEBUG("maps", "MAP: Player '%s' must be in a raid group to enter instance '%s'", player->GetName(), mapName);
             return false;
         }
     }
@@ -443,7 +443,7 @@ uint32 MapManager::GenerateInstanceId()
 
     if (l_NewInstanceID == m_NextInstanceID)
     {
-        TC_LOG_ERROR(LOG_FILTER_MAPS, "Instance ID overflow!! Can't continue, shutting down server. ");
+        TC_LOG_ERROR("maps", "Instance ID overflow!! Can't continue, shutting down server. ");
         World::StopNow(ShutdownExitCode::ERROR_EXIT_CODE);
     }
 

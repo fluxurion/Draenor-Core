@@ -1021,8 +1021,8 @@ public:
         if (m_Diff <= p_Time)
         {
             std::list<Player*> l_ListTargets;
-            JadeCore::AnyPlayerInObjectRangeCheck check(p_AreaTrigger, 1.5f);
-            JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> searcher(p_AreaTrigger, l_ListTargets, check);
+            Trinity::AnyPlayerInObjectRangeCheck check(p_AreaTrigger, 1.5f);
+            Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(p_AreaTrigger, l_ListTargets, check);
             p_AreaTrigger->VisitNearbyObject(1.5f, searcher);
 
             if (l_ListTargets.empty())

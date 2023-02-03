@@ -216,7 +216,7 @@ void Pet::LoadPetFromDB(Player* owner, uint32 petentry, uint32 /*petnumber*/, bo
 
     if (!IsPositionValid())
     {
-        sLog->outError(LOG_FILTER_PETS, "Pet (guidlow %d, entry %d) not loaded. Suggested coordinates isn't valid (X: %f Y: %f)",
+        TC_LOG_ERROR(LOG_FILTER_PETS, "Pet (guidlow %d, entry %d) not loaded. Suggested coordinates isn't valid (X: %f Y: %f)",
             GetGUIDLow(), GetEntry(), GetPositionX(), GetPositionY());
         p_Callback(this, false);
         return;
@@ -293,7 +293,7 @@ void Pet::LoadPetFromDB(Player* owner, uint32 petentry, uint32 /*petnumber*/, bo
             break;
         default:
             if (!IsPetGhoul())
-                sLog->outError(LOG_FILTER_PETS, "Pet have incorrect type (%u) for pet loading.", getPetType());
+                TC_LOG_ERROR(LOG_FILTER_PETS, "Pet have incorrect type (%u) for pet loading.", getPetType());
             break;
     }
 
@@ -358,7 +358,7 @@ void Pet::LoadPetFromDB(Player* owner, uint32 petentry, uint32 /*petnumber*/, bo
 
     CleanupActionBar();                                     // remove unknown spells from action bar after load
 
-    sLog->outDebug(LOG_FILTER_PETS, "New Pet has guid %u", GetGUIDLow());
+    TC_LOG_DEBUG(LOG_FILTER_PETS, "New Pet has guid %u", GetGUIDLow());
 
     owner->PetSpellInitialize();
 
@@ -664,7 +664,7 @@ void Pet::Update(uint32 diff)
             {
                 if (owner->GetPetGUID() != GetGUID() && !m_Stampeded) // Stampede
                 {
-                    sLog->outError(LOG_FILTER_PETS, "Pet %u is not pet of owner %s, removed", GetEntry(), m_owner->GetName());
+                    TC_LOG_ERROR(LOG_FILTER_PETS, "Pet %u is not pet of owner %s, removed", GetEntry(), m_owner->GetName());
                     Remove(getPetType() == HUNTER_PET ? PET_SLOT_DELETED : PET_SLOT_ACTUAL_PET_SLOT, true, m_Stampeded);
                     return;
                 }
@@ -844,7 +844,7 @@ bool Pet::CreateBaseAtCreature(Creature* creature)
 
     if (!IsPositionValid())
     {
-        sLog->outError(LOG_FILTER_PETS, "Pet (guidlow %d, entry %d) not created base at creature. Suggested coordinates isn't valid (X: %f Y: %f)",
+        TC_LOG_ERROR(LOG_FILTER_PETS, "Pet (guidlow %d, entry %d) not created base at creature. Suggested coordinates isn't valid (X: %f Y: %f)",
             GetGUIDLow(), GetEntry(), GetPositionX(), GetPositionY());
         return false;
     }
@@ -852,7 +852,7 @@ bool Pet::CreateBaseAtCreature(Creature* creature)
     CreatureTemplate const* cinfo = GetCreatureTemplate();
     if (!cinfo)
     {
-        sLog->outError(LOG_FILTER_PETS, "CreateBaseAtCreature() failed, creatureInfo is missing!");
+        TC_LOG_ERROR(LOG_FILTER_PETS, "CreateBaseAtCreature() failed, creatureInfo is missing!");
         return false;
     }
 
@@ -881,7 +881,7 @@ bool Pet::CreateBaseAtCreatureInfo(CreatureTemplate const* cinfo, Unit* owner)
 
 bool Pet::CreateBaseAtTamed(CreatureTemplate const* cinfo, Map* map, uint32 phaseMask)
 {
-    sLog->outDebug(LOG_FILTER_PETS, "Pet::CreateBaseForTamed");
+    TC_LOG_DEBUG(LOG_FILTER_PETS, "Pet::CreateBaseForTamed");
     uint32 guid = sObjectMgr->GenerateLowGuid(HIGHGUID_PET);
     if (!Create(guid, map, phaseMask, cinfo->Entry))
         return false;
@@ -933,7 +933,7 @@ bool Guardian::InitStatsForLevel(uint8 p_PetLevel)
                 m_unitTypeMask |= UNIT_MASK_HUNTER_PET;
                 break;
             default:
-                sLog->outError(LOG_FILTER_PETS, "Unknown type pet %u is summoned by player class %u", GetEntry(), l_Owner->getClass());
+                TC_LOG_ERROR(LOG_FILTER_PETS, "Unknown type pet %u is summoned by player class %u", GetEntry(), l_Owner->getClass());
                 break;
         }
     }
@@ -1097,7 +1097,7 @@ void Pet::_LoadSpellCooldowns(PreparedQueryResult resultCooldown)
 
             if (!sSpellMgr->GetSpellInfo(spell_id))
             {
-                sLog->outError(LOG_FILTER_PETS, "Pet %u have unknown spell %u in `pet_spell_cooldown`, skipping.", m_charmInfo->GetPetNumber(), spell_id);
+                TC_LOG_ERROR(LOG_FILTER_PETS, "Pet %u have unknown spell %u in `pet_spell_cooldown`, skipping.", m_charmInfo->GetPetNumber(), spell_id);
                 continue;
             }
 
@@ -1117,7 +1117,7 @@ void Pet::_LoadSpellCooldowns(PreparedQueryResult resultCooldown)
 
             _AddCreatureSpellCooldown(spell_id, db_time);
 
-            sLog->outDebug(LOG_FILTER_PETS, "Pet (Number: %u) spell %u cooldown loaded (%u secs).", m_charmInfo->GetPetNumber(), spell_id, uint32(db_time-curTime));
+            TC_LOG_DEBUG(LOG_FILTER_PETS, "Pet (Number: %u) spell %u cooldown loaded (%u secs).", m_charmInfo->GetPetNumber(), spell_id, uint32(db_time-curTime));
         }
         while (result->NextRow());
     }
@@ -1239,7 +1239,7 @@ void Pet::_SaveSpells(SQLTransaction& trans)
 
 void Pet::_LoadAuras(PreparedQueryResult auraResult, PreparedQueryResult auraEffectResult, uint32 timediff)
 {
-    sLog->outDebug(LOG_FILTER_PETS, "Loading auras for pet %u", GetGUIDLow());
+    TC_LOG_DEBUG(LOG_FILTER_PETS, "Loading auras for pet %u", GetGUIDLow());
 
     PreparedQueryResult result = auraResult;
     PreparedQueryResult resultEffect = auraEffectResult;
@@ -1283,7 +1283,7 @@ void Pet::_LoadAuras(PreparedQueryResult auraResult, PreparedQueryResult auraEff
             SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellid);
             if (!spellInfo)
             {
-                sLog->outError(LOG_FILTER_PETS, "Unknown aura (spellid %u), ignore.", spellid);
+                TC_LOG_ERROR(LOG_FILTER_PETS, "Unknown aura (spellid %u), ignore.", spellid);
                 continue;
             }
 
@@ -1332,7 +1332,7 @@ void Pet::_LoadAuras(PreparedQueryResult auraResult, PreparedQueryResult auraEff
                 }
                 aura->SetLoadedState(maxduration, remaintime, remaincharges, stackcount, recalculatemask, &damage[0]);
                 aura->ApplyForTargets();
-                sLog->outInfo(LOG_FILTER_PETS, "Added aura spellid %u, effectmask %u", spellInfo->Id, effmask);
+                TC_LOG_INFO(LOG_FILTER_PETS, "Added aura spellid %u, effectmask %u", spellInfo->Id, effmask);
             }
         }
         while (result->NextRow());

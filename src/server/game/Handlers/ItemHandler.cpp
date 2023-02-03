@@ -732,7 +732,7 @@ void WorldSession::HandleBuyItemOpcode(WorldPacket& p_RecvPacket)
             m_Player->BuyCurrencyFromVendorSlot(l_VendorGUID, l_Muid, l_ItemID, l_Quantity);
             break;
         default:
-            sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: received wrong itemType (%u) in HandleBuyItemOpcode", l_ItemType);
+            TC_LOG_DEBUG("network", "WORLD: received wrong itemType (%u) in HandleBuyItemOpcode", l_ItemType);
             break;
     }
 }
@@ -806,7 +806,7 @@ void WorldSession::SendListInventory(uint64 p_VendorGUID, bool p_FunCustomPlayer
             {
                 if (!sConditionMgr->IsObjectMeetingVendorItemConditions(l_Vendor->GetEntry(), l_VendorItem->item, m_Player, l_Vendor))
                 {
-                    sLog->outDebug(LOG_FILTER_CONDITIONSYS, "SendListInventory: conditions not met for creature entry %u item %u", l_Vendor->GetEntry(), l_VendorItem->item);
+                    TC_LOG_DEBUG(LOG_FILTER_CONDITIONSYS, "SendListInventory: conditions not met for creature entry %u item %u", l_Vendor->GetEntry(), l_VendorItem->item);
                     continue;
                 }
 
@@ -2051,7 +2051,7 @@ void WorldSession::SendItemUpgradeResult(bool /*success*/)
 void WorldSession::HandleUpgradeItemOpcode(WorldPacket& /*recvData*/)
 {
     /// Upgrade system will be implemented back because of WoD 6.1.2
-    /*sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: Received CMSG_UPGRADE_ITEM");
+    /*TC_LOG_DEBUG("network", "WORLD: Received CMSG_UPGRADE_ITEM");
 
     ObjectGuid npcGuid;
     ObjectGuid itemGuid;
@@ -2100,7 +2100,7 @@ void WorldSession::HandleUpgradeItemOpcode(WorldPacket& /*recvData*/)
 
     if (!player->GetNPCIfCanInteractWithFlag2(npcGuid, UNIT_NPC_FLAG2_ITEM_UPGRADE))
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandleUpgradeItemOpcode - Unit (GUID: %u) not found or player can't interact with it.", GUID_LOPART(npcGuid));
+        TC_LOG_DEBUG("network", "WORLD: HandleUpgradeItemOpcode - Unit (GUID: %u) not found or player can't interact with it.", GUID_LOPART(npcGuid));
         SendItemUpgradeResult(false);
         return;
     }
@@ -2108,7 +2108,7 @@ void WorldSession::HandleUpgradeItemOpcode(WorldPacket& /*recvData*/)
     Item* item = player->GetItemByGuid(itemGuid);
     if (!item)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandleUpgradeItemOpcode - Item (GUID: %u) not found.", GUID_LOPART(itemGuid));
+        TC_LOG_DEBUG("network", "WORLD: HandleUpgradeItemOpcode - Item (GUID: %u) not found.", GUID_LOPART(itemGuid));
         SendItemUpgradeResult(false);
         return;
     }
@@ -2118,14 +2118,14 @@ void WorldSession::HandleUpgradeItemOpcode(WorldPacket& /*recvData*/)
     {
         if (item != tempItem)
         {
-            sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandleUpgradeItemOpcode - Item (GUID: %u) not found.", GUID_LOPART(itemGuid));
+            TC_LOG_DEBUG("network", "WORLD: HandleUpgradeItemOpcode - Item (GUID: %u) not found.", GUID_LOPART(itemGuid));
             SendItemUpgradeResult(false);
             return;
         }
     }
     else
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandleUpgradeItemOpcode - Item (GUID: %u) not found.", GUID_LOPART(itemGuid));
+        TC_LOG_DEBUG("network", "WORLD: HandleUpgradeItemOpcode - Item (GUID: %u) not found.", GUID_LOPART(itemGuid));
         SendItemUpgradeResult(false);
         return;
     }
@@ -2133,7 +2133,7 @@ void WorldSession::HandleUpgradeItemOpcode(WorldPacket& /*recvData*/)
     ItemUpgradeEntry const* itemUpEntry = sItemUpgradeStore.LookupEntry(upgradeEntry);
     if (!itemUpEntry)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandleUpgradeItemOpcode - ItemUpgradeEntry (%u) not found.", upgradeEntry);
+        TC_LOG_DEBUG("network", "WORLD: HandleUpgradeItemOpcode - ItemUpgradeEntry (%u) not found.", upgradeEntry);
         SendItemUpgradeResult(false);
         return;
     }
@@ -2141,7 +2141,7 @@ void WorldSession::HandleUpgradeItemOpcode(WorldPacket& /*recvData*/)
     // Check if player has enough currency
     if (player->GetCurrency(itemUpEntry->currencyId, false) < itemUpEntry->currencyCost)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandleUpgradeItemOpcode - Player has not enougth currency (ID: %u, Cost: %u) not found.", itemUpEntry->currencyId, itemUpEntry->currencyCost);
+        TC_LOG_DEBUG("network", "WORLD: HandleUpgradeItemOpcode - Player has not enougth currency (ID: %u, Cost: %u) not found.", itemUpEntry->currencyId, itemUpEntry->currencyCost);
         SendItemUpgradeResult(false);
         return;
     }
@@ -2149,7 +2149,7 @@ void WorldSession::HandleUpgradeItemOpcode(WorldPacket& /*recvData*/)
     uint32 actualUpgrade = item->GetDynamicUInt32Value(ITEM_DYNAMIC_MODIFIERS, 2);
     if (actualUpgrade != itemUpEntry->precItemUpgradeId)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandleUpgradeItemOpcode - ItemUpgradeEntry (%u) is not related to this ItemUpgradePath (%u).", itemUpEntry->Id, actualUpgrade);
+        TC_LOG_DEBUG("network", "WORLD: HandleUpgradeItemOpcode - ItemUpgradeEntry (%u) is not related to this ItemUpgradePath (%u).", itemUpEntry->Id, actualUpgrade);
         SendItemUpgradeResult(false);
         return;
     }

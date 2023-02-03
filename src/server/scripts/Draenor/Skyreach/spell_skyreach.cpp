@@ -165,8 +165,8 @@ namespace MS
             std::list<Unit*> l_TargetList;
             float l_Radius = 3.5f;
 
-            JadeCore::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
+            Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             std::forward_list<uint64> l_ToRemove; // We need to do it in two phase, otherwise it will break iterators.
@@ -245,8 +245,8 @@ namespace MS
             std::list<Unit*> l_TargetList;
             float l_Radius = 30.0f;
 
-            JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             std::forward_list<uint64> l_ToRemove; // We need to do it in two phase, otherwise it will break iterators.
@@ -313,8 +313,8 @@ namespace MS
             static const float k_Radius = 10.0f;
             static const float k_RadiusFromLine = 3.0f;
 
-            JadeCore::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), k_Radius);
-            JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), k_Radius);
+            Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(k_Radius, l_Searcher);
 
             Position l_Pos;
@@ -607,8 +607,8 @@ namespace MS
             std::list<Unit*> l_TargetList;
             float l_Radius = 4.0f;
 
-            JadeCore::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
+            Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             std::forward_list<uint64> l_ToRemove; // We need to do it in two phase, otherwise it will break iterators.
@@ -772,8 +772,8 @@ namespace MS
             // Update targets.
             std::list<Unit*> l_TargetList;
 
-            JadeCore::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), k_dist);
-            JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), k_dist);
+            Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(k_dist, l_Searcher);
 
             std::forward_list<uint64> l_ToRemove; // We need to do it in two phase, otherwise it will break iterators.
@@ -982,8 +982,8 @@ namespace MS
             // Update targets.
             std::list<Unit*> l_TargetList;
 
-            JadeCore::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), k_dist);
-            JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), k_dist);
+            Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(k_dist, l_Searcher);
 
             std::forward_list<uint64> l_ToRemove; // We need to do it in two phase, otherwise it will break iterators.
@@ -1130,8 +1130,8 @@ namespace MS
             std::list<Unit*> l_TargetList;
             float l_Radius = 4.0f;
 
-            JadeCore::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
+            Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             std::forward_list<uint64> l_ToRemove; // We need to do it in two phase, otherwise it will break iterators.
@@ -1214,8 +1214,8 @@ namespace MS
             std::list<Unit*> l_TargetList;
             float l_Radius = 6.0f;
 
-            JadeCore::AnyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::AnyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             std::forward_list<uint64> l_ToRemove; // We need to do it in two phase, otherwise it will break iterators.
@@ -1303,8 +1303,8 @@ namespace MS
             float l_Radius = 4.0f;
             Unit* l_Caster = p_AreaTrigger->GetCaster();
 
-            JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             std::forward_list<uint64> l_ToRemove; // We need to do it in two phase, otherwise it will break iterators.
@@ -1380,8 +1380,8 @@ namespace MS
             float l_Radius = 4.0f;
             Unit* l_Caster = p_AreaTrigger->GetCaster();
 
-            JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             std::forward_list<uint64> l_ToRemove; // We need to do it in two phase, otherwise it will break iterators.

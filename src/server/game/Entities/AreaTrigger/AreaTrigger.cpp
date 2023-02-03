@@ -76,7 +76,7 @@ bool AreaTrigger::CreateAreaTriggerFromSpell(uint32 p_GuidLow, Unit* p_Caster, S
     Relocate(pos);
     if (!IsPositionValid())
     {
-        sLog->outError(LOG_FILTER_GENERAL, "AreaTrigger (spell %u) not created. Invalid coordinates (X: %f Y: %f)", p_SpellInfo->Id, GetPositionX(), GetPositionY());
+        TC_LOG_ERROR("server.worldserver", "AreaTrigger (spell %u) not created. Invalid coordinates (X: %f Y: %f)", p_SpellInfo->Id, GetPositionX(), GetPositionY());
         return false;
     }
 
@@ -179,7 +179,7 @@ bool AreaTrigger::CreateAreaTrigger(uint32 p_Entry, uint32 p_GuidLow, uint32 p_P
 
     if (!IsPositionValid())
     {
-        sLog->outError(LOG_FILTER_GENERAL, "AreaTrigger (entry %u) not created. Invalid coordinates (X: %f Y: %f)", p_Entry, GetPositionX(), GetPositionY());
+        TC_LOG_ERROR("server.worldserver", "AreaTrigger (entry %u) not created. Invalid coordinates (X: %f Y: %f)", p_Entry, GetPositionX(), GetPositionY());
         return false;
     }
 
@@ -368,7 +368,7 @@ void AreaTrigger::UpdatePositionWithPathId(uint32 p_Time, Position* p_OutPos)
         AreaTriggerMoveTemplate l_MoveTemplate = sObjectMgr->GetAreaTriggerMoveTemplate(l_template->m_MoveCurveID);
         if (l_MoveTemplate.m_path_size == 0)
         {
-            sLog->outError(LOG_FILTER_GENERAL, "AreaTrigger Move Template (entry %u) not in DB.", l_template->m_MoveCurveID);
+            TC_LOG_ERROR("server.worldserver", "AreaTrigger Move Template (entry %u) not in DB.", l_template->m_MoveCurveID);
             return; // ERROR.
         }
 
@@ -382,7 +382,7 @@ void AreaTrigger::UpdatePositionWithPathId(uint32 p_Time, Position* p_OutPos)
 
         if (l_spline0.m_move_id == 0 || l_spline1.m_move_id == 0)
         {
-            sLog->outError(LOG_FILTER_GENERAL, "AreaTrigger Move Splines (entry %u) not in DB.", l_template->m_MoveCurveID);
+            TC_LOG_ERROR("server.worldserver", "AreaTrigger Move Splines (entry %u) not in DB.", l_template->m_MoveCurveID);
             return; // ERROR.
         }
 
@@ -408,7 +408,7 @@ void AreaTrigger::GetPositionFromPathId(uint32 p_PathId, Position* p_OutPos) con
 
         if (l_spline.m_move_id == 0)
         {
-            sLog->outError(LOG_FILTER_GENERAL, "AreaTrigger Move Splines (entry %u) not in DB.", l_template->m_MoveCurveID);
+            TC_LOG_ERROR("server.worldserver", "AreaTrigger Move Splines (entry %u) not in DB.", l_template->m_MoveCurveID);
             return; // ERROR.
         }
 

@@ -344,7 +344,7 @@ class npc_gara_jal_s_soul : public CreatureScript
                             }
                         }
 
-                        l_BossList.sort(JadeCore::HealthPctOrderPred(false));
+                        l_BossList.sort(Trinity::HealthPctOrderPred(false));
                         l_EntryToPossess = l_BossList.front()->GetEntry();
                     }
 
@@ -441,7 +441,7 @@ class npc_gara_jal_s_soul : public CreatureScript
 
                         if (!playerList.empty())
                         {
-                            JadeCore::RandomResizeList(playerList, 1);
+                            Trinity::RandomResizeList(playerList, 1);
 
                             if (Player* l_Player = playerList.front())
                             {
@@ -2419,7 +2419,7 @@ class mob_shadowed_lua_spirit : public CreatureScript
                             if(playerList.empty())
                                 break;
 
-                            JadeCore::RandomResizeList(playerList, 1);
+                            Trinity::RandomResizeList(playerList, 1);
 
                             if (Player* target = playerList.front())
                             {

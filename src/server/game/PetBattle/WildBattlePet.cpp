@@ -40,7 +40,7 @@ void WildBattlePetZonePools::LoadPoolTemplate(Field* l_Fields)
 
     if (!l_PoolTemplate.Entry)
     {
-        sLog->outError(LOG_FILTER_SERVER_LOADING, "No npc entry for species %u", l_PoolTemplate.Species);
+        TC_LOG_ERROR("server.loading", "No npc entry for species %u", l_PoolTemplate.Species);
         return;
     }
 
@@ -298,7 +298,7 @@ void WildBattlePetMgr::Load()
     QueryResult l_Result = WorldDatabase.Query("SELECT Zone, Species, `Replace`, `Max`, RespawnTime, MinLevel, MaxLevel, Breed0, Breed1, Breed2, Breed3, Breed4, Breed5, Breed6, Breed7, Breed8, Breed9 FROM wild_battlepet_zone_pool");
     if (!l_Result)
     {
-        sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 species definitions. DB table `WildBattlePetZoneSpecies` is empty");
+        TC_LOG_INFO("server.loading", ">> Loaded 0 species definitions. DB table `WildBattlePetZoneSpecies` is empty");
         return;
     }
 
@@ -322,7 +322,7 @@ void WildBattlePetMgr::Load()
 
         if (l_MapID == -1)
         {
-            sLog->outError(LOG_FILTER_SERVER_LOADING, "WildBattlePetMgr::Load() no map id found for zone %u", l_ZoneID);
+            TC_LOG_ERROR("server.loading", "WildBattlePetMgr::Load() no map id found for zone %u", l_ZoneID);
             continue;
         }
 
@@ -332,7 +332,7 @@ void WildBattlePetMgr::Load()
             if (m_PoolsByMap[l_MapID][l_ZoneID].m_Templates[l_I].Replace == l_Fields[2].GetUInt32())
             {
                 l_Error = true;
-                sLog->outError(LOG_FILTER_SERVER_LOADING, "WildBattlePetMgr::Load() zone %u already contains a replacement for creature entry %u", l_ZoneID, l_Fields[2].GetUInt32());
+                TC_LOG_ERROR("server.loading", "WildBattlePetMgr::Load() zone %u already contains a replacement for creature entry %u", l_ZoneID, l_Fields[2].GetUInt32());
 
                 break;
             }
@@ -349,7 +349,7 @@ void WildBattlePetMgr::Load()
     }
     while (l_Result->NextRow());
 
-    sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded %u species definitions.", l_Count);
+    TC_LOG_INFO("server.loading", ">> Loaded %u species definitions.", l_Count);
 }
 
 //////////////////////////////////////////////////////////////////////////

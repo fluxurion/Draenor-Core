@@ -109,7 +109,7 @@ namespace MS { namespace Garrison
 
         if (!l_Entry)
         {
-            sLog->outError(LOG_FILTER_WORLDSERVER, "MS::Garrison::ShipmentManager::GetShipmentIDForBuilding() Building ID invalid");
+            TC_LOG_ERROR("server.worldserver", "MS::Garrison::ShipmentManager::GetShipmentIDForBuilding() Building ID invalid");
             return 0;
         }
 

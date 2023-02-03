@@ -425,8 +425,8 @@ class spell_sha_of_anger_aggressive_behaviour: public SpellScriptLoader
                 float l_ShaOfAngerBunnyPresent = false;
 
                 std::list<Unit*> l_UnitList;
-                JadeCore::AnyUnitInObjectRangeCheck u_check(l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck> searcher(l_Caster, l_UnitList, u_check);
+                Trinity::AnyUnitInObjectRangeCheck u_check(l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck> searcher(l_Caster, l_UnitList, u_check);
                 l_Caster->VisitNearbyObject(l_Radius, searcher);
 
                 for (Unit* l_Target : l_UnitList)

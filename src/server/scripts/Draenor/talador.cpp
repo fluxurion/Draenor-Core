@@ -49,8 +49,8 @@ class npc_talador_warlock_soulstealer : public CreatureScript
                 if (l_PlayerKiller)
                 {
                     std::list<Unit*> l_NearCreatures;
-                    JadeCore::AllCreaturesOfEntryInRange l_UCheck(me, DraeneiSpirit, 15.0f);
-                    JadeCore::UnitListSearcher<JadeCore::AllCreaturesOfEntryInRange> l_Searcher(me, l_NearCreatures, l_UCheck);
+                    Trinity::AllCreaturesOfEntryInRange l_UCheck(me, DraeneiSpirit, 15.0f);
+                    Trinity::UnitListSearcher<Trinity::AllCreaturesOfEntryInRange> l_Searcher(me, l_NearCreatures, l_UCheck);
                     me->VisitNearbyObject(15.0f, l_Searcher);
 
                     for (Unit* l_Unit : l_NearCreatures)

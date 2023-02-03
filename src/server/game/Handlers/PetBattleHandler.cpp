@@ -883,8 +883,8 @@ void WorldSession::HandlePetBattleRequestWild(WorldPacket& p_RecvData)
     l_WildBattlePets[0] = l_WildBattlePet;
 
     std::list<Unit*> l_NearCreature;
-    JadeCore::AnyFriendlyUnitInObjectRangeCheck l_UCheck(l_Wild, l_Wild, 50.0f);
-    JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Wild, l_NearCreature, l_UCheck);
+    Trinity::AnyFriendlyUnitInObjectRangeCheck l_UCheck(l_Wild, l_Wild, 50.0f);
+    Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Wild, l_NearCreature, l_UCheck);
     l_Wild->VisitNearbyObject(40.0f, l_Searcher);
 
     uint32 l_WildsPetCount = 1;

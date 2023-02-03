@@ -52,7 +52,7 @@ m_length(NULL)
     //- This is where we store the (entire) resultset
     if (mysql_stmt_store_result(m_stmt))
     {
-        sLog->outWarn(LOG_FILTER_SQL, "%s:mysql_stmt_store_result, cannot bind result from MySQL server. Error: %s", __FUNCTION__, mysql_stmt_error(m_stmt));
+        TC_LOG_WARN("sql.sql", "%s:mysql_stmt_store_result, cannot bind result from MySQL server. Error: %s", __FUNCTION__, mysql_stmt_error(m_stmt));
         return;
     }
 
@@ -76,7 +76,7 @@ m_length(NULL)
     //- This is where we bind the bind the buffer to the statement
     if (mysql_stmt_bind_result(m_stmt, m_rBind))
     {
-        sLog->outWarn(LOG_FILTER_SQL, "%s:mysql_stmt_bind_result, cannot bind result from MySQL server. Error: %s", __FUNCTION__, mysql_stmt_error(m_stmt));
+        TC_LOG_WARN("sql.sql", "%s:mysql_stmt_bind_result, cannot bind result from MySQL server. Error: %s", __FUNCTION__, mysql_stmt_error(m_stmt));
         mysql_stmt_free_result(m_stmt);
         CleanUp();
         delete[] m_isNull;

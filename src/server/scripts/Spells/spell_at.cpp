@@ -36,8 +36,8 @@ class spell_at_dk_defile : public AreaTriggerEntityScript
                     std::list<Unit*> l_TargetListTemp;
                     float l_Radius = p_AreaTrigger->GetFloatValue(AREATRIGGER_FIELD_EXPLICIT_SCALE) * 8.0f;
 
-                    JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                    JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetListTemp, l_Check);
+                    Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                    Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetListTemp, l_Check);
                     p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                     if (!l_TargetListTemp.empty())
@@ -126,8 +126,8 @@ class spell_at_druid_fungal_growth : public AreaTriggerEntityScript
             std::list<Unit*> l_TargetList;
             float l_Radius = (float)l_SpellInfo->Effects[EFFECT_0].BasePoints;
 
-            JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_AreaTriggerCaster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_AreaTriggerCaster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             for (Unit* l_Target : l_TargetList)
@@ -209,8 +209,8 @@ class spell_at_druid_ursol_vortex : public AreaTriggerEntityScript
             float l_Radius = 3.5f;
             Unit* l_Caster = p_AreaTrigger->GetCaster();
 
-            JadeCore::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_NewTargetList, u_check);
+            Trinity::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_NewTargetList, u_check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
             for (auto l_It = m_TargetList.begin(); l_It != m_TargetList.end();)
@@ -294,8 +294,8 @@ class spell_at_druid_solar_beam : public AreaTriggerEntityScript
                 return;
 
             std::list<Unit*> l_NewTargetList;
-            JadeCore::AnyUnfriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_NewTargetList, u_check);
+            Trinity::AnyUnfriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_NewTargetList, u_check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
             for (Unit* l_Target : l_NewTargetList)
@@ -358,8 +358,8 @@ class spell_at_flare : public AreaTriggerEntityScript
                 return;
 
             std::list<Unit*> l_NewTargetList;
-            JadeCore::AnyUnfriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_NewTargetList, u_check);
+            Trinity::AnyUnfriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_NewTargetList, u_check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
             for (Unit* l_Target : l_NewTargetList)
@@ -405,8 +405,8 @@ class spell_at_hun_binding_shot : public AreaTriggerEntityScript
                 std::list<Unit*> l_TargetList;
                 float l_Radius = sSpellMgr->GetSpellInfo(p_AreaTrigger->GetSpellId())->Effects[EFFECT_1].CalcRadius(l_Caster);
 
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 if (l_TargetList.empty())
@@ -475,11 +475,11 @@ class spell_at_hun_ice_trap : public AreaTriggerEntityScript
                 float l_Radius = MELEE_RANGE * 2;
 
                 std::list<Unit*> l_NewTargetList;
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_NewTargetList, u_check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_NewTargetList, u_check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
-                l_NewTargetList.sort(JadeCore::DistanceCompareOrderPred(p_AreaTrigger));
+                l_NewTargetList.sort(Trinity::DistanceCompareOrderPred(p_AreaTrigger));
                 for (Unit* l_Target : l_NewTargetList)
                 {
                     if (l_Target != nullptr && l_Caster->IsValidAttackTarget(l_Target) && !l_Target->isTotem() && !l_Target->isStatue() && p_AreaTrigger->IsInWorld())
@@ -527,11 +527,11 @@ class spell_at_hun_snake_trap : public AreaTriggerEntityScript
                 float l_Radius = MELEE_RANGE * 2;
 
                 std::list<Unit*> l_NewTargetList;
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_NewTargetList, u_check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_NewTargetList, u_check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
-                l_NewTargetList.sort(JadeCore::DistanceCompareOrderPred(p_AreaTrigger));
+                l_NewTargetList.sort(Trinity::DistanceCompareOrderPred(p_AreaTrigger));
                 for (Unit* l_Target : l_NewTargetList)
                 {
                     if (l_Target != nullptr && l_Caster->IsValidAttackTarget(l_Target) && !l_Target->isTotem() && !l_Target->isStatue() && p_AreaTrigger->IsInWorld())
@@ -574,8 +574,8 @@ class spell_at_hun_ice_trap_effect : public AreaTriggerEntityScript
             float l_Radius = 10.0f;
             Unit* l_Caster = p_AreaTrigger->GetCaster();
 
-            JadeCore::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, targetList, u_check);
+            Trinity::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, targetList, u_check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
             for (auto itr : targetList)
@@ -635,11 +635,11 @@ class spell_at_hun_freezing_trap : public AreaTriggerEntityScript
                 float l_Radius = MELEE_RANGE * 2;
 
                 std::list<Unit*> l_NewTargetList;
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_AreaTriggerCaster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_NewTargetList, u_check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_AreaTriggerCaster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_NewTargetList, u_check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
-                l_NewTargetList.sort(JadeCore::DistanceCompareOrderPred(p_AreaTrigger));
+                l_NewTargetList.sort(Trinity::DistanceCompareOrderPred(p_AreaTrigger));
                 for (Unit* l_Target : l_NewTargetList)
                 {
                     if (l_Target != nullptr && l_AreaTriggerCaster->IsValidAttackTarget(l_Target) && !l_Target->isTotem() && !l_Target->isStatue())
@@ -688,11 +688,11 @@ class spell_at_hun_explosive_trap : public AreaTriggerEntityScript
                 float l_Radius = MELEE_RANGE * 2;
 
                 std::list<Unit*> l_NewTargetList;
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_AreaTriggerCaster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_NewTargetList, u_check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_AreaTriggerCaster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_NewTargetList, u_check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
-                l_NewTargetList.sort(JadeCore::DistanceCompareOrderPred(p_AreaTrigger));
+                l_NewTargetList.sort(Trinity::DistanceCompareOrderPred(p_AreaTrigger));
                 for (Unit* l_Target : l_NewTargetList)
                 {
                     if (l_Target != nullptr && l_AreaTriggerCaster->IsValidAttackTarget(l_Target) && !l_Target->isTotem() && !l_Target->isStatue())
@@ -727,8 +727,8 @@ class spell_at_mage_wod_frost_2p_bonus : public AreaTriggerEntityScript
             float l_Radius = 20.0f;
             Unit* l_Caster = p_AreaTrigger->GetCaster();
 
-            JadeCore::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, targetList, u_check);
+            Trinity::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, targetList, u_check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
             for (auto itr : targetList)
@@ -746,8 +746,8 @@ class spell_at_mage_wod_frost_2p_bonus : public AreaTriggerEntityScript
             float l_Radius = 10.0f;
             Unit* l_Caster = p_AreaTrigger->GetCaster();
 
-            JadeCore::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, targetList, u_check);
+            Trinity::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, targetList, u_check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
             for (auto itr : targetList)
@@ -812,8 +812,8 @@ class spell_at_mage_arcane_orb : public AreaTriggerEntityScript
                     std::list<Unit*> l_TargetList;
                     float l_Radius = 7.0f;
 
-                    JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                    JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                    Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                    Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                     p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                     for (Unit* l_Unit : l_TargetList)
@@ -893,8 +893,8 @@ class spell_at_mage_meteor_burn : public AreaTriggerEntityScript
                 std::list<Unit*> l_TargetList;
                 float l_Radius = 8.0f;
 
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 for (Unit* l_Unit : l_TargetList)
@@ -971,8 +971,8 @@ class spell_at_monk_afterlife_healing_sphere : public AreaTriggerEntityScript
                 float l_Radius = 1.0f;
                 Unit* l_Target = nullptr;
 			
-	            JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Checker(p_AreaTrigger, l_AreaTriggerCaster, l_Radius);
-                JadeCore::UnitSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_Target, l_Checker);
+	            Trinity::AnyFriendlyUnitInObjectRangeCheck l_Checker(p_AreaTrigger, l_AreaTriggerCaster, l_Radius);
+                Trinity::UnitSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_Target, l_Checker);
                 p_AreaTrigger->VisitNearbyGridObject(l_Radius, l_Searcher);
                 if (!l_Target)
                     p_AreaTrigger->VisitNearbyWorldObject(l_Radius, l_Searcher);
@@ -1013,8 +1013,8 @@ class spell_at_monk_healing_sphere : public AreaTriggerEntityScript
                 Unit* l_Target = nullptr;
                 std::list<Unit*> l_TargetList;
 				
-                JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Checker(p_AreaTrigger, l_AreaTriggerCaster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Checker);
+                Trinity::AnyFriendlyUnitInObjectRangeCheck l_Checker(p_AreaTrigger, l_AreaTriggerCaster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Checker);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 l_TargetList.remove_if([this, l_AreaTriggerCaster](WorldObject* p_Object) -> bool
@@ -1034,7 +1034,7 @@ class spell_at_monk_healing_sphere : public AreaTriggerEntityScript
 
                 if (l_TargetList.size() > 1)
                 {
-                    l_TargetList.sort(JadeCore::ObjectDistanceOrderPred(p_AreaTrigger));
+                    l_TargetList.sort(Trinity::ObjectDistanceOrderPred(p_AreaTrigger));
                     l_TargetList.resize(1);
                 }
 
@@ -1107,8 +1107,8 @@ class spell_at_monk_chi_sphere_afterlife : public AreaTriggerEntityScript
             float l_Radius = 1.0f;
             Unit* l_Caster = p_AreaTrigger->GetCaster();
 
-            JadeCore::AnyFriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, targetList, u_check);
+            Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, targetList, u_check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
             if (!targetList.empty())
@@ -1143,8 +1143,8 @@ class spell_at_monk_gift_of_the_ox : public AreaTriggerEntityScript
             float l_Radius = 1.0f;
             Unit* l_Caster = p_AreaTrigger->GetCaster();
 
-            JadeCore::AnyFriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, targetList, u_check);
+            Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, targetList, u_check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
             for (auto itr : targetList)
@@ -1217,14 +1217,14 @@ class spell_at_pri_divine_star : public AreaTriggerEntityScript
 
             if (friendly)
             {
-                JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
             }
             else
             {
-                JadeCore::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                Trinity::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
+                Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
             }
 
@@ -1274,8 +1274,8 @@ class spell_at_pri_power_word_barrier : public AreaTriggerEntityScript
                 std::list<Unit*> l_FriendListInRadius;
                 float l_Radius = 6.5f;
 
-                JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_FriendListInRadius, l_Check);
+                Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_FriendListInRadius, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 if (!l_FriendListInRadius.empty())
@@ -1307,8 +1307,8 @@ class spell_at_pri_angelic_feather : public AreaTriggerEntityScript
             float l_Radius = 1.0f;
             Unit* l_Caster = p_AreaTrigger->GetCaster();
 
-            JadeCore::AnyFriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, targetList, u_check);
+            Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(p_AreaTrigger, targetList, u_check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
             if (!targetList.empty())
@@ -1351,8 +1351,8 @@ class spell_at_rogue_smoke_bomb : public AreaTriggerEntityScript
                 return;
 
             std::list<Unit*> l_NewTargetList;
-            JadeCore::AnyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_NewTargetList, u_check);
+            Trinity::AnyUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_NewTargetList, u_check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
             for (Unit* l_Target : l_NewTargetList)
@@ -1426,8 +1426,8 @@ class spell_at_monk_chi_burst : public AreaTriggerEntityScript
             std::list<Unit*> l_TargetList;
             float l_Radius = 3.0f;
 
-            JadeCore::AnyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::AnyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             SpellInfo const* l_SpellInfoDamage = sSpellMgr->GetSpellInfo(eSpells::ChiBurstDamage);
@@ -1503,8 +1503,8 @@ class spell_at_monk_charging_ox_wave : public AreaTriggerEntityScript
             std::list<Unit*> l_TargetList;
             float l_Radius = 2.0f;
 
-            JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_AreaTriggerCaster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_AreaTriggerCaster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             for (Unit* l_Target : l_TargetList)
@@ -1546,8 +1546,8 @@ class spell_at_dk_anti_magic_zone : public AreaTriggerEntityScript
                 return;
 
             std::list<Unit*> l_NewTargetList;
-            JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Checker(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_NewTargetList, l_Checker);
+            Trinity::AnyFriendlyUnitInObjectRangeCheck l_Checker(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_NewTargetList, l_Checker);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             for (Unit* l_Target : l_NewTargetList)

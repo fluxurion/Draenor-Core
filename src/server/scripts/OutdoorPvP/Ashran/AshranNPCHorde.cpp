@@ -1482,7 +1482,7 @@ public:
 
 					if (l_Marker.size() > 1)
 					{
-						l_Marker.sort(JadeCore::ObjectDistanceOrderPred(me));
+						l_Marker.sort(Trinity::ObjectDistanceOrderPred(me));
 						l_Marker.resize(1);
 					}
 

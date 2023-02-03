@@ -1028,8 +1028,8 @@ void PetBattle::AddPet(uint32 p_TeamID, std::shared_ptr<BattlePetInstance> p_Pet
     if (Teams[p_TeamID]->TeamPetCount > MAX_PETBATTLE_SLOTS)
     {
         ACE_Stack_Trace l_StackTrace;
-        sLog->outAshran("PetBattle::AddPet TeamPetCount overflow (%u)", Teams[p_TeamID]->TeamPetCount);
-        sLog->outAshran(l_StackTrace.c_str());
+        TC_LOG_ERROR("server.worldserver", "PetBattle::AddPet TeamPetCount overflow (%u)", Teams[p_TeamID]->TeamPetCount);
+        TC_LOG_ERROR("server.worldserver", l_StackTrace.c_str());
     }
 
     Pets[p_Pet->ID] = p_Pet;

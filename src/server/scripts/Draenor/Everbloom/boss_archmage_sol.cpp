@@ -491,8 +491,8 @@ public:
             if (m_TimeBetweenDot <= p_Diff)
             {
                 std::list<Player*> l_Playerlist;
-                JadeCore::AnyPlayerInObjectRangeCheck check(me, 2.0f);
-                JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> searcher(me, l_Playerlist, check);
+                Trinity::AnyPlayerInObjectRangeCheck check(me, 2.0f);
+                Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(me, l_Playerlist, check);
                 me->VisitNearbyObject(2.0f, searcher);
                 if (l_Playerlist.empty())
                     return;

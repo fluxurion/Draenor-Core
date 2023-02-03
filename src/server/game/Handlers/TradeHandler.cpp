@@ -184,21 +184,21 @@ void WorldSession::moveItems(Item* myItems[], Item* hisItems[])
             if (myItems[i])
             {
                 if (!traderCanTrade)
-                    sLog->outError(LOG_FILTER_NETWORKIO, "trader can't store item: %u", myItems[i]->GetGUIDLow());
+                    TC_LOG_ERROR("network", "trader can't store item: %u", myItems[i]->GetGUIDLow());
                 if (m_Player->CanStoreItem(NULL_BAG, NULL_SLOT, playerDst, myItems[i], false) == EQUIP_ERR_OK)
                     m_Player->MoveItemToInventory(playerDst, myItems[i], true, true);
                 else
-                    sLog->outError(LOG_FILTER_NETWORKIO, "player can't take item back: %u", myItems[i]->GetGUIDLow());
+                    TC_LOG_ERROR("network", "player can't take item back: %u", myItems[i]->GetGUIDLow());
             }
             // return the already removed items to the original owner
             if (hisItems[i])
             {
                 if (!playerCanTrade)
-                    sLog->outError(LOG_FILTER_NETWORKIO, "player can't store item: %u", hisItems[i]->GetGUIDLow());
+                    TC_LOG_ERROR("network", "player can't store item: %u", hisItems[i]->GetGUIDLow());
                 if (trader->CanStoreItem(NULL_BAG, NULL_SLOT, traderDst, hisItems[i], false) == EQUIP_ERR_OK)
                     trader->MoveItemToInventory(traderDst, hisItems[i], true, true);
                 else
-                    sLog->outError(LOG_FILTER_NETWORKIO, "trader can't take item back: %u", hisItems[i]->GetGUIDLow());
+                    TC_LOG_ERROR("network", "trader can't take item back: %u", hisItems[i]->GetGUIDLow());
             }
         }
     }

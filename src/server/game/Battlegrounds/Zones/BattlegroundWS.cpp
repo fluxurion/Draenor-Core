@@ -235,12 +235,12 @@ void BattlegroundWS::RespawnFlag(uint32 Team, bool captured)
 {
     if (Team == ALLIANCE)
     {
-        sLog->outDebug(LOG_FILTER_BATTLEGROUND, "Respawn Alliance flag");
+        TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Respawn Alliance flag");
         _flagState[BG_TEAM_ALLIANCE] = BG_WS_FLAG_STATE_ON_BASE;
     }
     else
     {
-        sLog->outDebug(LOG_FILTER_BATTLEGROUND, "Respawn Horde flag");
+        TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Respawn Horde flag");
         _flagState[BG_TEAM_HORDE] = BG_WS_FLAG_STATE_ON_BASE;
     }
 
@@ -277,7 +277,7 @@ void BattlegroundWS::RespawnFlagAfterDrop(uint32 team)
     if (GameObject* obj = GetBgMap()->GetGameObject(GetDroppedFlagGUID(team)))
         obj->Delete();
     else
-        sLog->outError(LOG_FILTER_BATTLEGROUND, "unknown droped flag bg, guid: %u", GUID_LOPART(GetDroppedFlagGUID(team)));
+        TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "unknown droped flag bg, guid: %u", GUID_LOPART(GetDroppedFlagGUID(team)));
 
     SetDroppedFlagGUID(0, team);
     _bothFlagsKept = false;
@@ -583,7 +583,7 @@ void BattlegroundWS::RemovePlayer(Player* player, uint64 guid, uint32 /*team*/)
     {
         if (!player)
         {
-            sLog->outError(LOG_FILTER_BATTLEGROUND, "BattlegroundWS: Removing offline player who has the FLAG!!");
+            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BattlegroundWS: Removing offline player who has the FLAG!!");
             this->SetAllianceFlagPicker(0);
             this->RespawnFlag(ALLIANCE, false);
         }
@@ -594,7 +594,7 @@ void BattlegroundWS::RemovePlayer(Player* player, uint64 guid, uint32 /*team*/)
     {
         if (!player)
         {
-            sLog->outError(LOG_FILTER_BATTLEGROUND, "BattlegroundWS: Removing offline player who has the FLAG!!");
+            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BattlegroundWS: Removing offline player who has the FLAG!!");
             this->SetHordeFlagPicker(0);
             this->RespawnFlag(HORDE, false);
         }
@@ -696,14 +696,14 @@ bool BattlegroundWS::SetupBattleground()
         || !AddObject(BG_WS_OBJECT_DOOR_H_4, BG_OBJECT_DOOR_H_4_WS_ENTRY, 950.7952f, 1459.583f, 342.1523f, 0.05235988f, 0, 0, 0.02617695f, 0.9996573f, RESPAWN_IMMEDIATELY)
 )
     {
-        sLog->outError(LOG_FILTER_SQL, "BatteGroundWS: Failed to spawn some object Battleground not created!");
+        TC_LOG_ERROR("sql.sql", "BatteGroundWS: Failed to spawn some object Battleground not created!");
         return false;
     }
 
     WorldSafeLocsEntry const* sg = sWorldSafeLocsStore.LookupEntry(WS_GRAVEYARD_MAIN_ALLIANCE);
     if (!sg || !AddSpiritGuide(WS_SPIRIT_MAIN_ALLIANCE, sg->x, sg->y, sg->z, sg->o, ALLIANCE))
     {
-        sLog->outError(LOG_FILTER_SQL, "BatteGroundWS: Failed to spawn Alliance spirit guide! Battleground not created!");
+        TC_LOG_ERROR("sql.sql", "BatteGroundWS: Failed to spawn Alliance spirit guide! Battleground not created!");
         return false;
     }
 
@@ -711,11 +711,11 @@ bool BattlegroundWS::SetupBattleground()
 
     if (!sg || !AddSpiritGuide(WS_SPIRIT_MAIN_HORDE, sg->x, sg->y, sg->z, sg->o, HORDE))
     {
-        sLog->outError(LOG_FILTER_SQL, "BatteGroundWS: Failed to spawn Horde spirit guide! Battleground not created!");
+        TC_LOG_ERROR("sql.sql", "BatteGroundWS: Failed to spawn Horde spirit guide! Battleground not created!");
         return false;
     }
 
-    sLog->outDebug(LOG_FILTER_BATTLEGROUND, "BatteGroundWS: BG objects and spirit guides spawned");
+    TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "BatteGroundWS: BG objects and spirit guides spawned");
 
     return true;
 }

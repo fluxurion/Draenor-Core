@@ -283,8 +283,8 @@ class spell_monk_ring_of_peace: public SpellScriptLoader
                         std::list<Unit*> targetList;
                         float radius = 8.0f;
 
-                        JadeCore::NearestAttackableUnitInObjectRangeCheck u_check(target, caster, radius);
-                        JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> searcher(target, targetList, u_check);
+                        Trinity::NearestAttackableUnitInObjectRangeCheck u_check(target, caster, radius);
+                        Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> searcher(target, targetList, u_check);
                         target->VisitNearbyObject(radius, searcher);
 
                         for (auto itr : targetList)
@@ -810,15 +810,15 @@ class spell_monk_chi_wave_bolt: public SpellScriptLoader
                 else
                     return;
 
-                CellCoord p(JadeCore::ComputeCellCoord(l_Target->GetPositionX(), l_Target->GetPositionY()));
+                CellCoord p(Trinity::ComputeCellCoord(l_Target->GetPositionX(), l_Target->GetPositionY()));
                 Cell cell(p);
                 cell.SetNoCreate();
 
-                JadeCore::AnyUnitInObjectRangeCheck u_check(l_OriginalCaster, 20.0f);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck> searcher(l_OriginalCaster, l_TargetList, u_check);
+                Trinity::AnyUnitInObjectRangeCheck u_check(l_OriginalCaster, 20.0f);
+                Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck> searcher(l_OriginalCaster, l_TargetList, u_check);
 
-                TypeContainerVisitor<JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck>, WorldTypeMapContainer> world_unit_searcher(searcher);
-                TypeContainerVisitor<JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck>, GridTypeMapContainer>  grid_unit_searcher(searcher);
+                TypeContainerVisitor<Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck>, WorldTypeMapContainer> world_unit_searcher(searcher);
+                TypeContainerVisitor<Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck>, GridTypeMapContainer>  grid_unit_searcher(searcher);
 
                 cell.Visit(p, world_unit_searcher, *l_OriginalCaster->GetMap(), *l_OriginalCaster, 20.0f);
                 cell.Visit(p, grid_unit_searcher, *l_OriginalCaster->GetMap(), *l_OriginalCaster, 20.0f);
@@ -875,7 +875,7 @@ class spell_monk_chi_wave_bolt: public SpellScriptLoader
                         if (l_AlliesList.empty())
                             return;
 
-                        l_AlliesList.sort(JadeCore::HealthPctOrderPred());
+                        l_AlliesList.sort(Trinity::HealthPctOrderPred());
 
                         l_Target->CastSpell(l_AlliesList.front(), eSpells::ChiWaveTriggerHeal, true, NULL, nullptr, l_OriginalCaster->GetGUID());
                     }
@@ -1324,8 +1324,8 @@ class spell_monk_guard: public SpellScriptLoader
                     std::list<Unit*> l_TargetList;
                     float l_Radius = 15.0f;
 
-                    JadeCore::NearestFriendlyUnitInObjectRangeCheck l_NearestFriendlyUnitCheck(l_Caster, l_Caster, l_Radius);
-                    JadeCore::UnitListSearcher<JadeCore::NearestFriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_TargetList, l_NearestFriendlyUnitCheck);
+                    Trinity::NearestFriendlyUnitInObjectRangeCheck l_NearestFriendlyUnitCheck(l_Caster, l_Caster, l_Radius);
+                    Trinity::UnitListSearcher<Trinity::NearestFriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_TargetList, l_NearestFriendlyUnitCheck);
                     l_Caster->VisitNearbyObject(l_Radius, l_Searcher);
 
                     l_TargetList.remove(l_Caster);
@@ -1339,7 +1339,7 @@ class spell_monk_guard: public SpellScriptLoader
 
                     if (l_TargetList.size() > 1)
                     {
-                        l_TargetList.sort(JadeCore::ObjectDistanceOrderPred(l_Caster));
+                        l_TargetList.sort(Trinity::ObjectDistanceOrderPred(l_Caster));
                         l_TargetList.resize(1);
                     }
 
@@ -1674,7 +1674,7 @@ class spell_monk_eminence_heal : public SpellScriptLoader
 
             if (p_Targets.size() > 1)
             {
-                p_Targets.sort(JadeCore::HealthPctOrderPred());
+                p_Targets.sort(Trinity::HealthPctOrderPred());
                 p_Targets.resize(1);
             }
         }
@@ -1729,7 +1729,7 @@ public:
 
 			if (p_Targets.size() > 1)
 			{
-				p_Targets.sort(JadeCore::HealthPctOrderPred());
+				p_Targets.sort(Trinity::HealthPctOrderPred());
 				p_Targets.resize(1);
 			}
 		}
@@ -2230,7 +2230,7 @@ public:
 				unitList.remove_if(TargetCheck(GetOriginalCaster()->GetGUID()));
 
 			if (unitList.size() > 1)
-				JadeCore::Containers::RandomResizeList(unitList, 1);
+				Trinity::Containers::RandomResizeList(unitList, 1);
 		}
 
 		void HandleOnHitTarget(SpellEffIndex /*effIndex*/)
@@ -3298,7 +3298,7 @@ class spell_monk_soothing_mist: public SpellScriptLoader
 
                 if (l_UnitList.size() > 1)
                 {
-                    l_UnitList.sort(JadeCore::HealthPctOrderPred());
+                    l_UnitList.sort(Trinity::HealthPctOrderPred());
                     l_UnitList.resize(1);
                 }
 
@@ -3373,7 +3373,7 @@ class spell_monk_soothing_mist: public SpellScriptLoader
                     return;
 
                 if (l_PartyListValid.size() > 1)
-                    l_PartyListValid.sort(JadeCore::HealthPctOrderPred());
+                    l_PartyListValid.sort(Trinity::HealthPctOrderPred());
 
                 l_JadeStatue->CastSpell(l_PartyListValid.front(), SPELL_MONK_SOOTHING_MIST_STATUE, false);
             }
@@ -4419,7 +4419,7 @@ class spell_monk_rushing_jade_wind_heal : public SpellScriptLoader
                 if (p_Targets.size() <= 6)
                     return;
 
-                JadeCore::RandomResizeList(p_Targets, 6);
+                Trinity::RandomResizeList(p_Targets, 6);
 
                 for (WorldObject* l_Target : p_Targets)
                 {
@@ -4546,7 +4546,7 @@ class spell_monk_fists_of_fury_stun: public SpellScriptLoader
             void RemoveInvalidTargets(std::list<WorldObject*>& p_Targets)
             {
                 Unit* l_Caster = GetCaster();
-                p_Targets.remove_if(JadeCore::UnitAuraCheck(true, GetSpellInfo()->Id, GetCaster()->GetGUID()));
+                p_Targets.remove_if(Trinity::UnitAuraCheck(true, GetSpellInfo()->Id, GetCaster()->GetGUID()));
 
                 p_Targets.remove_if([this, l_Caster](WorldObject* p_Object) -> bool
                 {
@@ -4952,8 +4952,8 @@ class spell_monk_expel_harm: public SpellScriptLoader
                 }
 
                 std::list<Unit*> l_TargetList;
-                JadeCore::NearestAttackableUnitInObjectRangeCheck u_check(l_Player, l_Player, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> searcher(l_Player, l_TargetList, u_check);
+                Trinity::NearestAttackableUnitInObjectRangeCheck u_check(l_Player, l_Player, l_Radius);
+                Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> searcher(l_Player, l_TargetList, u_check);
                 l_Player->VisitNearbyObject(l_Radius, searcher);
 
                 for (auto l_Itr : l_TargetList)
@@ -5092,7 +5092,7 @@ class spell_monk_hurricane_strike_damage: public SpellScriptLoader
             {
                 /// Damage 1 random target
                 if (p_Targets.size() > 1)
-                    JadeCore::RandomResizeList(p_Targets, 1);
+                    Trinity::RandomResizeList(p_Targets, 1);
             }
 
             void HandleDamage(SpellEffIndex /*effIndex*/)
@@ -5392,13 +5392,13 @@ class spell_monk_rising_sun_kick: public SpellScriptLoader
 
 						/// Get friendly unit on range
 						std::list<Unit*> targetList;
-						JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
-						JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, targetList, l_Check);
+						Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
+						Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, targetList, l_Check);
 						l_Caster->VisitNearbyObject(l_Radius, l_Searcher);
 
 						if (targetList.size() > 1)
 						{
-							targetList.sort(JadeCore::HealthPctOrderPred());
+							targetList.sort(Trinity::HealthPctOrderPred());
 							targetList.resize(1);
 						}
 
@@ -5613,8 +5613,8 @@ class spell_monk_extend_life : public AuraScript
 		uint32 heal = CalculatePct(healdone, base);
 
 		std::list<Unit*> targetList;
-		JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, 100.0f);
-		JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, targetList, l_Check);
+		Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, 100.0f);
+		Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, targetList, l_Check);
 		l_Caster->VisitNearbyObject(100.0f, l_Searcher);
 
 		for (Unit* unit : targetList)
@@ -5880,8 +5880,8 @@ class spell_monk_chi_explosion_heal: public SpellScriptLoader
 
                     Unit* l_MainTarget = (*p_Targets.begin())->ToUnit();
                     std::list<Unit*> l_UnitList;
-                    JadeCore::AnyFriendlyUnitInObjectRangeCheck u_check(l_MainTarget, l_MainTarget, 8.0f);
-                    JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(l_MainTarget, l_UnitList, u_check);
+                    Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(l_MainTarget, l_MainTarget, 8.0f);
+                    Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(l_MainTarget, l_UnitList, u_check);
                     l_MainTarget->VisitNearbyObject(8.0f, searcher);
 
                     for (auto& l_Iter : l_UnitList)
@@ -6681,7 +6681,7 @@ class spell_monk_gift_of_the_serpent : public SpellScriptLoader
             {
                 if (p_Targets.size() > 1)
                 {
-                    p_Targets.sort(JadeCore::HealthPctOrderPred());
+                    p_Targets.sort(Trinity::HealthPctOrderPred());
                     p_Targets.resize(1);
                 }
             }

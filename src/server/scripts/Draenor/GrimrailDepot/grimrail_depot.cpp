@@ -1301,8 +1301,8 @@ class grimrail_depot_at_flametongue : public AreaTriggerEntityScript
         if (m_Timer <= p_Time)
         {
             std::list<Player*> l_PlayerList;
-            JadeCore::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, 2.0f);
-            JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_PlayerList, l_Check);
+            Trinity::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, 2.0f);
+            Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_PlayerList, l_Check);
             p_AreaTrigger->VisitNearbyObject(2.0f, l_Searcher);
             if (l_PlayerList.empty())
                 return;
@@ -1366,8 +1366,8 @@ class grimrail_depot_at_healing_rain : public AreaTriggerEntityScript
             if (l_Diff <= p_Time)
             {
                 std::list<Unit*> l_TargetList;
-                JadeCore::AnyFriendlyUnitInObjectRangeCheck u_check(l_Caster, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(l_Caster, l_TargetList, u_check);
+                Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(l_Caster, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(l_Caster, l_TargetList, u_check);
                 l_Caster->VisitNearbyObject(l_Radius, searcher);
                 if (!l_TargetList.empty())
                 {
@@ -1418,8 +1418,8 @@ public:
             if (l_Diff <= p_Time)
             {
                 std::list<Unit*> l_TargetList;
-                JadeCore::AnyFriendlyUnitInObjectRangeCheck u_check(l_Caster, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(l_Caster, l_TargetList, u_check);
+                Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(l_Caster, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(l_Caster, l_TargetList, u_check);
                 l_Caster->VisitNearbyObject(l_Radius, searcher);
                 if (!l_TargetList.empty())
                 {

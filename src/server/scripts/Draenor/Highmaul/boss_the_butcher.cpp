@@ -785,7 +785,7 @@ class spell_highmaul_heavy_handed_proc : public SpellScriptLoader
 
                     if (p_Targets.size() > 1)
                     {
-                        p_Targets.sort(JadeCore::ObjectDistanceOrderPred(l_Caster));
+                        p_Targets.sort(Trinity::ObjectDistanceOrderPred(l_Caster));
                         WorldObject* l_Object = p_Targets.front();
                         p_Targets.clear();
                         p_Targets.push_back(l_Object);
@@ -928,8 +928,8 @@ class areatrigger_highmaul_pale_vitriol : public AreaTriggerEntityScript
                 std::list<Unit*> l_TargetList;
                 float l_Radius = 4.0f;
 
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 for (Unit* l_Unit : l_TargetList)

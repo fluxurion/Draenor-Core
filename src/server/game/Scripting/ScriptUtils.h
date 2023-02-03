@@ -19,8 +19,8 @@ namespace MS
         {
             std::list<GameObject*> l_TargetList;
 
-            JadeCore::NearestGameObjectEntryInObjectRangeCheck l_Check(*p_Me, p_Entry, p_Range);
-            JadeCore::GameObjectListSearcher<JadeCore::NearestGameObjectEntryInObjectRangeCheck> l_Searcher(p_Me, l_TargetList, l_Check);
+            Trinity::NearestGameObjectEntryInObjectRangeCheck l_Check(*p_Me, p_Entry, p_Range);
+            Trinity::GameObjectListSearcher<Trinity::NearestGameObjectEntryInObjectRangeCheck> l_Searcher(p_Me, l_TargetList, l_Check);
             p_Me->VisitNearbyObject(p_Range, l_Searcher);
 
             for (GameObject* l_Gob : l_TargetList)
@@ -34,8 +34,8 @@ namespace MS
             std::list<Unit*> l_TargetList;
             float l_Radius = p_Range;
 
-            JadeCore::AnyUnitInObjectRangeCheck l_Check(p_Me, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck> l_Searcher(p_Me, l_TargetList, l_Check);
+            Trinity::AnyUnitInObjectRangeCheck l_Check(p_Me, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck> l_Searcher(p_Me, l_TargetList, l_Check);
             p_Me->VisitNearbyObject(l_Radius, l_Searcher);
 
             std::list<Unit*> l_Results;
@@ -54,8 +54,8 @@ namespace MS
             std::list<Unit*> l_TargetList;
             float l_Radius = p_Range;
 
-            JadeCore::AnyUnitInObjectRangeCheck l_Check(p_Me, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck> l_Searcher(p_Me, l_TargetList, l_Check);
+            Trinity::AnyUnitInObjectRangeCheck l_Check(p_Me, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck> l_Searcher(p_Me, l_TargetList, l_Check);
             p_Me->VisitNearbyObject(l_Radius, l_Searcher);
 
             std::list<Unit*> l_Results;
@@ -83,8 +83,8 @@ namespace MS
             std::list<Unit*> l_TargetList;
             float l_Radius = p_Range;
 
-            JadeCore::AnyUnitInObjectRangeCheck l_Check(p_Me, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck> l_Searcher(p_Me, l_TargetList, l_Check);
+            Trinity::AnyUnitInObjectRangeCheck l_Check(p_Me, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck> l_Searcher(p_Me, l_TargetList, l_Check);
             p_Me->VisitNearbyObject(l_Radius, l_Searcher);
 
             std::list<Unit*> l_Results;
@@ -103,8 +103,8 @@ namespace MS
             std::list<Unit*> l_TargetList;
             float l_Radius = p_Range;
 
-            JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(p_Me, p_Me, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_Me, l_TargetList, l_Check);
+            Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(p_Me, p_Me, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_Me, l_TargetList, l_Check);
             p_Me->VisitNearbyObject(l_Radius, l_Searcher);
 
             l_TargetList.remove_if([p_Me, p_Range, p_CheckLoS](Unit* p_Unit) {
@@ -125,8 +125,8 @@ namespace MS
             std::list<Unit*> l_TargetList;
             float l_Radius = p_Range;
 
-            JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(p_Me, p_Me, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_Me, l_TargetList, l_Check);
+            Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(p_Me, p_Me, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_Me, l_TargetList, l_Check);
             p_Me->VisitNearbyObject(l_Radius, l_Searcher);
 
             for (Unit* l_Unit : l_TargetList)

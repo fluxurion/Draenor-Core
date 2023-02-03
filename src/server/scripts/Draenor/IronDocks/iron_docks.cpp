@@ -998,8 +998,8 @@ public:
                 if (m_Activated)
                 {
                     std::list<Unit*> l_UnfriendlyList;
-                    JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, 4.0f);
-                    JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_UnfriendlyList, l_Check);
+                    Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, 4.0f);
+                    Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_UnfriendlyList, l_Check);
                     me->VisitNearbyObject(3.4f, l_Searcher);
 
                     for (Unit* l_Unit : l_UnfriendlyList)
@@ -1586,8 +1586,8 @@ class iron_docks_mob_rampaging_clefthoof : public CreatureScript
                     if (m_StampedeDiff <= p_Diff)
                     {
                         std::list<Player*> l_PlayerList;
-                        JadeCore::AnyPlayerInObjectRangeCheck l_Check(me, 2.0f);
-                        JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> l_Searcher(me, l_PlayerList, l_Check);
+                        Trinity::AnyPlayerInObjectRangeCheck l_Check(me, 2.0f);
+                        Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> l_Searcher(me, l_PlayerList, l_Check);
                         me->VisitNearbyObject(2.0f, l_Searcher);
                         if (l_PlayerList.empty())
                             return;
@@ -2122,8 +2122,8 @@ class iron_docks_area_trigger_burning_arrow : public AreaTriggerEntityScript
             if (m_Timer <= p_Time)
             {
                 std::list<Player*> l_PlayerList;
-                JadeCore::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, 2.0f);
-                JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_PlayerList, l_Check);
+                Trinity::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, 2.0f);
+                Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_PlayerList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(2.0f, l_Searcher);
                 if (l_PlayerList.empty())
                     return;
@@ -2185,8 +2185,8 @@ class iron_docks_area_trigger_lava_barrage_effect : public AreaTriggerEntityScri
             if (m_Timer <= p_Time)
             {
                 std::list<Player*> l_PlayerList;
-                JadeCore::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, 2.0f);
-                JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_PlayerList, l_Check);
+                Trinity::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, 2.0f);
+                Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_PlayerList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(2.0f, l_Searcher);
                 if (l_PlayerList.empty())
                     return;
@@ -2246,8 +2246,8 @@ class iron_docks_area_trigger_barbed_arrow : public AreaTriggerEntityScript
             if (m_Timer <= p_Time)
             {
                 std::list<Player*> l_PlayerList;
-                JadeCore::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, 2.0f);
-                JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_PlayerList, l_Check);
+                Trinity::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, 2.0f);
+                Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_PlayerList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(2.0f, l_Searcher);
                 if (!l_PlayerList.empty())
                 {
@@ -2291,8 +2291,8 @@ class iron_docks_area_trigger_oil_effect : public AreaTriggerEntityScript
             if (m_Timer <= p_Time)
             {
                 std::list<Player*> l_PlayerList;
-                JadeCore::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, 2.0f);
-                JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_PlayerList, l_Check);
+                Trinity::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, 2.0f);
+                Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_PlayerList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(2.0f, l_Searcher);
                 if (l_PlayerList.empty())
                     return;
@@ -2354,8 +2354,8 @@ class iron_docks_area_trigger_jagged_caltrops : public AreaTriggerEntityScript
             if (m_Timer <= p_Time)
             {
                 std::list<Player*> l_PlayerList;
-                JadeCore::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, 2.0f);
-                JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_PlayerList, l_Check);
+                Trinity::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, 2.0f);
+                Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_PlayerList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(2.0f, l_Searcher);
                 if (!l_PlayerList.empty())
                 {
@@ -2414,8 +2414,8 @@ public:
         if (m_Timer <= p_Time)
         {
             std::list<Player*> l_PlayerList;
-            JadeCore::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, 2.0f);
-            JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_PlayerList, l_Check);
+            Trinity::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, 2.0f);
+            Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_PlayerList, l_Check);
             p_AreaTrigger->VisitNearbyObject(2.0f, l_Searcher);
             if (!l_PlayerList.empty())
             {

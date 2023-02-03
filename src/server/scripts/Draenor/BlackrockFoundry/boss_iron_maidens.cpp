@@ -3420,7 +3420,7 @@ class spell_foundry_blood_ritual : public SpellScriptLoader
                     return;
 
                 Unit* l_Caster = GetCaster();
-                p_Targets.sort(JadeCore::ObjectDistanceOrderPred(l_Caster));
+                p_Targets.sort(Trinity::ObjectDistanceOrderPred(l_Caster));
 
                 if (Unit* l_Target = (*p_Targets.begin())->ToUnit())
                     l_Caster->CastSpell(l_Target, eSpell::CrystallizedBlood, true);
@@ -4034,8 +4034,8 @@ class areatrigger_foundry_dominator_blast : public AreaTriggerEntityScript
                     std::list<Player*> l_TargetList;
                     float l_Radius = 1.5f;
 
-                    JadeCore::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, l_Radius);
-                    JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                    Trinity::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, l_Radius);
+                    Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                     p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                     for (Player* l_Iter : l_TargetList)
@@ -4070,8 +4070,8 @@ class areatrigger_foundry_protective_earth : public AreaTriggerEntityScript
                 std::list<Unit*> l_Allies;
                 float l_Radius = 1.0f;
 
-                JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_Allies, l_Check);
+                Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_Allies, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 for (Unit* l_Iter : l_Allies)
@@ -4109,8 +4109,8 @@ class areatrigger_foundry_corrupted_blood : public AreaTriggerEntityScript
                 std::list<Unit*> l_TargetList;
                 float l_Radius = 1.0f;
 
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_TargetList, l_Check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_TargetList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 std::set<uint64> l_Targets;

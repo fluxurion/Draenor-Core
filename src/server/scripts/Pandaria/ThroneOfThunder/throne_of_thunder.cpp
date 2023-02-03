@@ -1200,8 +1200,8 @@ class mob_dark_winds : public CreatureScript
                 std::list<Unit*> unitToRemove;
                 float radius = 30.0f;
 
-                JadeCore::AnyFriendlyUnitInObjectRangeCheck u_check(me, me, radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(me, playerList, u_check);
+                Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(me, me, radius);
+                Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(me, playerList, u_check);
                 me->VisitNearbyObject(radius, searcher);
 
                 for (auto itr : playerList)
@@ -1639,15 +1639,15 @@ class mob_zandalari_high_priest : public CreatureScript
                     {
                         std::list<Unit*> assistList;
                         {
-                            JadeCore::AnyFriendlyUnitInObjectRangeCheck u_check(me, me, 10.0f);
-                            JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(me, assistList, u_check);
+                            Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(me, me, 10.0f);
+                            Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(me, assistList, u_check);
                             me->VisitNearbyObject(10.0f, searcher);
                         }
 
                         Unit* target = NULL;
                         if (!assistList.empty())
                         {
-                            assistList.sort(JadeCore::HealthPctOrderPred());
+                            assistList.sort(Trinity::HealthPctOrderPred());
                             target = assistList.front();
                         }
 
@@ -1854,15 +1854,15 @@ class mob_zandalari_prelate : public CreatureScript
                     {
                         std::list<Unit*> assistList;
                         {
-                            JadeCore::AnyFriendlyUnitInObjectRangeCheck u_check(me, me, 10.0f);
-                            JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(me, assistList, u_check);
+                            Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(me, me, 10.0f);
+                            Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(me, assistList, u_check);
                             me->VisitNearbyObject(10.0f, searcher);
                         }
 
                         Unit* target = NULL;
                         if (!assistList.empty())
                         {
-                            assistList.sort(JadeCore::HealthPctOrderPred());
+                            assistList.sort(Trinity::HealthPctOrderPred());
                             target = assistList.front();
                         }
 
@@ -3576,7 +3576,7 @@ class mob_star : public CreatureScript
                             return;
                         }
 
-                        JadeCore::RandomResizeList(l_PlayerList, 1);
+                        Trinity::RandomResizeList(l_PlayerList, 1);
                         l_Target = l_PlayerList.front();
                     }
 
@@ -3788,7 +3788,7 @@ class spell_water_bolt : public SpellScriptLoader
                 if (targets.empty())
                     return;
 
-                JadeCore::RandomResizeList(targets, 1);
+                Trinity::RandomResizeList(targets, 1);
             }
 
             void HandleOnHit()
@@ -4378,8 +4378,8 @@ class spell_lightning_storm : public SpellScriptLoader
                     std::list<Unit*> l_Targets;
                     float l_Radius = 8.0f;
 
-                    JadeCore::NearestAttackableUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
-                    JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> l_Searcher(l_Caster, l_Targets, l_Check);
+                    Trinity::NearestAttackableUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
+                    Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> l_Searcher(l_Caster, l_Targets, l_Check);
                     l_Caster->VisitNearbyObject(l_Radius, l_Searcher);
 
                     for (Unit* l_Unit : l_Targets)

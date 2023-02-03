@@ -476,14 +476,14 @@ class spell_rotface_ooze_flood: public SpellScriptLoader
                 if (triggers.empty())
                     return;
 
-                triggers.sort(JadeCore::ObjectDistanceOrderPred(GetHitUnit()));
+                triggers.sort(Trinity::ObjectDistanceOrderPred(GetHitUnit()));
                 GetHitUnit()->CastSpell(triggers.back(), uint32(GetEffectValue()), false, NULL, NULL, GetOriginalCaster() ? GetOriginalCaster()->GetGUID() : 0);
             }
 
             void FilterTargets(std::list<WorldObject*>& targets)
             {
                 // get 2 targets except 2 nearest
-                targets.sort(JadeCore::ObjectDistanceOrderPred(GetCaster()));
+                targets.sort(Trinity::ObjectDistanceOrderPred(GetCaster()));
 
                 // .resize() runs pop_back();
                 if (targets.size() > 5)
@@ -525,11 +525,11 @@ class spell_rotface_mutated_infection: public SpellScriptLoader
             {
                 // remove targets with this aura already
                 // tank is not on this list
-                targets.remove_if (JadeCore::UnitAuraCheck(true, GetSpellInfo()->Id));
+                targets.remove_if (Trinity::UnitAuraCheck(true, GetSpellInfo()->Id));
                 if (targets.empty())
                     return;
 
-                WorldObject* target = JadeCore::Containers::SelectRandomContainerElement(targets);
+                WorldObject* target = Trinity::Containers::SelectRandomContainerElement(targets);
                 targets.clear();
                 targets.push_back(target);
                 _target = target;

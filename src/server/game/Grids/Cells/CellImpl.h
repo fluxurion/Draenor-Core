@@ -90,7 +90,7 @@ inline void Cell::Visit(CellCoord const& standing_cell, TypeContainerVisitor<T, 
     //it is very essential to call visitor for standing cell firstly...
     map.Visit(*this, visitor);
     /*
-    auto l_CurrentCellCoord = JadeCore::ComputeCellCoord(x_off, y_off);
+    auto l_CurrentCellCoord = Trinity::ComputeCellCoord(x_off, y_off);
     float l_VisitorX = l_CurrentCellCoord.x_coord;
     float l_VisitorY = l_CurrentCellCoord.y_coord;
 

@@ -467,23 +467,23 @@ void SpellCastTargets::Update(Unit* p_Caster)
 void SpellCastTargets::OutDebug() const
 {
     if (!m_targetMask)
-        sLog->outInfo(LOG_FILTER_SPELLS_AURAS, "No targets");
+        TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "No targets");
 
-    sLog->outInfo(LOG_FILTER_SPELLS_AURAS, "target mask: %u", m_targetMask);
+    TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "target mask: %u", m_targetMask);
     if (m_targetMask & (TARGET_FLAG_UNIT_MASK | TARGET_FLAG_CORPSE_MASK | TARGET_FLAG_GAMEOBJECT_MASK))
-        sLog->outInfo(LOG_FILTER_SPELLS_AURAS, "Object target: " UI64FMTD, m_objectTargetGUID);
+        TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "Object target: " UI64FMTD, m_objectTargetGUID);
     if (m_targetMask & TARGET_FLAG_ITEM)
-        sLog->outInfo(LOG_FILTER_SPELLS_AURAS, "Item target: " UI64FMTD, m_itemTargetGUID);
+        TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "Item target: " UI64FMTD, m_itemTargetGUID);
     if (m_targetMask & TARGET_FLAG_TRADE_ITEM)
-        sLog->outInfo(LOG_FILTER_SPELLS_AURAS, "Trade item target: " UI64FMTD, m_itemTargetGUID);
+        TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "Trade item target: " UI64FMTD, m_itemTargetGUID);
     if (m_targetMask & TARGET_FLAG_SOURCE_LOCATION)
-        sLog->outInfo(LOG_FILTER_SPELLS_AURAS, "Source location: transport guid:" UI64FMTD " trans offset: %s position: %s", m_src._transportGUID, m_src._transportOffset.ToString().c_str(), m_src._position.ToString().c_str());
+        TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "Source location: transport guid:" UI64FMTD " trans offset: %s position: %s", m_src._transportGUID, m_src._transportOffset.ToString().c_str(), m_src._position.ToString().c_str());
     if (m_targetMask & TARGET_FLAG_DEST_LOCATION)
-        sLog->outInfo(LOG_FILTER_SPELLS_AURAS, "Destination location: transport guid:" UI64FMTD " trans offset: %s position: %s", m_dst._transportGUID, m_dst._transportOffset.ToString().c_str(), m_dst._position.ToString().c_str());
+        TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "Destination location: transport guid:" UI64FMTD " trans offset: %s position: %s", m_dst._transportGUID, m_dst._transportOffset.ToString().c_str(), m_dst._position.ToString().c_str());
     if (m_targetMask & TARGET_FLAG_STRING)
-        sLog->outInfo(LOG_FILTER_SPELLS_AURAS, "String: %s", m_strTarget.c_str());
-    sLog->outInfo(LOG_FILTER_SPELLS_AURAS, "speed: %f", m_speed);
-    sLog->outInfo(LOG_FILTER_SPELLS_AURAS, "elevation: %f", m_elevation);
+        TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "String: %s", m_strTarget.c_str());
+    TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "speed: %f", m_speed);
+    TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "elevation: %f", m_elevation);
 }
 
 SpellValue::SpellValue(SpellInfo const* proto)
@@ -610,7 +610,7 @@ m_caster((info->AttributesEx6 & SPELL_ATTR6_CAST_BY_CHARMER && caster->GetCharme
     m_effectExecuteData.clear();
 
     if (m_caster == NULL)
-        sLog->outAshran("m_caster is null!! spellId %u", m_spellInfo->Id);
+        TC_LOG_ERROR("server.worldserver", "m_caster is null!! spellId %u", m_spellInfo->Id);
 
     for (uint8 i = 0; i < m_spellInfo->EffectCount; ++i)
         m_destTargets[i] = SpellDestination(*m_caster);
@@ -2186,7 +2186,7 @@ void Spell::SelectImplicitTrajTargets()
         }
 
 #define CHECK_DIST {\
-            DEBUG_TRAJ(sLog->outError(LOG_FILTER_SPELLS_AURAS, "Spell::SelectTrajTargets: dist %f, height %f.", dist, height);)\
+            DEBUG_TRAJ(TC_LOG_ERROR(LOG_FILTER_SPELLS_AURAS, "Spell::SelectTrajTargets: dist %f, height %f.", dist, height);)\
             if (dist > bestDist)\
                 continue;\
             if (dist < objDist2d + size && dist > objDist2d - size)\
@@ -6011,7 +6011,7 @@ void Spell::TakePower()
 
         if (powerType >= MAX_POWERS)
         {
-            sLog->outAshran("Spel::TakePower -> Unknown power type [%u]", powerType);
+            TC_LOG_ERROR("server.worldserver", "Spel::TakePower -> Unknown power type [%u]", powerType);
             continue;
         }
 
@@ -8925,7 +8925,7 @@ SpellEvent::~SpellEvent()
     }
     else
     {
-        sLog->outError(LOG_FILTER_SPELLS_AURAS, "~SpellEvent: %s %u tried to delete non-deletable spell %u. Was not deleted, causes memory leak.",
+        TC_LOG_ERROR(LOG_FILTER_SPELLS_AURAS, "~SpellEvent: %s %u tried to delete non-deletable spell %u. Was not deleted, causes memory leak.",
             (m_Spell->GetCaster()->IsPlayer() ? "Player" : "Creature"), m_Spell->GetCaster()->GetGUIDLow(), m_Spell->m_spellInfo->Id);
         ASSERT(false);
     }
@@ -9312,7 +9312,7 @@ void Spell::LoadScripts()
             m_loadedScripts.erase(bitr);
             continue;
         }
-        sLog->outDebug(LOG_FILTER_SPELLS_AURAS, "Spell::LoadScripts: Script `%s` for spell `%u` is loaded now", (*itr)->_GetScriptName()->c_str(), m_spellInfo->Id);
+        TC_LOG_DEBUG(LOG_FILTER_SPELLS_AURAS, "Spell::LoadScripts: Script `%s` for spell `%u` is loaded now", (*itr)->_GetScriptName()->c_str(), m_spellInfo->Id);
         (*itr)->Register();
         ++itr;
     }
@@ -9333,7 +9333,7 @@ void Spell::CallScriptBeforeCastHandlers()
 
     scriptExecuteTime = getMSTime() - scriptExecuteTime;
     if (scriptExecuteTime > 10)
-        sLog->outAshran("SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
+        TC_LOG_ERROR("server.worldserver", "SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
 }
 
 void Spell::CallScriptOnCastHandlers()
@@ -9351,7 +9351,7 @@ void Spell::CallScriptOnCastHandlers()
 
     scriptExecuteTime = getMSTime() - scriptExecuteTime;
     if (scriptExecuteTime > 10)
-        sLog->outAshran("SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
+        TC_LOG_ERROR("server.worldserver", "SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
 }
 
 void Spell::CallScriptAfterCastHandlers()
@@ -9369,7 +9369,7 @@ void Spell::CallScriptAfterCastHandlers()
 
     scriptExecuteTime = getMSTime() - scriptExecuteTime;
     if (scriptExecuteTime > 10)
-        sLog->outAshran("SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
+        TC_LOG_ERROR("server.worldserver", "SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
 }
 
 bool Spell::CallScriptCheckInterruptHandlers()
@@ -9393,7 +9393,7 @@ bool Spell::CallScriptCheckInterruptHandlers()
 
     l_ScriptExecuteTime = getMSTime() - l_ScriptExecuteTime;
     if (l_ScriptExecuteTime > 10)
-        sLog->outAshran("SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, l_ScriptExecuteTime);
+        TC_LOG_ERROR("server.worldserver", "SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, l_ScriptExecuteTime);
     return l_CanInterrupt;
 }
 
@@ -9413,7 +9413,7 @@ void Spell::CallScriptOnPrepareHandlers()
     }
     scriptExecuteTime = getMSTime() - scriptExecuteTime;
     if (scriptExecuteTime > 10)
-        sLog->outAshran("SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
+        TC_LOG_ERROR("server.worldserver", "SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
 }
 
 
@@ -9437,7 +9437,7 @@ SpellCastResult Spell::CallScriptCheckCastHandlers()
 
     scriptExecuteTime = getMSTime() - scriptExecuteTime;
     if (scriptExecuteTime > 10)
-        sLog->outAshran("SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
+        TC_LOG_ERROR("server.worldserver", "SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
     return retVal;
 }
 
@@ -9450,7 +9450,7 @@ void Spell::PrepareScriptHitHandlers()
 
     scriptExecuteTime = getMSTime() - scriptExecuteTime;
     if (scriptExecuteTime > 10)
-        sLog->outAshran("SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
+        TC_LOG_ERROR("server.worldserver", "SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
 }
 
 bool Spell::CallScriptEffectHandlers(SpellEffIndex effIndex, SpellEffectHandleMode mode)
@@ -9503,7 +9503,7 @@ bool Spell::CallScriptEffectHandlers(SpellEffIndex effIndex, SpellEffectHandleMo
 
     scriptExecuteTime = getMSTime() - scriptExecuteTime;
     if (scriptExecuteTime > 10)
-        sLog->outAshran("SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
+        TC_LOG_ERROR("server.worldserver", "SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
 
     return preventDefault;
 }
@@ -9522,7 +9522,7 @@ void Spell::CallScriptBeforeHitHandlers()
     }
     scriptExecuteTime = getMSTime() - scriptExecuteTime;
     if (scriptExecuteTime > 10)
-        sLog->outAshran("SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
+        TC_LOG_ERROR("server.worldserver", "SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
 }
 
 void Spell::CallScriptOnHitHandlers()
@@ -9540,7 +9540,7 @@ void Spell::CallScriptOnHitHandlers()
 
     scriptExecuteTime = getMSTime() - scriptExecuteTime;
     if (scriptExecuteTime > 10)
-        sLog->outAshran("SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
+        TC_LOG_ERROR("server.worldserver", "SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
 }
 
 void Spell::CallScriptAfterHitHandlers()
@@ -9558,7 +9558,7 @@ void Spell::CallScriptAfterHitHandlers()
 
     scriptExecuteTime = getMSTime() - scriptExecuteTime;
     if (scriptExecuteTime > 10)
-        sLog->outAshran("SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
+        TC_LOG_ERROR("server.worldserver", "SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
 }
 
 void Spell::CallScriptObjectAreaTargetSelectHandlers(std::list<WorldObject*>& targets, SpellEffIndex effIndex)
@@ -9577,7 +9577,7 @@ void Spell::CallScriptObjectAreaTargetSelectHandlers(std::list<WorldObject*>& ta
 
     scriptExecuteTime = getMSTime() - scriptExecuteTime;
     if (scriptExecuteTime > 10)
-        sLog->outAshran("SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
+        TC_LOG_ERROR("server.worldserver", "SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
 }
 
 void Spell::CallScriptObjectTargetSelectHandlers(WorldObject*& target, SpellEffIndex effIndex)
@@ -9596,7 +9596,7 @@ void Spell::CallScriptObjectTargetSelectHandlers(WorldObject*& target, SpellEffI
 
     scriptExecuteTime = getMSTime() - scriptExecuteTime;
     if (scriptExecuteTime > 10)
-        sLog->outAshran("SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
+        TC_LOG_ERROR("server.worldserver", "SpellScript [%u] take more than 10 ms to execute (%u ms)", m_spellInfo->Id, scriptExecuteTime);
 }
 
 bool Spell::CanExecuteTriggersOnHit(uint32 effMask, SpellInfo const* triggeredByAura) const

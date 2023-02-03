@@ -587,8 +587,8 @@ public:
 				std::list<Unit*> l_TargetList;
 				float l_Radius = 4.0f;
 
-				JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, l_Radius);
-				JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
+				Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, l_Radius);
+				Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
 				me->VisitNearbyObject(l_Radius, l_Searcher);
 
 				for (Unit* l_Unit : l_TargetList)
@@ -861,8 +861,8 @@ public:
 		std::list<Unit*> l_TargetList;
 		float l_Radius = 4.0f;
 
-		JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
-		JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+		Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
+		Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
 		p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
 		for (Unit* l_Unit : l_TargetList)

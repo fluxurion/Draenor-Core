@@ -1103,7 +1103,7 @@ bool BattlegroundSM::SetupBattleground()
         || !AddObject(BG_SM_OBJECT_RESTORATION_BUFF_WATERFALL, BG_OBJECTID_REGENBUFF_ENTRY, BG_SM_BuffPos[2][0], BG_SM_BuffPos[2][1], BG_SM_BuffPos[2][2], BG_SM_BuffPos[2][3], 0, 0, 0.710569f, -0.703627f, RESPAWN_IMMEDIATELY)
         || !AddObject(BG_SM_OBJECT_RESTORATION_BUFF_LAVA, BG_OBJECTID_REGENBUFF_ENTRY, BG_SM_BuffPos[3][0], BG_SM_BuffPos[3][1], BG_SM_BuffPos[3][2], BG_SM_BuffPos[3][3], 0, 0, 0.710569f, -0.703627f, RESPAWN_IMMEDIATELY))
     {
-        sLog->outError(LOG_FILTER_SQL, "BatteGroundSM: Failed to spawn some object Battleground not created!");
+        TC_LOG_ERROR("sql.sql", "BatteGroundSM: Failed to spawn some object Battleground not created!");
         return false;
     }
 
@@ -1111,7 +1111,7 @@ bool BattlegroundSM::SetupBattleground()
         l_Tracker->CastSpell(l_Tracker, BG_SM_FEIGN_DEATH_STUN, true);
     else
     {
-        sLog->outError(LOG_FILTER_SQL, "BatteGroundSM: Failed to spawn some creatures Battleground not created!");
+        TC_LOG_ERROR("sql.sql", "BatteGroundSM: Failed to spawn some creatures Battleground not created!");
         return false;
     }
 
@@ -1119,21 +1119,21 @@ bool BattlegroundSM::SetupBattleground()
         l_Tracker->CastSpell(l_Tracker, BG_SM_FEIGN_DEATH_STUN, true);
     else
     {
-        sLog->outError(LOG_FILTER_SQL, "BatteGroundSM: Failed to spawn some creatures Battleground not created!");
+        TC_LOG_ERROR("sql.sql", "BatteGroundSM: Failed to spawn some creatures Battleground not created!");
         return false;
     }
 
     WorldSafeLocsEntry const* l_SafeLoc = sWorldSafeLocsStore.LookupEntry(SM_GRAVEYARD_MAIN_ALLIANCE);
     if (!l_SafeLoc || !AddSpiritGuide(SM_SPIRIT_ALLIANCE, l_SafeLoc->x, l_SafeLoc->y, l_SafeLoc->z, l_SafeLoc->o, ALLIANCE))
     {
-        sLog->outError(LOG_FILTER_SQL, "BatteGroundSM: Failed to spawn spirit guide! Battleground not created!");
+        TC_LOG_ERROR("sql.sql", "BatteGroundSM: Failed to spawn spirit guide! Battleground not created!");
         return false;
     }
 
     l_SafeLoc = sWorldSafeLocsStore.LookupEntry(SM_GRAVEYARD_MAIN_HORDE);
     if (!l_SafeLoc || !AddSpiritGuide(SM_SPIRIT_HORDE, l_SafeLoc->x, l_SafeLoc->y, l_SafeLoc->z, l_SafeLoc->o, HORDE))
     {
-        sLog->outError(LOG_FILTER_SQL, "BatteGroundSM: Failed to spawn spirit guide! Battleground not created!");
+        TC_LOG_ERROR("sql.sql", "BatteGroundSM: Failed to spawn spirit guide! Battleground not created!");
         return false;
     }
 

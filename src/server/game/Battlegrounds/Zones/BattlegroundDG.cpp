@@ -41,7 +41,7 @@ bool BattlegroundDG::SetupBattleground()
     {
         if (!AddCreature(BG_DG_OBJECTID_CAPT_POINT, BG_DG_OBJECT_CAPT_POINT_START + i, TEAM_NEUTRAL, BG_DG_NodePositions[i][0], BG_DG_NodePositions[i][1], BG_DG_NodePositions[i][2], BG_DG_NodePositions[i][3], RESPAWN_IMMEDIATELY))
         {
-            sLog->outError(LOG_FILTER_BATTLEGROUND, "BatteGroundDG: Failed to spawn flags PNJ. Battleground not created!");
+            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BatteGroundDG: Failed to spawn flags PNJ. Battleground not created!");
             return false;
         }
         if (!AddObject(BG_DG_OBJECT_AURA_ALLY + BG_DG_OBJECT_DYNAMIC_TOTAL * i, BG_DG_OBJECTID_AURA_A, BG_DG_AuraPositions[i][0], BG_DG_AuraPositions[i][1], BG_DG_AuraPositions[i][2], BG_DG_AuraPositions[i][3], 0, 0, std::sin(BG_DG_AuraPositions[i][3] / 2), std::cos(BG_DG_AuraPositions[i][3] / 2), RESPAWN_ONE_DAY)
@@ -49,12 +49,12 @@ bool BattlegroundDG::SetupBattleground()
             || !AddObject(BG_DG_OBJECT_AURA_CONTESTED + BG_DG_OBJECT_DYNAMIC_TOTAL * i, BG_DG_OBJECTID_AURA_C, BG_DG_AuraPositions[i][0], BG_DG_AuraPositions[i][1], BG_DG_AuraPositions[i][2], BG_DG_AuraPositions[i][3], 0, 0, std::sin(BG_DG_AuraPositions[i][3] / 2), std::cos(BG_DG_AuraPositions[i][3] / 2), RESPAWN_ONE_DAY)
             )
         {
-            sLog->outError(LOG_FILTER_BATTLEGROUND, "BatteGroundDG: Failed to spawn flags aura objects. Battleground not created!");
+            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BatteGroundDG: Failed to spawn flags aura objects. Battleground not created!");
             return false;
         }
         if (!AddObject(BG_DG_OBJECT_PJ_COLLISION + BG_DG_OBJECT_DYNAMIC_TOTAL * i, BG_DG_OBJECTID_PJ_COLLISION, BG_DG_CollisionPJPositions[i][0], BG_DG_CollisionPJPositions[i][1], BG_DG_CollisionPJPositions[i][2], BG_DG_CollisionPJPositions[i][3], 0, 0, std::sin(BG_DG_CollisionPJPositions[i][3] / 2), std::cos(BG_DG_CollisionPJPositions[i][3] / 2), RESPAWN_ONE_DAY))
         {
-            sLog->outError(LOG_FILTER_BATTLEGROUND, "BatteGroundDG: Failed to spawn flags collision objects. Battleground not created!");
+            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BatteGroundDG: Failed to spawn flags collision objects. Battleground not created!");
             return false;
         }
     }
@@ -63,7 +63,7 @@ bool BattlegroundDG::SetupBattleground()
         || !AddObject(BG_DG_OBJECT_CART_HORDE, BG_DG_OBJECTID_CART_HORDE, BG_DG_CartPositions[1][0], BG_DG_CartPositions[1][1], BG_DG_CartPositions[1][2], BG_DG_CartPositions[1][3], 0, 0, std::sin(BG_DG_CartPositions[1][3] / 2), std::cos(BG_DG_CartPositions[1][3] / 2), BG_DG_CART_RESPAWN_TIME / 1000)
         )
     {
-        sLog->outError(LOG_FILTER_BATTLEGROUND, "BatteGroundDG: Failed to spawn carts. Battleground not created!");
+        TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BatteGroundDG: Failed to spawn carts. Battleground not created!");
         return false;
     }
     // Doors
@@ -73,7 +73,7 @@ bool BattlegroundDG::SetupBattleground()
         || !AddObject(BG_DG_OBJECT_GATE_4, BG_DG_OBJECTID_GATE, BG_DG_DoorPositions[3][0], BG_DG_DoorPositions[3][1], BG_DG_DoorPositions[3][2], BG_DG_DoorPositions[3][3], BG_DG_DoorPositions[3][4], BG_DG_DoorPositions[3][5], BG_DG_DoorPositions[3][6], BG_DG_DoorPositions[3][7], RESPAWN_IMMEDIATELY)
         )
     {
-        sLog->outError(LOG_FILTER_BATTLEGROUND, "BatteGroundDG: Failed to spawn door object. Battleground not created!");
+        TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BatteGroundDG: Failed to spawn door object. Battleground not created!");
         return false;
     }
     // Buffs
@@ -81,7 +81,7 @@ bool BattlegroundDG::SetupBattleground()
     {
         if (!AddObject(BG_DG_OBJECT_BUFF_NORTH + i, Buff_Entries[urand(0, 2)], BG_DG_BuffPositions[i][0], BG_DG_BuffPositions[i][1], BG_DG_BuffPositions[i][2], BG_DG_BuffPositions[i][3], 0, 0, std::sin(BG_DG_BuffPositions[i][3] / 2), std::cos(BG_DG_BuffPositions[i][3] / 2), BUFF_RESPAWN_TIME))
         {
-            sLog->outError(LOG_FILTER_BATTLEGROUND, "BatteGroundDG: Failed to spawn buff object. Battleground not created!");
+            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BatteGroundDG: Failed to spawn buff object. Battleground not created!");
             return false;
         }
     }
@@ -89,28 +89,28 @@ bool BattlegroundDG::SetupBattleground()
     WorldSafeLocsEntry const* l_SafeLoc = sWorldSafeLocsStore.LookupEntry(BG_DG_GraveyardIds[TEAM_ALLIANCE][BG_DG_GRAVEYARD_NORTHERN]);
     if (!l_SafeLoc || !AddSpiritGuide(BG_DG_SPIRIT_NORTHERN_ALLIANCE, l_SafeLoc->x, l_SafeLoc->y, l_SafeLoc->z, l_SafeLoc->o + M_PI, ALLIANCE))
     {
-        sLog->outError(LOG_FILTER_SQL, "BatteGroundDG: Failed to spawn Alliance-Northern spirit guide! Battleground not created!");
+        TC_LOG_ERROR("sql.sql", "BatteGroundDG: Failed to spawn Alliance-Northern spirit guide! Battleground not created!");
         return false;
     }
 
     l_SafeLoc = sWorldSafeLocsStore.LookupEntry(BG_DG_GraveyardIds[TEAM_ALLIANCE][BG_DG_GRAVEYARD_SOUTHERN]);
     if (!l_SafeLoc || !AddSpiritGuide(BG_DG_SPIRIT_SOUTHERN_ALLIANCE, l_SafeLoc->x, l_SafeLoc->y, l_SafeLoc->z, l_SafeLoc->o + M_PI, ALLIANCE))
     {
-        sLog->outError(LOG_FILTER_SQL, "BatteGroundDG: Failed to spawn Alliance-Southern spirit guide! Battleground not created!");
+        TC_LOG_ERROR("sql.sql", "BatteGroundDG: Failed to spawn Alliance-Southern spirit guide! Battleground not created!");
         return false;
     }
 
     l_SafeLoc = sWorldSafeLocsStore.LookupEntry(BG_DG_GraveyardIds[TEAM_HORDE][BG_DG_GRAVEYARD_NORTHERN]);
     if (!l_SafeLoc || !AddSpiritGuide(BG_DG_SPIRIT_NORTHERN_HORDE, l_SafeLoc->x, l_SafeLoc->y, l_SafeLoc->z, l_SafeLoc->o + M_PI, HORDE))
     {
-        sLog->outError(LOG_FILTER_SQL, "BatteGroundDG: Failed to spawn Horde-Northern spirit guide! Battleground not created!");
+        TC_LOG_ERROR("sql.sql", "BatteGroundDG: Failed to spawn Horde-Northern spirit guide! Battleground not created!");
         return false;
     }
 
     l_SafeLoc = sWorldSafeLocsStore.LookupEntry(BG_DG_GraveyardIds[TEAM_HORDE][BG_DG_GRAVEYARD_SOUTHERN]);
     if (!l_SafeLoc || !AddSpiritGuide(BG_DG_SPIRIT_SOUTHERN_HORDE, l_SafeLoc->x, l_SafeLoc->y, l_SafeLoc->z, l_SafeLoc->o + M_PI, HORDE))
     {
-        sLog->outError(LOG_FILTER_SQL, "BatteGroundDG: Failed to spawn Horde-Southern spirit guide! Battleground not created!");
+        TC_LOG_ERROR("sql.sql", "BatteGroundDG: Failed to spawn Horde-Southern spirit guide! Battleground not created!");
         return false;
     }
 
@@ -795,7 +795,7 @@ void BattlegroundDG::HandleAreaTrigger(Player* p_Player, uint32 p_TriggerID)
         case 9301: // on the roof
         case 9302: // flying => should tp outside the mine when triggered
         case 9303: // flying => should tp outside the mine when triggered
-            sLog->outDebug(LOG_FILTER_BATTLEGROUND, "BattlegroundDG : Handled AreaTrigger(ID : %u) have been activated by Player %s (ID : %u)",
+            TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "BattlegroundDG : Handled AreaTrigger(ID : %u) have been activated by Player %s (ID : %u)",
                 p_TriggerID, p_Player->GetName(), GUID_LOPART(p_Player->GetGUID()));
             break;
         default:
@@ -844,7 +844,7 @@ void BattlegroundDG::RespawnFlagAfterDrop(uint32 p_Team)
     if (GameObject* l_Gob = GetBGObject(BG_DG_OBJECT_CART_ALLY_GROUND + p_Team))
         l_Gob->Delete();
     else
-        sLog->outError(LOG_FILTER_BATTLEGROUND, "Battleground DG : unknown dropped flag bg");
+        TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "Battleground DG : unknown dropped flag bg");
 }
 
 void BattlegroundDG::EventPlayerCapturedFlag(Player* p_Player)
@@ -1022,7 +1022,7 @@ void BattlegroundDG::RemovePlayer(Player* p_Player, uint64 p_Guid, uint32 /*p_Te
     {
         if (!p_Player)
         {
-            sLog->outError(LOG_FILTER_BATTLEGROUND, "BattlegroundWS: Removing offline player who has the FLAG!!");
+            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BattlegroundWS: Removing offline player who has the FLAG!!");
             SetAllianceCartPicker(0);
             _flagState[TEAM_ALLIANCE] = BG_DG_CART_STATE_ON_BASE;
             SpawnBGObject(BG_DG_OBJECT_CART_ALLIANCE, RESPAWN_IMMEDIATELY);
@@ -1035,7 +1035,7 @@ void BattlegroundDG::RemovePlayer(Player* p_Player, uint64 p_Guid, uint32 /*p_Te
     {
         if (!p_Player)
         {
-            sLog->outError(LOG_FILTER_BATTLEGROUND, "BattlegroundWS: Removing offline player who has the FLAG!!");
+            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BattlegroundWS: Removing offline player who has the FLAG!!");
             SetHordeFlagPicker(0);
             _flagState[TEAM_HORDE] = BG_DG_CART_STATE_ON_BASE;
             SpawnBGObject(BG_DG_OBJECT_CART_HORDE, RESPAWN_IMMEDIATELY);

@@ -47,7 +47,7 @@ void LoadGameObjectModelList()
     FILE* model_list_file = fopen((sWorld->GetDataPath() + "vmaps/" + VMAP::GAMEOBJECT_MODELS).c_str(), "rb");
     if (!model_list_file)
     {
-        sLog->outError(LOG_FILTER_MAPS, "Unable to open '%s' file.", VMAP::GAMEOBJECT_MODELS);
+        TC_LOG_ERROR("maps", "Unable to open '%s' file.", VMAP::GAMEOBJECT_MODELS);
         return;
     }
 
@@ -66,13 +66,13 @@ void LoadGameObjectModelList()
             || fread(&v1, sizeof(Vector3), 1, model_list_file) != 1
             || fread(&v2, sizeof(Vector3), 1, model_list_file) != 1)
         {
-            sLog->outDebug(LOG_FILTER_MAPS, "File '%s' seems to be corrupted!", VMAP::GAMEOBJECT_MODELS);
+            TC_LOG_DEBUG("maps", "File '%s' seems to be corrupted!", VMAP::GAMEOBJECT_MODELS);
             break;
         }
 
         if (v1.isNaN() || v2.isNaN())
         {
-            sLog->outDebug(LOG_FILTER_MAPS, "File '%s' Model '%s' has invalid v1%s v2%s values!", VMAP::GAMEOBJECT_MODELS, std::string(buff, name_length).c_str(), v1.toString().c_str(), v2.toString().c_str());
+            TC_LOG_DEBUG("maps", "File '%s' Model '%s' has invalid v1%s v2%s values!", VMAP::GAMEOBJECT_MODELS, std::string(buff, name_length).c_str(), v1.toString().c_str(), v2.toString().c_str());
             continue;
         }
 
@@ -83,7 +83,7 @@ void LoadGameObjectModelList()
     }
 
     fclose(model_list_file);
-    sLog->outDebug(LOG_FILTER_MAPS, ">> Loaded %u GameObject models in %u ms", uint32(model_list.size()), GetMSTimeDiffToNow(oldMSTime));
+    TC_LOG_DEBUG("maps", ">> Loaded %u GameObject models in %u ms", uint32(model_list.size()), GetMSTimeDiffToNow(oldMSTime));
 }
 
 GameObjectModel::~GameObjectModel()
@@ -102,7 +102,7 @@ bool GameObjectModel::initialize(const GameObject& go, const GameObjectDisplayIn
     // ignore models with no bounds
     if (mdl_box == G3D::AABox::zero())
     {
-        sLog->outError(LOG_FILTER_MAPS, "GameObject model %s has zero bounds, loading skipped", it->second.name.c_str());
+        TC_LOG_ERROR("maps", "GameObject model %s has zero bounds, loading skipped", it->second.name.c_str());
         return false;
     }
 
@@ -197,7 +197,7 @@ bool GameObjectModel::Relocate(const GameObject& go)
     // ignore models with no bounds
     if (mdl_box == G3D::AABox::zero())
     {
-        sLog->outError(LOG_FILTER_MAPS, "GameObject model %s has zero bounds, loading skipped", it->second.name.c_str());
+        TC_LOG_ERROR("maps", "GameObject model %s has zero bounds, loading skipped", it->second.name.c_str());
         return false;
     }
 

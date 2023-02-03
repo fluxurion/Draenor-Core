@@ -1418,7 +1418,7 @@ public:
                 // Retreiving list of ambercallers (maximum: 2 if all is alright)
                 std::list<Creature*> amberCallerList;
                 GetCreatureListWithEntryInGrid(amberCallerList, me, NPC_SRATHIK_AMBERCALLER, 50.0f);
-                amberCallerList.sort(JadeCore::DistanceCompareOrderPred(me));
+                amberCallerList.sort(Trinity::DistanceCompareOrderPred(me));
 
                 if (amberCallerList.size() > 1)
                 {
@@ -1562,7 +1562,7 @@ public:
                 if (!playerList.empty())
                 {
                     // Pick a random player to target
-                    JadeCore::RandomResizeList(playerList, 1);
+                    Trinity::RandomResizeList(playerList, 1);
                     me->CastSpell(playerList.front(), SPELL_AMBER_VOLLEY_MISSILE, true);
                     events.ScheduleEvent(EVENT_AMBER_VOLLEY, IsLFR() ? 3000 : Is25ManRaid() ? 2000 : 5000);
                 }

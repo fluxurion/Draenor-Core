@@ -62,7 +62,7 @@ void WorldSession::HandlePetitionBuyOpcode(WorldPacket& p_Packet)
 
     if (!l_Creature)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandlePetitionBuyOpcode - Unit (GUID: %u) not found or you can't interact with him.", GUID_LOPART(l_UnitGUID));
+        TC_LOG_DEBUG("network", "WORLD: HandlePetitionBuyOpcode - Unit (GUID: %u) not found or you can't interact with him.", GUID_LOPART(l_UnitGUID));
         return;
     }
 
@@ -195,7 +195,7 @@ void WorldSession::HandlePetitionShowSignOpcode(WorldPacket& p_Packet)
 
     if (!l_Result)
     {
-        sLog->outDebug(LOG_FILTER_PLAYER_ITEMS, "Petition %u is not found for player %u %s", GUID_LOPART(l_ItemGUID), GetPlayer()->GetGUIDLow(), GetPlayer()->GetName());
+        TC_LOG_DEBUG("entities.player.items", "Petition %u is not found for player %u %s", GUID_LOPART(l_ItemGUID), GetPlayer()->GetGUIDLow(), GetPlayer()->GetName());
         return;
     }
 
@@ -275,7 +275,7 @@ void WorldSession::SendPetitionQueryOpcode(uint64 l_PetitionGUID)
     }
     else
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "CMSG_PETITION_QUERY failed for petition (GUID: %u)", GUID_LOPART(l_PetitionGUID));
+        TC_LOG_DEBUG("network", "CMSG_PETITION_QUERY failed for petition (GUID: %u)", GUID_LOPART(l_PetitionGUID));
         return;
     }
 
@@ -332,7 +332,7 @@ void WorldSession::HandlePetitionRenameOpcode(WorldPacket & p_Packet)
     Item* l_Item = m_Player->GetItemByGuid(l_PetitionGUID);
     if (!l_Item)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "CMSG_PETITION_QUERY failed for petition (GUID: %u)", GUID_LOPART(l_PetitionGUID));
+        TC_LOG_DEBUG("network", "CMSG_PETITION_QUERY failed for petition (GUID: %u)", GUID_LOPART(l_PetitionGUID));
         return;
     }
 
@@ -390,7 +390,7 @@ void WorldSession::HandlePetitionSignOpcode(WorldPacket& p_Packet)
 
     if (!l_Result)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "Petition %u is not found for player %u %s", GUID_LOPART(l_PetitionGUID), GetPlayer()->GetGUIDLow(), GetPlayer()->GetName());
+        TC_LOG_ERROR("network", "Petition %u is not found for player %u %s", GUID_LOPART(l_PetitionGUID), GetPlayer()->GetGUIDLow(), GetPlayer()->GetName());
         return;
     }
 
@@ -620,7 +620,7 @@ void WorldSession::HandleTurnInPetitionOpcode(WorldPacket& p_Packet)
     }
     else
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "Player %s (guid: %u) tried to turn in petition (guid: %u) that is not present in the database", m_Player->GetName(), m_Player->GetGUIDLow(), GUID_LOPART(l_PetitionGuid));
+        TC_LOG_ERROR("network", "Player %s (guid: %u) tried to turn in petition (guid: %u) that is not present in the database", m_Player->GetName(), m_Player->GetGUIDLow(), GUID_LOPART(l_PetitionGuid));
         return;
     }
 
@@ -727,7 +727,7 @@ void WorldSession::SendPetitionShowList(uint64 p_GUID)
 
     if (!l_Creature)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandlePetitionShowListOpcode - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(p_GUID)));
+        TC_LOG_DEBUG("network", "WORLD: HandlePetitionShowListOpcode - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(p_GUID)));
         return;
     }
 

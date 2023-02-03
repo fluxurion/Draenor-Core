@@ -98,7 +98,7 @@ void IRSocket::CloseSocket (void)
         m_InterRealmSession = NULL;
     }
 
-    sLog->outDebug(LOG_FILTER_NETWORKIO, "[INTERREALM] IRSocket::CloseSocket");
+    TC_LOG_DEBUG("network", "[INTERREALM] IRSocket::CloseSocket");
 }
 
 const std::string& IRSocket::GetRemoteAddress (void) const
@@ -139,7 +139,7 @@ int IRSocket::SendPacket(WorldPacket const* pct)
 
         if (msg_queue()->enqueue_tail(mb, (ACE_Time_Value*)&ACE_Time_Value::zero) == -1)
         {
-            sLog->outError(LOG_FILTER_INTERREALM, "IRSocket::SendPacket enqueue_tail failed");
+            TC_LOG_ERROR("server.interrealm", "IRSocket::SendPacket enqueue_tail failed");
             mb->release();
             return -1;
         }
@@ -187,7 +187,7 @@ int IRSocket::open (void *a)
 
     /*if (peer().get_remote_addr(remote_addr) == -1)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "IRSocket::open: peer().get_remote_addr errno = %s", ACE_OS::strerror (errno));
+        TC_LOG_ERROR("network", "IRSocket::open: peer().get_remote_addr errno = %s", ACE_OS::strerror (errno));
         return -1;
     }
 
@@ -196,7 +196,7 @@ int IRSocket::open (void *a)
     // Register with ACE Reactor
     if (reactor()->register_handler(this, ACE_Event_Handler::READ_MASK | ACE_Event_Handler::WRITE_MASK) == -1)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "IRSocket::open: unable to register client handler errno = %s", ACE_OS::strerror (errno));
+        TC_LOG_ERROR("server.interrealm", "IRSocket::open: unable to register client handler errno = %s", ACE_OS::strerror (errno));
         return -1;
     }
 
@@ -232,14 +232,14 @@ int IRSocket::handle_input (ACE_HANDLE)
                 return Update();  // interesting line, isn't it ?
             }
 
-            sLog->outError(LOG_FILTER_INTERREALM, "IRSocket::handle_input: Peer error closing connection errno = %s", ACE_OS::strerror (errno));
+            TC_LOG_ERROR("server.interrealm", "IRSocket::handle_input: Peer error closing connection errno = %s", ACE_OS::strerror (errno));
 
             errno = ECONNRESET;
             return -1;
         }
         case 0:
         {
-            sLog->outError(LOG_FILTER_INTERREALM, "IRSocket::handle_input: Peer has closed connection");
+            TC_LOG_ERROR("server.interrealm", "IRSocket::handle_input: Peer has closed connection");
 
             errno = ECONNRESET;
             return -1;
@@ -308,7 +308,7 @@ int IRSocket::handle_output_queue (GuardType& g)
 
     if (msg_queue()->dequeue_head(mblk, (ACE_Time_Value*)&ACE_Time_Value::zero) == -1)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "IRSocket::handle_output_queue dequeue_head");
+        TC_LOG_ERROR("server.interrealm", "IRSocket::handle_output_queue dequeue_head");
         return -1;
     }
 
@@ -343,7 +343,7 @@ int IRSocket::handle_output_queue (GuardType& g)
 
         if (msg_queue()->enqueue_head(mblk, (ACE_Time_Value*) &ACE_Time_Value::zero) == -1)
         {
-            sLog->outError(LOG_FILTER_INTERREALM, "IRSocket::handle_output_queue enqueue_head");
+            TC_LOG_ERROR("server.interrealm", "IRSocket::handle_output_queue enqueue_head");
             mblk->release();
             return -1;
         }
@@ -362,7 +362,7 @@ int IRSocket::handle_output_queue (GuardType& g)
 
 int IRSocket::handle_close (ACE_HANDLE h, ACE_Reactor_Mask)
 {
-    sLog->outDebug(LOG_FILTER_INTERREALM, "IRSocket::handle_close");
+    TC_LOG_DEBUG("server.interrealm", "IRSocket::handle_close");
 
     // Critical section
     {
@@ -421,7 +421,7 @@ int IRSocket::handle_input_header (void)
 
     if (header.size < 2)  // LR (from MSG_VERIFY_CONNECTIVITY)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "Header size failed, header size %u.", header.size);
+        TC_LOG_ERROR("server.interrealm", "Header size failed, header size %u.", header.size);
         errno = EINVAL;
         return -1;
     }
@@ -462,7 +462,7 @@ int IRSocket::handle_input_payload (void)
 
     if (ret == -1)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "handle_input_payload failed.");
+        TC_LOG_ERROR("server.interrealm", "handle_input_payload failed.");
         errno = EINVAL;
     }
 
@@ -525,7 +525,7 @@ int IRSocket::handle_input_missing_data (void)
         // hope this is not hack, as proper m_RecvWPct is asserted around
         if (!m_RecvWPct)
         {
-            sLog->outError(LOG_FILTER_INTERREALM, "Forcing close on input m_RecvWPct = NULL");
+            TC_LOG_ERROR("server.interrealm", "Forcing close on input m_RecvWPct = NULL");
             errno = EINVAL;
             return -1;
         }
@@ -571,7 +571,7 @@ int IRSocket::cancel_wakeup_output (GuardType& g)
         (this, ACE_Event_Handler::WRITE_MASK) == -1)
     {
         // would be good to store errno from reactor with errno guard
-        sLog->outError(LOG_FILTER_INTERREALM, "IRSocket::cancel_wakeup_output");
+        TC_LOG_ERROR("server.interrealm", "IRSocket::cancel_wakeup_output");
         return -1;
     }
 
@@ -590,7 +590,7 @@ int IRSocket::schedule_wakeup_output (GuardType& g)
     if (reactor()->schedule_wakeup
         (this, ACE_Event_Handler::WRITE_MASK) == -1)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "IRSocket::schedule_wakeup_output");
+        TC_LOG_ERROR("server.interrealm", "IRSocket::schedule_wakeup_output");
         return -1;
     }
 
@@ -630,7 +630,7 @@ int IRSocket::ProcessIncoming(WorldPacket* new_pct)
     }
     catch (ByteBufferException &)
     {
-        /*sLog->outInfo(LOG_FILTER_SERVER_LOADING, "[INTERREALM] IRSocket::ProcessIncoming ByteBufferException occured while parsing an instant handled packet %s from client %s. Disconnected client.",
+        /*TC_LOG_INFO("server.loading", "[INTERREALM] IRSocket::ProcessIncoming ByteBufferException occured while parsing an instant handled packet %s from client %s. Disconnected client.",
                        opcodeName.c_str(), GetRemoteAddress().c_str());*/
         new_pct->hexlike();
         return -1;
@@ -747,7 +747,7 @@ int IRSocket::SendPacket(WorldPacket const* pct)
 
         if (msg_queue()->enqueue_tail(mb, (ACE_Time_Value*)&ACE_Time_Value::zero) == -1)
         {
-            sLog->outError(LOG_FILTER_INTERREALM, "IRSocket::SendPacket enqueue_tail failed");
+            TC_LOG_ERROR("server.interrealm", "IRSocket::SendPacket enqueue_tail failed");
             mb->release();
             return -1;
         }
@@ -794,7 +794,7 @@ int IRSocket::open (void *a)
 
     if (peer().get_remote_addr(remote_addr) == -1)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "IRSocket::open: peer().get_remote_addr errno = %s", ACE_OS::strerror (errno));
+        TC_LOG_ERROR("server.interrealm", "IRSocket::open: peer().get_remote_addr errno = %s", ACE_OS::strerror (errno));
         return -1;
     }
 
@@ -803,7 +803,7 @@ int IRSocket::open (void *a)
     // Register with ACE Reactor
     if (reactor()->register_handler(this, ACE_Event_Handler::READ_MASK | ACE_Event_Handler::WRITE_MASK) == -1)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "IRSocket::open: unable to register client handler errno = %s", ACE_OS::strerror (errno));
+        TC_LOG_ERROR("server.interrealm", "IRSocket::open: unable to register client handler errno = %s", ACE_OS::strerror (errno));
         return -1;
     }
 
@@ -839,14 +839,14 @@ int IRSocket::handle_input (ACE_HANDLE)
                 return Update();                           // interesting line, isn't it ?
             }
 
-            sLog->outDebug(LOG_FILTER_INTERREALM, "IRSocket::handle_input: Peer error closing connection errno = %s", ACE_OS::strerror (errno));
+            TC_LOG_DEBUG("server.interrealm", "IRSocket::handle_input: Peer error closing connection errno = %s", ACE_OS::strerror (errno));
 
             errno = ECONNRESET;
             return -1;
         }
         case 0:
         {
-            sLog->outDebug(LOG_FILTER_INTERREALM, "IRSocket::handle_input: Peer has closed connection");
+            TC_LOG_DEBUG("server.interrealm", "IRSocket::handle_input: Peer has closed connection");
 
             errno = ECONNRESET;
             return -1;
@@ -915,7 +915,7 @@ int IRSocket::handle_output_queue (GuardType& g)
 
     if (msg_queue()->dequeue_head(mblk, (ACE_Time_Value*)&ACE_Time_Value::zero) == -1)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "IRSocket::handle_output_queue dequeue_head");
+        TC_LOG_ERROR("server.interrealm", "IRSocket::handle_output_queue dequeue_head");
         return -1;
     }
 
@@ -950,7 +950,7 @@ int IRSocket::handle_output_queue (GuardType& g)
 
         if (msg_queue()->enqueue_head(mblk, (ACE_Time_Value*) &ACE_Time_Value::zero) == -1)
         {
-            sLog->outError(LOG_FILTER_INTERREALM, "IRSocket::handle_output_queue enqueue_head");
+            TC_LOG_ERROR("server.interrealm", "IRSocket::handle_output_queue enqueue_head");
             mblk->release();
             return -1;
         }
@@ -969,7 +969,7 @@ int IRSocket::handle_output_queue (GuardType& g)
 
 int IRSocket::handle_close (ACE_HANDLE h, ACE_Reactor_Mask)
 {
-	sLog->outDebug(LOG_FILTER_INTERREALM, "IRSocket::handle_close");
+	TC_LOG_DEBUG("server.interrealm", "IRSocket::handle_close");
 
     // Remove all players
     if (m_InterRealmClient)
@@ -1021,7 +1021,7 @@ int IRSocket::handle_input_header (void)
 
     if (header.size < 2)  // LR (from MSG_VERIFY_CONNECTIVITY)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "Header size failed, header size %u.", header.size);
+        TC_LOG_ERROR("server.interrealm", "Header size failed, header size %u.", header.size);
         errno = EINVAL;
         return -1;
     }
@@ -1123,7 +1123,7 @@ int IRSocket::handle_input_missing_data (void)
         // hope this is not hack, as proper m_RecvWPct is asserted around
         if (!m_RecvWPct)
         {
-            sLog->outError(LOG_FILTER_INTERREALM, "Forcing close on input m_RecvWPct = NULL");
+            TC_LOG_ERROR("server.interrealm", "Forcing close on input m_RecvWPct = NULL");
             errno = EINVAL;
             return -1;
         }
@@ -1169,7 +1169,7 @@ int IRSocket::cancel_wakeup_output (GuardType& g)
         (this, ACE_Event_Handler::WRITE_MASK) == -1)
     {
         // would be good to store errno from reactor with errno guard
-        sLog->outError(LOG_FILTER_INTERREALM, "IRSocket::cancel_wakeup_output");
+        TC_LOG_ERROR("server.interrealm", "IRSocket::cancel_wakeup_output");
         return -1;
     }
 
@@ -1188,7 +1188,7 @@ int IRSocket::schedule_wakeup_output (GuardType& g)
     if (reactor()->schedule_wakeup
         (this, ACE_Event_Handler::WRITE_MASK) == -1)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "IRSocket::schedule_wakeup_output");
+        TC_LOG_ERROR("server.interrealm", "IRSocket::schedule_wakeup_output");
         return -1;
     }
 
@@ -1227,7 +1227,7 @@ int IRSocket::ProcessIncoming(WorldPacket* new_pct)
     }
     catch (ByteBufferException &)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "IRSocket::ProcessIncoming ByteBufferException occured while parsing an instant handled packet %s from client %s. Disconnected client.",
+        TC_LOG_ERROR("server.interrealm", "IRSocket::ProcessIncoming ByteBufferException occured while parsing an instant handled packet %s from client %s. Disconnected client.",
                        opcodeName.c_str(), GetRemoteAddress().c_str());
         new_pct->hexlike();
         return -1;

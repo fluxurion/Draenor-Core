@@ -627,7 +627,7 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
             if (feof(fin)) 
                 break;
 
-            sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [1]");
+            TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [1]");
             ROLLBACK(DUMP_FILE_BROKEN);
         }
 
@@ -649,7 +649,7 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
         std::string l_TableName = gettablename(l_Line);
         if (l_TableName.empty())
         {
-            sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [2]");
+            TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [2]");
             ROLLBACK(DUMP_FILE_BROKEN);
         }
 
@@ -669,7 +669,7 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
 
         if (l_I == DUMP_TABLE_COUNT)
         {
-            sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [3]");
+            TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [3]");
             ROLLBACK(DUMP_FILE_BROKEN);
         }
 
@@ -690,14 +690,14 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 uint32 l_Index = GetFieldIndexFromColumn("guid", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, newguid))                               ///< characters.guid update
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [4]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [4]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
                 l_Index = GetFieldIndexFromColumn("account", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, chraccount))                            ///< characters.account update
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [5]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [5]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
@@ -708,14 +708,14 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 l_Index = GetFieldIndexFromColumn("name", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, p_Name.c_str())) // characters.name
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [6]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [6]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
                 l_Index = GetFieldIndexFromColumn("at_login", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, atLogin))                           ///< characters.at_login set to "rename on login"
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [7]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [7]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
@@ -723,21 +723,21 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 l_Index = GetFieldIndexFromColumn("deleteInfos_Account", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, null))                                  ///< characters.deleteInfos_Account
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [9]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [9]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
                 l_Index = GetFieldIndexFromColumn("deleteInfos_Name", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, null))                                  ///< characters.deleteInfos_Name
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [10]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [10]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
                 l_Index = GetFieldIndexFromColumn("deleteDate", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, null))                                  ///< characters.deleteDate
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [11]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [11]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
@@ -746,7 +746,7 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 {
                     if (!changenth(l_Line, l_Index, "0"))
                     {
-                        sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [characters.petslotused]");
+                        TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [characters.petslotused]");
                         ROLLBACK(DUMP_FILE_BROKEN);
                     }
                 }
@@ -758,7 +758,7 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 uint32 l_Index = GetFieldIndexFromColumn("guid", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, newguid))                               ///< character_*.guid update
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [12]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [12]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
                 break;
@@ -768,14 +768,14 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 uint32 l_Index = GetFieldIndexFromColumn("id", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, l_NewGarrisonID))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [DTT_GARR_MAIN]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [DTT_GARR_MAIN]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
                 l_Index = GetFieldIndexFromColumn("character_guid", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, newguid))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [DTT_GARR_MAIN]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [DTT_GARR_MAIN]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
@@ -787,14 +787,14 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 auto l_StrValue = std::to_string(sObjectMgr->GetNewGarrisonBuildingID());
                 if (!changenth(l_Line, l_Index, l_StrValue.c_str()))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [DTT_GARR_B]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [DTT_GARR_B]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
                 l_Index = GetFieldIndexFromColumn("garrison_id", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, l_NewGarrisonID))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [DTT_GARR_B]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [DTT_GARR_B]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
                 break;
@@ -805,14 +805,14 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 auto l_StrValue = std::to_string(sObjectMgr->GetNewGarrisonFollowerID());
                 if (!changenth(l_Line, l_Index, l_StrValue.c_str()))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [DTT_GARR_F]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [DTT_GARR_F]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
                 l_Index = GetFieldIndexFromColumn("garrison_id", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, l_NewGarrisonID))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [DTT_GARR_F]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [DTT_GARR_F]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
                 break;
@@ -823,14 +823,14 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 auto l_StrValue = std::to_string(sObjectMgr->GetNewGarrisonMissionID());
                 if (!changenth(l_Line, l_Index, l_StrValue.c_str()))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [DTT_GARR_M]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [DTT_GARR_M]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
                 l_Index = GetFieldIndexFromColumn("garrison_id", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, l_NewGarrisonID))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [DTT_GARR_M]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [DTT_GARR_M]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
                 break;
@@ -841,14 +841,14 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 auto l_StrValue = std::to_string(sObjectMgr->GetNewGarrisonWorkOrderID());
                 if (!changenth(l_Line, l_Index, l_StrValue.c_str()))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [DTT_GARR_WO]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [DTT_GARR_WO]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
                 l_Index = GetFieldIndexFromColumn("garrison_id", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, l_NewGarrisonID))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [DTT_GARR_WO]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [DTT_GARR_WO]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
                 break;
@@ -858,7 +858,7 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 uint32 l_Index = GetFieldIndexFromColumn("guid", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, newguid))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [13]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [13]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
@@ -867,7 +867,7 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 l_Index = GetFieldIndexFromColumn("setguid", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, newSetGuid))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [14]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [14]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
                 break;
@@ -877,21 +877,21 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 uint32 l_Index = GetFieldIndexFromColumn("guid", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, newguid))                               ///< character_inventory.guid update
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [15]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [15]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
                 l_Index = GetFieldIndexFromColumn("bag", l_Columns) + 1;
                 if (!changeGuid(l_Line, l_Index, items, sObjectMgr->GenerateLowGuid(HIGHGUID_ITEM), true))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [16]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [16]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
                 l_Index = GetFieldIndexFromColumn("item", l_Columns) + 1;
                 if (!changeGuid(l_Line, l_Index, items, sObjectMgr->GenerateLowGuid(HIGHGUID_ITEM)))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [17]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [17]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
                 break;
@@ -905,14 +905,14 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 uint32 l_Index = GetFieldIndexFromColumn("itemId", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, newItemId))                             ///< character_void_storage.itemId update
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [18]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [18]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
                 l_Index = GetFieldIndexFromColumn("playerGuid", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, newguid))                               ///< character_void_storage.playerGuid update
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [19]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [19]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
                 break;
@@ -922,14 +922,14 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 uint32 l_Index = GetFieldIndexFromColumn("id", l_Columns) + 1;
                 if (!changeGuid(l_Line, l_Index, mails, sObjectMgr->GenerateMailID()))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [20]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [20]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
                 l_Index = GetFieldIndexFromColumn("receiver", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, newguid))                               ///< mail.receiver update
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [21]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [21]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
                 break;
@@ -939,19 +939,19 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 uint32 l_Index = GetFieldIndexFromColumn("mail_id", l_Columns) + 1;
                 if (!changeGuid(l_Line, l_Index, mails, sObjectMgr->GenerateMailID()))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [22]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [22]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
                 l_Index = GetFieldIndexFromColumn("item_guid", l_Columns) + 1;
                 if (!changeGuid(l_Line, l_Index, items, sObjectMgr->GenerateLowGuid(HIGHGUID_ITEM)))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [23]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [23]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
                 l_Index = GetFieldIndexFromColumn("receiver", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, newguid))                               ///< mail_items.receiver
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [24]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [24]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
                 break;
@@ -962,14 +962,14 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 uint32 l_Index = GetFieldIndexFromColumn("guid", l_Columns) + 1;
                 if (!changeGuid(l_Line, l_Index, items, sObjectMgr->GenerateLowGuid(HIGHGUID_ITEM)))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [25]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [25]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
                 l_Index = GetFieldIndexFromColumn("owner_guid", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, newguid))                               ///< item_instance.owner_guid update
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [26]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [26]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
@@ -979,7 +979,7 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 {
                     if (!changenth(l_Line, l_Index, "0"))
                     {
-                        sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [28]");
+                        TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [28]");
                         ROLLBACK(DUMP_FILE_BROKEN);
                     }
                 }
@@ -990,7 +990,7 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                     l_Index = GetFieldIndexFromColumn("flags", l_Columns) + 1;
                     if (!findnth(l_Line, l_Index, s, e))
                     {
-                        sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [29]");
+                        TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [29]");
                         ROLLBACK(DUMP_FILE_BROKEN);
                     }
 
@@ -1019,13 +1019,13 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 uint32 l_Index = GetFieldIndexFromColumn("guid", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, newguid))                               ///< character_gifts.guid update
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [30]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [30]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
                 l_Index = GetFieldIndexFromColumn("item_guid", l_Columns) + 1;
                 if (!changeGuid(l_Line, l_Index, items, sObjectMgr->GenerateLowGuid(HIGHGUID_ITEM)))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [31]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [31]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
                 break;
@@ -1052,14 +1052,14 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 uint32 l_Index = GetFieldIndexFromColumn("id", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, newpetid))                              ///< character_pet.id update
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [32]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [32]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
                 l_Index = GetFieldIndexFromColumn("owner", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, newguid))                               ///< character_pet.owner update
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [33]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [33]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
@@ -1082,7 +1082,7 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 uint32 l_Index = GetFieldIndexFromColumn("guid", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, newpetid))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [34]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [34]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
 
@@ -1093,7 +1093,7 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 uint32 l_Index = GetFieldIndexFromColumn("first_guid", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, newguid))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [35]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [35]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
                 break;
@@ -1103,7 +1103,7 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 uint32 l_Index = GetFieldIndexFromColumn("accountId", l_Columns) + 1;
                 if (!changenth(l_Line, l_Index, chraccount))
                 {
-                    sLog->outAshran("LoadDump: DUMP_FILE_BROKEN [can't change accountId]");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: DUMP_FILE_BROKEN [can't change accountId]");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
                 break;
@@ -1112,7 +1112,7 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& p_File, uint32 p_Accoun
                 break; // nothing to change, it's account id only
             default:
                 {
-                    sLog->outAshran("LoadDump: Unknown dump table type");
+                    TC_LOG_ERROR("server.worldserver", "LoadDump: Unknown dump table type");
                     ROLLBACK(DUMP_FILE_BROKEN);
                 }
                 break;

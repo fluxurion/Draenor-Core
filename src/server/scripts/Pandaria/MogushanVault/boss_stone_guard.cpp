@@ -1483,8 +1483,8 @@ class at_amethyst_pool : public AreaTriggerEntityScript
             float l_Radius = 5.0f;
             Unit* l_Caster = p_AreaTrigger->GetCaster();
 
-            JadeCore::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, u_check);
+            Trinity::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, u_check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             if (!l_TargetList.empty())
@@ -1509,8 +1509,8 @@ class at_amethyst_pool : public AreaTriggerEntityScript
             if (!l_Caster)
                 return;
 
-            JadeCore::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, u_check);
+            Trinity::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, u_check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             for (Unit* l_Target : l_TargetList)

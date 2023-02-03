@@ -275,8 +275,8 @@ public:
 
 		void GetTargets()
 		{
-			JadeCore::AnyUnitInObjectRangeCheck u_check(me, 100.0f);
-			JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck> searcher(me, targets, u_check);
+			Trinity::AnyUnitInObjectRangeCheck u_check(me, 100.0f);
+			Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck> searcher(me, targets, u_check);
 			me->VisitNearbyObject(100.0f, searcher);
 			if (!targets.empty())
 				for (std::list<Unit*>::const_iterator iter = targets.begin(); iter != targets.end(); ++iter)

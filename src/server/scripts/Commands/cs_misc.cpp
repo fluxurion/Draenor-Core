@@ -476,7 +476,7 @@ class misc_commandscript: public CommandScript
                 }
             }
 
-            CellCoord cellCoord = JadeCore::ComputeCellCoord(object->GetPositionX(), object->GetPositionY());
+            CellCoord cellCoord = Trinity::ComputeCellCoord(object->GetPositionX(), object->GetPositionY());
             Cell cell(cellCoord);
 
             uint32 zoneId, areaId;
@@ -495,7 +495,7 @@ class misc_commandscript: public CommandScript
             float groundZ = map->GetHeight(object->GetPhaseMask(), object->GetPositionX(), object->GetPositionY(), MAX_HEIGHT);
             float floorZ = map->GetHeight(object->GetPhaseMask(), object->GetPositionX(), object->GetPositionY(), object->GetPositionZ());
 
-            GridCoord gridCoord = JadeCore::ComputeGridCoord(object->GetPositionX(), object->GetPositionY());
+            GridCoord gridCoord = Trinity::ComputeGridCoord(object->GetPositionX(), object->GetPositionY());
 
             // 63? WHY?
             int gridX = 63 - gridCoord.x_coord;
@@ -1610,7 +1610,7 @@ class misc_commandscript: public CommandScript
             if (!l_PlayerTarget)
                 l_PlayerTarget = l_Player;
 
-            sLog->outDebug(LOG_FILTER_GENERAL, p_Handler->GetTrinityString(LANG_ADDITEM), l_ItemID, l_Count);
+            TC_LOG_DEBUG("misc", p_Handler->GetTrinityString(LANG_ADDITEM), l_ItemID, l_Count);
 
             ItemTemplate const* l_ItemTemplate = sObjectMgr->GetItemTemplate(l_ItemID);
             if (!l_ItemTemplate)
@@ -1700,7 +1700,7 @@ class misc_commandscript: public CommandScript
             if (!playerTarget)
                 playerTarget = player;
 
-            sLog->outDebug(LOG_FILTER_GENERAL, handler->GetTrinityString(LANG_ADDITEMSET), itemSetId);
+            TC_LOG_DEBUG("misc", handler->GetTrinityString(LANG_ADDITEMSET), itemSetId);
 
             bool found = false;
             ItemTemplateContainer const* its = sObjectMgr->GetItemTemplateStore();
@@ -2170,14 +2170,14 @@ class misc_commandscript: public CommandScript
                 return true;
             }
 
-            CellCoord p(JadeCore::ComputeCellCoord(player->GetPositionX(), player->GetPositionY()));
+            CellCoord p(Trinity::ComputeCellCoord(player->GetPositionX(), player->GetPositionY()));
             Cell cell(p);
             cell.SetNoCreate();
 
-            JadeCore::RespawnDo u_do;
-            JadeCore::WorldObjectWorker<JadeCore::RespawnDo> worker(player, u_do);
+            Trinity::RespawnDo u_do;
+            Trinity::WorldObjectWorker<Trinity::RespawnDo> worker(player, u_do);
 
-            TypeContainerVisitor<JadeCore::WorldObjectWorker<JadeCore::RespawnDo>, GridTypeMapContainer > obj_worker(worker);
+            TypeContainerVisitor<Trinity::WorldObjectWorker<Trinity::RespawnDo>, GridTypeMapContainer > obj_worker(worker);
             cell.Visit(p, obj_worker, *player->GetMap(), *player, player->GetGridActivationRange());
 
             return true;

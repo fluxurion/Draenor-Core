@@ -55,8 +55,8 @@ class spell_dru_yseras_gift: public SpellScriptLoader
                 {
                     float l_Radius = 30.0f;
                     std::list<Unit*> l_TargetList;
-                    JadeCore::AnyFriendlyUnitInObjectRangeCheck u_check(l_Caster, l_Caster, l_Radius);
-                    JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(l_Caster, l_TargetList, u_check);
+                    Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(l_Caster, l_Caster, l_Radius);
+                    Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(l_Caster, l_TargetList, u_check);
                     l_Caster->VisitNearbyObject(l_Radius, searcher);
 
                     l_TargetList.remove_if([l_Caster](Unit* p_Unit) -> bool
@@ -75,7 +75,7 @@ class spell_dru_yseras_gift: public SpellScriptLoader
 
                     if (l_TargetList.size() > 1)
                     {
-                        l_TargetList.sort(JadeCore::HealthPctOrderPred());
+                        l_TargetList.sort(Trinity::HealthPctOrderPred());
                         l_TargetList.resize(1);
                     }
                     if (l_TargetList.size() < 1)
@@ -128,7 +128,7 @@ class spell_dru_yseras_gift_ally_proc : public SpellScriptLoader
 
                 if (p_Targets.size() > 1)
                 {
-                    p_Targets.sort(JadeCore::HealthPctOrderPred());
+                    p_Targets.sort(Trinity::HealthPctOrderPred());
                     p_Targets.resize(1);
                 }
             }
@@ -834,7 +834,7 @@ class spell_dru_natures_vigil_proc : public SpellScriptLoader
             {
                 if (p_Targets.size() > 1)
                 {
-                    p_Targets.sort(JadeCore::HealthPctOrderPred());
+                    p_Targets.sort(Trinity::HealthPctOrderPred());
                     p_Targets.resize(1);
                 }
             }
@@ -1266,7 +1266,7 @@ class spell_dru_wild_growth : public SpellScriptLoader
 
                 if (p_Targets.size() > l_MaxTargets)
                 {
-                    p_Targets.sort(JadeCore::HealthPctOrderPred());
+                    p_Targets.sort(Trinity::HealthPctOrderPred());
                     p_Targets.resize(l_MaxTargets);
                 }
             }
@@ -2283,7 +2283,7 @@ class spell_dru_wild_mushroom_heal_proc : public SpellScriptLoader
 
                 if (p_Targets.size() > 1)
                 {
-                    p_Targets.sort(JadeCore::HealthPctOrderPred());
+                    p_Targets.sort(Trinity::HealthPctOrderPred());
                     p_Targets.resize(l_MaxTargets);
                 }
             }
@@ -3282,7 +3282,7 @@ class spell_dru_dream_of_cenarius_balance : public SpellScriptLoader
             {
                 if (p_Targets.size() > 1)
                 {
-                    p_Targets.sort(JadeCore::HealthPctOrderPred());
+                    p_Targets.sort(Trinity::HealthPctOrderPred());
                     p_Targets.resize(1);
                 }
             }

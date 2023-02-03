@@ -839,8 +839,8 @@ class spell_rog_killing_spree: public SpellScriptLoader
                         std::list<Unit*> l_TargetList;
                         float l_Radius = 10.0f;
 
-                        JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
-                        JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_TargetList, l_Check);
+                        Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
+                        Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_TargetList, l_Check);
                         l_Caster->VisitNearbyObject(l_Radius, l_Searcher);
 
                         l_TargetList.remove_if([this, l_Caster](Unit* p_Unit) -> bool
@@ -854,7 +854,7 @@ class spell_rog_killing_spree: public SpellScriptLoader
                         if (l_TargetList.empty())
                             return;
 
-                        Unit* l_Target = JadeCore::Containers::SelectRandomContainerElement(l_TargetList);
+                        Unit* l_Target = Trinity::Containers::SelectRandomContainerElement(l_TargetList);
                         if (!l_Target)
                             return;
 
@@ -1797,14 +1797,14 @@ class spell_rog_shroud_of_concealment: public SpellScriptLoader
                     return;
 
                 std::list<WorldObject*> targetsToRemove;
-                p_Targets.remove_if(JadeCore::UnitAuraCheck(true, BG_WS_SPELL_WARSONG_FLAG));
-                p_Targets.remove_if(JadeCore::UnitAuraCheck(true, BG_WS_SPELL_SILVERWING_FLAG));
-                p_Targets.remove_if(JadeCore::UnitAuraCheck(true, BG_KT_SPELL_ORB_PICKED_UP_1));
-                p_Targets.remove_if(JadeCore::UnitAuraCheck(true, BG_KT_SPELL_ORB_PICKED_UP_2));
-                p_Targets.remove_if(JadeCore::UnitAuraCheck(true, BG_KT_SPELL_ORB_PICKED_UP_3));
-                p_Targets.remove_if(JadeCore::UnitAuraCheck(true, BG_KT_SPELL_ORB_PICKED_UP_4));
-                p_Targets.remove_if(JadeCore::UnitAuraCheck(true, BG_KT_ALLIANCE_INSIGNIA));
-                p_Targets.remove_if(JadeCore::UnitAuraCheck(true, BG_KT_HORDE_INSIGNIA));
+                p_Targets.remove_if(Trinity::UnitAuraCheck(true, BG_WS_SPELL_WARSONG_FLAG));
+                p_Targets.remove_if(Trinity::UnitAuraCheck(true, BG_WS_SPELL_SILVERWING_FLAG));
+                p_Targets.remove_if(Trinity::UnitAuraCheck(true, BG_KT_SPELL_ORB_PICKED_UP_1));
+                p_Targets.remove_if(Trinity::UnitAuraCheck(true, BG_KT_SPELL_ORB_PICKED_UP_2));
+                p_Targets.remove_if(Trinity::UnitAuraCheck(true, BG_KT_SPELL_ORB_PICKED_UP_3));
+                p_Targets.remove_if(Trinity::UnitAuraCheck(true, BG_KT_SPELL_ORB_PICKED_UP_4));
+                p_Targets.remove_if(Trinity::UnitAuraCheck(true, BG_KT_ALLIANCE_INSIGNIA));
+                p_Targets.remove_if(Trinity::UnitAuraCheck(true, BG_KT_HORDE_INSIGNIA));
 
                 for (auto itr : p_Targets)
                 {

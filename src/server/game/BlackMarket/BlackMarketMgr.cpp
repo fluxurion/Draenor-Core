@@ -96,7 +96,7 @@ void BlackMarketMgr::LoadTemplates()
 
     if (!result)
     {
-        sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 BlackMarket templates. DB table `blackmarket_template` is empty.");
+        TC_LOG_INFO("server.loading", ">> Loaded 0 BlackMarket templates. DB table `blackmarket_template` is empty.");
         return;
     }
 
@@ -121,7 +121,7 @@ void BlackMarketMgr::LoadTemplates()
     }
     while (result->NextRow());
 
-    sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded %u BlackMarket templates in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    TC_LOG_INFO("server.loading", ">> Loaded %u BlackMarket templates in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void BlackMarketMgr::LoadAuctions()
@@ -133,7 +133,7 @@ void BlackMarketMgr::LoadAuctions()
 
     if (!result)
     {
-        sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 BlackMarket Auctions. DB table `blackmarket` is empty.");
+        TC_LOG_INFO("server.loading", ">> Loaded 0 BlackMarket Auctions. DB table `blackmarket` is empty.");
         return;
     }
 
@@ -160,7 +160,7 @@ void BlackMarketMgr::LoadAuctions()
 
     CharacterDatabase.CommitTransaction(trans);
 
-    sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded %u BlackMarket Auctions in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    TC_LOG_INFO("server.loading", ">> Loaded %u BlackMarket Auctions in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void BlackMarketMgr::Update()

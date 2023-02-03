@@ -72,7 +72,7 @@ void InstanceScript::HandleGameObject(uint64 GUID, bool open, GameObject* go)
     if (go)
         go->SetGoState(open ? GO_STATE_ACTIVE : GO_STATE_READY);
     else
-        sLog->outDebug(LOG_FILTER_TSCR, "InstanceScript: HandleGameObject failed");
+        TC_LOG_DEBUG("scripts", "InstanceScript: HandleGameObject failed");
 }
 
 void InstanceScript::Update(uint32 p_Diff)
@@ -151,7 +151,7 @@ void InstanceScript::LoadMinionData(const MinionData* data)
 
         ++data;
     }
-    sLog->outDebug(LOG_FILTER_TSCR, "InstanceScript::LoadMinionData: " UI64FMTD " minions loaded.", uint64(minions.size()));
+    TC_LOG_DEBUG("scripts", "InstanceScript::LoadMinionData: " UI64FMTD " minions loaded.", uint64(minions.size()));
 }
 
 void InstanceScript::SetBossNumber(uint32 p_Number)
@@ -169,7 +169,7 @@ void InstanceScript::LoadDoorData(const DoorData* data)
 
         ++data;
     }
-    sLog->outDebug(LOG_FILTER_TSCR, "InstanceScript::LoadDoorData: " UI64FMTD " doors loaded.", uint64(doors.size()));
+    TC_LOG_DEBUG("scripts", "InstanceScript::LoadDoorData: " UI64FMTD " doors loaded.", uint64(doors.size()));
 }
 
 void InstanceScript::LoadScenariosInfos(BossScenarios const* p_Scenarios, uint32 p_ScenarioID)
@@ -529,7 +529,7 @@ void InstanceScript::DoUseDoorOrButton(uint64 uiGuid, uint32 uiWithRestoreTime, 
                 go->ResetDoorOrButton();
         }
         else
-            sLog->outError(LOG_FILTER_GENERAL, "SD2: Script call DoUseDoorOrButton, but gameobject entry %u is type %u.", go->GetEntry(), go->GetGoType());
+            TC_LOG_ERROR("server.worldserver", "SD2: Script call DoUseDoorOrButton, but gameobject entry %u is type %u.", go->GetEntry(), go->GetGoType());
     }
 }
 
@@ -561,7 +561,7 @@ void InstanceScript::DoUpdateWorldState(uint32 uiStateId, uint32 uiStateData)
                 player->SendUpdateWorldState(uiStateId, uiStateData);
     }
     else
-        sLog->outDebug(LOG_FILTER_TSCR, "DoUpdateWorldState attempt send data but no players in map.");
+        TC_LOG_DEBUG("scripts", "DoUpdateWorldState attempt send data but no players in map.");
 }
 
 // Send Notify to all players in instance
@@ -885,7 +885,7 @@ void InstanceScript::PlaySceneForPlayers(Position const p_Pos, uint32 p_ScenePac
 
 bool InstanceScript::CheckAchievementCriteriaMeet(uint32 criteria_id, Player const* /*source*/, Unit const* /*target*/ /*= NULL*/, uint64 /*miscvalue1*/ /*= 0*/)
 {
-    sLog->outError(LOG_FILTER_GENERAL, "Achievement system call InstanceScript::CheckAchievementCriteriaMeet but instance script for map %u not have implementation for achievement criteria %u",
+    TC_LOG_ERROR("server.worldserver", "Achievement system call InstanceScript::CheckAchievementCriteriaMeet but instance script for map %u not have implementation for achievement criteria %u",
         instance->GetId(), criteria_id);
     return false;
 }

@@ -338,7 +338,7 @@ namespace MS { namespace Skill { namespace Archaeology
         }
 
         for (ResearchSitesMap::iterator l_Iterator = m_ResearchSites.begin(); l_Iterator != m_ResearchSites.end(); ++l_Iterator)
-            JadeCore::Containers::RandomResizeSet(l_Iterator->second, Archaeology::Constants::ResearchSitePerContinent);
+            Trinity::Containers::RandomResizeSet(l_Iterator->second, Archaeology::Constants::ResearchSitePerContinent);
 
         _archaeologyChanged = true;
         PropagateResearchSites();
@@ -363,7 +363,7 @@ namespace MS { namespace Skill { namespace Archaeology
         if (l_TempSites.empty())
             return;
 
-        m_ResearchSites[p_MapID].insert(JadeCore::Containers::SelectRandomContainerElement(l_TempSites));
+        m_ResearchSites[p_MapID].insert(Trinity::Containers::SelectRandomContainerElement(l_TempSites));
         _archaeologyChanged = true;
 
         PropagateResearchSites();
@@ -388,7 +388,7 @@ namespace MS { namespace Skill { namespace Archaeology
                 m_ResearchSites[p_MapId].insert((*l_Iterator)->ID);
         }
 
-        JadeCore::Containers::RandomResizeSet(m_ResearchSites[p_MapId], p_SitesCount);
+        Trinity::Containers::RandomResizeSet(m_ResearchSites[p_MapId], p_SitesCount);
 
         _archaeologyChanged = true;
         PropagateResearchSites();
@@ -469,7 +469,7 @@ namespace MS { namespace Skill { namespace Archaeology
         if (l_SitesID.empty())
             return 0;
 
-        JadeCore::Containers::RandomResizeList(l_SitesID, 1);
+        Trinity::Containers::RandomResizeList(l_SitesID, 1);
         return l_SitesID.front();
     }
 
@@ -510,13 +510,13 @@ namespace MS { namespace Skill { namespace Archaeology
 
         if (l_AtPos == 0xFFFFF)
         {
-            sLog->outAshran("ArcheologyMgr::GetSurveyBotEntry, l_AtPos (%u) = 0xFFFFF for site %u !", l_AtPos, l_ResearchSiteID);
+            TC_LOG_ERROR("server.worldserver", "ArcheologyMgr::GetSurveyBotEntry, l_AtPos (%u) = 0xFFFFF for site %u !", l_AtPos, l_ResearchSiteID);
             return 0;
         }
 
         if (l_AtPos >= Archaeology::Constants::MaxResearchSites)
         {
-            sLog->outAshran("ArcheologyMgr::GetSurveyBotEntry, l_AtPos (%u) >= 20 for site %u !", l_AtPos, l_ResearchSiteID);
+            TC_LOG_ERROR("server.worldserver", "ArcheologyMgr::GetSurveyBotEntry, l_AtPos (%u) >= 20 for site %u !", l_AtPos, l_ResearchSiteID);
             return 0;
         }
 
@@ -902,7 +902,7 @@ namespace MS { namespace Skill { namespace Archaeology
         {
             if ((*l_It).second.map == m_Player->GetMapId() && (*l_It).second.zone == m_Player->GetZoneId())
             {
-                if (JadeCore::IsPointInZone(ResearchPOIPoint(m_Player->GetPositionX(), m_Player->GetPositionY()), l_It->second.coords))
+                if (Trinity::IsPointInZone(ResearchPOIPoint(m_Player->GetPositionX(), m_Player->GetPositionY()), l_It->second.coords))
                     return (*l_It).first;
             }
         }

@@ -774,7 +774,7 @@ class boss_shekzeer : public CreatureScript
 
                             if (!fieldList.empty())
                             {
-                                JadeCore::RandomResizeList(fieldList, 1);
+                                Trinity::RandomResizeList(fieldList, 1);
                                 DoCast(fieldList.front(), SPELL_CORRUPT_FIELD);
                             }
                             break;
@@ -806,7 +806,7 @@ class boss_shekzeer : public CreatureScript
                                 if (playerList.empty())
                                     break;
 
-                                JadeCore::RandomResizeList(playerList, 1);
+                                Trinity::RandomResizeList(playerList, 1);
 
                                 me->AddAura(SPELL_CRY_OF_TERROR, playerList.front());
                                 Talk(SAY_SPELL_CRY);
@@ -1630,7 +1630,7 @@ public:
 
                         if (!playerList.empty())
                         {
-                            JadeCore::RandomResizeList(playerList, 1);
+                            Trinity::RandomResizeList(playerList, 1);
                             me->CastSpell(playerList.front(), SPELL_HOF_DMG, true);
                         }
 
@@ -1801,7 +1801,7 @@ class spell_amassing_darkness : public SpellScriptLoader
 
                     if (!extendList.empty())
                     {
-                        JadeCore::RandomResizeList(extendList, 1);
+                        Trinity::RandomResizeList(extendList, 1);
                         caster->CastSpell(extendList.front(), SPELL_AMASSING_DARKNESS, true);
                     }
                 }
@@ -1877,7 +1877,7 @@ class spell_visions_of_demise : public SpellScriptLoader
                         // Resizing the list to the wanted length
                         uint8 maxTarget = caster->GetInstanceScript()->instance->Is25ManRaid() ? 5 : 2;
                         if (playerList.size() >= maxTarget)
-                            JadeCore::RandomResizeList(playerList, maxTarget);
+                            Trinity::RandomResizeList(playerList, maxTarget);
 
                         // Adding the players in the targets list
                         for (Player* plr : playerList)

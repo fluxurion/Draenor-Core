@@ -1182,8 +1182,8 @@ namespace MS {
 				float l_CheckRadius = l_AuraRadius + 5.0f;
 				std::list<Unit*> l_TargetList;
 
-				JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, l_CheckRadius);
-				JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
+				Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, l_CheckRadius);
+				Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
 
 				for (Unit* l_Unit : l_TargetList)
 				{
@@ -1246,8 +1246,8 @@ namespace MS {
 				float l_CheckRadius = l_AuraRadius + 5.0f;
 				std::list<Unit*> l_TargetList;
 
-				JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(me, me, l_CheckRadius);
-				JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
+				Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(me, me, l_CheckRadius);
+				Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
 
 				for (Unit* l_Unit : l_TargetList)
 				{

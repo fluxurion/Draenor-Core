@@ -808,7 +808,7 @@ public:
         void CheckTargets(std::list<WorldObject*>& targets)
         {
             targets.remove_if(IsNotEntryButPlayer(GetCaster(), NPC_GENERIC_TRIGGER_LAB_AOI));
-            WorldObject* target = JadeCore::Containers::SelectRandomContainerElement(targets);
+            WorldObject* target = Trinity::Containers::SelectRandomContainerElement(targets);
             if (!target)
                 this->FinishCast(SPELL_CAST_OK);
             else

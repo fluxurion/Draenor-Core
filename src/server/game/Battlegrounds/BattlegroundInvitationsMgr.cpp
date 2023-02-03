@@ -105,7 +105,7 @@ namespace MS
             }
 
             if (l_TeamIndex >= TeamsCount::Value || p_BracketId >= Brackets::Count)
-                sLog->outAshran("BattlegroundInvitationsMgr: TeamIndex: %u, BracketId: %u", l_TeamIndex, p_BracketId);
+                TC_LOG_ERROR("server.worldserver", "BattlegroundInvitationsMgr: TeamIndex: %u, BracketId: %u", l_TeamIndex, p_BracketId);
 
             /// Store pointer to arrayindex of player that was added first.
             uint32* l_LastPlayerAddedPointer = &(m_WaitTimeLastPlayer[l_TeamIndex][p_BracketId]);
@@ -204,7 +204,7 @@ namespace MS
             for (; l_Pair != std::end(l_Itr->second.Infos); l_Pair++)
             {
                 GroupQueueInfo* l_GroupInfo = l_Pair->GroupInfo;
-                sLog->outAshran("BattlegroundInvitationsMgr::ClearPlayerInvitation: player %u, BgTypeId: %u, ArenaType : %u, BgInstance : %u ", p_Guid, l_GroupInfo->m_BgTypeId, l_GroupInfo->m_ArenaType, l_GroupInfo->m_IsInvitedToBGInstanceGUID);
+                TC_LOG_ERROR("server.worldserver", "BattlegroundInvitationsMgr::ClearPlayerInvitation: player %u, BgTypeId: %u, ArenaType : %u, BgInstance : %u ", p_Guid, l_GroupInfo->m_BgTypeId, l_GroupInfo->m_ArenaType, l_GroupInfo->m_IsInvitedToBGInstanceGUID);
             }
 
             m_InvitedPlayers.erase(l_Itr);
@@ -238,10 +238,10 @@ namespace MS
             /// Player can't be in queue without group, but just in case.
             if (l_BracketId == -1)
             {
-                sLog->outError(LOG_FILTER_BATTLEGROUND, "BattlegroundQueue: ERROR Cannot find groupinfo for player GUID: %u", GUID_LOPART(p_Guid));
+                TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BattlegroundQueue: ERROR Cannot find groupinfo for player GUID: %u", GUID_LOPART(p_Guid));
                 return;
             }
-            sLog->outDebug(LOG_FILTER_BATTLEGROUND, "BattlegroundQueue: Removing player GUID %u, from bracket_id %u", GUID_LOPART(p_Guid), (uint32)l_BracketId);
+            TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "BattlegroundQueue: Removing player GUID %u, from bracket_id %u", GUID_LOPART(p_Guid), (uint32)l_BracketId);
 
             /// ALL variables are correctly set
             /// We can ignore leveling up in queue - it should not cause crash

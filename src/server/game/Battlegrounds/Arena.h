@@ -163,7 +163,7 @@ namespace Arena
             default:
                 break;
         }
-        sLog->outError(LOG_FILTER_ARENAS, "FATAL: Unknown arena team type %u for some arena team", type);
+        TC_LOG_ERROR("bg.arena", "FATAL: Unknown arena team type %u for some arena team", type);
         return 0xFF;
     }
 
@@ -180,7 +180,7 @@ namespace Arena
             default:
                 break;
         }
-        sLog->outError(LOG_FILTER_ARENAS, "FATAL: Unknown arena team slot %u for some arena team", slot);
+        TC_LOG_ERROR("bg.arena", "FATAL: Unknown arena team slot %u for some arena team", slot);
         return ArenaType::None;
     }
 

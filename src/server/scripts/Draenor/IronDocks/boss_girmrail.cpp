@@ -427,7 +427,7 @@ class boss_grimrail_duguru : public CreatureScript
                     if (l_ListFellowGrimrail.empty())
                         return;
 
-                    l_ListFellowGrimrail.sort(JadeCore::HealthPctOrderPred());
+                    l_ListFellowGrimrail.sort(Trinity::HealthPctOrderPred());
                     l_ListFellowGrimrail.resize(3);
                     if(Unit* l_Target = l_ListFellowGrimrail.front())
                         me->CastSpell(l_Target, eDuguruSpells::SpellSanguineSphere, true);

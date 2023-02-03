@@ -1333,7 +1333,7 @@ public:
 			if (l_GreenGates.empty())
 				return;
 
-			l_GreenGates.sort(JadeCore::DistanceCompareOrderPred(me));
+			l_GreenGates.sort(Trinity::DistanceCompareOrderPred(me));
 			for (auto itr : l_GreenGates)
 			{
 				p_Clicker->CastSpell(p_Clicker, eGatewaySpells::CooldownMarker, true);
@@ -1414,7 +1414,7 @@ public:
 			if (l_PurpleGates.empty())
 				return;
 
-			l_PurpleGates.sort(JadeCore::DistanceCompareOrderPred(me));
+			l_PurpleGates.sort(Trinity::DistanceCompareOrderPred(me));
 			for (auto itr : l_PurpleGates)
 			{
 				Unit* l_CurrentGateOwner = itr->GetOwner();
@@ -1585,13 +1585,13 @@ public:
 			if (l_Target == nullptr)
 			{
 				std::list<Unit*> l_FriendlyUnitList;
-				JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(me, me, 40.0f);
-				JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(me, l_FriendlyUnitList, l_Check);
+				Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(me, me, 40.0f);
+				Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(me, l_FriendlyUnitList, l_Check);
 				me->VisitNearbyObject(40.0f, l_Searcher);
 
 				if (l_FriendlyUnitList.size() > 1)
 				{
-					l_FriendlyUnitList.sort(JadeCore::HealthPctOrderPred());
+					l_FriendlyUnitList.sort(Trinity::HealthPctOrderPred());
 					l_FriendlyUnitList.resize(1);
 				}
 
@@ -1833,8 +1833,8 @@ public:
 			{
 				std::list<Unit*> l_Targets;
 
-				JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, l_MaxRadius);
-				JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_Targets, l_Check);
+				Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, l_MaxRadius);
+				Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_Targets, l_Check);
 				me->VisitNearbyObject(l_MaxRadius, l_Searcher);
 
 				for (Unit* l_Target : l_Targets)

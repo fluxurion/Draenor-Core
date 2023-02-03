@@ -678,8 +678,8 @@ class grimrail_depot_skylord_tovra_at_diffused_energy : public AreaTriggerEntity
             std::list<Unit*> l_TargetList;
             float l_Radius = 2.0f;
 
-            JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             for (Unit* l_Iter : l_TargetList)
@@ -722,8 +722,8 @@ class grimrail_depot_skylord_tovra_at_spinning_spear : public AreaTriggerEntityS
 
             if (l_Diff <= p_Time)
             {
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 for (Unit* l_Iter : l_TargetList)

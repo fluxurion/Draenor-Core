@@ -104,8 +104,8 @@ class go_duel_area_flag : public GameObjectScript
                     m_Timer = 1000;
 
                     std::list<Player*> l_Players;
-                    JadeCore::AnyPlayerInObjectRangeCheck l_Checker(go, DUEL_AREA_RANGE - 10.f);
-                    JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> l_Searcher(go, l_Players, l_Checker);
+                    Trinity::AnyPlayerInObjectRangeCheck l_Checker(go, DUEL_AREA_RANGE - 10.f);
+                    Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> l_Searcher(go, l_Players, l_Checker);
                     go->VisitNearbyWorldObject(DUEL_AREA_RANGE - 10.f, l_Searcher); /// Prevent reapply spam with the -10.f
 
                     for (auto l_Iter : l_Players)

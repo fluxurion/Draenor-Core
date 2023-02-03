@@ -761,7 +761,7 @@ class spell_primordius_evolution: public SpellScriptLoader
                     /// If Primordius has 4 auras or more from the table, one of those auras is removed, then a new random one is added.
                     else if (l_AuraList.size() >= 4)
                     {
-                        JadeCore::RandomResizeList(l_AuraList, l_AuraList.size());
+                        Trinity::RandomResizeList(l_AuraList, l_AuraList.size());
 
                         if (l_Target->HasAura(l_AuraList.front()))
                             l_Target->RemoveAura(l_AuraList.front());
@@ -794,7 +794,7 @@ class spell_primordius_evolution: public SpellScriptLoader
                 /// If Primordius has 3 auras or more from the table, one of those auras is removed, then a new random one is added.
                 else if (l_AuraList.size() >= 3)
                 {
-                    JadeCore::RandomResizeList(l_AuraList, l_AuraList.size());
+                    Trinity::RandomResizeList(l_AuraList, l_AuraList.size());
 
                     if (l_Target->HasAura(l_AuraList.front()))
                         l_Target->RemoveAura(l_AuraList.front());

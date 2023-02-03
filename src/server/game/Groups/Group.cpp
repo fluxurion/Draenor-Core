@@ -70,10 +70,10 @@ Group::~Group()
 {
     if (m_bgGroup)
     {
-        sLog->outDebug(LOG_FILTER_BATTLEGROUND, "Group::~Group: battleground group being deleted.");
+        TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Group::~Group: battleground group being deleted.");
         if (m_bgGroup->GetBgRaid(ALLIANCE) == this) m_bgGroup->SetBgRaid(ALLIANCE, NULL);
         else if (m_bgGroup->GetBgRaid(HORDE) == this) m_bgGroup->SetBgRaid(HORDE, NULL);
-        else sLog->outError(LOG_FILTER_GENERAL, "Group::~Group: battleground group is not linked to the correct battleground.");
+        else TC_LOG_ERROR("server.worldserver", "Group::~Group: battleground group is not linked to the correct battleground.");
     }
     Rolls::iterator itr;
     while (!RollId.empty())
@@ -1161,7 +1161,7 @@ void Group::GroupLoot(Loot* loot, WorldObject* pLootedObject)
         item = sObjectMgr->GetItemTemplate(i->itemid);
         if (!item)
         {
-            //sLog->outDebug(LOG_FILTER_GENERAL, "Group::GroupLoot: missing item prototype for item with id: %d", i->itemid);
+            //TC_LOG_DEBUG("misc", "Group::GroupLoot: missing item prototype for item with id: %d", i->itemid);
             continue;
         }
 
@@ -1249,7 +1249,7 @@ void Group::GroupLoot(Loot* loot, WorldObject* pLootedObject)
         item = sObjectMgr->GetItemTemplate(i->itemid);
         if (!item)
         {
-            //sLog->outDebug(LOG_FILTER_GENERAL, "Group::GroupLoot: missing item prototype for item with id: %d", i->itemid);
+            //TC_LOG_DEBUG("misc", "Group::GroupLoot: missing item prototype for item with id: %d", i->itemid);
             continue;
         }
 
@@ -2560,7 +2560,7 @@ InstanceGroupBind* Group::BindToInstance(InstanceSave* save, bool permanent, boo
     bind.save = save;
     bind.perm = permanent;
     if (!load)
-        sLog->outDebug(LOG_FILTER_MAPS, "Group::BindToInstance: Group (guid: %u, storage id: %u) is now bound to map %d, instance %d, difficulty %d",
+        TC_LOG_DEBUG("maps", "Group::BindToInstance: Group (guid: %u, storage id: %u) is now bound to map %d, instance %d, difficulty %d",
         GUID_LOPART(GetGUID()), m_dbStoreId, save->GetMapId(), save->GetInstanceId(), save->GetDifficultyID());
 
     return &bind;
@@ -2618,7 +2618,7 @@ void Group::BroadcastGroupUpdate(void)
         {
             pp->ForceValuesUpdateAtIndex(UNIT_FIELD_SHAPESHIFT_FORM);
             pp->ForceValuesUpdateAtIndex(UNIT_FIELD_FACTION_TEMPLATE);
-            sLog->outDebug(LOG_FILTER_GENERAL, "-- Forced group value update for '%s'", pp->GetName());
+            TC_LOG_DEBUG("misc", "-- Forced group value update for '%s'", pp->GetName());
         }
     }
 }

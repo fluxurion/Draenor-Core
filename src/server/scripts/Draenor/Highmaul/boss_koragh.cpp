@@ -1121,7 +1121,7 @@ class spell_highmaul_frozen_core : public SpellScriptLoader
                     return;
 
                 if (Unit* l_Caster = GetCaster())
-                    p_Targets.remove_if(JadeCore::UnitAuraCheck(true, GetSpellInfo()->Id, l_Caster->GetGUID()));
+                    p_Targets.remove_if(Trinity::UnitAuraCheck(true, GetSpellInfo()->Id, l_Caster->GetGUID()));
             }
 
             void Register() override
@@ -1165,8 +1165,8 @@ class spell_highmaul_frozen_core : public SpellScriptLoader
                         if (Unit* l_Target = GetUnitOwner())
                         {
                             std::list<Unit*> l_TargetList;
-                            JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(l_Target, l_Target, 8.0f);
-                            JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Target, l_TargetList, l_Check);
+                            Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(l_Target, l_Target, 8.0f);
+                            Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Target, l_TargetList, l_Check);
                             l_Target->VisitNearbyObject(8.0f, l_Searcher);
 
                             for (Unit* l_Unit : l_TargetList)
@@ -1225,8 +1225,8 @@ class spell_highmaul_wild_flames_areatrigger : public SpellScriptLoader
                             std::list<Unit*> l_TargetList;
                             float l_Radius = 6.0f;
 
-                            JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Target, l_Target, l_Radius);
-                            JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Target, l_TargetList, l_Check);
+                            Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Target, l_Target, l_Radius);
+                            Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Target, l_TargetList, l_Check);
                             l_Target->VisitNearbyObject(l_Radius, l_Searcher);
 
                             for (Unit* l_Iter : l_TargetList)
@@ -1391,8 +1391,8 @@ class spell_highmaul_caustic_energy : public SpellScriptLoader
                             std::list<Unit*> l_TargetList;
                             float l_Radius = 10.0f;
 
-                            JadeCore::AnyUnitInObjectRangeCheck l_Check(l_Target, l_Radius);
-                            JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck> l_Searcher(l_Target, l_TargetList, l_Check);
+                            Trinity::AnyUnitInObjectRangeCheck l_Check(l_Target, l_Radius);
+                            Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck> l_Searcher(l_Target, l_TargetList, l_Check);
                             l_Target->VisitNearbyObject(l_Radius, l_Searcher);
 
                             if (l_TargetList.empty())
@@ -1469,8 +1469,8 @@ class spell_highmaul_caustic_energy : public SpellScriptLoader
                     std::list<Unit*> l_TargetList;
                     float l_Radius = 10.0f;
 
-                    JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Target, l_Target, l_Radius);
-                    JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Target, l_TargetList, l_Check);
+                    Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Target, l_Target, l_Radius);
+                    Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Target, l_TargetList, l_Check);
                     l_Target->VisitNearbyObject(l_Radius, l_Searcher);
 
                     for (Unit* l_Iter : l_TargetList)
@@ -1808,8 +1808,8 @@ class areatrigger_highmaul_wild_flames : public AreaTriggerEntityScript
                         std::list<Unit*> l_TargetList;
                         float l_Radius = 6.0f;
 
-                        JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                        JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                        Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                        Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                         p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                         for (Unit* l_Unit : l_TargetList)
@@ -1855,8 +1855,8 @@ class areatrigger_highmaul_suppression_field : public AreaTriggerEntityScript
                 std::list<Unit*> l_TargetList;
                 float l_Radius = 6.0f;
 
-                JadeCore::AnyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                Trinity::AnyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 std::set<uint64> l_Targets;
@@ -1960,8 +1960,8 @@ class areatrigger_highmaul_expel_magic_frost : public AreaTriggerEntityScript
                         std::list<Unit*> l_TargetList;
                         float l_Radius = 30.0f;
 
-                        JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                        JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                        Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                        Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                         p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                         for (Unit* l_Unit : l_TargetList)

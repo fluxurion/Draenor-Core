@@ -856,7 +856,7 @@ class boss_lulin : public CreatureScript
 
                         if (!l_PlayerList.empty())
                         {
-                            JadeCore::RandomResizeList(l_PlayerList, 1);
+                            Trinity::RandomResizeList(l_PlayerList, 1);
                             if (Player* l_Target = l_PlayerList.front())
                             {
                                 if (m_Phase == PHASE_DAYLIGHT)
@@ -1171,7 +1171,7 @@ class boss_suen : public CreatureScript
                         GetPlayerListInGrid(l_PlayerList, me, 200.0f);
                         if (!l_PlayerList.empty())
                         {
-                            JadeCore::RandomResizeList(l_PlayerList, 1);
+                            Trinity::RandomResizeList(l_PlayerList, 1);
                             me->CastSpell(l_PlayerList.front(), me->HasAura(SPELL_INVIS_SUEN) ? SPELL_LIGHT_OF_DAY_ASSIST : SPELL_LIGHT_OF_DAY, true);
                             me->CastSpell(l_PlayerList.front(), SPELL_LIGHT_OF_DAY_COMET, true);
                         }
@@ -1211,7 +1211,7 @@ class boss_suen : public CreatureScript
                             // Selecting a random target
                             if (!l_PlayerList.empty())
                             {
-                                JadeCore::RandomResizeList(l_PlayerList, 1);
+                                Trinity::RandomResizeList(l_PlayerList, 1);
                                 if (Player* l_Target = l_PlayerList.front())
                                 {
                                     me->SetReactState(REACT_PASSIVE);
@@ -2197,7 +2197,7 @@ class spell_cosmic_barrage : public SpellScriptLoader
                     for (Creature* l_Star : l_StarList)
                     {
                         std::list<Player*> l_StarTargetList = l_PlayerList;
-                        JadeCore::RandomResizeList(l_StarTargetList, 1);
+                        Trinity::RandomResizeList(l_StarTargetList, 1);
                         l_Star->AI()->SetGUID(l_StarTargetList.front()->GetGUID(), DATA_COSMIC_TARGET);
                         l_Star->AI()->DoAction(ACTION_COSMIC_STARS);
                     }
@@ -2350,7 +2350,7 @@ class spell_tears_of_the_sun_dmg : public SpellScriptLoader
 
                 /// Picking a random player
                 if (p_Targets.size() > 1)
-                    JadeCore::RandomResizeList(p_Targets, 1);
+                    Trinity::RandomResizeList(p_Targets, 1);
             }
 
             void Register()
@@ -2657,8 +2657,8 @@ class at_icy_shadows : public AreaTriggerEntityScript
             std::list<Unit*> l_TargetList;
             float l_Radius = 10.0f;
 
-            JadeCore::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             if (!l_TargetList.empty())

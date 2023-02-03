@@ -646,8 +646,8 @@ public:
         void UpdateAI(const uint32 p_Diff) override
         {
             std::list<Player*> l_ListPlayers;
-            JadeCore::AnyPlayerInObjectRangeCheck check(me, 15.0f);
-            JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> searcher(me, l_ListPlayers, check);
+            Trinity::AnyPlayerInObjectRangeCheck check(me, 15.0f);
+            Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(me, l_ListPlayers, check);
             me->VisitNearbyObject(15.0f, searcher);
             if (!l_ListPlayers.empty())
             {
@@ -839,8 +839,8 @@ class auchindoun_azzakel_at_fel_spark : public AreaTriggerEntityScript
         if (m_Diff <= p_Time)
         {
             std::list<Player*> l_ListPlayers;
-            JadeCore::AnyPlayerInObjectRangeCheck check(p_AreaTrigger, 2.0f);
-            JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> searcher(p_AreaTrigger, l_ListPlayers, check);
+            Trinity::AnyPlayerInObjectRangeCheck check(p_AreaTrigger, 2.0f);
+            Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(p_AreaTrigger, l_ListPlayers, check);
             p_AreaTrigger->VisitNearbyObject(2.0f, searcher);
             if (!l_ListPlayers.empty())
             {

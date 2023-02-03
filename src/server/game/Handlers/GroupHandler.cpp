@@ -357,7 +357,7 @@ void WorldSession::HandleGroupInviteResponseOpcode(WorldPacket& p_RecvData)
 
         if (l_Group->GetLeaderGUID() == GetPlayer()->GetGUID())
         {
-            sLog->outError(LOG_FILTER_NETWORKIO, "HandleGroupAcceptOpcode: player %s(%d) tried to accept an invite to his own group", GetPlayer()->GetName(), GetPlayer()->GetGUIDLow());
+            TC_LOG_ERROR("network", "HandleGroupAcceptOpcode: player %s(%d) tried to accept an invite to his own group", GetPlayer()->GetName(), GetPlayer()->GetGUIDLow());
             return;
         }
 
@@ -434,7 +434,7 @@ void WorldSession::HandlePartyUninviteOpcode(WorldPacket& p_RecvData)
     // can't uninvite yourself
     if (GetPlayer()->GetGUID() == l_TargetGuid)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "WorldSession::HandlePartyUninviteOpcode: leader %s(%d) tried to uninvite himself from the group.", GetPlayer()->GetName(), GetPlayer()->GetGUIDLow());
+        TC_LOG_ERROR("network", "WorldSession::HandlePartyUninviteOpcode: leader %s(%d) tried to uninvite himself from the group.", GetPlayer()->GetName(), GetPlayer()->GetGUIDLow());
         return;
     }
 
@@ -1122,7 +1122,7 @@ void WorldSession::HandleRequestPartyMemberStatsOpcode(WorldPacket& recvData)
     Player* player = HashMapHolder<Player>::Find(Guid);
     if (player && player->GetGroup() != GetPlayer()->GetGroup())
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "Player %u (%s) sent CMSG_REQUEST_PARTY_MEMBER_STATS for player %u (%s) whos is not in the same group!",
+        TC_LOG_ERROR("network", "Player %u (%s) sent CMSG_REQUEST_PARTY_MEMBER_STATS for player %u (%s) whos is not in the same group!",
             GetPlayer()->GetGUIDLow(), GetPlayer()->GetName(), player->GetGUIDLow(), player->GetName());
         return;
     }
@@ -1155,7 +1155,7 @@ void WorldSession::HandleOptOutOfLootOpcode(WorldPacket& p_RecvData)
     if (!GetPlayer())                                        // needed because STATUS_AUTHED
     {
         if (l_OptOutOfLoot)
-            sLog->outError(LOG_FILTER_NETWORKIO, "CMSG_OPT_OUT_OF_LOOT value<>0 for not-loaded character!");
+            TC_LOG_ERROR("network", "CMSG_OPT_OUT_OF_LOOT value<>0 for not-loaded character!");
 
         return;
     }

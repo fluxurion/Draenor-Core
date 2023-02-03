@@ -139,7 +139,7 @@ Player* UnitAI::SelectRangedTarget(bool p_AllowHeal /*= true*/, int32 p_CheckAur
     if (l_TargetList.empty())
         return nullptr;
 
-    JadeCore::Containers::RandomResizeList(l_TargetList, 1);
+    Trinity::Containers::RandomResizeList(l_TargetList, 1);
 
     return l_TargetList.front();
 }
@@ -171,7 +171,7 @@ Player* UnitAI::SelectMeleeTarget(bool p_AllowTank /*= false*/) const
     if (l_TargetList.empty())
         return nullptr;
 
-    JadeCore::Containers::RandomResizeList(l_TargetList, 1);
+    Trinity::Containers::RandomResizeList(l_TargetList, 1);
 
     return l_TargetList.front();
 }
@@ -248,7 +248,7 @@ Player* UnitAI::SelectPlayerTarget(eTargetTypeMask p_TypeMask, std::vector<int32
     if (l_TargetList.empty())
         return nullptr;
 
-    JadeCore::Containers::RandomResizeList(l_TargetList, 1);
+    Trinity::Containers::RandomResizeList(l_TargetList, 1);
 
     return l_TargetList.front();
 }
@@ -274,7 +274,7 @@ Player* UnitAI::SelectMainTank() const
     if (l_ThreatList.empty())
         return nullptr;
 
-    l_ThreatList.sort(JadeCore::ThreatOrderPred());
+    l_ThreatList.sort(Trinity::ThreatOrderPred());
 
     return l_ThreatList.front()->getTarget()->ToPlayer();
 }
@@ -300,7 +300,7 @@ Player* UnitAI::SelectOffTank() const
     if (l_ThreatList.empty())
         return nullptr;
 
-    l_ThreatList.sort(JadeCore::ThreatOrderPred());
+    l_ThreatList.sort(Trinity::ThreatOrderPred());
 
     return l_ThreatList.back()->getTarget()->ToPlayer();
 }
@@ -342,7 +342,7 @@ void UnitAI::DoCastToAllHostilePlayers(uint32 spellid, bool triggered)
 void UnitAI::DoCast(uint32 spellId)
 {
     Unit* target = NULL;
-    //sLog->outError(LOG_FILTER_GENERAL, "aggre %u %u", spellId, (uint32)AISpellInfo[spellId].target);
+    //TC_LOG_ERROR("server.worldserver", "aggre %u %u", spellId, (uint32)AISpellInfo[spellId].target);
     switch (AISpellInfo[spellId].target)
     {
         default:

@@ -386,12 +386,12 @@ void BattlegroundAB::_NodeOccupied(uint8 node, Team team)
 {
     if (node >= BG_AB_DYNAMIC_NODES_COUNT)
     {
-        sLog->outError(LOG_FILTER_BATTLEGROUND, "BattlegroundAB::_NodeOccupied node(%u) > GILNEAS_BG_DYNAMIC_NODES_COUNT(%u)", node, BG_AB_DYNAMIC_NODES_COUNT);
+        TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BattlegroundAB::_NodeOccupied node(%u) > GILNEAS_BG_DYNAMIC_NODES_COUNT(%u)", node, BG_AB_DYNAMIC_NODES_COUNT);
         return;
     }
 
     if (!AddSpiritGuide(node, BG_AB_SpiritGuidePos[node][0], BG_AB_SpiritGuidePos[node][1], BG_AB_SpiritGuidePos[node][2], BG_AB_SpiritGuidePos[node][3], team))
-        sLog->outError(LOG_FILTER_BATTLEGROUND, "Failed to spawn spirit guide! point: %u, team: %u, ", node, team);
+        TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "Failed to spawn spirit guide! point: %u, team: %u, ", node, team);
 
     uint8 capturedNodes = 0;
     for (uint8 i = 0; i < BG_AB_DYNAMIC_NODES_COUNT; ++i)
@@ -570,14 +570,14 @@ bool BattlegroundAB::SetupBattleground()
         || !AddObject(BG_AB_OBJECT_BANNER + 3, BG_AB_OBJECTID_NODE_BANNER_3, BG_AB_NodePositions[3][0], BG_AB_NodePositions[3][1], BG_AB_NodePositions[3][2], BG_AB_NodePositions[3][3], 0, 0, std::sin(BG_AB_NodePositions[3][3] / 2), std::cos(BG_AB_NodePositions[3][3] / 2), RESPAWN_ONE_DAY)
         || !AddObject(BG_AB_OBJECT_BANNER + 4, BG_AB_OBJECTID_NODE_BANNER_4, BG_AB_NodePositions[4][0], BG_AB_NodePositions[4][1], BG_AB_NodePositions[4][2], BG_AB_NodePositions[4][3], 0, 0, std::sin(BG_AB_NodePositions[4][3] / 2), std::cos(BG_AB_NodePositions[4][3] / 2), RESPAWN_ONE_DAY))
     {
-        sLog->outError(LOG_FILTER_SQL, "BatteGroundAB: Failed to spawn some object Battleground not created!");
+        TC_LOG_ERROR("sql.sql", "BatteGroundAB: Failed to spawn some object Battleground not created!");
         return false;
     }
 
     if (!AddObject(BG_AB_OBJECT_GATE_A, BG_AB_OBJECTID_GATE_A, BG_AB_DoorPositions[0][0], BG_AB_DoorPositions[0][1], BG_AB_DoorPositions[0][2], BG_AB_DoorPositions[0][3], BG_AB_DoorPositions[0][4], BG_AB_DoorPositions[0][5], BG_AB_DoorPositions[0][6], BG_AB_DoorPositions[0][7], RESPAWN_IMMEDIATELY)
         || !AddObject(BG_AB_OBJECT_GATE_H, BG_AB_OBJECTID_GATE_H, BG_AB_DoorPositions[1][0], BG_AB_DoorPositions[1][1], BG_AB_DoorPositions[1][2], BG_AB_DoorPositions[1][3], BG_AB_DoorPositions[1][4], BG_AB_DoorPositions[1][5], BG_AB_DoorPositions[1][6], BG_AB_DoorPositions[1][7], RESPAWN_IMMEDIATELY))
     {
-        sLog->outError(LOG_FILTER_SQL, "BatteGroundAB: Failed to spawn door object Battleground not created!");
+        TC_LOG_ERROR("sql.sql", "BatteGroundAB: Failed to spawn door object Battleground not created!");
         return false;
     }
     //buffs
@@ -587,7 +587,7 @@ bool BattlegroundAB::SetupBattleground()
             || !AddObject(BG_AB_OBJECT_SPEEDBUFF_STABLES + 3 * i + 1, Buff_Entries[1], BG_AB_BuffPositions[i][0], BG_AB_BuffPositions[i][1], BG_AB_BuffPositions[i][2], BG_AB_BuffPositions[i][3], 0, 0, std::sin(BG_AB_BuffPositions[i][3] / 2), std::cos(BG_AB_BuffPositions[i][3] / 2), RESPAWN_ONE_DAY)
             || !AddObject(BG_AB_OBJECT_SPEEDBUFF_STABLES + 3 * i + 2, Buff_Entries[2], BG_AB_BuffPositions[i][0], BG_AB_BuffPositions[i][1], BG_AB_BuffPositions[i][2], BG_AB_BuffPositions[i][3], 0, 0, std::sin(BG_AB_BuffPositions[i][3] / 2), std::cos(BG_AB_BuffPositions[i][3] / 2), RESPAWN_ONE_DAY))
         {
-            sLog->outError(LOG_FILTER_SQL, "BatteGroundAB: Failed to spawn buff object!");
+            TC_LOG_ERROR("sql.sql", "BatteGroundAB: Failed to spawn buff object!");
             return false;
         }
     }
@@ -596,7 +596,7 @@ bool BattlegroundAB::SetupBattleground()
     {
         if (!AddSpiritGuide(l_I, BG_AB_SpiritGuidePos[l_I][0], BG_AB_SpiritGuidePos[l_I][1], BG_AB_SpiritGuidePos[l_I][2], BG_AB_SpiritGuidePos[l_I][3], l_I == BG_AB_SPIRIT_ALLIANCE ? Team::ALLIANCE : Team::HORDE))
         {
-            sLog->outError(LOG_FILTER_SQL, "BatteGroundAB: Failed to spawn spirit guide, Battleground not created!");
+            TC_LOG_ERROR("sql.sql", "BatteGroundAB: Failed to spawn spirit guide, Battleground not created!");
             return false;
         }
     }

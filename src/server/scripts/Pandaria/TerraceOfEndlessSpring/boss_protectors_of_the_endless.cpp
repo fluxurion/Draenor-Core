@@ -1484,7 +1484,7 @@ class mob_minion_of_fear : public CreatureScript
                         return;
                     }
 
-                    targets.sort(JadeCore::HealthPctOrderPred());
+                    targets.sort(Trinity::HealthPctOrderPred());
 
                     Creature* target = targets.front();
                     if (!target)
@@ -1846,7 +1846,7 @@ class spell_lightning_prison : public SpellScriptLoader
 
             void CorrectRange(std::list<WorldObject*>& targets)
             {
-                JadeCore::Containers::RandomResizeList(targets, GetCaster()->GetMap()->Is25ManRaid() ? 3 : 2);
+                Trinity::Containers::RandomResizeList(targets, GetCaster()->GetMap()->Is25ManRaid() ? 3 : 2);
             }
 
             void Register()
@@ -1917,7 +1917,7 @@ class spell_corrupted_essence : public SpellScriptLoader
                     return;
 
                 // Sorting players by distance from caster
-                playerList.sort(JadeCore::DistanceCompareOrderPred(caster));
+                playerList.sort(Trinity::DistanceCompareOrderPred(caster));
 
                 // Reducing the list (only if too big)
                 uint32 maxSize = caster->GetMap()->Is25ManRaid() ? 5 : 2;
@@ -1993,7 +1993,7 @@ class spell_cleansing_waters_regen : public SpellScriptLoader
                 if (targets.empty())
                     return;
 
-                targets.remove_if(JadeCore::UnitAuraCheck(true, SPELL_CLEANSING_WATERS_REGEN));
+                targets.remove_if(Trinity::UnitAuraCheck(true, SPELL_CLEANSING_WATERS_REGEN));
             }
 
             void Register()

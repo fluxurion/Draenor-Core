@@ -220,7 +220,7 @@ size_t CinematicSequenceMgr::Load()
         FILE * l_ModelFile = fopen(l_ModelFileName.c_str(), "rb");
         if (!l_ModelFile)
         {
-            sLog->outError(LOG_FILTER_SERVER_LOADING, "Cinematic camera '%s': does not exist!", l_ModelFileName.c_str());
+            TC_LOG_ERROR("server.loading", "Cinematic camera '%s': does not exist!", l_ModelFileName.c_str());
             continue;
         }
 
@@ -233,7 +233,7 @@ size_t CinematicSequenceMgr::Load()
 
         if (0 != memcmp(l_MagicHeader, "MD20", sizeof(l_MagicHeader)))
         {
-            sLog->outError(LOG_FILTER_SERVER_LOADING, "Cinematic camera '%s': invalid magic header!", l_ModelFileName.c_str());
+            TC_LOG_ERROR("server.loading", "Cinematic camera '%s': invalid magic header!", l_ModelFileName.c_str());
             continue;
         }
 
@@ -254,7 +254,7 @@ size_t CinematicSequenceMgr::Load()
         {
             free(l_FileBuffer);
 
-            sLog->outError(LOG_FILTER_SERVER_LOADING, "Cinematic camera '%s': no cameras!", l_ModelFileName.c_str());
+            TC_LOG_ERROR("server.loading", "Cinematic camera '%s': no cameras!", l_ModelFileName.c_str());
             continue;
         }
 
@@ -298,7 +298,7 @@ size_t CinematicSequenceMgr::Load()
             !  l_Translations->FramePairsOffset || !l_Translations->TransPairsOffset
             || l_Translations->FramePairsCount  !=  l_Translations->TransPairsCount)
         {
-            sLog->outError(LOG_FILTER_SERVER_LOADING, "Cinematic camera '%s': no translations!", l_ModelFileName.c_str());
+            TC_LOG_ERROR("server.loading", "Cinematic camera '%s': no translations!", l_ModelFileName.c_str());
             free(l_FileBuffer);
             continue;
         }
@@ -354,7 +354,7 @@ size_t CinematicSequenceMgr::Load()
 
         free(l_FileBuffer);
 
-        sLog->outError(LOG_FILTER_SERVER_LOADING, "Cinematic camera '%s': loaded! (duration : %u ms)", l_ModelFileName.substr(l_ModelFileName.find_last_of("/") + 1).c_str(), l_Sequence->Duration);
+        TC_LOG_ERROR("server.loading", "Cinematic camera '%s': loaded! (duration : %u ms)", l_ModelFileName.substr(l_ModelFileName.find_last_of("/") + 1).c_str(), l_Sequence->Duration);
     }
 
     return m_Sequences.size();

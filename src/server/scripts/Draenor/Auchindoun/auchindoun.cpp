@@ -1793,8 +1793,8 @@ class auchindoun_spell_void_shift : public SpellScriptLoader
             int32 l_CalcDamage = 8000;
 
             std::list<Unit*> l_ListPlayers;
-            JadeCore::AnyUnitInObjectRangeCheck check(GetCaster(), 30.0f);
-            JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck> searcher(l_Caster, l_ListPlayers, check);
+            Trinity::AnyUnitInObjectRangeCheck check(GetCaster(), 30.0f);
+            Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck> searcher(l_Caster, l_ListPlayers, check);
             l_Caster->VisitNearbyObject(30.0f, searcher);
             if (!l_ListPlayers.empty())
             {
@@ -1844,8 +1844,8 @@ class auchindoun_spell_void_shell_filter : public SpellScriptLoader
             Unit* l_Caster = GetCaster();
     
             std::list<Unit*> l_TargetList;
-            JadeCore::AnyFriendlyUnitInObjectRangeCheck u_check(l_Caster, l_Caster, 10.0f);
-            JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> searcher(l_Caster, l_TargetList, u_check);
+            Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(l_Caster, l_Caster, 10.0f);
+            Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(l_Caster, l_TargetList, u_check);
             l_Caster->VisitNearbyObject(10.0f, searcher);
             if (!l_TargetList.empty())
             {

@@ -185,7 +185,7 @@ void ScriptedAI::DoPlaySoundToSet(WorldObject* source, uint32 soundId)
 
     if (!sSoundEntriesStore.LookupEntry(soundId))
     {
-        sLog->outError(LOG_FILTER_TSCR, "Invalid soundId %u used in DoPlaySoundToSet (Source: TypeId %u, GUID %u)", soundId, source->GetTypeId(), source->GetGUIDLow());
+        TC_LOG_ERROR("scripts", "Invalid soundId %u used in DoPlaySoundToSet (Source: TypeId %u, GUID %u)", soundId, source->GetTypeId(), source->GetGUIDLow());
         return;
     }
 
@@ -287,7 +287,7 @@ void ScriptedAI::DoResetThreat()
 {
     if (!me->CanHaveThreatList() || me->getThreatManager().isThreatListEmpty())
     {
-        sLog->outError(LOG_FILTER_TSCR, "DoResetThreat called for creature that either cannot have threat list or has empty threat list (me entry = %d)", me->GetEntry());
+        TC_LOG_ERROR("scripts", "DoResetThreat called for creature that either cannot have threat list or has empty threat list (me entry = %d)", me->GetEntry());
         return;
     }
 
@@ -336,7 +336,7 @@ void ScriptedAI::DoTeleportPlayer(Unit* unit, float x, float y, float z, float o
     if (Player* player = unit->ToPlayer())
         player->TeleportTo(unit->GetMapId(), x, y, z, o, TELE_TO_NOT_LEAVE_COMBAT);
     else
-        sLog->outError(LOG_FILTER_TSCR, "Creature " UI64FMTD " (Entry: %u) Tried to teleport non-player unit (Type: %u GUID: " UI64FMTD ") to x: %f y:%f z: %f o: %f. Aborted.", me->GetGUID(), me->GetEntry(), unit->GetTypeId(), unit->GetGUID(), x, y, z, o);
+        TC_LOG_ERROR("scripts", "Creature " UI64FMTD " (Entry: %u) Tried to teleport non-player unit (Type: %u GUID: " UI64FMTD ") to x: %f y:%f z: %f o: %f. Aborted.", me->GetGUID(), me->GetEntry(), unit->GetTypeId(), unit->GetGUID(), x, y, z, o);
 }
 
 void ScriptedAI::DoTeleportAll(float x, float y, float z, float o)
@@ -489,7 +489,7 @@ bool ScriptedAI::EnterEvadeIfOutOfCombatArea(uint32 const diff)
             break;
         }
         default: // For most of creatures that certain area is their home area.
-            sLog->outInfo(LOG_FILTER_GENERAL, "TSCR: EnterEvadeIfOutOfCombatArea used for creature entry %u, but does not have any definition. Using the default one.", me->GetEntry());
+            TC_LOG_INFO("misc", "TSCR: EnterEvadeIfOutOfCombatArea used for creature entry %u, but does not have any definition. Using the default one.", me->GetEntry());
             uint32 homeAreaId = me->GetMap()->GetAreaId(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY(), me->GetHomePosition().GetPositionZ());
             if (me->GetAreaId() == homeAreaId)
                 return false;

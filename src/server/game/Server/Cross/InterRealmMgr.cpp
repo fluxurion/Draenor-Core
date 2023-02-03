@@ -45,7 +45,7 @@ bool InterRealmMgr::LoadConfig(bool reload)
 
         if (config.connection_info.empty())
         {
-            sLog->outError(LOG_FILTER_INTERREALM, "InterRealm connection info is empty for %s realm, disabling it", config.name.c_str());
+            TC_LOG_ERROR("server.interrealm", "InterRealm connection info is empty for %s realm, disabling it", config.name.c_str());
             config.enabled = 0;
         }
     }
@@ -65,7 +65,7 @@ bool InterRealmMgr::LoadConfig(bool reload)
         clients.clear();
     }
 
-    sLog->outInfo(LOG_FILTER_INTERREALM, "InterRealm: Loaded %u InterRealm configs.", counter);
+    TC_LOG_INFO("server.interrealm", "InterRealm: Loaded %u InterRealm configs.", counter);
     return true;
 }
 
@@ -193,7 +193,7 @@ InterRealmDatabaseClient::InterRealmDatabaseClient( const InterRealmDatabaseConf
     }
     realm_nubmer = config.realm_nubmer;
     client = _client;
-    sLog->outInfo(LOG_FILTER_INTERREALM, "InterRealm: Successfully connected to %s database", config.name.c_str());
+    TC_LOG_INFO("server.interrealm", "InterRealm: Successfully connected to %s database", config.name.c_str());
 }
 
 InterRealmDatabaseClient::InterRealmDatabaseClient():

@@ -35,7 +35,7 @@ void WorldSession::HandleQuestgiverStatusQueryOpcode(WorldPacket & p_RecvData)
     Object* l_QuestGiver = ObjectAccessor::GetObjectByTypeMask(*m_Player, l_QuestGiverGUID, TYPEMASK_UNIT|TYPEMASK_GAMEOBJECT);
     if (!l_QuestGiver)
     {
-        sLog->outInfo(LOG_FILTER_NETWORKIO, "Error in CMSG_QUESTGIVER_STATUS_QUERY, called for not found questgiver (Typeid: %u GUID: %u)", GuidHigh2TypeId(GUID_HIPART(l_QuestGiverGUID)), GUID_LOPART(l_QuestGiverGUID));
+        TC_LOG_INFO("network", "Error in CMSG_QUESTGIVER_STATUS_QUERY, called for not found questgiver (Typeid: %u GUID: %u)", GuidHigh2TypeId(GUID_HIPART(l_QuestGiverGUID)), GUID_LOPART(l_QuestGiverGUID));
         return;
     }
 
@@ -61,7 +61,7 @@ void WorldSession::HandleQuestgiverStatusQueryOpcode(WorldPacket & p_RecvData)
             break;
         }
         default:
-            sLog->outError(LOG_FILTER_NETWORKIO, "QuestGiver called for unexpected type %u", l_QuestGiver->GetTypeId());
+            TC_LOG_ERROR("network", "QuestGiver called for unexpected type %u", l_QuestGiver->GetTypeId());
             break;
     }
 
@@ -78,7 +78,7 @@ void WorldSession::HandleQuestgiverHelloOpcode(WorldPacket& recvData)
     Creature* creature = GetPlayer()->GetNPCIfCanInteractWith(guid, UNIT_NPC_FLAG_NONE);
     if (!creature)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandleQuestgiverHelloOpcode - Unit (GUID: %u) not found or you can't interact with him.",
+        TC_LOG_DEBUG("network", "WORLD: HandleQuestgiverHelloOpcode - Unit (GUID: %u) not found or you can't interact with him.",
             GUID_LOPART(guid));
         return;
     }
@@ -344,7 +344,7 @@ void WorldSession::HandleQuestgiverChooseRewardOpcode(WorldPacket& p_RecvData)
 
         if (!l_LegacyRewardFound)
         {
-            sLog->outError(LOG_FILTER_NETWORKIO, "Error in CMSG_QUESTGIVER_CHOOSE_REWARD: player %s (guid %d) tried to get invalid reward (%u) (probably packet hacking)", m_Player->GetName(), m_Player->GetGUIDLow(), l_RewardEntry);
+            TC_LOG_ERROR("network", "Error in CMSG_QUESTGIVER_CHOOSE_REWARD: player %s (guid %d) tried to get invalid reward (%u) (probably packet hacking)", m_Player->GetName(), m_Player->GetGUIDLow(), l_RewardEntry);
             return;
         }
     }
@@ -363,7 +363,7 @@ void WorldSession::HandleQuestgiverChooseRewardOpcode(WorldPacket& p_RecvData)
     if ((!m_Player->CanSeeStartQuest(l_Quest) &&  m_Player->GetQuestStatus(l_QuestId) == QUEST_STATUS_NONE)
         || (m_Player->GetQuestStatus(l_QuestId) != QUEST_STATUS_COMPLETE && !l_Quest->IsAutoComplete()))
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "HACK ALERT: Player %s (guid: %u) is trying to complete quest (id: %u) but he has no right to do it!",
+        TC_LOG_ERROR("network", "HACK ALERT: Player %s (guid: %u) is trying to complete quest (id: %u) but he has no right to do it!",
             m_Player->GetName(), m_Player->GetGUIDLow(), l_QuestId);
         return;
     }
@@ -564,13 +564,13 @@ void WorldSession::HandleQuestgiverCompleteQuest(WorldPacket& recvData)
     {
         if (autoCompleteMode && !quest->HasFlag(QUEST_FLAGS_AUTO_SUBMIT | QUEST_FLAGS_AUTOCOMPLETE))
         {
-            sLog->outError(LOG_FILTER_NETWORKIO, "Possible hacking attempt: Player %s [playerGuid: %u] tried to complete questId [entry: %u] by auto-submit flag for quest witch not suport it.",
+            TC_LOG_ERROR("network", "Possible hacking attempt: Player %s [playerGuid: %u] tried to complete questId [entry: %u] by auto-submit flag for quest witch not suport it.",
                 m_Player->GetName(), m_Player->GetGUIDLow(), l_QuestID);
             return;
         }
         if (!m_Player->CanSeeStartQuest(quest) && m_Player->GetQuestStatus(l_QuestID) == QUEST_STATUS_NONE)
         {
-            sLog->outError(LOG_FILTER_NETWORKIO, "Possible hacking attempt: Player %s [playerGuid: %u] tried to complete questId [entry: %u] without being in possession of the questId!",
+            TC_LOG_ERROR("network", "Possible hacking attempt: Player %s [playerGuid: %u] tried to complete questId [entry: %u] without being in possession of the questId!",
                           m_Player->GetName(), m_Player->GetGUIDLow(), l_QuestID);
             return;
         }
@@ -708,7 +708,7 @@ uint32 WorldSession::getDialogStatus(Player* player, Object* questgiver, uint32 
         }
         default:
             //its imposible, but check ^)
-            sLog->outError(LOG_FILTER_NETWORKIO, "Warning: GetDialogStatus called for unexpected type %u", questgiver->GetTypeId());
+            TC_LOG_ERROR("network", "Warning: GetDialogStatus called for unexpected type %u", questgiver->GetTypeId());
             return DIALOG_STATUS_NONE;
     }
 

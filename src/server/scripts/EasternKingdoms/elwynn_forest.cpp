@@ -915,7 +915,7 @@ public:
 				{ -9377.477f, -67.8297f, 69.201965f, 0.296706f }
 			};
 
-			JadeCore::Containers::SelectRandomContainerElement(MovePosPositions);
+			Trinity::Containers::SelectRandomContainerElement(MovePosPositions);
 
 			// first we break formation because children will need to move on their own now
 			for (auto guid : _childrenGUIDs)

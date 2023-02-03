@@ -324,8 +324,8 @@ public:
 
                         /// Curtain flames achievement, No Tags Backs! (9552)
                         UnitList l_Targets;
-                        JadeCore::AnyUnitHavingBuffInObjectRangeCheck u_check(p_Creature, p_Creature, 100, 153392, true);
-                        JadeCore::UnitListSearcher<JadeCore::AnyUnitHavingBuffInObjectRangeCheck> searcher(p_Creature, l_Targets, u_check);
+                        Trinity::AnyUnitHavingBuffInObjectRangeCheck u_check(p_Creature, p_Creature, 100, 153392, true);
+                        Trinity::UnitListSearcher<Trinity::AnyUnitHavingBuffInObjectRangeCheck> searcher(p_Creature, l_Targets, u_check);
                         p_Creature->VisitNearbyObject(100, searcher);
 
                         if (!l_Targets.empty())

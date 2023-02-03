@@ -2057,7 +2057,7 @@ class spell_hun_lynx_rush: public SpellScriptLoader
                 if (targetList.empty())
                     return;
 
-                JadeCore::Containers::RandomResizeList(targetList, 1);
+                Trinity::Containers::RandomResizeList(targetList, 1);
 
                 for (auto itr : targetList)
                 {
@@ -2128,7 +2128,7 @@ class spell_hun_lynx_rush: public SpellScriptLoader
                                 if (targetList.empty())
                                     return;
 
-                                JadeCore::Containers::RandomResizeList(targetList, 1);
+                                Trinity::Containers::RandomResizeList(targetList, 1);
 
                                 for (auto itr : targetList)
                                 {
@@ -2713,11 +2713,11 @@ class spell_hun_netherwinds : public SpellScriptLoader
 
             void RemoveInvalidTargets(std::list<WorldObject*>& targets)
             {
-                targets.remove_if(JadeCore::UnitAuraCheck(true, HunterSpells::HUNTER_SPELL_INSANITY));
-                targets.remove_if(JadeCore::UnitAuraCheck(true, HunterSpells::SPELL_SHAMAN_EXHAUSTED));
-                targets.remove_if(JadeCore::UnitAuraCheck(true, HunterSpells::SPELL_SHAMAN_SATED));
-                targets.remove_if(JadeCore::UnitAuraCheck(true, HunterSpells::SPELL_MAGE_TEMPORAL_DISPLACEMENT));
-                targets.remove_if(JadeCore::UnitAuraCheck(true, HunterSpells::HUNTER_SPELL_FATIGUED));
+                targets.remove_if(Trinity::UnitAuraCheck(true, HunterSpells::HUNTER_SPELL_INSANITY));
+                targets.remove_if(Trinity::UnitAuraCheck(true, HunterSpells::SPELL_SHAMAN_EXHAUSTED));
+                targets.remove_if(Trinity::UnitAuraCheck(true, HunterSpells::SPELL_SHAMAN_SATED));
+                targets.remove_if(Trinity::UnitAuraCheck(true, HunterSpells::SPELL_MAGE_TEMPORAL_DISPLACEMENT));
+                targets.remove_if(Trinity::UnitAuraCheck(true, HunterSpells::HUNTER_SPELL_FATIGUED));
             }
 
             void ApplyDebuff()
@@ -3928,8 +3928,8 @@ class spell_hun_explosive_shot : public SpellScriptLoader
 					float l_Radius = 60.0f;
 
 					std::list<Unit*> l_UnFriendlyUnitListTemp;
-					JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
-					JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_UnFriendlyUnitListTemp, l_Check);
+					Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
+					Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_UnFriendlyUnitListTemp, l_Check);
 					l_Caster->VisitNearbyObject(l_Radius, l_Searcher);
 
 					l_UnFriendlyUnitListTemp.remove_if([this, l_Caster, l_Target](WorldObject* p_Object) -> bool
@@ -3990,8 +3990,8 @@ class spell_hun_explosive_shot : public SpellScriptLoader
 					float l_Radius = 60.0f;
 
 					std::list<Unit*> l_UnFriendlyUnitListTemp;
-					JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
-					JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_UnFriendlyUnitListTemp, l_Check);
+					Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
+					Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_UnFriendlyUnitListTemp, l_Check);
 					l_Caster->VisitNearbyObject(l_Radius, l_Searcher);
 
 					l_UnFriendlyUnitListTemp.remove_if([this, l_Caster, l_Target](WorldObject* p_Object) -> bool

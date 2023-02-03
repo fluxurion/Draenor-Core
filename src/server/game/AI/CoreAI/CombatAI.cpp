@@ -183,7 +183,7 @@ void CasterAI::UpdateAI(const uint32 diff)
 ArcherAI::ArcherAI(Creature* c) : CreatureAI(c)
 {
     if (!me->m_spells[0])
-        sLog->outError(LOG_FILTER_GENERAL, "ArcherAI set for creature (entry = %u) with spell1=0. AI will do nothing", me->GetEntry());
+        TC_LOG_ERROR("server.worldserver", "ArcherAI set for creature (entry = %u) with spell1=0. AI will do nothing", me->GetEntry());
 
     SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(me->m_spells[0]);
     m_minRange = spellInfo ? spellInfo->GetMinRange(false) : 0;
@@ -232,7 +232,7 @@ void ArcherAI::UpdateAI(const uint32 /*diff*/)
 TurretAI::TurretAI(Creature* c) : CreatureAI(c)
 {
     if (!me->m_spells[0])
-        sLog->outError(LOG_FILTER_GENERAL, "TurretAI set for creature (entry = %u) with spell1=0. AI will do nothing", me->GetEntry());
+        TC_LOG_ERROR("server.worldserver", "TurretAI set for creature (entry = %u) with spell1=0. AI will do nothing", me->GetEntry());
 
     SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(me->m_spells[0]);
     m_minRange = spellInfo ? spellInfo->GetMinRange(false) : 0;

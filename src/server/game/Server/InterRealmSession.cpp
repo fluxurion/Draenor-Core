@@ -154,7 +154,7 @@ int InterRealmSession::OnSocketOpen(IRSocket* socket)
             (void*) & m_SockOutKBuff,
             sizeof (int)) == -1 && errno != ENOTSUP)
         {
-            sLog->outError(LOG_FILTER_INTERREALM, "InterRealmSession::OnSocketOpen set_option SO_SNDBUF");
+            TC_LOG_ERROR("server.interrealm", "InterRealmSession::OnSocketOpen set_option SO_SNDBUF");
             return -1;
         }
     }
@@ -169,7 +169,7 @@ int InterRealmSession::OnSocketOpen(IRSocket* socket)
             (void*)&ndoption,
             sizeof (int)) == -1)
         {
-            sLog->outError(LOG_FILTER_INTERREALM, "InterRealmSession::OnSocketOpen peer().set_option TCP_NODELAY errno = %s", ACE_OS::strerror (errno));
+            TC_LOG_ERROR("server.interrealm", "InterRealmSession::OnSocketOpen peer().set_option TCP_NODELAY errno = %s", ACE_OS::strerror (errno));
             return -1;
         }
     }
@@ -258,11 +258,11 @@ void InterRealmSession::ClearSocket()
 
 void InterRealmSession::run()
 {
-    sLog->outError(LOG_FILTER_INTERREALM, "Connecting to InterRealm...");
+    TC_LOG_ERROR("server.interrealm", "Connecting to InterRealm...");
 
     if (!sWorld->getBoolConfig(CONFIG_INTERREALM_ENABLE))
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "InterRealm is disabled.");
+        TC_LOG_ERROR("server.interrealm", "InterRealm is disabled.");
         return;
     }
 
@@ -270,7 +270,7 @@ void InterRealmSession::run()
     m_port = uint16(sConfigMgr->GetIntDefault("InterRealm.Port", 12345));
     m_ir_id = sConfigMgr->GetIntDefault("InterRealm.Id", 1);
 
-    sLog->outError(LOG_FILTER_INTERREALM, "Loaded InterRealm configuration, %s:%u, id %u", m_IP.c_str(), m_port, m_ir_id);    
+    TC_LOG_ERROR("server.interrealm", "Loaded InterRealm configuration, %s:%u, id %u", m_IP.c_str(), m_port, m_ir_id);    
 
     m_Connector = NULL;
 
@@ -281,7 +281,7 @@ void InterRealmSession::run()
         if (!m_IRSocket || m_IRSocket->IsClosed())
         {
             //int i_ret = m_Connector->open(m_Reactor->GetReactor(), ACE_NONBLOCK);
-            sLog->outError(LOG_FILTER_INTERREALM, "Trying to connect to interrealm.");
+            TC_LOG_ERROR("server.interrealm", "Trying to connect to interrealm.");
 
             m_Reactor = new IRReactorRunnable();
             m_Connector = new IRSocketConnector();
@@ -290,7 +290,7 @@ void InterRealmSession::run()
             if (ret != 0)
             {
                 ClearSocket();
-                sLog->outError(LOG_FILTER_INTERREALM, "Cannot connect interrealm");    
+                TC_LOG_ERROR("server.interrealm", "Cannot connect interrealm");    
                 ACE_Based::Thread::Sleep(30000);
                 continue;
             }
@@ -299,7 +299,7 @@ void InterRealmSession::run()
 
             m_force_stop = false;
 
-            sLog->outError(LOG_FILTER_INTERREALM, "Sending 'hello' message to InterRealm.");
+            TC_LOG_ERROR("server.interrealm", "Sending 'hello' message to InterRealm.");
             
             m_rand = urand(0, 255);
             WorldPacket hello_packet(IR_CMSG_HELLO, 10 + 1 + 1 + 1 + 1 + 1);
@@ -441,21 +441,21 @@ void InterRealmSession::Handle_Hello(WorldPacket& packet)
 
     if (strcmp(_hello.c_str(), "HELO") != 0)
     {
-       sLog->outError(LOG_FILTER_INTERREALM, "closing socket !");
+       TC_LOG_ERROR("server.interrealm", "closing socket !");
         m_force_stop = true;
     }
 
     if (_rand != m_rand)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "Random hello check is incorrect, closing socket");
+        TC_LOG_ERROR("server.interrealm", "Random hello check is incorrect, closing socket");
         m_force_stop = true;
     }
 
     if (_resp == IR_HELO_RESP_PROTOCOL_MISMATCH)
-        sLog->outError(LOG_FILTER_INTERREALM, "InterRealm Protocol Mismatch, closing doors to me !");
+        TC_LOG_ERROR("server.interrealm", "InterRealm Protocol Mismatch, closing doors to me !");
 
     if(_resp == IR_HELO_RESP_POLITE)
-        sLog->outError(LOG_FILTER_INTERREALM, "Server like to be polite, closing doors to me !");
+        TC_LOG_ERROR("server.interrealm", "Server like to be polite, closing doors to me !");
 
     if  (!m_force_stop && _resp == IR_HELO_RESP_OK)
     {
@@ -503,20 +503,20 @@ void InterRealmSession::Handle_WhoAmI(WorldPacket& packet)
 
         SetConnected(true);
 
-        sLog->outError(LOG_FILTER_INTERREALM, "Tunnel is opened.");
+        TC_LOG_ERROR("server.interrealm", "Tunnel is opened.");
 
         SendBattlegroundHolidaysQuery();
     }
     else
     {
         m_force_stop = true;
-        sLog->outError(LOG_FILTER_INTERREALM, "Registration was failed.");
+        TC_LOG_ERROR("server.interrealm", "Registration was failed.");
     }
 }
 
 void InterRealmSession::Handle_CheckPlayers(WorldPacket& packet)
 {
-    //sLog->outInterRealm(LOG_FILTER_GENERAL, "[INTERREALM] Received a packet IR_SMSG_CHECK_PLAYERS");
+    //sLog->outInterRealm("misc", "[INTERREALM] Received a packet IR_SMSG_CHECK_PLAYERS");
     
     uint32 num_players;
     std::vector<uint64> playerGuids;
@@ -801,7 +801,7 @@ void InterRealmSession::SendPlayerTeleport(Player *player, uint32 zoneId, Player
 
 void InterRealmSession::Handle_BattlefieldLeave(WorldPacket& p_Packet)
 {
-    //sLog->outInterRealm(LOG_FILTER_GENERAL, "[INTERREALM] Received a packet IR_SMSG_BATTLEFIELD_LEAVE");
+    //sLog->outInterRealm("misc", "[INTERREALM] Received a packet IR_SMSG_BATTLEFIELD_LEAVE");
 
     uint64 l_PlayerGuid;
     p_Packet >> l_PlayerGuid;
@@ -1129,7 +1129,7 @@ void InterRealmSession::Handle_SpectatorData(WorldPacket& recvPacket)
 
 void InterRealmSession::Handle_DistributeArenaPointsResp(WorldPacket& recvPacket)
 {
-    /*sLog->outError(LOG_FILTER_INTERREALM, "Received IR_SMSG_DISTRIBUTE_ARENA_POINTS_RESP.");
+    /*TC_LOG_ERROR("server.interrealm", "Received IR_SMSG_DISTRIBUTE_ARENA_POINTS_RESP.");
 
     uint32 count;
     
@@ -1306,7 +1306,7 @@ void InterRealmSession::Handle_AdditionalInfo(WorldPacket& recvPacket)
 
 void InterRealmSession::Handle_GuildQuery(WorldPacket& recvPacket)
 {
-    sLog->outInfo(LOG_FILTER_INTERREALM, "Received guild query for new guilds.");
+    TC_LOG_INFO("server.interrealm", "Received guild query for new guilds.");
 
     uint64 guildGuid = 0;
 
@@ -1924,7 +1924,7 @@ void InterRealmSession::Update(const uint32 diff)
                 IROpcodeHandler* IRopHandle = IRopcodeTable[packet->GetOpcode()];
                 if (!IRopHandle)
                 {
-                    sLog->outError(LOG_FILTER_INTERREALM, "Cannot find handle for the opcode (%u). Skipped packet.",
+                    TC_LOG_ERROR("server.interrealm", "Cannot find handle for the opcode (%u). Skipped packet.",
                     packet->GetOpcode());
                     continue;
                 }
@@ -1932,12 +1932,12 @@ void InterRealmSession::Update(const uint32 diff)
             }
             catch(ByteBufferException &)
             {
-                sLog->outError(LOG_FILTER_INTERREALM, "InterRealmSession ByteBufferException occured while parsing a packet (opcode: %u). Skipped packet.",
+                TC_LOG_ERROR("server.interrealm", "InterRealmSession ByteBufferException occured while parsing a packet (opcode: %u). Skipped packet.",
                     packet->GetOpcode());
             }
             if (packet->rpos() < packet->wpos())
             {
-                sLog->outError(LOG_FILTER_INTERREALM, "Unprocessed tail data (read stop at %u from %u) in opcode %s", packet->rpos(), packet->wpos(), IRopcodeTable[packet->GetOpcode()]->name);
+                TC_LOG_ERROR("server.interrealm", "Unprocessed tail data (read stop at %u from %u) in opcode %s", packet->rpos(), packet->wpos(), IRopcodeTable[packet->GetOpcode()]->name);
             }
         }
         else
@@ -1946,7 +1946,7 @@ void InterRealmSession::Update(const uint32 diff)
         // Delete Packet from memory
         if (packet != NULL)
         {
-            //sLog->outInterRealm(LOG_FILTER_GENERAL, "[INTERREALM] Deleting packet");
+            //sLog->outInterRealm("misc", "[INTERREALM] Deleting packet");
             delete packet;
         }
     }

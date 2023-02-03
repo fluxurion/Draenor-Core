@@ -30,7 +30,7 @@ void WorldSession::HandleAuctionHelloOpcode(WorldPacket& p_Packet)
     Creature* l_Unit = m_Player->GetNPCIfCanInteractWith(l_Guid, UNIT_NPC_FLAG_AUCTIONEER);
     if (!l_Unit)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandleAuctionHelloOpcode - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(l_Guid)));
+        TC_LOG_DEBUG("network", "WORLD: HandleAuctionHelloOpcode - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(l_Guid)));
         return;
     }
 
@@ -161,14 +161,14 @@ void WorldSession::HandleAuctionSellItem(WorldPacket& p_RecvData)
     Creature* l_Auctioneer = m_Player->GetNPCIfCanInteractWith(l_SellerGuid, UNIT_NPC_FLAG_AUCTIONEER);
     if (!l_Auctioneer)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandleAuctionSellItem - Unit (GUID: %u) not found or you can't interact with him.", GUID_LOPART(l_SellerGuid));
+        TC_LOG_DEBUG("network", "WORLD: HandleAuctionSellItem - Unit (GUID: %u) not found or you can't interact with him.", GUID_LOPART(l_SellerGuid));
         return;
     }
 
     AuctionHouseEntry const* l_AuctionHouse = AuctionHouseMgr::GetAuctionHouseEntry(l_Auctioneer->getFaction());
     if (!l_AuctionHouse)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandleAuctionSellItem - Unit (GUID: %u) has wrong faction.", GUID_LOPART(l_SellerGuid));
+        TC_LOG_DEBUG("network", "WORLD: HandleAuctionSellItem - Unit (GUID: %u) has wrong faction.", GUID_LOPART(l_SellerGuid));
         return;
     }
 
@@ -319,7 +319,7 @@ void WorldSession::HandleAuctionSellItem(WorldPacket& p_RecvData)
             Item* l_NewItem = l_Item->CloneItem(l_FinalCount, m_Player);
             if (!l_NewItem)
             {
-                sLog->outError(LOG_FILTER_NETWORKIO, "CMSG_AUCTION_SELL_ITEM: Could not create clone of item %u", l_Item->GetEntry());
+                TC_LOG_ERROR("network", "CMSG_AUCTION_SELL_ITEM: Could not create clone of item %u", l_Item->GetEntry());
                 SendAuctionCommandResult(NULL, AUCTION_SELL_ITEM, ERR_AUCTION_DATABASE_ERROR);
                 return;
             }
@@ -343,7 +343,7 @@ void WorldSession::HandleAuctionSellItem(WorldPacket& p_RecvData)
             l_AHEntry->deposit = l_Deposit;
             l_AHEntry->auctionHouseEntry = l_AuctionHouse;
 
-            sLog->outInfo(LOG_FILTER_NETWORKIO, "CMSG_AUCTION_SELL_ITEM: Player %s (guid %d) is selling item %s entry %u (guid %d) to auctioneer %u with count %u with initial bid %lu with buyout %lu and with time %u (in sec) in auctionhouse %u", m_Player->GetName(), m_Player->GetGUIDLow(), l_NewItem->GetTemplate()->Name1->Get(sWorld->GetDefaultDbcLocale()), l_NewItem->GetEntry(), l_NewItem->GetGUIDLow(), l_AHEntry->auctioneer, l_NewItem->GetCount(), l_Bid, l_Buyout, l_AuctionTime, l_AHEntry->GetHouseId());
+            TC_LOG_INFO("network", "CMSG_AUCTION_SELL_ITEM: Player %s (guid %d) is selling item %s entry %u (guid %d) to auctioneer %u with count %u with initial bid %lu with buyout %lu and with time %u (in sec) in auctionhouse %u", m_Player->GetName(), m_Player->GetGUIDLow(), l_NewItem->GetTemplate()->Name1->Get(sWorld->GetDefaultDbcLocale()), l_NewItem->GetEntry(), l_NewItem->GetGUIDLow(), l_AHEntry->auctioneer, l_NewItem->GetCount(), l_Bid, l_Buyout, l_AuctionTime, l_AHEntry->GetHouseId());
             sAuctionMgr->AddAItem(l_NewItem);
             l_AuctionHouseObj->AddAuction(l_AHEntry);
 
@@ -524,7 +524,7 @@ void WorldSession::HandleAuctionRemoveItem(WorldPacket& p_RecvData)
     Creature* l_Auctioneer = m_Player->GetNPCIfCanInteractWith(l_Guid, UNIT_NPC_FLAG_AUCTIONEER);
     if (!l_Auctioneer)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandleAuctionRemoveItem - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(l_Guid)));
+        TC_LOG_DEBUG("network", "WORLD: HandleAuctionRemoveItem - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(l_Guid)));
         return;
     }
 
@@ -558,7 +558,7 @@ void WorldSession::HandleAuctionRemoveItem(WorldPacket& p_RecvData)
         }
         else
         {
-            sLog->outError(LOG_FILTER_NETWORKIO, "Auction id: %u got non existing item (item guid : %u)!", l_Auction->Id, l_Auction->itemGUIDLow);
+            TC_LOG_ERROR("network", "Auction id: %u got non existing item (item guid : %u)!", l_Auction->Id, l_Auction->itemGUIDLow);
             SendAuctionCommandResult(NULL, AUCTION_CANCEL, ERR_AUCTION_DATABASE_ERROR);
             return;
         }
@@ -566,7 +566,7 @@ void WorldSession::HandleAuctionRemoveItem(WorldPacket& p_RecvData)
     else
     {
         SendAuctionCommandResult(NULL, AUCTION_CANCEL, ERR_AUCTION_DATABASE_ERROR);
-        sLog->outError(LOG_FILTER_NETWORKIO, "CHEATER: %u tried to cancel auction (id: %u) of another player or auction is NULL", m_Player->GetGUIDLow(), l_AuctionID);
+        TC_LOG_ERROR("network", "CHEATER: %u tried to cancel auction (id: %u) of another player or auction is NULL", m_Player->GetGUIDLow(), l_AuctionID);
         return;
     }
 
@@ -602,7 +602,7 @@ void WorldSession::HandleAuctionListBidderItems(WorldPacket& p_RecvData)
     Creature* l_Auctioneer = m_Player->GetNPCIfCanInteractWith(l_Guid, UNIT_NPC_FLAG_AUCTIONEER);
     if (!l_Auctioneer)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandleAuctionListBidderItems - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(l_Guid)));
+        TC_LOG_DEBUG("network", "WORLD: HandleAuctionListBidderItems - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(l_Guid)));
         return;
     }
 
@@ -642,7 +642,7 @@ void WorldSession::HandleAuctionListOwnerItems(WorldPacket& p_RecvData)
     Creature* l_Auctioneer = m_Player->GetNPCIfCanInteractWith(l_Guid, UNIT_NPC_FLAG_AUCTIONEER);
     if (!l_Auctioneer)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandleAuctionListOwnerItems - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(l_Guid)));
+        TC_LOG_DEBUG("network", "WORLD: HandleAuctionListOwnerItems - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(l_Guid)));
         return;
     }
 
@@ -710,7 +710,7 @@ void WorldSession::HandleAuctionListItems(WorldPacket& p_RecvData)
     Creature* l_Auctioneer = m_Player->GetNPCIfCanInteractWith(l_Guid, UNIT_NPC_FLAG_AUCTIONEER);
     if (!l_Auctioneer)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandleAuctionListItems - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(l_Guid)));
+        TC_LOG_DEBUG("network", "WORLD: HandleAuctionListItems - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(l_Guid)));
         return;
     }
 

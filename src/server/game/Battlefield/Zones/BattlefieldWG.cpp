@@ -181,7 +181,7 @@ bool BattlefieldWG::SetupBattlefield()
         }
         else
         {
-            sLog->outError(LOG_FILTER_BATTLEGROUND, "WarsongGulch: Can't Create Some Object");
+            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "WarsongGulch: Can't Create Some Object");
             return false;
         }
     }
@@ -196,7 +196,7 @@ bool BattlefieldWG::SetupBattlefield()
         }
         else
         {
-            sLog->outError(LOG_FILTER_BATTLEGROUND, "WarsongGulch: Can't Create Some Object");
+            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "WarsongGulch: Can't Create Some Object");
             return false;
         }
     }
@@ -211,7 +211,7 @@ bool BattlefieldWG::SetupBattlefield()
         }
         else
         {
-            sLog->outError(LOG_FILTER_BATTLEGROUND, "WarsongGulch: Can't Create Some Object");
+            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "WarsongGulch: Can't Create Some Object");
             return false;
         }
         if (GameObject* go = SpawnGameObject(WGKeepGameObject[i].entryAlliance, WGKeepGameObject[i].x, WGKeepGameObject[i].y, WGKeepGameObject[i].z, WGKeepGameObject[i].o))
@@ -221,7 +221,7 @@ bool BattlefieldWG::SetupBattlefield()
         }
         else
         {
-            sLog->outError(LOG_FILTER_BATTLEGROUND, "WarsongGulch: Can't Create Some Object");
+            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "WarsongGulch: Can't Create Some Object");
             return false;
         }
     }
@@ -266,7 +266,7 @@ void BattlefieldWG::OnBattleStart()
         m_titansRelic->SetFlag(GAMEOBJECT_FIELD_FLAGS, GO_FLAG_IN_USE);
     }
     else
-        sLog->outError(LOG_FILTER_BATTLEFIELD, "WG: Failed to spawn titan relic.");
+        TC_LOG_ERROR("bg.battlefield", "WG: Failed to spawn titan relic.");
 
 
     // Update tower visibility and update faction
@@ -518,7 +518,7 @@ uint8 BattlefieldWG::GetSpiritGraveyardId(uint32 areaId)
         case AREA_THE_CHILLED_QUAGMIRE:
             return BATTLEFIELD_WG_GY_HORDE;
         default:
-            sLog->outError(LOG_FILTER_BATTLEFIELD, "BattlefieldWG::GetSpiritGraveyardId: Unexpected Area Id %u", areaId);
+            TC_LOG_ERROR("bg.battlefield", "BattlefieldWG::GetSpiritGraveyardId: Unexpected Area Id %u", areaId);
             break;
     }
 

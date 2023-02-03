@@ -3357,8 +3357,8 @@ public:
 			if (Unit* caster = GetCaster())
 			{
 				std::list<Unit*> targets;
-				JadeCore::AnyUnitInObjectRangeCheck u_check(caster, 80.0f);
-				JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck> searcher(caster, targets, u_check);
+				Trinity::AnyUnitInObjectRangeCheck u_check(caster, 80.0f);
+				Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck> searcher(caster, targets, u_check);
 				caster->VisitNearbyObject(80.0f, searcher);
 				for (std::list<Unit*>::const_iterator itr = targets.begin(); itr != targets.end(); ++itr)
 				{

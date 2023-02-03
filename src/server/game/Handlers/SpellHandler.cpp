@@ -339,7 +339,7 @@ void WorldSession::HandleOpenItemOpcode(WorldPacket& p_Packet)
     if (!(l_ItemTemplate->Flags & ITEM_FLAG_OPENABLE) && !l_Item->HasFlag(ITEM_FIELD_DYNAMIC_FLAGS, ITEM_FIELD_FLAG_WRAPPED))
     {
         m_Player->SendEquipError(EQUIP_ERR_CLIENT_LOCKED_OUT, l_Item, NULL);
-        sLog->outError(LOG_FILTER_NETWORKIO, "Possible hacking attempt: Player %s [guid: %u] tried to open item [guid: %u, entry: %u] which is not openable!",
+        TC_LOG_ERROR("network", "Possible hacking attempt: Player %s [guid: %u] tried to open item [guid: %u, entry: %u] which is not openable!",
                 m_Player->GetName(), m_Player->GetGUIDLow(), l_Item->GetGUIDLow(), l_ItemTemplate->ItemId);
 
         return;
@@ -364,7 +364,7 @@ void WorldSession::HandleOpenItemOpcode(WorldPacket& p_Packet)
             if (!l_LockInfo)
             {
                 m_Player->SendEquipError(EQUIP_ERR_ITEM_LOCKED, l_Item, NULL);
-                sLog->outError(LOG_FILTER_NETWORKIO, "WORLD::OpenItem: item [guid = %u] has an unknown lockId: %u!", l_Item->GetGUIDLow(), l_LockID);
+                TC_LOG_ERROR("network", "WORLD::OpenItem: item [guid = %u] has an unknown lockId: %u!", l_Item->GetGUIDLow(), l_LockID);
 
                 return;
             }
@@ -398,7 +398,7 @@ void WorldSession::HandleOpenItemOpcode(WorldPacket& p_Packet)
             }
             else
             {
-                sLog->outError(LOG_FILTER_NETWORKIO, "Wrapped item %u don't have record in character_gifts table and will deleted", l_Item->GetGUIDLow());
+                TC_LOG_ERROR("network", "Wrapped item %u don't have record in character_gifts table and will deleted", l_Item->GetGUIDLow());
                 m_Player->DestroyItem(l_Item->GetBagSlot(), l_Item->GetSlot(), true);
 
                 return;
@@ -595,7 +595,7 @@ void WorldSession::HandleCastSpellOpcode(WorldPacket& p_RecvPacket)
     SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(l_SpellID);
     if (!spellInfo)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "WORLD: unknown spell id %u", l_SpellID);
+        TC_LOG_ERROR("network", "WORLD: unknown spell id %u", l_SpellID);
         p_RecvPacket.rfinish(); // prevent spam at ignore packet
         return;
     }
@@ -867,20 +867,20 @@ void WorldSession::HandlePetCancelAuraOpcode(WorldPacket& p_RecvPacket)
     SpellInfo const* l_SpellInfo = sSpellMgr->GetSpellInfo(l_SpellID);
     if (!l_SpellInfo)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "WORLD: unknown PET spell id %u", l_SpellID);
+        TC_LOG_ERROR("network", "WORLD: unknown PET spell id %u", l_SpellID);
         return;
     }
 
     Creature* l_Pet = ObjectAccessor::GetCreatureOrPetOrVehicle(*m_Player, l_PetGUID);
     if (!l_Pet)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "HandlePetCancelAura: Attempt to cancel an aura for non-existant pet %u by player '%s'", uint32(GUID_LOPART(l_PetGUID)), GetPlayer()->GetName());
+        TC_LOG_ERROR("network", "HandlePetCancelAura: Attempt to cancel an aura for non-existant pet %u by player '%s'", uint32(GUID_LOPART(l_PetGUID)), GetPlayer()->GetName());
         return;
     }
 
     if (l_Pet != GetPlayer()->GetGuardianPet() && l_Pet != GetPlayer()->GetCharm())
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "HandlePetCancelAura: Pet %u is not a pet of player '%s'", uint32(GUID_LOPART(l_PetGUID)), GetPlayer()->GetName());
+        TC_LOG_ERROR("network", "HandlePetCancelAura: Pet %u is not a pet of player '%s'", uint32(GUID_LOPART(l_PetGUID)), GetPlayer()->GetName());
         return;
     }
 
@@ -1262,7 +1262,7 @@ void WorldSession::HandleUseToyOpcode(WorldPacket& p_RecvData)
     SpellInfo const* l_SpellInfo = sSpellMgr->GetSpellInfo(l_SpellID);
     if (!l_SpellInfo)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "WORLD: unknown spell id %u", l_SpellID);
+        TC_LOG_ERROR("network", "WORLD: unknown spell id %u", l_SpellID);
         p_RecvData.rfinish();
         return;
     }
@@ -1270,7 +1270,7 @@ void WorldSession::HandleUseToyOpcode(WorldPacket& p_RecvData)
     ItemTemplate const* l_ItemProto = sObjectMgr->GetItemTemplate(l_ItemID);
     if (!l_ItemProto)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "WORLD: unknown item id %u", l_ItemID);
+        TC_LOG_ERROR("network", "WORLD: unknown item id %u", l_ItemID);
         p_RecvData.rfinish();
         return;
     }
@@ -1288,7 +1288,7 @@ void WorldSession::HandleUseToyOpcode(WorldPacket& p_RecvData)
     /// Cheater?
     if (!l_Found)
     {
-        sLog->outAshran("HandleUseToyOpcode: Player %s [%u] Trying to spoof packet and cast spell %u", m_Player->GetName(), m_Player->GetGUIDLow(), l_SpellID);
+        TC_LOG_ERROR("server.worldserver", "HandleUseToyOpcode: Player %s [%u] Trying to spoof packet and cast spell %u", m_Player->GetName(), m_Player->GetGUIDLow(), l_SpellID);
         p_RecvData.rfinish();
         return;
     }

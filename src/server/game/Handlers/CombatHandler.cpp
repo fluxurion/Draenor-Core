@@ -67,11 +67,11 @@ void WorldSession::HandleSetSheathedOpcode(WorldPacket& recvData)
     recvData >> sheathed;
     l_Animate = recvData.ReadBit(); ///< l_Animate is never read 01/18/16
 
-    //sLog->outDebug(LOG_FILTER_PACKETIO, "WORLD: Recvd CMSG_SETSHEATHED Message guidlow:%u value1:%u", GetPlayer()->GetGUIDLow(), sheathed);
+    //TC_LOG_DEBUG(LOG_FILTER_PACKETIO, "WORLD: Recvd CMSG_SETSHEATHED Message guidlow:%u value1:%u", GetPlayer()->GetGUIDLow(), sheathed);
 
     if (sheathed >= MAX_SHEATH_STATE)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "Unknown sheath state %u ??", sheathed);
+        TC_LOG_ERROR("network", "Unknown sheath state %u ??", sheathed);
         return;
     }
 
