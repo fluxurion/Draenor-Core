@@ -98,7 +98,6 @@ public:
     }
 
     uint32 m_loops, m_lastchange;
-    uint32 w_loops, w_lastchange;
     uint32 m_Delaytime;
 
     bool m_CanStop;
@@ -113,8 +112,8 @@ public:
 
         TC_LOG_INFO("server.worldserver", "Starting up anti-freeze thread (%u seconds max stuck time)...", m_Delaytime / 1000);
 
-        _loops = 0;
-        _lastChange = 0;
+        m_loops = 0;
+        m_lastchange = 0;
 
         /// Protect against freeze in world loop
         while (!World::IsStopped())
@@ -123,13 +122,13 @@ public:
             uint32 curtime = getMSTime();
             // normal work
             uint32 worldLoopCounter = World::m_worldLoopCounter;
-            if (w_loops != worldLoopCounter)
+            if (m_loops != worldLoopCounter)
             {
-                w_lastchange = curtime;
-                w_loops = worldLoopCounter;
+                m_lastchange = curtime;
+                m_loops = worldLoopCounter;
             }
             // possible freeze
-            else if (getMSTimeDiff(w_lastchange, curtime) > m_Delaytime)
+            else if (getMSTimeDiff(m_lastchange, curtime) > m_Delaytime)
             {
                 TC_LOG_ERROR("server.worldserver", "World Thread hangs, kicking out server!");
                 assert(false);
@@ -432,11 +431,11 @@ int Master::Run()
     std::string pidFile = sConfigMgr->GetStringDefault("PidFile", "");
     if (!pidFile.empty())
     {
-        if (uint32 pid = CreatePIDFile(pidfile))
+        if (uint32 pid = CreatePIDFile(pidFile))
             TC_LOG_INFO("server.worldserver", "Daemon PID: %u\n", pid);
         else
         {
-            TC_LOG_ERROR("server.worldserver", "Cannot create PID file %s.\n", pidfile.c_str());
+            TC_LOG_ERROR("server.worldserver", "Cannot create PID file %s.\n", pidFile.c_str());
             return 1;
         }
     }
