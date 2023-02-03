@@ -180,15 +180,15 @@ void PhaseMgr::RegisterPhasingAuraEffect(AuraEffect const* auraEffect)
     else if (auraEffect->GetAuraType() == SPELL_AURA_PHASE_GROUP)
     {
         uint32 group = auraEffect->GetMiscValueB();
-        std::set<uint32> const& groupPhases = GetPhasesForGroup(group);
-        for (auto itr = groupPhases.begin(); itr != groupPhases.end(); ++itr)
-        {
-            PhaseInfo phaseInfo;
-            phaseInfo.phaseId = auraEffect->GetMiscValueB();
-            if (phaseInfo.NeedsClientSideUpdate())
-                _UpdateFlags |= PHASE_UPDATE_FLAG_CLIENTSIDE_CHANGED;
-            phases.push_back(phaseInfo);
-        }
+        //std::set<uint32> const& groupPhases = GetPhasesForGroup(group);
+        //for (auto itr = groupPhases.begin(); itr != groupPhases.end(); ++itr)
+        //{
+           // PhaseInfo phaseInfo;
+            //phaseInfo.phaseId = auraEffect->GetMiscValueB();
+           // if (phaseInfo.NeedsClientSideUpdate())
+                //_UpdateFlags |= PHASE_UPDATE_FLAG_CLIENTSIDE_CHANGED;
+           // phases.push_back(phaseInfo);
+       // }
     }
 
     for (auto itr = phases.begin(); itr != phases.end(); ++itr)
@@ -255,11 +255,6 @@ void PhaseData::GetActivePhases(std::set<uint32>& phases) const
             if (phase->phaseId)
                 phases.insert(phase->phaseId);
 
-	// Phases from Auras.
-	if (!spellPhaseInfo.empty())
-		for (PhaseInfoContainer::const_iterator l_IT = spellPhaseInfo.begin(); l_IT != spellPhaseInfo.end(); ++l_IT)
-			if (l_IT->second.phaseId)
-				phases.insert(l_IT->second.phaseId);
 
 	// Phase definitions from DB.
 	if (!activePhaseDefinitions.empty())
@@ -307,11 +302,11 @@ void PhaseData::SendPhaseshiftToPlayer()
 
 	for (PhaseInfoContainer::const_iterator l_IT = spellPhaseInfo.begin(); l_IT != spellPhaseInfo.end(); ++l_IT)
 	{
-		if (l_IT->second.terrainswapmap)
-			l_TerrainSwaps.insert(l_IT->second.terrainswapmap);
+		//if (l_IT->second.terrainswapmap)
+			//l_TerrainSwaps.insert(l_IT->second.terrainswapmap);
 
-		if (l_IT->second.phaseId)
-			l_PhaseIDs.insert(l_IT->second.phaseId);
+		//if (l_IT->second.phaseId)
+			//l_PhaseIDs.insert(l_IT->second.phaseId);
 	}
 	
 	// Phase Definitions
