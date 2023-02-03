@@ -142,6 +142,16 @@ nullable_string PackDBBinary(void const* unpackedData, uint32 unpackedCount)
     return nullable_string((char const*)unpackedData, unpackedCount);
 }
 
+struct tm* localtime_r(const time_t* time, struct tm *result)
+{
+#if (defined(WIN32) || defined(_WIN32) || defined(__WIN32__))
+    localtime_s(result, time);
+    return result;
+#else
+    return localtime_r(&time, &result); // POSIX
+#endif
+}
+
 
 std::string secsToTimeString(uint64 timeInSecs, bool shortText, bool hoursOnly)
 {
@@ -201,7 +211,7 @@ uint32 TimeStringToSecs(const std::string& timestring)
 std::string TimeToTimestampStr(time_t t)
 {
     tm aTm;
-    ACE_OS::localtime_r(&t, &aTm);
+    localtime_r(&t, &aTm);
     //       YYYY   year
     //       MM     month (2 digits 01-12)
     //       DD     day (2 digits 01-31)

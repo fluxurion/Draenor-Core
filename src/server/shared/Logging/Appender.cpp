@@ -8,11 +8,12 @@
 
 #include "Appender.h"
 #include "Common.h"
+#include "Util.h"
 
 std::string LogMessage::getTimeStr(time_t time)
 {
     tm aTm;
-    ACE_OS::localtime_r(&time, &aTm);
+    localtime_r(&time, &aTm);
     char buf[72];
     snprintf(buf, sizeof(buf), "%04d-%02d-%02d_%02d:%02d:%02d", aTm.tm_year + 1900, aTm.tm_mon + 1, aTm.tm_mday, aTm.tm_hour, aTm.tm_min, aTm.tm_sec);
     return std::string(buf);

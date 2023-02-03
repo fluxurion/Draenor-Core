@@ -347,7 +347,7 @@ namespace Battlepay
             return false;
 
         /// Check mounts - pets
-        for (auto l_SpellData : l_Item->Spells)
+        for (auto const& l_SpellData : l_Item->Spells)
         {
             if (l_SpellData.SpellTrigger == ITEM_SPELLTRIGGER_LEARN_SPELL_ID && p_Player->HasSpell(l_SpellData.SpellId))
                 return true;
@@ -388,7 +388,7 @@ namespace Battlepay
     std::string Manager::GeneratePackDescription(Battlepay::Product const& p_Product, LocaleConstant p_Locale)
     {
         std::string l_Description;
-        for (auto l_Item : p_Product.Items)
+        for (auto const& l_Item : p_Product.Items)
         {
             ItemTemplate const* l_ItemTemplate = sObjectMgr->GetItemTemplate(l_Item.ItemID);
             if (l_ItemTemplate == nullptr)

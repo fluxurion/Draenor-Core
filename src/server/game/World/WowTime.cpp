@@ -7,7 +7,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "WowTime.hpp"
-#include <ace/OS_NS_time.h>
 
 namespace MS { namespace Utilities
 {
@@ -127,7 +126,7 @@ namespace MS { namespace Utilities
             else
                 l_PosixTime = mktime(&l_TimeInfo) + (Globals::InSeconds::Day * p_Count) + Globals::InSeconds::Hour;
 
-            ACE_OS::localtime_r(&l_PosixTime, &l_TimeInfo);
+            localtime_r(&l_PosixTime, &l_TimeInfo);
 
             this->Year      = l_TimeInfo.tm_year - 100;
             this->Month     = l_TimeInfo.tm_mon;
@@ -161,7 +160,7 @@ namespace MS { namespace Utilities
                 l_TimeInfo.tm_isdst = -1;
 
                 time_t l_Time = (Globals::InSeconds::Day * l_DayCount) + mktime(&l_TimeInfo) + Globals::InSeconds::Hour;
-                ACE_OS::localtime_r(&l_Time, &l_TimeInfo);
+                localtime_r(&l_Time, &l_TimeInfo);
 
                 this->Year      = l_TimeInfo.tm_year - 100;
                 this->Month     = l_TimeInfo.tm_mon;
@@ -181,7 +180,7 @@ namespace MS { namespace Utilities
                 l_TimeInfo.tm_isdst = -1;
 
                 time_t l_Time = mktime(&l_TimeInfo) - (23 * Globals::InSeconds::Hour);
-                ACE_OS::localtime_r(&l_Time, &l_TimeInfo);
+                localtime_r(&l_Time, &l_TimeInfo);
 
                 this->Year      = l_TimeInfo.tm_year - 100;
                 this->Month     = l_TimeInfo.tm_mon;
@@ -232,7 +231,7 @@ namespace MS { namespace Utilities
                         l_TimeInfo.tm_isdst = -1;
 
                         time_t l_Time = mktime(&l_TimeInfo) - (23 * Globals::InSeconds::Hour);
-                        ACE_OS::localtime_r(&l_Time, &l_TimeInfo);
+                        localtime_r(&l_Time, &l_TimeInfo);
 
                         this->Year      = l_TimeInfo.tm_year - 100;
                         this->Month     = l_TimeInfo.tm_mon;
@@ -328,7 +327,7 @@ namespace MS { namespace Utilities
     void WowTime::SetUTCTimeFromPosixTime(time_t p_PosixTime)
     {
         struct tm l_TimeInfo;
-        ACE_OS::gmtime_r(&p_PosixTime, &l_TimeInfo);
+        localtime_r(&p_PosixTime, &l_TimeInfo);
 
         this->Year      = l_TimeInfo.tm_year - 100;
         this->Month     = l_TimeInfo.tm_mon;
@@ -442,7 +441,7 @@ namespace MS { namespace Utilities
                 l_TimeInfo.tm_min   = p_Other.Minute;
 
                 time_t l_Time = mktime(&l_TimeInfo) + s_holidayOffsetSeconds;
-                ACE_OS::localtime_r(&l_Time, &l_TimeInfo);
+                localtime_r(&l_Time, &l_TimeInfo);
 
                 p_Other.Year        = l_TimeInfo.tm_year - 100;
                 p_Other.Month       = l_TimeInfo.tm_mon;

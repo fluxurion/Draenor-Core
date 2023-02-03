@@ -113,10 +113,8 @@ public:
 
         TC_LOG_INFO("server.worldserver", "Starting up anti-freeze thread (%u seconds max stuck time)...", m_Delaytime / 1000);
 
-        m_loops = 0;
-        w_loops = 0;
-        m_lastchange = 0;
-        w_lastchange = 0;
+        _loops = 0;
+        _lastChange = 0;
 
         /// Protect against freeze in world loop
         while (!World::IsStopped())
@@ -429,9 +427,10 @@ int Master::Run()
     TC_LOG_INFO("server.worldserver", "  / ____ \\\\__ | | | | | | (_| | | | | |___| (_) | | |  __/     ");
     TC_LOG_INFO("server.worldserver", " /_/    \\_|___|_| |_|_|  \\__,_|_| |_|\\_____\\___/|_|  \\___|  ");
     TC_LOG_INFO("server.worldserver", " MILLENIUM STUDIO SARL\n");
+
     /// worldserver PID file creation
-    std::string pidfile = sConfigMgr->GetStringDefault("PidFile", "");
-    if (!pidfile.empty())
+    std::string pidFile = sConfigMgr->GetStringDefault("PidFile", "");
+    if (!pidFile.empty())
     {
         if (uint32 pid = CreatePIDFile(pidfile))
             TC_LOG_INFO("server.worldserver", "Daemon PID: %u\n", pid);
@@ -690,9 +689,6 @@ int Master::Run()
     // for some unknown reason, unloading scripts here and not in worldrunnable
     // fixes a memory leak related to detaching threads from the module
     //UnloadScriptingModule();
-
-    if (fdr)
-        fdr->SetCanStop();
 
     OpenSSLCrypto::threadsCleanup();
 

@@ -265,9 +265,10 @@ void Log::write(LogMessage* msg) const
 
 std::string Log::GetTimestampStr()
 {
-    time_t t = time(NULL);
-    tm aTm;
-    ACE_OS::localtime_r(&t, &aTm);
+    time_t tt = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+
+    std::tm aTm;
+    localtime_r(&tt, &aTm);
     char buf[20];
     snprintf(buf, sizeof(buf), "%u-%u-%u_%u-%u-%u", uint32(aTm.tm_year + 1900), uint32(aTm.tm_mon + 1), uint32(aTm.tm_mday), uint32(aTm.tm_hour), uint32(aTm.tm_min), uint32(aTm.tm_sec));
     return std::string(buf);

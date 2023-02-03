@@ -10,6 +10,9 @@
 #define TRINITY_OBJECTREGISTRY_H
 
 #include "Define.h"
+#include <string>
+#include <map>
+#include <vector>
 #include "Common.h"
 
 /** ObjectRegistry holds all registry item of the same type

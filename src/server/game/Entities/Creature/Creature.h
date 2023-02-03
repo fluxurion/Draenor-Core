@@ -858,6 +858,7 @@ class Creature : public Unit, public GridObject<Creature>, public MapObject
 
         void SetLockAI(bool lock) { m_AI_locked = lock; }
 
+        void SetSeerGUID(uint64 guid) { uiSeerGUID = guid; }
         void SendAddFollowerQuery(Player* p_Player, uint32 p_Sender, uint32 p_Action, char const* p_FollowerName);
 
         uint32 m_LOSCheckTimer;
@@ -937,6 +938,7 @@ class Creature : public Unit, public GridObject<Creature>, public MapObject
         CreatureData const* m_creatureData;
         CreatureScript* m_CreatureScript;
 
+		uint64 uiSeerGUID;
         uint16 m_LootMode;                                  ///< bitmask, default LOOT_MODE_DEFAULT, determines what loot will be lootable
         uint32 guid_transport;
 
