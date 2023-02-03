@@ -13,8 +13,8 @@
 #include "DB2Stores.h"
 #include "Config.h"
 #include "Util.h"
-#include <boost/graph/dijkstra_shortest_paths.hpp>
-#include <boost/property_map/transform_value_property_map.hpp>
+#include "boost/graph/dijkstra_shortest_paths.hpp"
+#include "boost/property_map/transform_value_property_map.hpp"
 
 /// Constructor
 TaxiPathGraph::TaxiPathGraph()

@@ -2031,9 +2031,9 @@ bool ConditionMgr::isConditionTypeValid(Condition* cond) const
         case CONDITION_PHASEMASK:
         {
             if (cond->ConditionValue2)
-                sLog->outError(LOG_FILTER_SQL, "Phasemask condition has useless data in value2 (%u)!", cond->ConditionValue2);
+                TC_LOG_ERROR("sql.sql", "Phasemask condition has useless data in value2 (%u)!", cond->ConditionValue2);
             if (cond->ConditionValue3)
-                sLog->outError(LOG_FILTER_SQL, "Phasemask condition has useless data in value3 (%u)!", cond->ConditionValue3);
+                TC_LOG_ERROR("sql.sql", "Phasemask condition has useless data in value3 (%u)!", cond->ConditionValue3);
             break;
         }
         case CONDITION_TITLE:

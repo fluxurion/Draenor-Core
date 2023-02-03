@@ -4186,33 +4186,6 @@ SpellEffectEntry const* SpellEntry::GetSpellEffect(uint32 eff, uint32 difficulty
     return GetSpellEffectEntry(Id, eff, difficulty);
 }
 
-void SpellInfo::SetDurationIndex(uint32 index)
-{
-    SpellDurationEntry const* durationIndex = sSpellDurationStore.LookupEntry(index);
-    if (!durationIndex)
-        return;
-
-    DurationEntry = durationIndex;
-}
-
-void SpellInfo::SetRangeIndex(uint32 index)
-{
-    SpellRangeEntry const* rangeIndex = sSpellRangeStore.LookupEntry(index);
-    if (!rangeIndex)
-        return;
-
-    RangeEntry = rangeIndex;
-}
-
-void SpellInfo::SetCastTimeIndex(uint32 index)
-{
-    SpellCastTimesEntry const* castTimeIndex = sSpellCastTimesStore.LookupEntry(index);
-    if (!castTimeIndex)
-        return;
-
-    CastTimeEntry = castTimeIndex;
-}
-
 void SpellInfo::_UnloadImplicitTargetConditionLists()
 {
     // find the same instances of ConditionContainer and delete them.

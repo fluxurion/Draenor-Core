@@ -60,15 +60,15 @@ uint32 g_RealmID;                                             ///< Id of the rea
 /// Print out the usage string for this program on the console.
 void usage(const char* prog)
 {
-    TC_LOG_INFO(LOG_FILTER_WORLDSERVER, "Usage: \n %s [<options>]\n"
-        "    -c config_file           use config_file as configuration file\n\r"
-        #ifdef _WIN32
-        "    Running as service functions:\n\r"
-        "    --service                run as service\n\r"
-        "    -s install               install service\n\r"
-        "    -s uninstall             uninstall service\n\r"
-        #endif
-        , prog);
+    printf("Usage:\n");
+    printf(" %s [<options>]\n", prog);
+    printf("    -c config_file           use config_file as configuration file\n");
+#ifdef _WIN32
+    printf("    Running as service functions:\n");
+    printf("    --service                run as service\n");
+    printf("    -s install               install service\n");
+    printf("    -s uninstall             uninstall service\n");
+#endif
 }
 
 /// Launch the Trinity server
@@ -133,10 +133,10 @@ extern int main(int argc, char** argv)
         printf("Verify that the file exists and has \'[worldserver]' written in the top of the file!");
         return 1;
     }
-    TC_LOG_INFO(LOG_FILTER_WORLDSERVER, "Using configuration file %s.", cfg_file);
+    TC_LOG_INFO("server.worldserver", "Using configuration file %s.", cfg_file);
 
-    TC_LOG_INFO(LOG_FILTER_WORLDSERVER, "Using SSL version: %s (library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
-    TC_LOG_INFO(LOG_FILTER_WORLDSERVER, "Using ACE version: %s", ACE_VERSION);
+    TC_LOG_INFO("server.worldserver", "Using SSL version: %s (library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
+    TC_LOG_INFO("server.worldserver", "Using ACE version: %s", ACE_VERSION);
 
     ///- and run the 'Master'
     /// \todo Why do we need this 'Master'? Can't all of this be in the Main as for Realmd?
