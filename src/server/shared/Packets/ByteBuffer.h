@@ -421,7 +421,7 @@ class ByteBuffer
 
             /// Needed for the msvc 2013 support
 #ifdef _MSC_VER
-            return uint32(mktime(&l_Time) + _timezone);
+            return uint32(mktime(&l_Time));
 #else
             return uint32(mktime(&l_Time) + timezone);
 #endif
