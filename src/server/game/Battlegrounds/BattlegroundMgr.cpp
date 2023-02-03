@@ -280,7 +280,7 @@ namespace MS
             Battleground* l_BattlegroundTemplate = GetBattlegroundTemplate(p_BgType);
             if (!l_BattlegroundTemplate)
             {
-                TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "Battleground: CreateNewBattleground - bg template not found for %u", p_BgType);
+                TC_LOG_ERROR("bg.battleground", "Battleground: CreateNewBattleground - bg template not found for %u", p_BgType);
                 return nullptr;
             }
 
@@ -511,7 +511,7 @@ namespace MS
                 l_Bl = sBattlemasterListStore.LookupEntry(l_BgTypeId);
                 if (!l_Bl)
                 {
-                    TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "Battleground ID %u not found in BattlemasterList.dbc. Battleground not created.", l_BgTypeId);
+                    TC_LOG_ERROR("bg.battleground", "Battleground ID %u not found in BattlemasterList.dbc. Battleground not created.", l_BgTypeId);
                     continue;
                 }
 
@@ -628,12 +628,12 @@ namespace MS
                     l_Team = p_Player->GetTeam();
                 l_Bg->GetTeamStartLoc(l_Team, l_X, l_Y, l_Z, l_O);
 
-                TC_LOG_INFO(LOG_FILTER_BATTLEGROUND, "BATTLEGROUND: Sending %s to map %u, X %f, Y %f, Z %f, O %f", p_Player->GetName(), l_MapId, l_X, l_Y, l_Z, l_O);
+                TC_LOG_INFO("bg.battleground", "BATTLEGROUND: Sending %s to map %u, X %f, Y %f, Z %f, O %f", p_Player->GetName(), l_MapId, l_X, l_Y, l_Z, l_O);
                 p_Player->TeleportTo(l_MapId, l_X, l_Y, l_Z, l_O);
             }
             else
             {
-                TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "player %u is trying to port to non-existent bg instance %u", p_Player->GetGUIDLow(), p_InstanceId);
+                TC_LOG_ERROR("bg.battleground", "player %u is trying to port to non-existent bg instance %u", p_Player->GetGUIDLow(), p_InstanceId);
             }
         }
 

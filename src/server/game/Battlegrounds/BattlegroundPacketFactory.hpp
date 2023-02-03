@@ -215,7 +215,7 @@ namespace MS
 
                     if (!p_BG->IsPlayerInBattleground(l_ScoreBeginIT->first))
                     {
-                        TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "Player " UI64FMTD " has scoreboard entry for battleground %u but is not in battleground!", l_It->first, p_BG->GetTypeID(true));
+                        TC_LOG_ERROR("bg.battleground", "Player " UI64FMTD " has scoreboard entry for battleground %u but is not in battleground!", l_It->first, p_BG->GetTypeID(true));
                         continue;
                     }
 
@@ -284,7 +284,7 @@ namespace MS
 
                     if (!p_BG->IsPlayerInBattleground(l_ScoreBeginIT->first))
                     {
-                        TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "Player " UI64FMTD " has scoreboard entry for battleground %u but is not in battleground!", l_It->first, p_BG->GetTypeID(true));
+                        TC_LOG_ERROR("bg.battleground", "Player " UI64FMTD " has scoreboard entry for battleground %u but is not in battleground!", l_It->first, p_BG->GetTypeID(true));
                         continue;
                     }
 

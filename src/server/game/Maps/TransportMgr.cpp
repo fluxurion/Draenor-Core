@@ -359,7 +359,7 @@ Transport* TransportMgr::CreateTransport(uint32 entry, uint32 guid /*= 0*/, Map*
     {
         if (uint32(mapEntry->Instanceable()) != tInfo->inInstance)
         {
-            TC_LOG_ERROR(LOG_FILTER_TRANSPORTS, "Transport %u (name: %s) attempted creation in instance map (id: %u) but it is not an instanced transport!", entry, trans->GetName(), mapId);
+            TC_LOG_ERROR("entities.transport", "Transport %u (name: %s) attempted creation in instance map (id: %u) but it is not an instanced transport!", entry, trans->GetName(), mapId);
             delete trans;
             return NULL;
         }

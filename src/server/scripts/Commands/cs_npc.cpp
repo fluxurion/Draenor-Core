@@ -966,7 +966,7 @@ public:
             // Only 2 params - but maybe NODEL is set
             if (type_str)
             {
-                SF_LOG_ERROR("server.worldserver", "DEBUG: Only 2 params ");
+                TC_LOG_ERROR("server.worldserver", "DEBUG: Only 2 params ");
                 if (stricmp(type_str, "NODEL") == 0)
                 {
                     //SF_LOG_ERROR("server.worldserver", "DEBUG: type_str, NODEL ");

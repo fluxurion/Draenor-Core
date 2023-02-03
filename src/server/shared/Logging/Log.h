@@ -34,6 +34,13 @@ public:
 
     void SetRealmId(uint32 id);
 
+    void outGmChat(uint32 message_type,
+        uint32 from_account_id, std::string from_account_name,
+        uint32 from_character_id, std::string from_character_name,
+        uint32 to_account_id, std::string to_account_name,
+        uint32 to_character_id, std::string to_character_name,
+        const char* str);
+
 private:
     static std::string GetTimestampStr();
     void vlog(std::string const& f, LogLevel level, char const* str, va_list argptr);

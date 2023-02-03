@@ -467,23 +467,23 @@ void SpellCastTargets::Update(Unit* p_Caster)
 void SpellCastTargets::OutDebug() const
 {
     if (!m_targetMask)
-        TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "No targets");
+        TC_LOG_INFO("spells", "No targets");
 
-    TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "target mask: %u", m_targetMask);
+    TC_LOG_INFO("spells", "target mask: %u", m_targetMask);
     if (m_targetMask & (TARGET_FLAG_UNIT_MASK | TARGET_FLAG_CORPSE_MASK | TARGET_FLAG_GAMEOBJECT_MASK))
-        TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "Object target: " UI64FMTD, m_objectTargetGUID);
+        TC_LOG_INFO("spells", "Object target: " UI64FMTD, m_objectTargetGUID);
     if (m_targetMask & TARGET_FLAG_ITEM)
-        TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "Item target: " UI64FMTD, m_itemTargetGUID);
+        TC_LOG_INFO("spells", "Item target: " UI64FMTD, m_itemTargetGUID);
     if (m_targetMask & TARGET_FLAG_TRADE_ITEM)
-        TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "Trade item target: " UI64FMTD, m_itemTargetGUID);
+        TC_LOG_INFO("spells", "Trade item target: " UI64FMTD, m_itemTargetGUID);
     if (m_targetMask & TARGET_FLAG_SOURCE_LOCATION)
-        TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "Source location: transport guid:" UI64FMTD " trans offset: %s position: %s", m_src._transportGUID, m_src._transportOffset.ToString().c_str(), m_src._position.ToString().c_str());
+        TC_LOG_INFO("spells", "Source location: transport guid:" UI64FMTD " trans offset: %s position: %s", m_src._transportGUID, m_src._transportOffset.ToString().c_str(), m_src._position.ToString().c_str());
     if (m_targetMask & TARGET_FLAG_DEST_LOCATION)
-        TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "Destination location: transport guid:" UI64FMTD " trans offset: %s position: %s", m_dst._transportGUID, m_dst._transportOffset.ToString().c_str(), m_dst._position.ToString().c_str());
+        TC_LOG_INFO("spells", "Destination location: transport guid:" UI64FMTD " trans offset: %s position: %s", m_dst._transportGUID, m_dst._transportOffset.ToString().c_str(), m_dst._position.ToString().c_str());
     if (m_targetMask & TARGET_FLAG_STRING)
-        TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "String: %s", m_strTarget.c_str());
-    TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "speed: %f", m_speed);
-    TC_LOG_INFO(LOG_FILTER_SPELLS_AURAS, "elevation: %f", m_elevation);
+        TC_LOG_INFO("spells", "String: %s", m_strTarget.c_str());
+    TC_LOG_INFO("spells", "speed: %f", m_speed);
+    TC_LOG_INFO("spells", "elevation: %f", m_elevation);
 }
 
 SpellValue::SpellValue(SpellInfo const* proto)
@@ -2186,7 +2186,7 @@ void Spell::SelectImplicitTrajTargets()
         }
 
 #define CHECK_DIST {\
-            DEBUG_TRAJ(TC_LOG_ERROR(LOG_FILTER_SPELLS_AURAS, "Spell::SelectTrajTargets: dist %f, height %f.", dist, height);)\
+            DEBUG_TRAJ(TC_LOG_ERROR("spells", "Spell::SelectTrajTargets: dist %f, height %f.", dist, height);)\
             if (dist > bestDist)\
                 continue;\
             if (dist < objDist2d + size && dist > objDist2d - size)\
@@ -8925,7 +8925,7 @@ SpellEvent::~SpellEvent()
     }
     else
     {
-        TC_LOG_ERROR(LOG_FILTER_SPELLS_AURAS, "~SpellEvent: %s %u tried to delete non-deletable spell %u. Was not deleted, causes memory leak.",
+        TC_LOG_ERROR("spells", "~SpellEvent: %s %u tried to delete non-deletable spell %u. Was not deleted, causes memory leak.",
             (m_Spell->GetCaster()->IsPlayer() ? "Player" : "Creature"), m_Spell->GetCaster()->GetGUIDLow(), m_Spell->m_spellInfo->Id);
         ASSERT(false);
     }
@@ -9312,7 +9312,7 @@ void Spell::LoadScripts()
             m_loadedScripts.erase(bitr);
             continue;
         }
-        TC_LOG_DEBUG(LOG_FILTER_SPELLS_AURAS, "Spell::LoadScripts: Script `%s` for spell `%u` is loaded now", (*itr)->_GetScriptName()->c_str(), m_spellInfo->Id);
+        TC_LOG_DEBUG("spells", "Spell::LoadScripts: Script `%s` for spell `%u` is loaded now", (*itr)->_GetScriptName()->c_str(), m_spellInfo->Id);
         (*itr)->Register();
         ++itr;
     }

@@ -476,7 +476,7 @@ void LFGMgr::Update(uint32 diff)
             LfgQueueInfo* queue = itQueue->second;
             if (!queue)
             {
-                TC_LOG_ERROR(LOG_FILTER_LFG, "LFGMgr::Update: [" UI64FMTD "] queued with null queue info!", itQueue->first);
+                TC_LOG_ERROR("lfg", "LFGMgr::Update: [" UI64FMTD "] queued with null queue info!", itQueue->first);
                 continue;
             }
             uint32 dungeonId = (*queue->dungeons.begin());
@@ -533,7 +533,7 @@ void LFGMgr::AddToQueue(uint64 guid, uint8 queueId)
 
     LfgGuidList& list = m_newToQueue[queueId];
     if (std::find(list.begin(), list.end(), guid) != list.end())
-        TC_LOG_DEBUG(LOG_FILTER_LFG, "LFGMgr::AddToQueue: [" UI64FMTD "] already in new queue. ignoring", guid);
+        TC_LOG_DEBUG("lfg", "LFGMgr::AddToQueue: [" UI64FMTD "] already in new queue. ignoring", guid);
     else
     {
         list.push_back(guid);
@@ -1213,7 +1213,7 @@ bool LFGMgr::CheckCompatibility(LfgGuidList p_Check, LfgProposal*& p_Proposal, L
         LfgQueueInfoMap::iterator itQueue = m_QueueInfoMap.find(guid);
         if (itQueue == m_QueueInfoMap.end() || GetState(guid) != LFG_STATE_QUEUED)
         {
-            TC_LOG_ERROR(LOG_FILTER_LFG, "LFGMgr::CheckCompatibility: [" UI64FMTD "] is not queued but listed as queued!", (*it));
+            TC_LOG_ERROR("lfg", "LFGMgr::CheckCompatibility: [" UI64FMTD "] is not queued but listed as queued!", (*it));
             if (Player* plr = ObjectAccessor::FindPlayer(guid))
                 if (itQueue != m_QueueInfoMap.end())
                     SendUpdateStatus(plr, LfgUpdateData(LFG_UPDATETYPE_REMOVED_FROM_QUEUE, itQueue->second->dungeons, GetComment(guid))); // TODO CHECK
@@ -1270,7 +1270,7 @@ bool LFGMgr::CheckCompatibility(LfgGuidList p_Check, LfgProposal*& p_Proposal, L
     {
         Player* player = ObjectAccessor::FindPlayer(it->first);
         if (!player)
-            TC_LOG_DEBUG(LOG_FILTER_LFG, "LFGMgr::CheckCompatibility: (%s) Warning! [" UI64FMTD "] offline! Marking as not compatibles!", strGuids.c_str(), it->first);
+            TC_LOG_DEBUG("lfg", "LFGMgr::CheckCompatibility: (%s) Warning! [" UI64FMTD "] offline! Marking as not compatibles!", strGuids.c_str(), it->first);
         else
         {
             for (PlayerSet::const_iterator itPlayer = players.begin(); itPlayer != players.end() && player; ++itPlayer)
@@ -1852,13 +1852,13 @@ void LFGMgr::UpdateProposal(uint32 proposalId, uint64 guid, bool accept)
             LfgProposalPlayer* player = pProposal->players[(*it)->GetGUID()];
             uint32 lowgroupguid = (*it)->GetGroup() ? (*it)->GetGroup()->GetLowGUID() : 0;
             if (player->groupLowGuid != lowgroupguid)
-                TC_LOG_ERROR(LOG_FILTER_LFG, "LFGMgr::UpdateProposal: [" UI64FMTD "] group mismatch: actual (%u) - queued (%u)", (*it)->GetGUID(), lowgroupguid, player->groupLowGuid);
+                TC_LOG_ERROR("lfg", "LFGMgr::UpdateProposal: [" UI64FMTD "] group mismatch: actual (%u) - queued (%u)", (*it)->GetGUID(), lowgroupguid, player->groupLowGuid);
 
             uint64 guid2 = player->groupLowGuid ? MAKE_NEW_GUID(player->groupLowGuid, 0, HIGHGUID_GROUP) : (*it)->GetGUID();
             LfgQueueInfoMap::iterator itQueue = m_QueueInfoMap.find(guid2);
             if (itQueue == m_QueueInfoMap.end())
             {
-                TC_LOG_ERROR(LOG_FILTER_LFG, "LFGMgr::UpdateProposal: Queue info for guid [" UI64FMTD "] not found!", guid);
+                TC_LOG_ERROR("lfg", "LFGMgr::UpdateProposal: Queue info for guid [" UI64FMTD "] not found!", guid);
                 waitTimesMap[(*it)->GetGUID()] = -1;
             }
             else
@@ -2302,7 +2302,7 @@ void LFGMgr::TeleportPlayer(Player* player, bool out, bool fromOpcode /*= false*
                 }
                 else
                 {
-                    TC_LOG_ERROR(LOG_FILTER_LFG, "LfgMgr::TeleportPlayer: Failed to teleport [" UI64FMTD "]: No areatrigger found for map: %u difficulty: %u", player->GetGUID(), dungeon->map, dungeon->difficulty);
+                    TC_LOG_ERROR("lfg", "LfgMgr::TeleportPlayer: Failed to teleport [" UI64FMTD "]: No areatrigger found for map: %u difficulty: %u", player->GetGUID(), dungeon->map, dungeon->difficulty);
                     error = LFG_TELEPORTERROR_INVALID_LOCATION;
                 }
             }
@@ -2326,7 +2326,7 @@ void LFGMgr::TeleportPlayer(Player* player, bool out, bool fromOpcode /*= false*
                 else
                 {
                     error = LFG_TELEPORTERROR_INVALID_LOCATION;
-                    TC_LOG_ERROR(LOG_FILTER_LFG, "LfgMgr::TeleportPlayer: Failed to teleport [" UI64FMTD "] to map %u: ", player->GetGUID(), mapid);
+                    TC_LOG_ERROR("lfg", "LfgMgr::TeleportPlayer: Failed to teleport [" UI64FMTD "] to map %u: ", player->GetGUID(), mapid);
                 }
             }
         }

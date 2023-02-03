@@ -181,7 +181,7 @@ bool BattlefieldWG::SetupBattlefield()
         }
         else
         {
-            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "WarsongGulch: Can't Create Some Object");
+            TC_LOG_ERROR("bg.battleground", "WarsongGulch: Can't Create Some Object");
             return false;
         }
     }
@@ -196,7 +196,7 @@ bool BattlefieldWG::SetupBattlefield()
         }
         else
         {
-            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "WarsongGulch: Can't Create Some Object");
+            TC_LOG_ERROR("bg.battleground", "WarsongGulch: Can't Create Some Object");
             return false;
         }
     }
@@ -211,7 +211,7 @@ bool BattlefieldWG::SetupBattlefield()
         }
         else
         {
-            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "WarsongGulch: Can't Create Some Object");
+            TC_LOG_ERROR("bg.battleground", "WarsongGulch: Can't Create Some Object");
             return false;
         }
         if (GameObject* go = SpawnGameObject(WGKeepGameObject[i].entryAlliance, WGKeepGameObject[i].x, WGKeepGameObject[i].y, WGKeepGameObject[i].z, WGKeepGameObject[i].o))
@@ -221,7 +221,7 @@ bool BattlefieldWG::SetupBattlefield()
         }
         else
         {
-            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "WarsongGulch: Can't Create Some Object");
+            TC_LOG_ERROR("bg.battleground", "WarsongGulch: Can't Create Some Object");
             return false;
         }
     }

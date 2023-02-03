@@ -1472,7 +1472,7 @@ void GameObject::Use(Unit* p_User)
 
                 if (l_Info->goober.eventID)
                 {
-                    TC_LOG_DEBUG("maps"CRIPTS, "Goober ScriptStart id %u for GO entry %u (GUID %u).", l_Info->goober.eventID, GetEntry(), GetDBTableGUIDLow());
+                    TC_LOG_DEBUG("mapscripts", "Goober ScriptStart id %u for GO entry %u (GUID %u).", l_Info->goober.eventID, GetEntry(), GetDBTableGUIDLow());
                     GetMap()->ScriptsStart(sEventScripts, l_Info->goober.eventID, l_Player, this);
                     EventInform(l_Info->goober.eventID);
                 }
@@ -1918,7 +1918,7 @@ void GameObject::Use(Unit* p_User)
         if (p_User->GetTypeId() != TYPEID_PLAYER || !sOutdoorPvPMgr->HandleCustomSpell(p_User->ToPlayer(), spellId, this))
             TC_LOG_ERROR("server.worldserver", "WORLD: unknown spell id %u at use action for gameobject (Entry: %u GoType: %u)", spellId, GetEntry(), GetGoType());
         else
-            TC_LOG_DEBUG(LOG_FILTER_OUTDOORPVP, "WORLD: %u non-dbc spell was handled by OutdoorPvP", spellId);
+            TC_LOG_DEBUG("outdoorpvp", "WORLD: %u non-dbc spell was handled by OutdoorPvP", spellId);
         return;
     }
 

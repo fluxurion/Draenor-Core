@@ -70,7 +70,7 @@ Group::~Group()
 {
     if (m_bgGroup)
     {
-        TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Group::~Group: battleground group being deleted.");
+        TC_LOG_DEBUG("bg.battleground", "Group::~Group: battleground group being deleted.");
         if (m_bgGroup->GetBgRaid(ALLIANCE) == this) m_bgGroup->SetBgRaid(ALLIANCE, NULL);
         else if (m_bgGroup->GetBgRaid(HORDE) == this) m_bgGroup->SetBgRaid(HORDE, NULL);
         else TC_LOG_ERROR("server.worldserver", "Group::~Group: battleground group is not linked to the correct battleground.");

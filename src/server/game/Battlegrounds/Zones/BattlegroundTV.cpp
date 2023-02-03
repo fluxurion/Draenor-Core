@@ -76,7 +76,7 @@ void BattlegroundTV::HandleKillPlayer(Player* player, Player* killer)
 
     if (!killer)
     {
-        TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BattlegroundTV: Killer player not found");
+        TC_LOG_ERROR("bg.battleground", "BattlegroundTV: Killer player not found");
         return;
     }
 

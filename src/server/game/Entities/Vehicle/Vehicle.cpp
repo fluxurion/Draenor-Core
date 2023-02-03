@@ -114,12 +114,12 @@ void Vehicle::Uninstall(bool dismount/* = false*/)
     /// @Prevent recursive uninstall call. (Bad script in OnUninstall/OnRemovePassenger/PassengerBoarded hook.)
     if (_status == STATUS_UNINSTALLING)
     {
-        TC_LOG_DEBUG(LOG_FILTER_VEHICLES, "Vehicle GuidLow: %u, Entry: %u attempts to uninstall, but already has STATUS_UNINSTALLING! "
+        TC_LOG_DEBUG("entities.vehicle", "Vehicle GuidLow: %u, Entry: %u attempts to uninstall, but already has STATUS_UNINSTALLING! "
             "Check Uninstall/PassengerBoarded script hooks for errors.", _me->GetGUIDLow(), _me->GetEntry());
         return;
     }
     _status = STATUS_UNINSTALLING;
-    TC_LOG_DEBUG(LOG_FILTER_VEHICLES, "Vehicle::Uninstall Entry: %u, GuidLow: %u", _creatureEntry, _me->GetGUIDLow());
+    TC_LOG_DEBUG("entities.vehicle", "Vehicle::Uninstall Entry: %u, GuidLow: %u", _creatureEntry, _me->GetGUIDLow());
     RemoveAllPassengers(dismount);
 
     if (GetBase() && GetBase()->GetTypeId() == TYPEID_UNIT)
@@ -128,7 +128,7 @@ void Vehicle::Uninstall(bool dismount/* = false*/)
 
 void Vehicle::Reset(bool evading /*= false*/)
 {
-    TC_LOG_DEBUG(LOG_FILTER_VEHICLES, "Vehicle::Reset Entry: %u, GuidLow: %u", _creatureEntry, _me->GetGUIDLow());
+    TC_LOG_DEBUG("entities.vehicle", "Vehicle::Reset Entry: %u, GuidLow: %u", _creatureEntry, _me->GetGUIDLow());
     if (_me->IsPlayer())
     {
         if (_usableSeatNum)
@@ -198,7 +198,7 @@ void Vehicle::ApplyAllImmunities()
 
 void Vehicle::RemoveAllPassengers(bool dismount/* = false*/)
 {
-    TC_LOG_DEBUG(LOG_FILTER_VEHICLES, "Vehicle::RemoveAllPassengers. Entry: %u, GuidLow: %u", _creatureEntry, _me->GetGUIDLow());
+    TC_LOG_DEBUG("entities.vehicle", "Vehicle::RemoveAllPassengers. Entry: %u, GuidLow: %u", _creatureEntry, _me->GetGUIDLow());
 
     // Passengers always cast an aura with SPELL_AURA_CONTROL_VEHICLE on the vehicle
     // We just remove the aura and the unapply handler will make the target leave the vehicle.
@@ -275,12 +275,12 @@ void Vehicle::InstallAccessory(uint32 entry, int8 seatId, bool minion, uint8 typ
     /// @Prevent adding accessories when vehicle is uninstalling. (Bad script in OnUninstall/OnRemovePassenger/PassengerBoarded hook.)
     if (_status == STATUS_UNINSTALLING)
     {
-        TC_LOG_DEBUG(LOG_FILTER_VEHICLES, "Vehicle GuidLow: %u, Entry: %u attempts to install accessory Entry: %u on seat %d with STATUS_UNINSTALLING! "
+        TC_LOG_DEBUG("entities.vehicle", "Vehicle GuidLow: %u, Entry: %u attempts to install accessory Entry: %u on seat %d with STATUS_UNINSTALLING! "
             "Check Uninstall/PassengerBoarded script hooks for errors.", _me->GetGUIDLow(), _me->GetEntry(), entry, (int32)seatId);
         return;
     }
 
-    TC_LOG_DEBUG(LOG_FILTER_VEHICLES, "Vehicle: Installing accessory entry %u on vehicle entry %u (seat:%i)", entry, GetCreatureEntry(), seatId);
+    TC_LOG_DEBUG("entities.vehicle", "Vehicle: Installing accessory entry %u on vehicle entry %u (seat:%i)", entry, GetCreatureEntry(), seatId);
     if (Unit* passenger = GetPassenger(seatId))
     {
         // already installed
@@ -332,7 +332,7 @@ bool Vehicle::AddPassenger(Unit* unit, int8 seatId)
     /// @Prevent adding passengers when vehicle is uninstalling. (Bad script in OnUninstall/OnRemovePassenger/PassengerBoarded hook.)
     if (_status == STATUS_UNINSTALLING)
     {
-        TC_LOG_DEBUG(LOG_FILTER_VEHICLES, "Passenger GuidLow: %u, Entry: %u, attempting to board vehicle GuidLow: %u, Entry: %u during uninstall! SeatId: %i",
+        TC_LOG_DEBUG("entities.vehicle", "Passenger GuidLow: %u, Entry: %u, attempting to board vehicle GuidLow: %u, Entry: %u during uninstall! SeatId: %i",
             unit->GetGUIDLow(), unit->GetEntry(), _me->GetGUIDLow(), _me->GetEntry(), (int32)seatId);
         return false;
     }
@@ -370,7 +370,7 @@ bool Vehicle::AddPassenger(Unit* unit, int8 seatId)
         ASSERT(!seat->second.Passenger);
     }
 
-    TC_LOG_DEBUG(LOG_FILTER_VEHICLES, "Unit %s enter vehicle entry %u id %u dbguid %u seat %d", unit->GetName(), _me->GetEntry(), _vehicleInfo->m_ID, _me->GetGUIDLow(), (int32)seat->first);
+    TC_LOG_DEBUG("entities.vehicle", "Unit %s enter vehicle entry %u id %u dbguid %u seat %d", unit->GetName(), _me->GetEntry(), _vehicleInfo->m_ID, _me->GetGUIDLow(), (int32)seat->first);
 
     seat->second.Passenger = unit->GetGUID();
     if (seat->second.SeatInfo->CanEnterOrExit())
@@ -466,7 +466,7 @@ void Vehicle::RemovePassenger(Unit* unit)
     SeatMap::iterator seat = GetSeatIteratorForPassenger(unit);
     ASSERT(seat != Seats.end());
 
-    TC_LOG_DEBUG(LOG_FILTER_VEHICLES, "Unit %s exit vehicle entry %u id %u dbguid %u seat %d", unit->GetName(), _me->GetEntry(), _vehicleInfo->m_ID, _me->GetGUIDLow(), (int32)seat->first);
+    TC_LOG_DEBUG("entities.vehicle", "Unit %s exit vehicle entry %u id %u dbguid %u seat %d", unit->GetName(), _me->GetEntry(), _vehicleInfo->m_ID, _me->GetGUIDLow(), (int32)seat->first);
 
     seat->second.Passenger = 0;
     if (seat->second.SeatInfo->CanEnterOrExit())
@@ -536,7 +536,7 @@ void Vehicle::Dismiss()
     if (GetBase()->GetTypeId() != TYPEID_UNIT)
         return;
 
-    TC_LOG_DEBUG(LOG_FILTER_VEHICLES, "Vehicle::Dismiss Entry: %u, GuidLow %u", _creatureEntry, _me->GetGUIDLow());
+    TC_LOG_DEBUG("entities.vehicle", "Vehicle::Dismiss Entry: %u, GuidLow %u", _creatureEntry, _me->GetGUIDLow());
     Uninstall();
     GetBase()->ToCreature()->DespawnOrUnsummon();
 }

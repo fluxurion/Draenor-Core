@@ -1339,7 +1339,7 @@ public:
 
 		pet->GetCharmInfo()->SetPetNumber(sObjectMgr->GeneratePetNumber(), true);
 		if (!pet->InitStatsForLevel(player->getLevel()))
-			TC_LOG_INFO(LOG_FILTER_PETS, "Pet Create fail: no init stats for entry %u", entry);
+			TC_LOG_INFO("entities.pet", "Pet Create fail: no init stats for entry %u", entry);
 
 		pet->UpdateAllStats();
 

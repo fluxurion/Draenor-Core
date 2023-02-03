@@ -2709,14 +2709,14 @@ bool AchievementMgr<T>::CanUpdateCriteria(CriteriaEntry const* p_Criteria, Achie
 {
     if (DisableMgr::IsDisabledFor(DISABLE_TYPE_ACHIEVEMENT_CRITERIA, p_Criteria->ID, NULL))
     {
-        sLog->outTrace("achievement", "CanUpdateCriteria: (Id: %u Type %s) Disabled",
+        TC_LOG_TRACE("achievement", "CanUpdateCriteria: (Id: %u Type %s) Disabled",
             p_Criteria->ID, AchievementGlobalMgr::GetCriteriaTypeString(p_Criteria->Type));
         return false;
     }
 
     if (p_Achievement && p_Achievement->InstanceId != -1 && p_ReferencePlayer->GetMapId() != uint32(p_Achievement->InstanceId))
     {
-        sLog->outTrace("achievement", "CanUpdateCriteria: (Id: %u Type %s) Wrong map",
+        TC_LOG_TRACE("achievement", "CanUpdateCriteria: (Id: %u Type %s) Wrong map",
             p_Criteria->ID, AchievementGlobalMgr::GetCriteriaTypeString(p_Criteria->Type));
         return false;
     }
@@ -2724,42 +2724,42 @@ bool AchievementMgr<T>::CanUpdateCriteria(CriteriaEntry const* p_Criteria, Achie
     if (p_Achievement && ((p_Achievement->Faction == ACHIEVEMENT_FACTION_HORDE && p_ReferencePlayer->GetTeam() != HORDE) ||
         (p_Achievement->Faction == ACHIEVEMENT_FACTION_ALLIANCE && p_ReferencePlayer->GetTeam() != ALLIANCE)))
     {
-        sLog->outTrace("achievement", "CanUpdateCriteria: (Id: %u Type %s) Wrong faction",
+        TC_LOG_TRACE("achievement", "CanUpdateCriteria: (Id: %u Type %s) Wrong faction",
             p_Criteria->ID, AchievementGlobalMgr::GetCriteriaTypeString(p_Criteria->Type));
         return false;
     }
 
     if (p_Achievement && ((!(p_Achievement->Flags & ACHIEVEMENT_FLAG_GUILD)) && IsGuild<T>()))
     {
-        sLog->outTrace("achievement", "CanUpdateCriteria: (Id: %u Type %s) Cannot update non-guild achcievement",
+        TC_LOG_TRACE("achievement", "CanUpdateCriteria: (Id: %u Type %s) Cannot update non-guild achcievement",
             p_Criteria->ID, AchievementGlobalMgr::GetCriteriaTypeString(p_Criteria->Type));
         return false;
     }
 
     if (IsCompletedCriteria(p_Criteria))
     {
-        sLog->outTrace("achievement", "CanUpdateCriteria: (Id: %u Type %s) Is Completed",
+        TC_LOG_TRACE("achievement", "CanUpdateCriteria: (Id: %u Type %s) Is Completed",
             p_Criteria->ID, AchievementGlobalMgr::GetCriteriaTypeString(p_Criteria->Type));
         return false;
     }
 
     if (!RequirementsSatisfied(p_Criteria, p_MiscValue1, p_MiscValue2, p_MiscValue3, p_Unit, p_ReferencePlayer))
     {
-        sLog->outTrace("achievement", "CanUpdateCriteria: (Id: %u Type %s) Requirements not satisfied",
+        TC_LOG_TRACE("achievement", "CanUpdateCriteria: (Id: %u Type %s) Requirements not satisfied",
             p_Criteria->ID, AchievementGlobalMgr::GetCriteriaTypeString(p_Criteria->Type));
         return false;
     }
 
     if (!AdditionalRequirementsSatisfied(p_Criteria, p_MiscValue1, p_MiscValue2, p_Unit, p_ReferencePlayer))
     {
-        sLog->outTrace("achievement", "CanUpdateCriteria: (Id: %u Type %s) Additional requirements not satisfied",
+        TC_LOG_TRACE("achievement", "CanUpdateCriteria: (Id: %u Type %s) Additional requirements not satisfied",
             p_Criteria->ID, AchievementGlobalMgr::GetCriteriaTypeString(p_Criteria->Type));
         return false;
     }
 
     if (!ConditionsSatisfied(p_Criteria, p_ReferencePlayer))
     {
-        sLog->outTrace("achievement", "CanUpdateCriteria: (Id: %u Type %s) Conditions not satisfied",
+        TC_LOG_TRACE("achievement", "CanUpdateCriteria: (Id: %u Type %s) Conditions not satisfied",
             p_Criteria->ID, AchievementGlobalMgr::GetCriteriaTypeString(p_Criteria->Type));
         return false;
     }

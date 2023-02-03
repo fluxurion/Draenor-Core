@@ -161,7 +161,7 @@ void BattlegroundDS::HandleKillPlayer(Player* player, Player* killer)
 
     if (!killer)
     {
-        TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BattlegroundDS: Killer player not found");
+        TC_LOG_ERROR("bg.battleground", "BattlegroundDS: Killer player not found");
         return;
     }
 

@@ -806,7 +806,7 @@ void WorldSession::SendListInventory(uint64 p_VendorGUID, bool p_FunCustomPlayer
             {
                 if (!sConditionMgr->IsObjectMeetingVendorItemConditions(l_Vendor->GetEntry(), l_VendorItem->item, m_Player, l_Vendor))
                 {
-                    TC_LOG_DEBUG(LOG_FILTER_CONDITIONSYS, "SendListInventory: conditions not met for creature entry %u item %u", l_Vendor->GetEntry(), l_VendorItem->item);
+                    TC_LOG_DEBUG("condition", "SendListInventory: conditions not met for creature entry %u item %u", l_Vendor->GetEntry(), l_VendorItem->item);
                     continue;
                 }
 

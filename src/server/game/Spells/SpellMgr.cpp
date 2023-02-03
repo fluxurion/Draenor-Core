@@ -1906,7 +1906,7 @@ void SpellMgr::LoadSpellTargetPositions()
     if (found)
     {
     if (!sSpellMgr->GetSpellTargetPosition(i))
-    TC_LOG_DEBUG(LOG_FILTER_SPELLS_AURAS, "Spell (ID: %u) does not have record in `spell_target_position`", i);
+    TC_LOG_DEBUG("spells", "Spell (ID: %u) does not have record in `spell_target_position`", i);
     }
     }*/
 
@@ -2435,7 +2435,7 @@ void SpellMgr::LoadSpellPetAuras()
                  spellInfo->Effects[eff].Effect == SPELL_EFFECT_APPLY_AURA_ON_PET) &&
                 spellInfo->Effects[eff].ApplyAuraName != SPELL_AURA_DUMMY)
             {
-                TC_LOG_ERROR(LOG_FILTER_SPELLS_AURAS, "Spell %u listed in `spell_pet_auras` does not have dummy aura or dummy effect", spell);
+                TC_LOG_ERROR("spells", "Spell %u listed in `spell_pet_auras` does not have dummy aura or dummy effect", spell);
                 continue;
             }
 
@@ -8276,7 +8276,7 @@ void SpellMgr::LoadSpellAurasNotSave()
         SpellInfo const* l_SpellInfo = GetSpellInfo(l_SpellID);
         if (!l_SpellInfo)
         {
-            TC_LOG_ERROR(LOG_FILTER_SQL, "spellId %u in `spell_aura_not_save` table is not found in dbc, skipped", l_SpellID);
+            TC_LOG_ERROR("sql.sql", "spellId %u in `spell_aura_not_save` table is not found in dbc, skipped", l_SpellID);
             continue;
         }
 

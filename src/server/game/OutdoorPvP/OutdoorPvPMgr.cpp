@@ -15,12 +15,12 @@
 OutdoorPvPMgr::OutdoorPvPMgr()
 {
     m_UpdateTimer = 0;
-    //TC_LOG_DEBUG(LOG_FILTER_OUTDOORPVP, "Instantiating OutdoorPvPMgr");
+    //TC_LOG_DEBUG("outdoorpvp", "Instantiating OutdoorPvPMgr");
 }
 
 void OutdoorPvPMgr::Die()
 {
-    //TC_LOG_DEBUG(LOG_FILTER_OUTDOORPVP, "Deleting OutdoorPvPMgr");
+    //TC_LOG_DEBUG("outdoorpvp", "Deleting OutdoorPvPMgr");
     for (OutdoorPvPSet::iterator itr = m_OutdoorPvPSet.begin(); itr != m_OutdoorPvPSet.end(); ++itr)
         delete *itr;
 
@@ -82,13 +82,13 @@ void OutdoorPvPMgr::InitOutdoorPvP()
         pvp = sScriptMgr->CreateOutdoorPvP(iter->second);
         if (!pvp)
         {
-            TC_LOG_ERROR(LOG_FILTER_OUTDOORPVP, "Could not initialize OutdoorPvP object for type ID %u; got NULL pointer from script.", uint32(i));
+            TC_LOG_ERROR("outdoorpvp", "Could not initialize OutdoorPvP object for type ID %u; got NULL pointer from script.", uint32(i));
             continue;
         }
 
         if (!pvp->SetupOutdoorPvP())
         {
-            TC_LOG_ERROR(LOG_FILTER_OUTDOORPVP, "Could not initialize OutdoorPvP object for type ID %u; SetupOutdoorPvP failed.", uint32(i));
+            TC_LOG_ERROR("outdoorpvp", "Could not initialize OutdoorPvP object for type ID %u; SetupOutdoorPvP failed.", uint32(i));
             delete pvp;
             continue;
         }

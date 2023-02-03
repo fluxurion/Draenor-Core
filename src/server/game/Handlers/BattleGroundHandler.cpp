@@ -220,7 +220,7 @@ void WorldSession::HandleBattlemasterJoinOpcode(WorldPacket& p_Packet)
             MS::Battlegrounds::PacketFactory::Status(&l_Data, l_BG, m_Player, l_QueueSlot, STATUS_WAIT_QUEUE, l_AverageTime, l_GroupQueueInfo->m_JoinTime, l_GroupQueueInfo->m_ArenaType, false);
             SendPacket(&l_Data);
 
-            TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Battleground: player joined queue for bg queue type %u bg type %u: GUID %u, NAME %s", l_BGQueueTypeID, l_BGTypeID, m_Player->GetGUIDLow(), m_Player->GetName());
+            TC_LOG_DEBUG("bg.battleground", "Battleground: player joined queue for bg queue type %u bg type %u: GUID %u, NAME %s", l_BGQueueTypeID, l_BGTypeID, m_Player->GetGUIDLow(), m_Player->GetName());
         }
     }
     else
@@ -241,7 +241,7 @@ void WorldSession::HandleBattlemasterJoinOpcode(WorldPacket& p_Packet)
 
         if (!l_Error && !l_InterRealmEnable)
         {
-            TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Battleground: the following players are joining as group:");
+            TC_LOG_DEBUG("bg.battleground", "Battleground: the following players are joining as group:");
             ginfo = l_Scheduler.AddGroup(m_Player, l_Group, l_BGQueueTypeID, l_BlacklistMap, l_BracketEntry, ArenaType::None, false, 0, 0, false);
             avgTime = l_InvitationsMgr.GetAverageQueueWaitTime(ginfo, l_BracketEntry->m_Id);
         }
@@ -273,11 +273,11 @@ void WorldSession::HandleBattlemasterJoinOpcode(WorldPacket& p_Packet)
                 MS::Battlegrounds::PacketFactory::Status(&l_Data, l_BG, l_Member, l_QueueSlot, STATUS_WAIT_QUEUE, avgTime, ginfo->m_JoinTime, ginfo->m_ArenaType, false);
                 l_Member->GetSession()->SendPacket(&l_Data);
 
-                TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Battleground: player joined queue for bg queue type %u bg type %u: GUID %u, NAME %s", l_BGQueueTypeID, l_BGTypeID, l_Member->GetGUIDLow(), l_Member->GetName());
+                TC_LOG_DEBUG("bg.battleground", "Battleground: player joined queue for bg queue type %u bg type %u: GUID %u, NAME %s", l_BGQueueTypeID, l_BGTypeID, l_Member->GetGUIDLow(), l_Member->GetName());
             }
         }
 
-        TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Battleground: group end");
+        TC_LOG_DEBUG("bg.battleground", "Battleground: group end");
     }
 
     if (l_Error || !l_InterRealmEnable)
@@ -315,7 +315,7 @@ void WorldSession::HandleBattlefieldListOpcode(WorldPacket& p_Packet)
 
     if (!l_BattleMasterListEntry)
     {
-        TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "BattlegroundHandler: invalid bgtype (%u) with player (Name: %s, GUID: %u) received.", l_ListID, m_Player->GetName(), m_Player->GetGUIDLow());
+        TC_LOG_DEBUG("bg.battleground", "BattlegroundHandler: invalid bgtype (%u) with player (Name: %s, GUID: %u) received.", l_ListID, m_Player->GetName(), m_Player->GetGUIDLow());
         return;
     }
 
@@ -511,7 +511,7 @@ void WorldSession::HandleBattleFieldPortOpcode(WorldPacket& p_Packet)
 
             l_AcceptedInvite = 0;
 
-            TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Battleground: player %s (%u) has a deserter debuff, do not port him to battleground!", m_Player->GetName(), m_Player->GetGUIDLow());
+            TC_LOG_DEBUG("bg.battleground", "Battleground: player %s (%u) has a deserter debuff, do not port him to battleground!", m_Player->GetName(), m_Player->GetGUIDLow());
         }
         /// If player don't match battleground max level, then do not allow him to enter! (this might happen when player leveled up during his waiting in queue
         if (m_Player->getLevel() > l_BG->GetMaxLevel())
@@ -565,7 +565,7 @@ void WorldSession::HandleBattleFieldPortOpcode(WorldPacket& p_Packet)
 
             /// Add only in HandleMoveWorldPortAck()
             /// Bg->AddPlayer(_player, team);
-            TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Battleground: player %s (%u) joined battle for bg %u, bgtype %u, queue type %u.", m_Player->GetName(), m_Player->GetGUIDLow(), l_BG->GetInstanceID(), l_BG->GetTypeID(), l_BGQueueTypeID);
+            TC_LOG_DEBUG("bg.battleground", "Battleground: player %s (%u) joined battle for bg %u, bgtype %u, queue type %u.", m_Player->GetName(), m_Player->GetGUIDLow(), l_BG->GetInstanceID(), l_BG->GetTypeID(), l_BGQueueTypeID);
             break;
 
         /// Leave queue
@@ -832,7 +832,7 @@ void WorldSession::HandleBattlemasterJoinArena(WorldPacket& p_Packet)
     {
         if (!l_InterRealmEnable)
         {
-            TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Battleground: leader %s queued with matchmaker rating %u for type %u", m_Player->GetName(), l_MatchmakerRating, l_ArenaType);
+            TC_LOG_DEBUG("bg.battleground", "Battleground: leader %s queued with matchmaker rating %u for type %u", m_Player->GetName(), l_MatchmakerRating, l_ArenaType);
 
             l_GroupQueueInfo = l_Scheduler.AddGroup(m_Player, l_Group, l_BGQueueTypeID, nullptr, l_BracketEntry, l_ArenaType, true, l_ArenaRating, l_MatchmakerRating, false);
             l_AverageTime = l_InvitationsMgr.GetAverageQueueWaitTime(l_GroupQueueInfo, l_BracketEntry->m_Id);
@@ -875,7 +875,7 @@ void WorldSession::HandleBattlemasterJoinArena(WorldPacket& p_Packet)
 
             l_Member->GetSession()->SendPacket(&l_Data);
 
-            TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Battleground: player joined queue for arena as group bg queue type %u bg type %u: GUID %u, NAME %s", l_BGQueueTypeID, l_BGTypeId, l_Member->GetGUIDLow(), l_Member->GetName());
+            TC_LOG_DEBUG("bg.battleground", "Battleground: player joined queue for arena as group bg queue type %u bg type %u: GUID %u, NAME %s", l_BGQueueTypeID, l_BGTypeId, l_Member->GetGUIDLow(), l_Member->GetName());
         }
     }
 
@@ -1215,7 +1215,7 @@ void WorldSession::HandleBattlemasterJoinRated(WorldPacket & /*p_Packet*/)
         MS::Battlegrounds::PacketFactory::Status(&l_Data, l_Battleground, l_Member, l_QueueSlot, STATUS_WAIT_QUEUE, l_AvgTime, l_GroupQueue->m_JoinTime, l_GroupQueue->m_ArenaType, false);
         l_Member->GetSession()->SendPacket(&l_Data);
 
-        TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Battleground: player joined queue for rated battleground as group bg queue type %u bg type %u: GUID %u, NAME %s", l_BgQueueTypeId, l_BgTypeId, l_Member->GetGUIDLow(), l_Member->GetName());
+        TC_LOG_DEBUG("bg.battleground", "Battleground: player joined queue for rated battleground as group bg queue type %u bg type %u: GUID %u, NAME %s", l_BgQueueTypeId, l_BgTypeId, l_Member->GetGUIDLow(), l_Member->GetName());
     }
 #ifndef CROSS
 

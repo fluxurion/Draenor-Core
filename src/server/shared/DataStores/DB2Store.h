@@ -271,7 +271,7 @@ template<class T> class DB2Storage : public DB2StorageBase
                     /// Check if SQL index pos is valid
                     if (int32(l_SQLQueryResult->GetFieldCount() - 1) < p_SQL->m_SQLIndexPosition)
                     {
-                        SF_LOG_ERROR("server.worldserver", "Invalid index pos for db2:'%s'", p_SQL->m_SQLTableName.c_str());
+                        TC_LOG_ERROR("server.worldserver", "Invalid index pos for db2:'%s'", p_SQL->m_SQLTableName.c_str());
                         return false;
                     }
                 }
@@ -389,13 +389,13 @@ template<class T> class DB2Storage : public DB2StorageBase
                             }
                             else
                             {
-                                SF_LOG_ERROR("server.worldserver", "Incorrect SQL format string '%s' at char %d", p_SQL->m_SQLTableName.c_str(), l_ColumnNumber);
+                                TC_LOG_ERROR("server.worldserver", "Incorrect SQL format string '%s' at char %d", p_SQL->m_SQLTableName.c_str(), l_ColumnNumber);
                                 return false;
                             }
                         }
                         if (l_SQLColumnNumber != (l_SQLQueryResult->GetFieldCount() - 1))
                         {
-                            SF_LOG_ERROR("server.worldserver", "SQL and DB2 format strings are not matching for table: '%s'", p_SQL->m_SQLTableName.c_str());
+                            TC_LOG_ERROR("server.worldserver", "SQL and DB2 format strings are not matching for table: '%s'", p_SQL->m_SQLTableName.c_str());
                             return false;
                         }
 
@@ -427,7 +427,7 @@ template<class T> class DB2Storage : public DB2StorageBase
                     /// All locales (but not us), Index & BuildVerified
                     if (l_SQLQueryResult->GetFieldCount() != ((l_StringCount * (MAX_LOCALES - 1)) + 2))
                     {
-                        SF_LOG_ERROR("server.worldserver", "SQL format invalid for table : '%s_locale'", p_SQL->m_SQLTableName.c_str());
+                        TC_LOG_ERROR("server.worldserver", "SQL format invalid for table : '%s_locale'", p_SQL->m_SQLTableName.c_str());
                         return false;
                     }
 

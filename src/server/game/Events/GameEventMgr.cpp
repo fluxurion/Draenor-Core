@@ -948,7 +948,7 @@ void GameEventMgr::StartArenaSeason()
 
     if (!result)
     {
-        TC_LOG_ERROR(LOG_FILTER_GAMEEVENTS, "ArenaSeason (%u) must be an existant Arena Season", season);
+        TC_LOG_ERROR("gameevent", "ArenaSeason (%u) must be an existant Arena Season", season);
         return;
     }
 
@@ -957,12 +957,12 @@ void GameEventMgr::StartArenaSeason()
 
     if (eventId >= mGameEvent.size())
     {
-        TC_LOG_ERROR(LOG_FILTER_GAMEEVENTS, "EventEntry %u for ArenaSeason (%u) does not exists", eventId, season);
+        TC_LOG_ERROR("gameevent", "EventEntry %u for ArenaSeason (%u) does not exists", eventId, season);
         return;
     }
 
     StartEvent(eventId, true);
-    TC_LOG_INFO(LOG_FILTER_GAMEEVENTS, "Arena Season %u started...", season);
+    TC_LOG_INFO("gameevent", "Arena Season %u started...", season);
 
 }
 
@@ -1040,13 +1040,13 @@ uint32 GameEventMgr::Update()                               // return the next e
     for (std::set<uint16>::iterator itr = deactivate.begin(); itr != deactivate.end(); ++itr)
         StopEvent(*itr);
 
-    TC_LOG_INFO(LOG_FILTER_GAMEEVENTS, "Next game event check in %u seconds.", nextEventDelay + 1);
+    TC_LOG_INFO("gameevent", "Next game event check in %u seconds.", nextEventDelay + 1);
     return (nextEventDelay + 1) * IN_MILLISECONDS;           // Add 1 second to be sure event has started/stopped at next call
 }
 
 void GameEventMgr::UnApplyEvent(uint16 event_id)
 {
-    TC_LOG_INFO(LOG_FILTER_GAMEEVENTS, "GameEvent %u \"%s\" removed.", event_id, mGameEvent[event_id].description.c_str());
+    TC_LOG_INFO("gameevent", "GameEvent %u \"%s\" removed.", event_id, mGameEvent[event_id].description.c_str());
     //! Run SAI scripts with SMART_EVENT_GAME_EVENT_END
     RunSmartAIScripts(event_id, false);
     // un-spawn positive event tagged objects
@@ -1078,7 +1078,7 @@ void GameEventMgr::ApplyNewEvent(uint16 event_id)
             break;
     }
 
-    TC_LOG_INFO(LOG_FILTER_GAMEEVENTS, "GameEvent %u \"%s\" started.", event_id, mGameEvent[event_id].description.c_str());
+    TC_LOG_INFO("gameevent", "GameEvent %u \"%s\" started.", event_id, mGameEvent[event_id].description.c_str());
 
     //! Run SAI scripts with SMART_EVENT_GAME_EVENT_END
     RunSmartAIScripts(event_id, true);
@@ -1165,7 +1165,7 @@ void GameEventMgr::GameEventSpawn(int16 event_id)
 
     if (internal_event_id < 0 || internal_event_id >= int32(mGameEventCreatureGuids.size()))
     {
-        TC_LOG_ERROR(LOG_FILTER_GAMEEVENTS, "GameEventMgr::GameEventSpawn attempt access to out of range mGameEventCreatureGuids element %i (size: %zu)",
+        TC_LOG_ERROR("gameevent", "GameEventMgr::GameEventSpawn attempt access to out of range mGameEventCreatureGuids element %i (size: %zu)",
                 internal_event_id, mGameEventCreatureGuids.size());
             internal_event_id, mGameEventCreatureGuids.size();
         return;
@@ -1193,7 +1193,7 @@ void GameEventMgr::GameEventSpawn(int16 event_id)
 
     if (internal_event_id < 0 || internal_event_id >= int32(mGameEventGameobjectGuids.size()))
     {
-        TC_LOG_ERROR(LOG_FILTER_GAMEEVENTS, "GameEventMgr::GameEventSpawn attempt access to out of range mGameEventGameobjectGuids element %i (size: %zu)",
+        TC_LOG_ERROR("gameevent", "GameEventMgr::GameEventSpawn attempt access to out of range mGameEventGameobjectGuids element %i (size: %zu)",
             internal_event_id, mGameEventGameobjectGuids.size());
         return;
     }
@@ -1226,7 +1226,7 @@ void GameEventMgr::GameEventSpawn(int16 event_id)
 
     if (internal_event_id < 0 || internal_event_id >= int32(mGameEventPoolIds.size()))
     {
-        TC_LOG_ERROR(LOG_FILTER_GAMEEVENTS, "GameEventMgr::GameEventSpawn attempt access to out of range mGameEventPoolIds element %u (size: %zu)",
+        TC_LOG_ERROR("gameevent", "GameEventMgr::GameEventSpawn attempt access to out of range mGameEventPoolIds element %u (size: %zu)",
             internal_event_id, mGameEventPoolIds.size());
         return;
     }
@@ -1241,7 +1241,7 @@ void GameEventMgr::GameEventUnspawn(int16 event_id)
 
     if (internal_event_id < 0 || internal_event_id >= int32(mGameEventCreatureGuids.size()))
     {
-        TC_LOG_ERROR(LOG_FILTER_GAMEEVENTS, "GameEventMgr::GameEventUnspawn attempt access to out of range mGameEventCreatureGuids element %i (size: %zu)",
+        TC_LOG_ERROR("gameevent", "GameEventMgr::GameEventUnspawn attempt access to out of range mGameEventCreatureGuids element %i (size: %zu)",
             internal_event_id, mGameEventCreatureGuids.size());
         return;
     }
@@ -1263,7 +1263,7 @@ void GameEventMgr::GameEventUnspawn(int16 event_id)
 
     if (internal_event_id < 0 || internal_event_id >= int32(mGameEventGameobjectGuids.size()))
     {
-        TC_LOG_ERROR(LOG_FILTER_GAMEEVENTS, "GameEventMgr::GameEventUnspawn attempt access to out of range mGameEventGameobjectGuids element %i (size: %zu)",
+        TC_LOG_ERROR("gameevent", "GameEventMgr::GameEventUnspawn attempt access to out of range mGameEventGameobjectGuids element %i (size: %zu)",
             internal_event_id, mGameEventGameobjectGuids.size());
         return;
     }
@@ -1284,7 +1284,7 @@ void GameEventMgr::GameEventUnspawn(int16 event_id)
     }
     if (internal_event_id < 0 || internal_event_id >= int32(mGameEventPoolIds.size()))
     {
-        TC_LOG_ERROR(LOG_FILTER_GAMEEVENTS, "GameEventMgr::GameEventUnspawn attempt access to out of range mGameEventPoolIds element %u (size: %zu)", internal_event_id, mGameEventPoolIds.size());
+        TC_LOG_ERROR("gameevent", "GameEventMgr::GameEventUnspawn attempt access to out of range mGameEventPoolIds element %u (size: %zu)", internal_event_id, mGameEventPoolIds.size());
         return;
     }
 

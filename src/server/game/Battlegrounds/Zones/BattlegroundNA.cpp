@@ -76,7 +76,7 @@ void BattlegroundNA::HandleKillPlayer(Player* player, Player* killer)
 
     if (!killer)
     {
-        TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BattlegroundNA: Killer player not found");
+        TC_LOG_ERROR("bg.battleground", "BattlegroundNA: Killer player not found");
         return;
     }
 

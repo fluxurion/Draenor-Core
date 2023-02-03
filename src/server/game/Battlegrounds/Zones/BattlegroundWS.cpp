@@ -235,12 +235,12 @@ void BattlegroundWS::RespawnFlag(uint32 Team, bool captured)
 {
     if (Team == ALLIANCE)
     {
-        TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Respawn Alliance flag");
+        TC_LOG_DEBUG("bg.battleground", "Respawn Alliance flag");
         _flagState[BG_TEAM_ALLIANCE] = BG_WS_FLAG_STATE_ON_BASE;
     }
     else
     {
-        TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Respawn Horde flag");
+        TC_LOG_DEBUG("bg.battleground", "Respawn Horde flag");
         _flagState[BG_TEAM_HORDE] = BG_WS_FLAG_STATE_ON_BASE;
     }
 
@@ -277,7 +277,7 @@ void BattlegroundWS::RespawnFlagAfterDrop(uint32 team)
     if (GameObject* obj = GetBgMap()->GetGameObject(GetDroppedFlagGUID(team)))
         obj->Delete();
     else
-        TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "unknown droped flag bg, guid: %u", GUID_LOPART(GetDroppedFlagGUID(team)));
+        TC_LOG_ERROR("bg.battleground", "unknown droped flag bg, guid: %u", GUID_LOPART(GetDroppedFlagGUID(team)));
 
     SetDroppedFlagGUID(0, team);
     _bothFlagsKept = false;
@@ -583,7 +583,7 @@ void BattlegroundWS::RemovePlayer(Player* player, uint64 guid, uint32 /*team*/)
     {
         if (!player)
         {
-            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BattlegroundWS: Removing offline player who has the FLAG!!");
+            TC_LOG_ERROR("bg.battleground", "BattlegroundWS: Removing offline player who has the FLAG!!");
             this->SetAllianceFlagPicker(0);
             this->RespawnFlag(ALLIANCE, false);
         }
@@ -594,7 +594,7 @@ void BattlegroundWS::RemovePlayer(Player* player, uint64 guid, uint32 /*team*/)
     {
         if (!player)
         {
-            TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BattlegroundWS: Removing offline player who has the FLAG!!");
+            TC_LOG_ERROR("bg.battleground", "BattlegroundWS: Removing offline player who has the FLAG!!");
             this->SetHordeFlagPicker(0);
             this->RespawnFlag(HORDE, false);
         }
@@ -715,7 +715,7 @@ bool BattlegroundWS::SetupBattleground()
         return false;
     }
 
-    TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "BatteGroundWS: BG objects and spirit guides spawned");
+    TC_LOG_DEBUG("bg.battleground", "BatteGroundWS: BG objects and spirit guides spawned");
 
     return true;
 }

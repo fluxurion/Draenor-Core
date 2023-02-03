@@ -73,7 +73,7 @@ void WaypointMovementGenerator<Creature>::OnArrived(Creature* creature)
 
     if (i_path->at(i_currentNode)->event_id && urand(0, 99) < i_path->at(i_currentNode)->event_chance)
     {
-        //TC_LOG_DEBUG("maps"CRIPTS, "Creature movement start script %u at point %u for %llu.", i_path->at(i_currentNode)->event_id, i_currentNode, creature->GetGUID());
+        //TC_LOG_DEBUG("mapscripts", "Creature movement start script %u at point %u for %llu.", i_path->at(i_currentNode)->event_id, i_currentNode, creature->GetGUID());
         creature->ClearUnitState(UNIT_STATE_ROAMING_MOVE);
         creature->GetMap()->ScriptsStart(sWaypointScripts, i_path->at(i_currentNode)->event_id, creature, NULL);
     }
@@ -434,7 +434,7 @@ void FlightPathMovementGenerator::DoEventIfAny(Player* player, TaxiPathNodeEntry
 {
     if (uint32 eventid = departure ? node->DepartureEventID : node->ArrivalEventID)
     {
-        TC_LOG_DEBUG("maps"CRIPTS, "Taxi %s event %u of node %u of path %u for player %s", departure ? "departure" : "arrival", eventid, node->NodeIndex, node->PathID, player->GetName());
+        TC_LOG_DEBUG("mapscripts", "Taxi %s event %u of node %u of path %u for player %s", departure ? "departure" : "arrival", eventid, node->NodeIndex, node->PathID, player->GetName());
         player->GetMap()->ScriptsStart(sEventScripts, eventid, player, player);
     }
 }

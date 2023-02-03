@@ -826,7 +826,7 @@ void WorldSession::ReadMovementInfo(WorldPacket& p_Data, MovementInfo* p_Movemen
         { \
             if (check) \
             { \
-                TC_LOG_DEBUG(LOG_FILTER_UNITS, "WorldSession::ReadMovementInfo: Violation of MovementFlags found (%s). " \
+                TC_LOG_DEBUG("entities.unit", "WorldSession::ReadMovementInfo: Violation of MovementFlags found (%s). " \
                     "MovementFlags: %u, MovementFlags2: %u for player GUID: %u. Mask %u will be removed.", \
                     STRINGIZE(check), p_MovementInformation->GetMovementFlags(), p_MovementInformation->GetExtraMovementFlags(), GetPlayer()->GetGUIDLow(), maskToRemove); \
                 p_MovementInformation->RemoveMovementFlag((maskToRemove)); \
