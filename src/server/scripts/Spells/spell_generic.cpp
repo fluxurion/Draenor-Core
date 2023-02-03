@@ -77,12 +77,6 @@ public:
 
 		void HandleLogIn(SpellEffIndex /*effIndex*/)
 		{
-			// Reset Checks
-			if (Unit* caster = GetCaster())
-			{
-				caster->m_cloudStacks = 0;
-			}
-
 			if (Player* player = GetCaster()->ToPlayer())
 			{
 				// Vengeance of Elune

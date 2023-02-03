@@ -3407,3 +3407,60 @@ bool Group::leaderInstanceCheckFail()
 
     return false;
 }
+
+void Group::UpdateGuildAchievementCriteria(AchievementCriteriaTypes type, uint32 miscValue1, uint32 miscValue2, uint32 miscValue3, Unit* pUnit, WorldObject* pRewardSource)
+{
+    // We will update criteria for each guild in grouplist but only once
+    std::list<uint32> guildList;
+    for (GroupReference* itr = GetFirstMember(); itr != NULL; itr = itr->next())
+    {
+        if (Player* pPlayer = itr->getSource())
+        {
+            // Check for reward
+            if (pRewardSource)
+            {
+                if (!pPlayer->IsAtGroupRewardDistance(pRewardSource))
+                    continue;
+
+                if (!pPlayer->isAlive())
+                    continue;
+            }
+
+            uint32 guildId = pPlayer->GetGuildId();
+
+            if (guildId == 0)
+                continue;
+
+            if (!guildList.empty())
+            {
+                // if we already have any guild in list
+                // then check new guild
+                bool bUnique = true;
+                for (std::list<uint32>::const_iterator itr2 = guildList.begin(); itr2 != guildList.end(); ++itr2)
+                {
+                    if ((*itr2) == guildId)
+                    {
+                        bUnique = false;
+                        break;
+                    }
+                }
+                // If we have already rewarded current guild then continue
+                // else update criteria 
+                if (bUnique && guildId)
+                {
+                    guildList.push_back(guildId);
+                    //if (Guild* pGuild = pPlayer->GetGuildId(guildId))
+                        //pGuild->GetAchievementMgr().UpdateAchievementCriteria(type, miscValue1, miscValue2, miscValue3, pUnit, pPlayer);
+                }
+            }
+            else
+            {
+                // If that's first guild in list
+                // then add to the list and update criteria
+                guildList.push_back(guildId);
+                //if (Guild* pGuild = sGuildMgr->GetGuildById(guildId))
+                    //pGuild->GetAchievementMgr().UpdateAchievementCriteria(type, miscValue1, miscValue2, miscValue3, pUnit, pPlayer);
+            }
+        }
+    }
+}

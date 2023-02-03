@@ -101,7 +101,7 @@ uint32 gOnlineGameMaster = 0;
 
 std::atomic<bool> World::m_stopEvent(false);
 uint8 World::m_ExitCode = SHUTDOWN_EXIT_CODE;
-ACE_Atomic_Op<ACE_Thread_Mutex, uint32> World::m_worldLoopCounter = 0;
+std::atomic<unsigned int> World::m_worldLoopCounter(0);
 
 float World::m_MaxVisibleDistanceOnContinents = DEFAULT_VISIBILITY_DISTANCE;
 float World::m_MaxVisibleDistanceInInstances  = DEFAULT_VISIBILITY_INSTANCE;
@@ -2333,7 +2333,9 @@ void World::SetInitialWorldSettings()
         m_LastAccountLogId = l_Result->Fetch()[0].GetUInt64();
 
     TC_LOG_INFO("server.worldserver", "World initialized in %u minutes %u seconds", (startupDuration / 60000), ((startupDuration % 60000) / 1000));
-    sLog->EnableDBAppenders();
+
+    if (uint32 realmId = sConfigMgr->GetIntDefault("RealmID", 0)) // 0 reserved for auth
+        sLog->SetRealmId(realmId);
 
     sWildBattlePetMgr->PopulateAll();
 }

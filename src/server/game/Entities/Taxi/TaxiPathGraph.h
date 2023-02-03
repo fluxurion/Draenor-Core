@@ -9,9 +9,9 @@
 #ifndef TAXIPATHGRAPH_H_INCLUDED
 # define TAXIPATHGRAPH_H_INCLUDED
 
-# include "Object.h"
-# include "Define.h"
-# include <boost/graph/adjacency_list.hpp>
+#include "Object.h"
+#include "Define.h"
+#include "boost/graph/adjacency_list.hpp"
 
 class Player;
 struct TaxiNodesEntry;

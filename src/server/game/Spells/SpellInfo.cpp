@@ -4186,7 +4186,6 @@ SpellEffectEntry const* SpellEntry::GetSpellEffect(uint32 eff, uint32 difficulty
     return GetSpellEffectEntry(Id, eff, difficulty);
 }
 
-
 void SpellInfo::_UnloadImplicitTargetConditionLists()
 {
     // find the same instances of ConditionContainer and delete them.

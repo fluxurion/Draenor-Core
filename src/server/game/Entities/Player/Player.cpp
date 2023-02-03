@@ -246,31 +246,6 @@ PreparedStatement* PetQueryHolder::GenerateFirstLoadStatement(uint32 p_PetEntry,
 #else
 # define RealmDatabase CharacterDatabase
 #endif
-std::string PlayerTaxi::SaveTaxiDestinationsToString()
-{
-    if (m_TaxiDestinations.empty())
-        return "";
-
-    std::ostringstream ss;
-
-    for (size_t i=0; i < m_TaxiDestinations.size(); ++i)
-        ss << m_TaxiDestinations[i] << ' ';
-
-    return ss.str();
-}
-
-uint32 PlayerTaxi::GetCurrentTaxiPath() const
-{
-    if (m_TaxiDestinations.size() < 2)
-        return 0;
-
-    uint32 path;
-    uint32 cost;
-
-    sObjectMgr->GetTaxiPath(m_TaxiDestinations[0], m_TaxiDestinations[1], path, cost);
-
-    return path;
-}
 
 //== TradeData =================================================
 
@@ -620,6 +595,18 @@ void KillRewarder::Reward()
         if (_killer->isHonorOrXPTarget(_victim))
             _killer->CastSpell(_killer, 113853, true); // Blazing Speed aurastate
 
+    // 5. Credit instance encounter.
+    // 6. Update guild achievements.
+    if (Creature* victim = _victim->ToCreature())
+    {
+        if (victim->IsDungeonBoss())
+            if (InstanceScript* instance = _victim->GetInstanceScript())
+                instance->UpdateEncounterState(ENCOUNTER_CREDIT_KILL_CREATURE, _victim->GetEntry(), _victim);
+
+        if (uint32 guildId = victim->GetMap()->GetOwnerGuildId())
+            if (Guild* guild = sGuildMgr->GetGuildById(guildId))
+                guild->GetAchievementMgr().UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_KILL_CREATURE, victim->GetEntry(), 1, 0, victim, _killer);
+    }
 }
 
 // == Player ====================================================

@@ -250,11 +250,16 @@ void PhaseMgr::SetCustomPhase(uint32 const phaseMask)
 
 void PhaseData::GetActivePhases(std::set<uint32>& phases) const
 {
-    for (PhaseInfoContainer::const_iterator itr = spellPhaseInfo.begin(); itr != spellPhaseInfo.end(); ++itr)
-        for (auto phase = itr->second.begin(); phase != itr->second.end(); ++phase)
-            if (phase->phaseId)
-                phases.insert(phase->phaseId);
-
+	// Phases from Auras.
+	if (!spellPhaseInfo.empty())
+        for (PhaseInfoContainer::const_iterator phaseInfoContainer = spellPhaseInfo.begin(); phaseInfoContainer != spellPhaseInfo.end(); ++phaseInfoContainer)
+        {
+            for (auto itr = phaseInfoContainer->second.begin(); itr != phaseInfoContainer->second.end(); ++itr)
+            {
+                if (itr->phaseId)
+                    phases.insert(itr->phaseId);
+            }
+        }
 
 	// Phase definitions from DB.
 	if (!activePhaseDefinitions.empty())
@@ -300,13 +305,16 @@ void PhaseData::SendPhaseshiftToPlayer()
 	std::set<uint32> l_TerrainSwaps;
 	std::set<uint32> l_InactiveTerrainSwap;
 
-	for (PhaseInfoContainer::const_iterator l_IT = spellPhaseInfo.begin(); l_IT != spellPhaseInfo.end(); ++l_IT)
+	for (PhaseInfoContainer::const_iterator phaseInfoContainer = spellPhaseInfo.begin(); phaseInfoContainer != spellPhaseInfo.end(); ++phaseInfoContainer)
 	{
-		//if (l_IT->second.terrainswapmap)
-			//l_TerrainSwaps.insert(l_IT->second.terrainswapmap);
+        for (auto itr = phaseInfoContainer->second.begin(); itr != phaseInfoContainer->second.end(); ++itr)
+        {
+            if (itr->terrainswapmap)
+                l_TerrainSwaps.insert(itr->terrainswapmap);
 
-		//if (l_IT->second.phaseId)
-			//l_PhaseIDs.insert(l_IT->second.phaseId);
+            if (itr->phaseId)
+                l_PhaseIDs.insert(itr->phaseId);
+        }
 	}
 	
 	// Phase Definitions

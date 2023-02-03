@@ -122,7 +122,7 @@ public:
 			if (owner->GetTypeId() != TYPEID_PLAYER)
 				return;
 
-			me->SetSeerGUID(owner->GetGUID());
+			me->SetCharmerGUID(owner->GetGUID());
 			playerOwner = owner;
 			events.ScheduleEvent(EVENT_CHECK_AREA_BEFORE_FOLLOW, 2000);
 			events.ScheduleEvent(EVENT_CHECK_FOR_MOUNT, 1000);

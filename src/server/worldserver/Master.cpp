@@ -90,29 +90,33 @@ class WorldServerSignalHandler : public Trinity::SignalHandler
 
 class FreezeDetectorRunnable : public ACE_Based::Runnable
 {
-private:
-    uint32 _loops;
-    uint32 _lastChange;
-    uint32 _delaytime;
-    bool _canstop;
 public:
     FreezeDetectorRunnable()
     {
-        _delaytime = 0;
-        _canstop = false;
+        m_Delaytime = 0;
+        m_CanStop = false;
     }
 
-    void SetDelayTime(uint32 t) { _delaytime = t; }
+    uint32 m_loops, m_lastchange;
+    uint32 w_loops, w_lastchange;
+    uint32 m_Delaytime;
 
-    void run() override
+    bool m_CanStop;
+
+    void SetDelayTime(uint32 t) { m_Delaytime = t; }
+    void SetCanStop() { m_CanStop = true; }
+
+    void run(void)
     {
-        if (!_delaytime)
+        if (!m_Delaytime)
             return;
 
-        TC_LOG_INFO("server.worldserver", "Starting up anti-freeze thread (%u seconds max stuck time)...", _delaytime/1000);
+        TC_LOG_INFO("server.worldserver", "Starting up anti-freeze thread (%u seconds max stuck time)...", m_Delaytime / 1000);
 
-        _loops = 0;
-        _lastChange = 0;
+        m_loops = 0;
+        w_loops = 0;
+        m_lastchange = 0;
+        w_lastchange = 0;
 
         /// Protect against freeze in world loop
         while (!World::IsStopped())
@@ -120,24 +124,25 @@ public:
             ACE_Based::Thread::Sleep(1000);
             uint32 curtime = getMSTime();
             // normal work
-            uint32 worldLoopCounter = World::m_worldLoopCounter.value();
-            if (_loops != worldLoopCounter)
+            uint32 worldLoopCounter = World::m_worldLoopCounter;
+            if (w_loops != worldLoopCounter)
             {
-                _lastChange = curtime;
-                _loops = worldLoopCounter;
+                w_lastchange = curtime;
+                w_loops = worldLoopCounter;
             }
             // possible freeze
-            else if (getMSTimeDiff(_lastChange, curtime) > _delaytime)
+            else if (getMSTimeDiff(w_lastchange, curtime) > m_Delaytime)
             {
                 TC_LOG_ERROR("server.worldserver", "World Thread hangs, kicking out server!");
                 assert(false);
+                abort();
             }
         }
 
         /// Protect against freeze on shutdown
         uint32 l_WorldStopTime = time(nullptr);
 
-        while (!_canstop)
+        while (!m_CanStop)
         {
             ACE_Based::Thread::Sleep(1000);
 
