@@ -25,7 +25,8 @@ AppenderFile::AppenderFile(uint8 id, std::string const& name, LogLevel level, co
     dynamicName = std::string::npos != filename.find("%s");
     backup = (_flags & APPENDER_FLAGS_MAKE_FILE_BACKUP) != 0;
 
-    logfile = !dynamicName ? OpenFile(_filename, _mode, mode == "w" && backup) : NULL;
+    if (!dynamicName)
+    logfile = OpenFile(_filename, _mode, mode == "w" && backup);
 }
 
 AppenderFile::~AppenderFile()
@@ -66,6 +67,7 @@ FILE* AppenderFile::OpenFile(std::string const& filename, std::string const& mod
         std::string newName(fullName);
         newName.push_back('.');
         newName.append(LogMessage::getTimeStr(time(NULL)));
+        std::replace(newName.begin(), newName.end(), ':', '-');
         rename(fullName.c_str(), newName.c_str()); // no error handling... if we couldn't make a backup, just ignore
     }
 
