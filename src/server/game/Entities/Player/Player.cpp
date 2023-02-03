@@ -609,6 +609,8 @@ void KillRewarder::Reward()
                 guild->GetAchievementMgr().UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_KILL_CREATURE, victim->GetEntry(), 1, 0, victim, _killer);
     }
 
+}
+
 // == Player ====================================================
 // we can disable this warning for this since it only
 // causes undefined behavior when passed to the base class constructor
