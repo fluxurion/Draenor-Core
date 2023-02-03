@@ -471,7 +471,7 @@ class boss_steelbreaker : public CreatureScript
                             return 0;
                     }
 
-                    return JadeCore::Containers::SelectRandomContainerElement(playerList);
+                    return Trinity::Containers::SelectRandomContainerElement(playerList);
                 }
                 else
                     return 0;

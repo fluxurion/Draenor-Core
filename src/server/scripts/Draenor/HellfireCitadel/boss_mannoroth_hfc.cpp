@@ -764,8 +764,8 @@ public:
 					{
 						std::list<Unit*> l_TargetList;
 
-						JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, 1500.0f);
-						JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
+						Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, 1500.0f);
+						Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
 						me->VisitNearbyObject(150.0f, l_Searcher);
 
 						std::set<uint64> l_Targets;
@@ -1787,8 +1787,8 @@ public:
 				{
 					std::list<Unit*> l_TargetList;
 
-					JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, 1500.0f);
-					JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
+					Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, 1500.0f);
+					Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
 					me->VisitNearbyObject(500.0f, l_Searcher);
 
 					std::set<uint64> l_Targets;
@@ -1895,8 +1895,8 @@ public:
 				{
 					std::list<Unit*> l_TargetList;
 
-					JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, 1500.0f);
-					JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
+					Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, 1500.0f);
+					Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
 					me->VisitNearbyObject(500.0f, l_Searcher);
 
 					std::set<uint64> l_Targets;
@@ -1986,8 +1986,8 @@ public:
 			{
 				std::list<Unit*> l_TargetList;
 
-				JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, 1500.0f);
-				JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
+				Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, 1500.0f);
+				Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
 				me->VisitNearbyObject(500.0f, l_Searcher);
 
 				std::set<uint64> l_Targets;
@@ -2456,8 +2456,8 @@ public:
 				/// Find all the enemies in range
 				std::list<Unit*> l_Targets;
 
-				JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, l_MaxRadius);
-				JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_Targets, l_Check);
+				Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, l_MaxRadius);
+				Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_Targets, l_Check);
 				me->VisitNearbyObject(l_MaxRadius, l_Searcher);
 
 				for (Unit* l_Target : l_Targets)
@@ -3039,8 +3039,8 @@ public:
 			std::list<Unit*> l_TargetList;
 			float l_Radius = 40.0f;
 
-			JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-			JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+			Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+			Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
 			p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
 			std::set<uint64> l_Targets;

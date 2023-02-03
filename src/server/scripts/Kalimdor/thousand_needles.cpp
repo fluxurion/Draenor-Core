@@ -56,8 +56,8 @@ public:
 					me->GetMotionMaster()->MovePoint(0, -5117.07f, -1222.02f, 55.06f, false);
 					subduerCounter = 0;
 					std::list<Unit*> targets;
-					JadeCore::AnyUnitInObjectRangeCheck u_check(me, 150.0f);
-					JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck> searcher(me, targets, u_check);
+					Trinity::AnyUnitInObjectRangeCheck u_check(me, 150.0f);
+					Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck> searcher(me, targets, u_check);
 					me->VisitNearbyObject(150.0f, searcher);
 					for (std::list<Unit*>::const_iterator itr = targets.begin(); itr != targets.end(); ++itr)
 					{

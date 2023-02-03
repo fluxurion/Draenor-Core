@@ -137,7 +137,7 @@ void MoveSpline::init_spline(const MoveSplineInitArgs& args)
     /// @todo what to do in such cases? problem is in input data (all points are at same coords)
     if (spline.length() < minimal_duration)
     {
-        sLog->outError(LOG_FILTER_GENERAL, "MoveSpline::init_spline: zero length spline, wrong input data?");
+        TC_LOG_ERROR("server.worldserver", "MoveSpline::init_spline: zero length spline, wrong input data?");
         spline.set_length(spline.last(), spline.isCyclic() ? 1000 : 1);
     }
     point_Idx = spline.first();
@@ -191,7 +191,7 @@ bool MoveSplineInitArgs::Validate(Unit* unit) const
 #define CHECK(exp) \
     if (!(exp))\
     {\
-        sLog->outError(LOG_FILTER_GENERAL, "MoveSplineInitArgs::Validate: expression '%s' failed for %llu Entry: %u", #exp, unit->GetGUID(), unit->GetEntry());\
+        TC_LOG_ERROR("server.worldserver", "MoveSplineInitArgs::Validate: expression '%s' failed for %llu Entry: %u", #exp, unit->GetGUID(), unit->GetEntry());\
         return false;\
     }
     CHECK(path.size() > 1);
@@ -218,7 +218,7 @@ bool MoveSplineInitArgs::_checkPathBounds() const
             offset = path[i] - middle;
             if (std::fabs(offset.x) >= MAX_OFFSET || std::fabs(offset.y) >= MAX_OFFSET || std::fabs(offset.z) >= MAX_OFFSET)
             {
-                sLog->outError(LOG_FILTER_GENERAL, "MoveSplineInitArgs::_checkPathBounds check failed");
+                TC_LOG_ERROR("server.worldserver", "MoveSplineInitArgs::_checkPathBounds check failed");
                 return false;
             }
         }

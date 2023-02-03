@@ -46,7 +46,7 @@ void WorldSession::SendTaxiStatus(uint64 p_Guid)
 
     if (!l_Unit)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WorldSession::SendTaxiStatus - Unit (GUID: %u) not found.", uint32(GUID_LOPART(p_Guid)));
+        TC_LOG_DEBUG("network", "WorldSession::SendTaxiStatus - Unit (GUID: %u) not found.", uint32(GUID_LOPART(p_Guid)));
         return;
     }
 
@@ -83,7 +83,7 @@ void WorldSession::HandleTaxiQueryAvailableNodes(WorldPacket& p_RecvPacket)
     Creature* unit = GetPlayer()->GetNPCIfCanInteractWith(l_UnitGuid, UNIT_NPC_FLAG_FLIGHTMASTER);
     if (!unit)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandleTaxiQueryAvailableNodes - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(l_UnitGuid)));
+        TC_LOG_DEBUG("network", "WORLD: HandleTaxiQueryAvailableNodes - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(l_UnitGuid)));
         return;
     }
     // remove fake death
@@ -195,7 +195,7 @@ void WorldSession::HandleActivateTaxiOpcode(WorldPacket& p_RecvPacket)
 
     if (!l_Npc)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "WORLD: HandleActivateTaxiOpcode - Unit (GUID: %u) not found or you can't interact with it.", uint32(GUID_LOPART(l_VendorGuid)));
+        TC_LOG_DEBUG("network", "WORLD: HandleActivateTaxiOpcode - Unit (GUID: %u) not found or you can't interact with it.", uint32(GUID_LOPART(l_VendorGuid)));
         return;
     }
 

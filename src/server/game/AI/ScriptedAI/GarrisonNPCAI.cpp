@@ -422,7 +422,7 @@ void GarrisonNPCAI::SendRecruitmentFollowersGenerated(Player* p_Player, uint32 p
         if (l_Followers.empty())
         {
             std::list<MS::Garrison::GarrisonFollower> l_FollowersList = l_GarrisonMgr->GetFollowersWithAbility(p_AbilityID, p_IsTrait);
-            JadeCore::RandomResizeList(l_FollowersList, 3); ///< Should not happen, List size must never exceed 3
+            Trinity::RandomResizeList(l_FollowersList, 3); ///< Should not happen, List size must never exceed 3
 
             for (MS::Garrison::GarrisonFollower l_Follower : l_FollowersList)
             {

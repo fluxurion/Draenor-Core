@@ -161,7 +161,7 @@ public:
             else
             {
                 //Madrigosa not found, end intro
-                sLog->outError(LOG_FILTER_TSCR, "Madrigosa was not found");
+                TC_LOG_ERROR("scripts", "Madrigosa was not found");
                 EndIntro();
             }
         }

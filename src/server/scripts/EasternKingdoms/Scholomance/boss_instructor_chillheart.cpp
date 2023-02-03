@@ -687,7 +687,7 @@ public:
 		{
 			if (targets.size() > 1)
 			{
-				JadeCore::Containers::RandomResizeList(targets, 1);
+				Trinity::Containers::RandomResizeList(targets, 1);
 			}
 		}
 
@@ -803,8 +803,8 @@ public:
 			targets.clear();
 
 			std::list<Unit*> newtargets;
-			JadeCore::AnyUnfriendlyNoTotemUnitInObjectRangeCheck u_check(GetCaster(), GetCaster(), 10.0f);
-			JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyNoTotemUnitInObjectRangeCheck> searcher(GetCaster(), newtargets, u_check);
+			Trinity::AnyUnfriendlyNoTotemUnitInObjectRangeCheck u_check(GetCaster(), GetCaster(), 10.0f);
+			Trinity::UnitListSearcher<Trinity::AnyUnfriendlyNoTotemUnitInObjectRangeCheck> searcher(GetCaster(), newtargets, u_check);
 			GetCaster()->VisitNearbyObject(10.0f, searcher);
 
 			for (std::list<Unit*>::const_iterator itr = newtargets.begin(); itr != newtargets.end(); ++itr)

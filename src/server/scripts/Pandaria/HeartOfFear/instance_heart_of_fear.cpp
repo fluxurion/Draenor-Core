@@ -315,8 +315,8 @@ class instance_heart_of_fear : public InstanceMapScript
                         {
                             std::list<Unit*> l_TrashMobs;
 
-                            JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(l_Garalon, l_Garalon, 50.0f);
-                            JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Garalon, l_TrashMobs, l_Check);
+                            Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(l_Garalon, l_Garalon, 50.0f);
+                            Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Garalon, l_TrashMobs, l_Check);
                             l_Garalon->VisitNearbyObject(50.0f, l_Searcher);
 
                             for (Unit* l_Unit : l_TrashMobs)

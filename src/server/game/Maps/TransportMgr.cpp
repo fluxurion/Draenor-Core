@@ -44,7 +44,7 @@ void TransportMgr::LoadTransportTemplates()
 
     if (!result)
     {
-        sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 transport templates. DB table `gameobject_template` has no transports!");
+        TC_LOG_INFO("server.loading", ">> Loaded 0 transport templates. DB table `gameobject_template` has no transports!");
         return;
     }
 
@@ -57,7 +57,7 @@ void TransportMgr::LoadTransportTemplates()
         GameObjectTemplate const* goInfo = sObjectMgr->GetGameObjectTemplate(entry);
         if (goInfo->moTransport.taxiPathID >= sTaxiPathNodesByPath.size())
         {
-            sLog->outError(LOG_FILTER_SQL, "Transport %u (name: %s) has an invalid path specified in `gameobject_template`.`data0` (%u) field, skipped.", entry, goInfo->name.c_str(), goInfo->moTransport.taxiPathID);
+            TC_LOG_ERROR("sql.sql", "Transport %u (name: %s) has an invalid path specified in `gameobject_template`.`data0` (%u) field, skipped.", entry, goInfo->name.c_str(), goInfo->moTransport.taxiPathID);
             continue;
         }
 
@@ -78,7 +78,7 @@ void TransportMgr::LoadTransportTemplates()
         ++count;
     } while (result->NextRow());
 
-    sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded %u transport templates in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    TC_LOG_INFO("server.loading", ">> Loaded %u transport templates in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void TransportMgr::GeneratePath(GameObjectTemplate const* goInfo, TransportTemplate* transport)
@@ -332,7 +332,7 @@ Transport* TransportMgr::CreateTransport(uint32 entry, uint32 guid /*= 0*/, Map*
     TransportTemplate const* tInfo = GetTransportTemplate(entry);
     if (!tInfo)
     {
-        sLog->outError(LOG_FILTER_SQL, "Transport %u will not be loaded, `transport_template` missing", entry);
+        TC_LOG_ERROR("sql.sql", "Transport %u will not be loaded, `transport_template` missing", entry);
         return NULL;
     }
 
@@ -359,7 +359,7 @@ Transport* TransportMgr::CreateTransport(uint32 entry, uint32 guid /*= 0*/, Map*
     {
         if (uint32(mapEntry->Instanceable()) != tInfo->inInstance)
         {
-            sLog->outError(LOG_FILTER_TRANSPORTS, "Transport %u (name: %s) attempted creation in instance map (id: %u) but it is not an instanced transport!", entry, trans->GetName(), mapId);
+            TC_LOG_ERROR(LOG_FILTER_TRANSPORTS, "Transport %u (name: %s) attempted creation in instance map (id: %u) but it is not an instanced transport!", entry, trans->GetName(), mapId);
             delete trans;
             return NULL;
         }
@@ -402,7 +402,7 @@ void TransportMgr::SpawnContinentTransports()
         } while (result->NextRow());
     }
 
-    sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Spawned %u continent transports in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    TC_LOG_INFO("server.loading", ">> Spawned %u continent transports in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void TransportMgr::CreateInstanceTransports(Map* map)

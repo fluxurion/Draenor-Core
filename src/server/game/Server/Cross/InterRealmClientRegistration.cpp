@@ -200,7 +200,7 @@ void InterRealmClient::Handle_RegisterPlayer(WorldPacket& p_Packet)
         l_Player = CreatePlayer(p_Packet, l_PlayerGuid);
         if (!l_Player)
         {
-            sLog->outError(LOG_FILTER_INTERREALM, "Failed to create a player.");
+            TC_LOG_ERROR("server.interrealm", "Failed to create a player.");
             p_Packet.rfinish();
 
             SendRegisterPlayer(IR_REG_ALREADY_REGISTRED, l_PlayerGuid);
@@ -234,7 +234,7 @@ void InterRealmClient::Handle_RegisterPlayer(WorldPacket& p_Packet)
 
     if (!sBattlemasterListStore.LookupEntry(l_BGType))
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "Battleground: invalid bgtype (%u) received. possible cheater? player guid %u", l_BGType, l_Player->GetGUIDLow());
+        TC_LOG_ERROR("network", "Battleground: invalid bgtype (%u) received. possible cheater? player guid %u", l_BGType, l_Player->GetGUIDLow());
         return;
     }
 
@@ -347,7 +347,7 @@ void InterRealmClient::Handle_PlayerReconnectReadyToLoad(WorldPacket& p_Packet)
         l_Player = CreatePlayer(p_Packet, l_PlayerGuid);
         if (!l_Player)
         {
-            sLog->outError(LOG_FILTER_INTERREALM, "Failed to create a player.");
+            TC_LOG_ERROR("server.interrealm", "Failed to create a player.");
             p_Packet.rfinish();
 
             SendRegisterPlayer(IR_REG_ALREADY_REGISTRED, l_PlayerGuid);
@@ -379,7 +379,7 @@ void InterRealmClient::Handle_PlayerReconnectReadyToLoad(WorldPacket& p_Packet)
 
 void InterRealmClient::Handle_RegisterGroup(WorldPacket& p_Packet)
 {
-    sLog->outDebug(LOG_FILTER_INTERREALM, "Received packet IR_CMSG_REGISTER_GROUP");
+    TC_LOG_DEBUG("server.interrealm", "Received packet IR_CMSG_REGISTER_GROUP");
 
     printf("IR_CMSG_REGISTER_GROUP\r\n");
 
@@ -551,12 +551,12 @@ void InterRealmClient::Handle_RegisterGroup(WorldPacket& p_Packet)
         return;
     }
 
-    sLog->outDebug(LOG_FILTER_INTERREALM, "Succeed to register a group.");
+    TC_LOG_DEBUG("server.interrealm", "Succeed to register a group.");
 }
 
 void InterRealmClient::Handle_RegisterArena(WorldPacket& p_Packet)
 {
-    sLog->outDebug(LOG_FILTER_INTERREALM, "Received packet IR_CMSG_REGISTER_ARENA");
+    TC_LOG_DEBUG("server.interrealm", "Received packet IR_CMSG_REGISTER_ARENA");
 
     uint8 l_PlayerCount;
     ArenaType l_ArenaType;
@@ -612,7 +612,7 @@ void InterRealmClient::Handle_RegisterArena(WorldPacket& p_Packet)
 
     if (!l_Battleground)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "Battleground: template bg (all arenas) not found");
+        TC_LOG_ERROR("network", "Battleground: template bg (all arenas) not found");
         return;
     }
 
@@ -802,7 +802,7 @@ void InterRealmClient::Handle_RegisterArena(WorldPacket& p_Packet)
 
 void InterRealmClient::Handle_RegisterRated(WorldPacket& p_Packet)
 {
-    sLog->outDebug(LOG_FILTER_INTERREALM, "Received packet IR_CMSG_REGISTER_RATED");
+    TC_LOG_DEBUG("server.interrealm", "Received packet IR_CMSG_REGISTER_RATED");
 
     uint8 l_PlayerCount;
     std::vector<uint64> l_PlayersGuids;
@@ -840,7 +840,7 @@ void InterRealmClient::Handle_RegisterRated(WorldPacket& p_Packet)
     if (!l_Battleground || DisableMgr::IsDisabledFor(DISABLE_TYPE_BATTLEGROUND, BATTLEGROUND_RATED_10_VS_10, NULL))
     {
         SendRegisterRated(IR_REG_CANNOT_CREATE, 0);
-        sLog->outError(LOG_FILTER_INTERREALM, "Battleground: template bg (all arenas) not found or disable");
+        TC_LOG_ERROR("server.interrealm", "Battleground: template bg (all arenas) not found or disable");
         return;
     }
 
@@ -925,7 +925,7 @@ void InterRealmClient::Handle_RegisterRated(WorldPacket& p_Packet)
         MS::Battlegrounds::PacketFactory::Status(&l_Data, l_Battleground, l_Member, l_QueueSlot, STATUS_WAIT_QUEUE, l_AvgTime, l_GroupQueue->m_JoinTime, l_GroupQueue->m_ArenaType, false);
         l_Member->GetSession()->SendPacket(&l_Data);
 
-        sLog->outDebug(LOG_FILTER_BATTLEGROUND, "Battleground: player joined queue for rated battleground as group bg queue type %u bg type %u: GUID %u, NAME %s", l_BgQueueTypeId, l_BgTypeId, l_Member->GetGUIDLow(), l_Member->GetName());
+        TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Battleground: player joined queue for rated battleground as group bg queue type %u bg type %u: GUID %u, NAME %s", l_BgQueueTypeId, l_BgTypeId, l_Member->GetGUIDLow(), l_Member->GetName());
     }
 
     if (l_Error)
@@ -947,7 +947,7 @@ void InterRealmClient::Handle_AppearRequest(WorldPacket& packet)
 
     if (playerGuid == 0)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "Wrong player guid (%u), realm %u %s",
+        TC_LOG_ERROR("server.interrealm", "Wrong player guid (%u), realm %u %s",
             playerGuid, GetRealmId(), GetRealmName().c_str());
         packet.rfinish();
         return;
@@ -955,7 +955,7 @@ void InterRealmClient::Handle_AppearRequest(WorldPacket& packet)
 
     if (sWorld->HasPlayer(playerGuid))
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "Failed to appear becouse player is already at the cross-server.");
+        TC_LOG_ERROR("server.interrealm", "Failed to appear becouse player is already at the cross-server.");
         packet.rfinish();
         return;
     }
@@ -963,14 +963,14 @@ void InterRealmClient::Handle_AppearRequest(WorldPacket& packet)
     Player* targetPlayer = sObjectAccessor->FindPlayer(targetGuid);
     if (!targetPlayer || targetPlayer->IsNeedRemove())
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "Failed to appear becouse targeted player is not at the cross-server.");
+        TC_LOG_ERROR("server.interrealm", "Failed to appear becouse targeted player is not at the cross-server.");
         packet.rfinish();
         return;
     }
 
     if (!targetPlayer->GetBattlegroundId() || !targetPlayer->GetBattleground())
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "Failed to appear becouse targeted player is not at the arena.");
+        TC_LOG_ERROR("server.interrealm", "Failed to appear becouse targeted player is not at the arena.");
         packet.rfinish();
         return;
     }
@@ -978,7 +978,7 @@ void InterRealmClient::Handle_AppearRequest(WorldPacket& packet)
     Player* player = CreatePlayer(packet, playerGuid);
     if (!player)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "Failed to appear.");
+        TC_LOG_ERROR("server.interrealm", "Failed to appear.");
         packet.rfinish();
         return;
     }
@@ -1057,7 +1057,7 @@ void InterRealmClient::Handle_BattlefieldPort(WorldPacket& packet)
 
     if (l_BGQueueTypeID >= MS::Battlegrounds::BattlegroundType::Total)
     {
-        sLog->outAshran("HandleBattleFieldPortOpcode bgQueueTypeId %u", l_BGQueueTypeID);
+        TC_LOG_ERROR("server.worldserver", "HandleBattleFieldPortOpcode bgQueueTypeId %u", l_BGQueueTypeID);
         return;
     }
 
@@ -1069,14 +1069,14 @@ void InterRealmClient::Handle_BattlefieldPort(WorldPacket& packet)
 
     if (!l_InvitationsMgr.GetPlayerGroupInfoData(l_Player->GetGUID(), l_GroupQueueInfo, l_BGQueueTypeID) && !l_Scheduler.GetPlayerGroupInfoData(l_Player->GetGUID(), l_GroupQueueInfo, l_BGQueueTypeID))
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "BattlegroundHandler: itrplayerstatus not found.");
+        TC_LOG_ERROR("network", "BattlegroundHandler: itrplayerstatus not found.");
         return;
     }
 
     /// if action == 1, then instanceId is required
     if (!l_GroupQueueInfo.m_IsInvitedToBGInstanceGUID && l_Action == 1)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "BattlegroundHandler: instance not found.");
+        TC_LOG_ERROR("network", "BattlegroundHandler: instance not found.");
         return;
     }
 
@@ -1090,7 +1090,7 @@ void InterRealmClient::Handle_BattlefieldPort(WorldPacket& packet)
 
     if (!l_BG)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "BattlegroundHandler: bg_template not found for type id %u.", l_BGQueueTypeID);
+        TC_LOG_ERROR("network", "BattlegroundHandler: bg_template not found for type id %u.", l_BGQueueTypeID);
         return;
     }
 
@@ -1116,12 +1116,12 @@ void InterRealmClient::Handle_BattlefieldPort(WorldPacket& packet)
 
             l_Action = 0;
 
-            sLog->outDebug(LOG_FILTER_BATTLEGROUND, "Battleground: player %s (%u) has a deserter debuff, do not port him to battleground!", l_Player->GetName(), l_Player->GetGUIDLow());
+            TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Battleground: player %s (%u) has a deserter debuff, do not port him to battleground!", l_Player->GetName(), l_Player->GetGUIDLow());
         }
         /// If player don't match battleground max level, then do not allow him to enter! (this might happen when player leveled up during his waiting in queue
         if (l_Player->getLevel() > l_BG->GetMaxLevel())
         {
-            sLog->outError(LOG_FILTER_NETWORKIO, "Battleground: Player %s (%u) has level (%u) higher than maxlevel (%u) of battleground (%u)! Do not port him to battleground!",
+            TC_LOG_ERROR("network", "Battleground: Player %s (%u) has level (%u) higher than maxlevel (%u) of battleground (%u)! Do not port him to battleground!",
                 l_Player->GetName(), l_Player->GetGUIDLow(), l_Player->getLevel(), l_BG->GetMaxLevel(), l_BG->GetTypeID());
 
             l_Action = 0;
@@ -1169,8 +1169,8 @@ void InterRealmClient::Handle_BattlefieldPort(WorldPacket& packet)
             l_PortData.bgZoneId = l_BG->GetZoneId() ? l_BG->GetZoneId() : 1;
 
             l_Player->GetSession()->LoadCharacter(l_PortData);
-            sLog->outDebug(LOG_FILTER_BATTLEGROUND, "Battleground: player %s (%u) joined battle for bg %u, bgtype %u, queue type %u.", l_Player->GetName(), l_Player->GetGUIDLow(), l_BG->GetInstanceID(), l_BG->GetTypeID(), l_BGQueueTypeID);
-            sLog->outAshran("Battleground: player %s (%u) joined battle for bg %u, bgtype %u, queue type %u.", l_Player->GetName(), l_Player->GetGUIDLow(), l_BG->GetInstanceID(), l_BG->GetTypeID(), l_BGQueueTypeID);
+            TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "Battleground: player %s (%u) joined battle for bg %u, bgtype %u, queue type %u.", l_Player->GetName(), l_Player->GetGUIDLow(), l_BG->GetInstanceID(), l_BG->GetTypeID(), l_BGQueueTypeID);
+            TC_LOG_ERROR("server.worldserver", "Battleground: player %s (%u) joined battle for bg %u, bgtype %u, queue type %u.", l_Player->GetName(), l_Player->GetGUIDLow(), l_BG->GetInstanceID(), l_BG->GetTypeID(), l_BGQueueTypeID);
             break;
 
         /// Leave queue
@@ -1207,14 +1207,14 @@ void InterRealmClient::Handle_BattlefieldPort(WorldPacket& packet)
             l_Player->SetNeedRemove(true);
             break;
         default:
-            sLog->outError(LOG_FILTER_NETWORKIO, "Battleground port: unknown action %u", l_Action);
+            TC_LOG_ERROR("network", "Battleground port: unknown action %u", l_Action);
             break;
     }
 }
 
 void InterRealmClient::Handle_BattlefieldEnter(WorldPacket& packet)
 {
-    sLog->outDebug(LOG_FILTER_INTERREALM, "Received packet IR_CMSG_BATTLEFIELD_ENTER");
+    TC_LOG_DEBUG("server.interrealm", "Received packet IR_CMSG_BATTLEFIELD_ENTER");
     
     uint64 l_PlayerGuid;
     uint32 l_PlayerGuidLow;

@@ -270,7 +270,7 @@ class boss_brackenspore : public CreatureScript
                         me->GetCreatureListWithEntryInGrid(l_Warmasters, eCreatures::IronWarmaster, 50.0f);
 
                         if (!l_Warmasters.empty())
-                            l_Warmasters.sort(JadeCore::ObjectDistanceOrderPred(me, false));
+                            l_Warmasters.sort(Trinity::ObjectDistanceOrderPred(me, false));
 
                         if (Creature* l_IronWar = (*l_Warmasters.begin()))
                         {
@@ -1664,8 +1664,8 @@ class areatrigger_highmaul_mind_fungus : public AreaTriggerEntityScript
                 std::list<Unit*> l_TargetList;
                 float l_Radius = 13.0f;
 
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 std::set<uint64> l_Targets;
@@ -1795,8 +1795,8 @@ class areatrigger_highmaul_creeping_moss : public AreaTriggerEntityScript
                 std::list<Unit*> l_TargetList;
                 float l_Radius = 6.0f;
 
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_CheckEnnemy(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_SearcherEnnemy(p_AreaTrigger, l_TargetList, l_CheckEnnemy);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_CheckEnnemy(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_SearcherEnnemy(p_AreaTrigger, l_TargetList, l_CheckEnnemy);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_SearcherEnnemy);
 
                 if (!l_TargetList.empty())
@@ -1815,8 +1815,8 @@ class areatrigger_highmaul_creeping_moss : public AreaTriggerEntityScript
 
                 l_TargetList.clear();
 
-                JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 if (!l_TargetList.empty())

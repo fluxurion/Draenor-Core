@@ -43,7 +43,7 @@ void ValidateAndSetOpcode<true, true>(uint16 p_Opcode, char const* p_Name, Sessi
         {
             if (g_OpcodeTable[l_CurrentDirection][p_Opcode] != NULL) // register MSG opcode as client and server
             {
-                sLog->outError(LOG_FILTER_NETWORKIO, "Tried to override handler of %s with %s (opcode %u)", g_OpcodeTable[l_CurrentDirection][p_Opcode]->name, p_Name, p_Opcode);
+                TC_LOG_ERROR("network", "Tried to override handler of %s with %s (opcode %u)", g_OpcodeTable[l_CurrentDirection][p_Opcode]->name, p_Name, p_Opcode);
                 return;
             }
 
@@ -55,7 +55,7 @@ void ValidateAndSetOpcode<true, true>(uint16 p_Opcode, char const* p_Name, Sessi
 
     if (g_OpcodeTable[l_OpcodeDirection][p_Opcode] != NULL)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "Tried to override handler of %s with %s (opcode %u)", g_OpcodeTable[l_OpcodeDirection][p_Opcode]->name, p_Name, p_Opcode);
+        TC_LOG_ERROR("network", "Tried to override handler of %s with %s (opcode %u)", g_OpcodeTable[l_OpcodeDirection][p_Opcode]->name, p_Name, p_Opcode);
         return;
     }
 
@@ -65,13 +65,13 @@ void ValidateAndSetOpcode<true, true>(uint16 p_Opcode, char const* p_Name, Sessi
 template<>
 void ValidateAndSetOpcode<false, true>(uint16 p_Opcode, char const* /*p_Name*/, SessionStatus /*p_Status*/, PacketProcessing /*p_Processing*/, g_OpcodeHandlerType /*p_Handler*/, IRPacketProcessing /*forwardToIR*/)
 {
-    sLog->outError(LOG_FILTER_NETWORKIO, "Tried to set handler for an invalid opcode %d", p_Opcode);
+    TC_LOG_ERROR("network", "Tried to set handler for an invalid opcode %d", p_Opcode);
 }
 
 template<>
 void ValidateAndSetOpcode<true, false>(uint16 /*p_Opcode*/, char const* p_Name, SessionStatus /*p_Status*/, PacketProcessing /*p_Processing*/, g_OpcodeHandlerType /*p_Handler*/, IRPacketProcessing /*forwardToIR*/)
 {
-    sLog->outError(LOG_FILTER_NETWORKIO, "Opcode %s got value 0", p_Name);
+    TC_LOG_ERROR("network", "Opcode %s got value 0", p_Name);
 }
 
 #define DEFINE_OPCODE_HANDLER(p_Opcode, p_Status, p_Processing, p_Handler, forwardToIR)                                      \

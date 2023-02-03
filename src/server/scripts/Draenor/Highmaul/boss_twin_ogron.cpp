@@ -1363,8 +1363,8 @@ class spell_highmaul_pol_shield_charge : public SpellScriptLoader
                             std::list<Unit*> l_TargetList;
                             float l_Radius = 1.0f;
 
-                            JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
-                            JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_TargetList, l_Check);
+                            Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
+                            Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_TargetList, l_Check);
                             l_Caster->VisitNearbyObject(l_Radius, l_Searcher);
 
                             for (Unit* l_Iter : l_TargetList)
@@ -1631,8 +1631,8 @@ class areatrigger_highmaul_phemos_blaze : public AreaTriggerEntityScript
                         std::list<Unit*> l_TargetList;
                         float l_Radius = 1.0f;
 
-                        JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                        JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                        Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                        Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                         p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                         for (Unit* l_Unit : l_TargetList)

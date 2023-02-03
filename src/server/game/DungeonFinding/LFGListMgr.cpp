@@ -525,7 +525,7 @@ uint32 LFGListMgr::GenerateNewIDForApplicant()
 
     if (l_NewID == 0xFFFFFFFF)
     {
-        sLog->outError(LOG_FILTER_GENERAL, "LFGList applicant ID overflow!! Can't continue, shutting down server.");
+        TC_LOG_ERROR("server.worldserver", "LFGList applicant ID overflow!! Can't continue, shutting down server.");
         World::StopNow(ERROR_EXIT_CODE);
     }
 

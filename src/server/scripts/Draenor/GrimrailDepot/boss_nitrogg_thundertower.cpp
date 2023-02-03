@@ -1072,7 +1072,7 @@ class grimrail_depot_nitrogg_thundertower_at_slagblast : public AreaTriggerEntit
         if (!l_ListCreatures.empty())
         {
             /// Sort so fire spreads from the hit point.
-            l_ListCreatures.sort(JadeCore::WorldObjectDistanceCompareOrderPred(p_AreaTrigger));
+            l_ListCreatures.sort(Trinity::WorldObjectDistanceCompareOrderPred(p_AreaTrigger));
             l_ListCreatures.resize(l_ListCreatures.max_size());
 
             for (std::list<Creature*>::iterator l_Itr = l_ListCreatures.begin(); l_Itr != l_ListCreatures.end(); l_Itr++)
@@ -1090,8 +1090,8 @@ class grimrail_depot_nitrogg_thundertower_at_slagblast : public AreaTriggerEntit
         if (m_Timer <= p_Time)
         {
             std::list<Player*> l_PlayerList;
-            JadeCore::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, 2.0f);
-            JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_PlayerList, l_Check);
+            Trinity::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, 2.0f);
+            Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_PlayerList, l_Check);
             p_AreaTrigger->VisitNearbyObject(2.0f, l_Searcher);
             if (l_PlayerList.empty())
                 return;

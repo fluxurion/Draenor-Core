@@ -1406,8 +1406,8 @@ class iron_docks_oshir_mob_acid_spit : public CreatureScript
                 if (m_Timer <= p_Diff)
                 {
                     std::list<Player*> l_PlayerList;
-                    JadeCore::AnyPlayerInObjectRangeCheck l_Check(me, 2.0f);
-                    JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> l_Searcher(me, l_PlayerList, l_Check);
+                    Trinity::AnyPlayerInObjectRangeCheck l_Check(me, 2.0f);
+                    Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> l_Searcher(me, l_PlayerList, l_Check);
                     me->VisitNearbyObject(2.0f, l_Searcher);
                     if (!l_PlayerList.empty())
                     {

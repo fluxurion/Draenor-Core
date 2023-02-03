@@ -989,8 +989,8 @@ namespace MS { namespace Instances { namespace Bloodmaul
                         return;
 
                     AreaTrigger* l_Trigger = nullptr;
-                    JadeCore::NearestAreaTriggerWithIdInObjectRangeCheck u_check(l_Owner, (uint32)Spells::MagmaBarrageAreaTrigger, 3.0f);
-                    JadeCore::AreaTriggerSearcher<JadeCore::NearestAreaTriggerWithIdInObjectRangeCheck> searcher(l_Owner, l_Trigger, u_check);
+                    Trinity::NearestAreaTriggerWithIdInObjectRangeCheck u_check(l_Owner, (uint32)Spells::MagmaBarrageAreaTrigger, 3.0f);
+                    Trinity::AreaTriggerSearcher<Trinity::NearestAreaTriggerWithIdInObjectRangeCheck> searcher(l_Owner, l_Trigger, u_check);
                     l_Owner->VisitNearbyObject(3.0f, searcher);
 
                     if (!l_Trigger)
@@ -1071,8 +1071,8 @@ namespace MS { namespace Instances { namespace Bloodmaul
                 if (!l_Caster)
                     return;
 
-                JadeCore::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_TargetList, u_check);
+                Trinity::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_TargetList, u_check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
                 bool l_HasTarget = false;
 
@@ -1157,8 +1157,8 @@ namespace MS { namespace Instances { namespace Bloodmaul
                 if (!l_Caster)
                     return;
 
-                JadeCore::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_TargetList, u_check);
+                Trinity::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_TargetList, u_check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
                 for (auto& l_Itr : l_TargetList)
@@ -1200,8 +1200,8 @@ namespace MS { namespace Instances { namespace Bloodmaul
                 if (!l_Caster)
                     return;
 
-                JadeCore::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_TargetList, u_check);
+                Trinity::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, l_TargetList, u_check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
                 for (auto& l_Itr : l_TargetList)

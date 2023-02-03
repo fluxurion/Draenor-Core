@@ -449,7 +449,7 @@ class mob_whirl_turtle : public CreatureScript
 
                         me->SetSpeed(MOVE_WALK, 1.0f);
                         me->SetSpeed(MOVE_RUN, 1.0f);
-                        JadeCore::RandomResizeList(plrList, 1);
+                        Trinity::RandomResizeList(plrList, 1);
                         me->GetMotionMaster()->MoveChase(plrList.front());
                         me->CombatStart(plrList.front());
                         break;
@@ -505,7 +505,7 @@ class mob_whirl_turtle : public CreatureScript
                             break;
                         }
 
-                        JadeCore::RandomResizeList(plrList, 1);
+                        Trinity::RandomResizeList(plrList, 1);
                         me->GetMotionMaster()->Clear();
                         me->GetMotionMaster()->MoveChase(plrList.front());
                         events.ScheduleEvent(EVENT_SWITCH_TARGET, 3000);
@@ -594,7 +594,7 @@ class spell_rockfall: public SpellScriptLoader
                 if (targets.empty())
                     return;
 
-                JadeCore::RandomResizeList(targets, 1);
+                Trinity::RandomResizeList(targets, 1);
             }
 
             void HandleOnHit()

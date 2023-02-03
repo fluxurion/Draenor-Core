@@ -252,7 +252,7 @@ public:
                     {
                         Unit* l_Target = NULL;
                         MostCreatureHPMissingInRange u_check(me, 30.0f, 1);
-                        JadeCore::UnitLastSearcher<MostCreatureHPMissingInRange> searcher(me, l_Target, u_check);
+                        Trinity::UnitLastSearcher<MostCreatureHPMissingInRange> searcher(me, l_Target, u_check);
                         me->VisitNearbyObject(30.0f, searcher);
                         if (l_Target && l_Target->IsInWorld())
                             me->CastSpell(l_Target, eGolaSpells::SpellHealingWaters);

@@ -170,7 +170,7 @@ namespace MS { namespace Instances { namespace Bloodmaul
                         if (l_SLGList.empty())
                             return;
 
-                        l_SLGList.sort(JadeCore::ObjectDistanceOrderPred(p_Summon, false));
+                        l_SLGList.sort(Trinity::ObjectDistanceOrderPred(p_Summon, false));
                         p_Summon->AI()->SetGUID(l_SLGList.front()->GetGUID());
                     }
                 }

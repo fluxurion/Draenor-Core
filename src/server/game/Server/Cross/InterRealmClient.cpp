@@ -105,25 +105,25 @@ void InterRealmClient::SendPacket(WorldPacket const* packet)
 
     if (m_IRSocket->SendPacket(packet) == -1)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "Cannot send packet %u", packet->GetOpcode());
+        TC_LOG_ERROR("server.interrealm", "Cannot send packet %u", packet->GetOpcode());
         m_IRSocket->CloseSocket();
     }
 }
 
 void InterRealmClient::Handle_Unhandled(WorldPacket& recvPacket)
 {
-    sLog->outError(LOG_FILTER_INTERREALM, "Unhandled Packet with IROpcode %u received !", recvPacket.GetOpcode());
+    TC_LOG_ERROR("server.interrealm", "Unhandled Packet with IROpcode %u received !", recvPacket.GetOpcode());
 }
 
 void InterRealmClient::Handle_Null(WorldPacket& recvPacket)
 {
     recvPacket.rfinish();
-    //sLog->outError(LOG_FILTER_INTERREALM, "Packet with Invalid IROpcode %u received !", recvPacket.GetOpcode());
+    //TC_LOG_ERROR("server.interrealm", "Packet with Invalid IROpcode %u received !", recvPacket.GetOpcode());
 }
 
 void InterRealmClient::Handle_Hello(WorldPacket& packet)
 {
-    sLog->outDebug(LOG_FILTER_INTERREALM, "Received packet CMSG_HELLO.", m_realmId);
+    TC_LOG_DEBUG("server.interrealm", "Received packet CMSG_HELLO.", m_realmId);
     
     std::string hello;
     uint8 _rand;
@@ -139,7 +139,7 @@ void InterRealmClient::Handle_Hello(WorldPacket& packet)
     if (non_polite)
     {
         m_isNeedClose = true;
-        sLog->outError(LOG_FILTER_INTERREALM, "Non-polite server %s, rejecting.", hello.c_str());
+        TC_LOG_ERROR("server.interrealm", "Non-polite server %s, rejecting.", hello.c_str());
     }
 
     WorldPacket pckt(IR_SMSG_HELLO, 10 + 1 + 1);
@@ -149,7 +149,7 @@ void InterRealmClient::Handle_Hello(WorldPacket& packet)
 
     SendPacket(&pckt);
 
-    sLog->outDebug(LOG_FILTER_INTERREALM, "Send packet SMSG_HELLO.", m_realmId);
+    TC_LOG_DEBUG("server.interrealm", "Send packet SMSG_HELLO.", m_realmId);
     
 }
 
@@ -173,7 +173,7 @@ void InterRealmClient::Handle_TunneledPacket(WorldPacket* recvPacket)
     IRPlayers::const_iterator itr = m_Players.find(playerGuid);
     if (itr == m_Players.end() || itr->second->GetSession()->IsIRClosing() || g_OpcodeTable[WOW_CLIENT_TO_SERVER][opcodeId] == nullptr)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "no player");
+        TC_LOG_ERROR("server.interrealm", "no player");
         delete recvPacket;
         recvPacket = NULL;
         return;
@@ -199,14 +199,14 @@ void InterRealmClient::Handle_WhoAmI(WorldPacket& packet)
         m_rate_reputation_premium = sWorld->getRate(RATE_REPUTATION_GAIN_PREMIUM);
     }
 
-    sLog->outDebug(LOG_FILTER_INTERREALM, "Received packet CMSG_WHO_AM_I.", m_realmId);
+    TC_LOG_DEBUG("server.interrealm", "Received packet CMSG_WHO_AM_I.", m_realmId);
 
     WorldPacket pckt(IR_SMSG_WHO_AM_I, 1);
 
     const InterRealmDatabaseConfig* config = sInterRealmMgr->GetConfig(m_realmId);
     if (!config)
     {
-        sLog->outInfo(LOG_FILTER_INTERREALM, "InterRealmClient %u has no config.", m_realmId);
+        TC_LOG_INFO("server.interrealm", "InterRealmClient %u has no config.", m_realmId);
         pckt << uint8(1);
         SendPacket(&pckt);
         m_isNeedClose = true;
@@ -215,7 +215,7 @@ void InterRealmClient::Handle_WhoAmI(WorldPacket& packet)
 
     if (!InterRealmDatabase.Open(config->connection_info, 10, 8))
     {
-        sLog->outInfo(LOG_FILTER_INTERREALM, "Database connection was failed for InterRealmClient %u.", m_realmId);
+        TC_LOG_INFO("server.interrealm", "Database connection was failed for InterRealmClient %u.", m_realmId);
         pckt << uint8(1);
         SendPacket(&pckt);
         m_isNeedClose = true;
@@ -225,7 +225,7 @@ void InterRealmClient::Handle_WhoAmI(WorldPacket& packet)
     pckt << uint8(0);
     SendPacket(&pckt);
     _isDatabaseOpened = true;
-    sLog->outInfo(LOG_FILTER_INTERREALM, "Database connection was successful. %lu", time(nullptr));
+    TC_LOG_INFO("server.interrealm", "Database connection was successful. %lu", time(nullptr));
 
     SendReserveLocalGuidRequest(HIGHGUID_ITEM,          m_LocalRealmItemGuidReserveSize);
     SendReserveLocalGuidRequest(HIGHGUID_MAIL,          m_LocalRealmMailGuidReserveSize);
@@ -235,7 +235,7 @@ void InterRealmClient::Handle_WhoAmI(WorldPacket& packet)
 
 void InterRealmClient::Handle_CheckPlayers(WorldPacket& packet)
 {
-    sLog->outDebug(LOG_FILTER_INTERREALM, "Received packet IR_CMSG_CHECK_PLAYERS");
+    TC_LOG_DEBUG("server.interrealm", "Received packet IR_CMSG_CHECK_PLAYERS");
     
     uint8 _valid;
     uint32 num_players;
@@ -256,7 +256,7 @@ void InterRealmClient::Handle_CheckPlayers(WorldPacket& packet)
         {
             uint64 playerGuid;
             packet >> playerGuid;
-            sLog->outDebug(LOG_FILTER_INTERREALM, "Connection lost with player %u", playerGuid);
+            TC_LOG_DEBUG("server.interrealm", "Connection lost with player %u", playerGuid);
 
             if (Player* l_Player = sObjectAccessor->FindPlayerInOrOutOfWorld(playerGuid))
             {
@@ -297,7 +297,7 @@ void InterRealmClient::Handle_PlayerLogout(WorldPacket& packet)
 
     packet >> playerGuid;
 
-    sLog->outDebug(LOG_FILTER_INTERREALM, "Logout player %u", playerGuid);
+    TC_LOG_DEBUG("server.interrealm", "Logout player %u", playerGuid);
 
     IRPlayerSessions::iterator itr = m_sessions.find(playerGuid);
     if (itr != m_sessions.end())
@@ -343,7 +343,7 @@ void InterRealmClient::SendBattlefieldLeave(uint64 targetGuid)
 
 void InterRealmClient::Handle_BattlegroundListQuery(WorldPacket& packet)
 {
-    sLog->outDebug(LOG_FILTER_INTERREALM, "Received packet IR_CMSG_BATTLEGROUND_LIST_QUERY");
+    TC_LOG_DEBUG("server.interrealm", "Received packet IR_CMSG_BATTLEGROUND_LIST_QUERY");
 
     uint64 _playerGuid;
     uint32 _bgTypeId;
@@ -373,7 +373,7 @@ void InterRealmClient::ProcessWorldSessionPacket(WorldSession* _session, WorldPa
 
 void InterRealmClient::Handle_BattlefieldStatusQuery(WorldPacket& packet)
 {
-    sLog->outDebug(LOG_FILTER_INTERREALM, "Received packet IR_CMSG_BATTLEFIELD_STATUS_QUERY");
+    TC_LOG_DEBUG("server.interrealm", "Received packet IR_CMSG_BATTLEFIELD_STATUS_QUERY");
     
     uint64 l_PlayerGuid;
     packet >> l_PlayerGuid;
@@ -457,7 +457,7 @@ void InterRealmClient::Handle_BattlefieldStatusQuery(WorldPacket& packet)
 
 void InterRealmClient::Handle_CurrencyCapLoad(WorldPacket& packet)
 {
-    sLog->outDebug(LOG_FILTER_INTERREALM, "Received packet IR_CMSG_CURRENCY_CAP_LOAD");
+    TC_LOG_DEBUG("server.interrealm", "Received packet IR_CMSG_CURRENCY_CAP_LOAD");
 
     uint64 playerGuid;
 
@@ -489,7 +489,7 @@ void InterRealmClient::Handle_CurrencyCapLoad(WorldPacket& packet)
 
 void InterRealmClient::Handle_CurrencyCapReset(WorldPacket& packet)
 {
-    sLog->outDebug(LOG_FILTER_INTERREALM, "Received packet IR_CMSG_CURRENCY_CAP_RESET");
+    TC_LOG_DEBUG("server.interrealm", "Received packet IR_CMSG_CURRENCY_CAP_RESET");
 
     for (auto itr = m_Players.begin(); itr != m_Players.end(); ++itr)
     {
@@ -500,7 +500,7 @@ void InterRealmClient::Handle_CurrencyCapReset(WorldPacket& packet)
 
 void InterRealmClient::Handle_Whisper(WorldPacket& packet)
 {
-    sLog->outDebug(LOG_FILTER_INTERREALM, "Received packet IR_MSG_WHISPER");
+    TC_LOG_DEBUG("server.interrealm", "Received packet IR_MSG_WHISPER");
 
     uint64 l_SenderGUID;
     uint64 l_TargetGuid;
@@ -541,7 +541,7 @@ void InterRealmClient::Handle_TunneledClient(WorldPacket &recvPacket)
     IRPlayers::const_iterator itr = m_Players.find(playerGuid);
     if (itr == m_Players.end())
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "Tunneled packet was sended for unregistered player.");
+        TC_LOG_ERROR("server.interrealm", "Tunneled packet was sended for unregistered player.");
         return;
     }
 
@@ -638,7 +638,7 @@ void InterRealmClient::Handle_TeleportPlayer(WorldPacket& recvPacket)
 
         if (!player->Create(GUID_LOPART(playerGUID), &createInfo))
         {
-            sLog->outError(LOG_FILTER_INTERREALM, "Failed to register a player.");
+            TC_LOG_ERROR("server.interrealm", "Failed to register a player.");
 
             WorldPacket errPacket(IR_SMSG_REGISTER_PLAYER_RESP, 1);
             errPacket << uint8(1);
@@ -678,7 +678,7 @@ void InterRealmClient::Handle_TeleportPlayer(WorldPacket& recvPacket)
     {
         delete itr->second;
         m_Players.erase(playerGUID);
-        sLog->outError(LOG_FILTER_INTERREALM, "Failed to teleport a player.");
+        TC_LOG_ERROR("server.interrealm", "Failed to teleport a player.");
         return;
     }
 
@@ -686,7 +686,7 @@ void InterRealmClient::Handle_TeleportPlayer(WorldPacket& recvPacket)
     if (!player->LoadFromDB(playerGUIDLow))
     {
         player->GetSession()->SetPlayerLoading(false);
-        sLog->outError(LOG_FILTER_INTERREALM, "Could not load a player %u", playerGUIDLow);
+        TC_LOG_ERROR("server.interrealm", "Could not load a player %u", playerGUIDLow);
 
         WorldPacket pckt(IR_SMSG_UNREGISTER_PLAYER_RESP);
         pckt << uint8(2);
@@ -743,7 +743,7 @@ void InterRealmClient::SendSummonPlayer(uint64 const &sender, std::string const 
 
 void InterRealmClient::Handle_RatedBattlegroundStats(WorldPacket& recvPacket)
 {
-    sLog->outDebug(LOG_FILTER_INTERREALM, "Received packet IR_CMSG_RATED_BATTLEGROUND_STATS");
+    TC_LOG_DEBUG("server.interrealm", "Received packet IR_CMSG_RATED_BATTLEGROUND_STATS");
 
     uint64 playerGuid;
 
@@ -1247,7 +1247,7 @@ void InterRealmClient::ProcessPackets()
                 IROpcodeHandler* opHandle = IRopcodeTable[packet->GetOpcode()];
                 if (!opHandle)
                 {
-                    sLog->outInfo(LOG_FILTER_INTERREALM, "Cannot find handle for the opcode (%u). Skipped packet.",
+                    TC_LOG_INFO("server.interrealm", "Cannot find handle for the opcode (%u). Skipped packet.",
                     packet->GetOpcode());
                     continue;
                 }
@@ -1255,11 +1255,11 @@ void InterRealmClient::ProcessPackets()
             }
             catch(ByteBufferException &)
             {
-                sLog->outError(LOG_FILTER_INTERREALM, "InterRealmClient ByteBufferException occured while parsing a packet (opcode: %u) from InterRealm Server. Skipped packet.",
+                TC_LOG_ERROR("server.interrealm", "InterRealmClient ByteBufferException occured while parsing a packet (opcode: %u) from InterRealm Server. Skipped packet.",
                     packet->GetOpcode());
             }    
             if (packet->rpos() < packet->wpos())
-                sLog->outError(LOG_FILTER_INTERREALM, "Unprocessed tail data (read stop at %u from %u) in opcode %s", packet->rpos(), packet->wpos(), IRopcodeTable[packet->GetOpcode()]->name);
+                TC_LOG_ERROR("server.interrealm", "Unprocessed tail data (read stop at %u from %u) in opcode %s", packet->rpos(), packet->wpos(), IRopcodeTable[packet->GetOpcode()]->name);
         }
         else
             Handle_Unhandled(*packet);

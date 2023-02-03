@@ -2885,8 +2885,8 @@ class spell_highmaul_branded_replication : public SpellScriptLoader
 
                                             if (l_PlrList.size() > 2)
                                             {
-                                                l_PlrList.sort(JadeCore::ObjectDistanceOrderPred(l_Target));
-                                                JadeCore::RandomResizeList(l_PlrList, 2);
+                                                l_PlrList.sort(Trinity::ObjectDistanceOrderPred(l_Target));
+                                                Trinity::RandomResizeList(l_PlrList, 2);
                                             }
 
                                             /// Increase jump count
@@ -2909,11 +2909,11 @@ class spell_highmaul_branded_replication : public SpellScriptLoader
 
                                         /// It cannot jumps twice on the same player at the same time
                                         if (!l_PlrList.empty())
-                                            l_PlrList.remove_if(JadeCore::UnitAuraCheck(true, l_SpellID));
+                                            l_PlrList.remove_if(Trinity::UnitAuraCheck(true, l_SpellID));
 
                                         if (!l_PlrList.empty())
                                         {
-                                            l_PlrList.sort(JadeCore::ObjectDistanceOrderPred(l_Target));
+                                            l_PlrList.sort(Trinity::ObjectDistanceOrderPred(l_Target));
 
                                             if (Player* l_OtherPlayer = l_PlrList.front())
                                             {
@@ -3108,8 +3108,8 @@ class spell_highmaul_dominance_aura : public SpellScriptLoader
                             std::list<Unit*> l_TargetList;
                             float l_Radius = 40.0f;
 
-                            JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
-                            JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_TargetList, l_Check);
+                            Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
+                            Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_TargetList, l_Check);
                             l_Caster->VisitNearbyObject(l_Radius, l_Searcher);
 
                             l_TargetList.remove(l_Caster);
@@ -3499,8 +3499,8 @@ class areatrigger_highmaul_orb_of_chaos : public AreaTriggerEntityScript
                         std::list<Player*> l_TargetList;
                         float l_Radius = 1.5f;
 
-                        JadeCore::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, l_Radius);
-                        JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                        Trinity::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, l_Radius);
+                        Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                         p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                         for (Player* l_Player : l_TargetList)

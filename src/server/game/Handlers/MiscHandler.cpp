@@ -77,7 +77,7 @@ void WorldSession::HandleRepopRequestOpcode(WorldPacket& p_RecvData)
     /// Release spirit after he's killed but before he is updated
     if (m_Player->getDeathState() == DeathState::JUST_DIED)
     {
-        TC_LOG_DEBUG(LOG_FILTER_NETWORKIO, "HandleRepopRequestOpcode: got request after player %s(%d) was killed and before he was updated", m_Player->GetName(), m_Player->GetGUIDLow());
+        TC_LOG_DEBUG("network", "HandleRepopRequestOpcode: got request after player %s(%d) was killed and before he was updated", m_Player->GetName(), m_Player->GetGUIDLow());
         m_Player->KillPlayer();
     }
 
@@ -997,7 +997,7 @@ void WorldSession::HandleAreaTriggerOpcode(WorldPacket& p_RecvData)
     Player* l_Player = GetPlayer();
     if (l_Player->isInFlight())
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "HandleAreaTriggerOpcode: Player '%s' (GUID: %u) in flight, ignore Area Trigger ID:%u",
+        TC_LOG_DEBUG("network", "HandleAreaTriggerOpcode: Player '%s' (GUID: %u) in flight, ignore Area Trigger ID:%u",
             l_Player->GetName(), l_Player->GetGUIDLow(), l_ID);
         return;
     }
@@ -1005,14 +1005,14 @@ void WorldSession::HandleAreaTriggerOpcode(WorldPacket& p_RecvData)
     AreaTriggerEntry const* l_ATEntry = sAreaTriggerStore.LookupEntry(l_ID);
     if (!l_ATEntry)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "HandleAreaTriggerOpcode: Player '%s' (GUID: %u) send unknown (by DBC) Area Trigger ID:%u",
+        TC_LOG_DEBUG("network", "HandleAreaTriggerOpcode: Player '%s' (GUID: %u) send unknown (by DBC) Area Trigger ID:%u",
             l_Player->GetName(), l_Player->GetGUIDLow(), l_ID);
         return;
     }
 
     if (l_Player->GetMapId() != l_ATEntry->ContinentID)
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "HandleAreaTriggerOpcode: Player '%s' (GUID: %u) too far (trigger map: %u player map: %u), ignore Area Trigger ID: %u",
+        TC_LOG_DEBUG("network", "HandleAreaTriggerOpcode: Player '%s' (GUID: %u) too far (trigger map: %u player map: %u), ignore Area Trigger ID: %u",
             l_Player->GetName(), l_ATEntry->ContinentID, l_Player->GetMapId(), l_Player->GetGUIDLow(), l_ID);
         return;
     }
@@ -1026,7 +1026,7 @@ void WorldSession::HandleAreaTriggerOpcode(WorldPacket& p_RecvData)
         float l_Dist = l_Player->GetDistance(l_ATEntry->Pos[0], l_ATEntry->Pos[1], l_ATEntry->Pos[2]);
         if (l_Dist > l_ATEntry->Radius + l_Delta)
         {
-            sLog->outDebug(LOG_FILTER_NETWORKIO, "HandleAreaTriggerOpcode: Player '%s' (GUID: %u) too far (radius: %f distance: %f), ignore Area Trigger ID: %u",
+            TC_LOG_DEBUG("network", "HandleAreaTriggerOpcode: Player '%s' (GUID: %u) too far (radius: %f distance: %f), ignore Area Trigger ID: %u",
                 l_Player->GetName(), l_Player->GetGUIDLow(), l_ATEntry->Radius, l_Dist, l_ID);
             return;
         }
@@ -1056,7 +1056,7 @@ void WorldSession::HandleAreaTriggerOpcode(WorldPacket& p_RecvData)
             (fabs(l_DY) > l_ATEntry->BoxWidth / 2 + l_Delta) ||
             (fabs(l_DZ) > l_ATEntry->BoxHeight / 2 + l_Delta))
         {
-            sLog->outDebug(LOG_FILTER_NETWORKIO, "HandleAreaTriggerOpcode: Player '%s' (GUID: %u) too far (1/2 box X: %f 1/2 box Y: %f 1/2 box Z: %f rotatedPlayerX: %f rotatedPlayerY: %f dZ:%f), ignore Area Trigger ID: %u",
+            TC_LOG_DEBUG("network", "HandleAreaTriggerOpcode: Player '%s' (GUID: %u) too far (1/2 box X: %f 1/2 box Y: %f 1/2 box Z: %f rotatedPlayerX: %f rotatedPlayerY: %f dZ:%f), ignore Area Trigger ID: %u",
                 l_Player->GetName(), l_Player->GetGUIDLow(), l_ATEntry->BoxLength / 2, l_ATEntry->BoxWidth / 2, l_ATEntry->BoxHeight / 2, l_RotPlayerX, l_RotPlayerY, l_DZ, l_ID);
             return;
         }
@@ -1317,7 +1317,7 @@ void WorldSession::HandleMoveTimeSkippedOpcode(WorldPacket& p_Packet)
     uint32 time_skipped;
     recvData >> guid;
     recvData >> time_skipped;
-    sLog->outDebug(LOG_FILTER_PACKETIO, "WORLD: CMSG_MOVE_TIME_SKIPPED");
+    TC_LOG_DEBUG(LOG_FILTER_PACKETIO, "WORLD: CMSG_MOVE_TIME_SKIPPED");
 
     /// TODO
     must be need use in Trinity
@@ -1348,7 +1348,7 @@ void WorldSession::HandleMoveUnRootAck(WorldPacket& recvData)
     return;
     }
 
-    sLog->outDebug(LOG_FILTER_PACKETIO, "WORLD: CMSG_FORCE_MOVE_UNROOT_ACK");
+    TC_LOG_DEBUG(LOG_FILTER_PACKETIO, "WORLD: CMSG_FORCE_MOVE_UNROOT_ACK");
 
     recvData.read_skip<uint32>();                          // unk
 
@@ -1374,7 +1374,7 @@ void WorldSession::HandleMoveRootAck(WorldPacket& recvData)
     return;
     }
 
-    sLog->outDebug(LOG_FILTER_PACKETIO, "WORLD: CMSG_FORCE_MOVE_ROOT_ACK");
+    TC_LOG_DEBUG(LOG_FILTER_PACKETIO, "WORLD: CMSG_FORCE_MOVE_ROOT_ACK");
 
     recvData.read_skip<uint32>();                          // unk
 
@@ -1392,7 +1392,7 @@ void WorldSession::HandleSetActionBarToggles(WorldPacket& p_Packet)
     if (!m_Player)                                        // ignore until not logged (check needed because STATUS_AUTHED)
     {
         if (l_ActionBar != 0)
-            sLog->outError(LOG_FILTER_NETWORKIO, "WorldSession::HandleSetActionBarToggles in not logged state with value: %u, ignored", uint32(l_ActionBar));
+            TC_LOG_ERROR("network", "WorldSession::HandleSetActionBarToggles in not logged state with value: %u, ignored", uint32(l_ActionBar));
         return;
     }
 
@@ -1616,7 +1616,7 @@ void WorldSession::HandleWorldTeleportOpcode(WorldPacket& recvData)
 
     if (GetPlayer()->isInFlight())
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "Player '%s' (GUID: %u) in flight, ignore worldport command.", GetPlayer()->GetName(), GetPlayer()->GetGUIDLow());
+        TC_LOG_DEBUG("network", "Player '%s' (GUID: %u) in flight, ignore worldport command.", GetPlayer()->GetName(), GetPlayer()->GetGUIDLow());
         return;
     }
 
@@ -1794,7 +1794,7 @@ void WorldSession::HandleFarSightOpcode(WorldPacket& p_Packet)
         if (WorldObject * l_Target = m_Player->GetViewpoint())
             m_Player->SetSeer(l_Target);
         else
-            sLog->outError(LOG_FILTER_NETWORKIO, "Player %s requests non-existing seer " UI64FMTD, m_Player->GetName(), m_Player->GetGuidValue(PLAYER_FIELD_FARSIGHT_OBJECT));
+            TC_LOG_ERROR("network", "Player %s requests non-existing seer " UI64FMTD, m_Player->GetName(), m_Player->GetGuidValue(PLAYER_FIELD_FARSIGHT_OBJECT));
     }
 
     GetPlayer()->UpdateVisibilityForPlayer();
@@ -1835,7 +1835,7 @@ void WorldSession::HandleTimeSyncResp(WorldPacket& p_RecvData)
     p_RecvData >> l_Counter >> l_ClientTicks;
 
     if (l_Counter != m_Player->m_timeSyncCounter - 1)
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "Wrong time sync counter from player %s (cheater?)", m_Player->GetName());
+        TC_LOG_DEBUG("network", "Wrong time sync counter from player %s (cheater?)", m_Player->GetName());
 
     m_Player->m_timeSyncClient = l_ClientTicks;
 }
@@ -1868,19 +1868,19 @@ void WorldSession::HandleSetDungeonDifficultyOpcode(WorldPacket & recvData)
     DifficultyEntry const* difficultyEntry = sDifficultyStore.LookupEntry(mode);
     if (!difficultyEntry)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "WorldSession::HandleSetDungeonDifficultyOpcode: %d sent an invalid instance mode %d!", m_Player->GetGUIDLow(), mode);
+        TC_LOG_ERROR("network", "WorldSession::HandleSetDungeonDifficultyOpcode: %d sent an invalid instance mode %d!", m_Player->GetGUIDLow(), mode);
         return;
     }
 
     if (difficultyEntry->InstanceType != MAP_INSTANCE)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "WorldSession::HandleSetDungeonDifficultyOpcode: %d sent an non-dungeon instance mode %d!", m_Player->GetGUIDLow(), difficultyEntry->ID);
+        TC_LOG_ERROR("network", "WorldSession::HandleSetDungeonDifficultyOpcode: %d sent an non-dungeon instance mode %d!", m_Player->GetGUIDLow(), difficultyEntry->ID);
         return;
     }
 
     if (!(difficultyEntry->Flags & DIFFICULTY_FLAG_CAN_SELECT))
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "WorldSession::HandleSetDungeonDifficultyOpcode: %d sent unselectable instance mode %d!", m_Player->GetGUIDLow(), difficultyEntry->ID);
+        TC_LOG_ERROR("network", "WorldSession::HandleSetDungeonDifficultyOpcode: %d sent unselectable instance mode %d!", m_Player->GetGUIDLow(), difficultyEntry->ID);
         return;
     }
 
@@ -1892,7 +1892,7 @@ void WorldSession::HandleSetDungeonDifficultyOpcode(WorldPacket & recvData)
     Map* map = m_Player->FindMap();
     if (map && map->IsDungeon())
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "WorldSession::HandleSetDungeonDifficultyOpcode: player (Name: %s, GUID: %u) tried to reset the instance while player is inside!", m_Player->GetName(), m_Player->GetGUIDLow());
+        TC_LOG_ERROR("network", "WorldSession::HandleSetDungeonDifficultyOpcode: player (Name: %s, GUID: %u) tried to reset the instance while player is inside!", m_Player->GetName(), m_Player->GetGUIDLow());
         return;
     }
 
@@ -1912,7 +1912,7 @@ void WorldSession::HandleSetDungeonDifficultyOpcode(WorldPacket & recvData)
 
                 if (groupGuy->GetMap()->IsNonRaidDungeon())
                 {
-                    sLog->outError(LOG_FILTER_NETWORKIO, "WorldSession::HandleSetDungeonDifficultyOpcode: player %d tried to reset the instance while group member (Name: %s, GUID: %u) is inside!", m_Player->GetGUIDLow(), groupGuy->GetName(), groupGuy->GetGUIDLow());
+                    TC_LOG_ERROR("network", "WorldSession::HandleSetDungeonDifficultyOpcode: player %d tried to reset the instance while group member (Name: %s, GUID: %u) is inside!", m_Player->GetGUIDLow(), groupGuy->GetName(), groupGuy->GetGUIDLow());
                     return;
                 }
             }
@@ -1941,28 +1941,28 @@ void WorldSession::HandleSetRaidDifficultyOpcode(WorldPacket& p_RecvData)
     DifficultyEntry const* difficultyEntry = sDifficultyStore.LookupEntry(l_Difficulty);
     if (!difficultyEntry)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "WorldSession::HandleSetDungeonDifficultyOpcode: %d sent an invalid instance mode %u!",
+        TC_LOG_ERROR("network", "WorldSession::HandleSetDungeonDifficultyOpcode: %d sent an invalid instance mode %u!",
                        m_Player->GetGUIDLow(), l_Difficulty);
         return;
     }
 
     if (difficultyEntry->InstanceType != MAP_RAID)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "WorldSession::HandleSetDungeonDifficultyOpcode: %d sent an non-dungeon instance mode %u!",
+        TC_LOG_ERROR("network", "WorldSession::HandleSetDungeonDifficultyOpcode: %d sent an non-dungeon instance mode %u!",
                        m_Player->GetGUIDLow(), difficultyEntry->ID);
         return;
     }
 
     if (!(difficultyEntry->Flags & DIFFICULTY_FLAG_CAN_SELECT))
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "WorldSession::HandleSetDungeonDifficultyOpcode: %d sent unselectable instance mode %u!",
+        TC_LOG_ERROR("network", "WorldSession::HandleSetDungeonDifficultyOpcode: %d sent unselectable instance mode %u!",
                        m_Player->GetGUIDLow(), difficultyEntry->ID);
         return;
     }
 
     if (((difficultyEntry->Flags & DIFFICULTY_FLAG_LEGACY) >> 5) != l_IsLegacyDifficulty)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "WorldSession::HandleSetDungeonDifficultyOpcode: %d sent not matching legacy difficulty %u!",
+        TC_LOG_ERROR("network", "WorldSession::HandleSetDungeonDifficultyOpcode: %d sent not matching legacy difficulty %u!",
                        m_Player->GetGUIDLow(), difficultyEntry->ID);
         return;
     }
@@ -1975,7 +1975,7 @@ void WorldSession::HandleSetRaidDifficultyOpcode(WorldPacket& p_RecvData)
     Map* l_Map = m_Player->FindMap();
     if (l_Map && l_Map->IsDungeon())
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "WorldSession::HandleSetRaidDifficultyOpcode: player %d tried to reset the instance while inside!", m_Player->GetGUIDLow());
+        TC_LOG_ERROR("network", "WorldSession::HandleSetRaidDifficultyOpcode: player %d tried to reset the instance while inside!", m_Player->GetGUIDLow());
         return;
     }
 
@@ -1995,7 +1995,7 @@ void WorldSession::HandleSetRaidDifficultyOpcode(WorldPacket& p_RecvData)
 
                 if (groupGuy->GetMap()->IsRaid())
                 {
-                    sLog->outError(LOG_FILTER_NETWORKIO, "WorldSession::HandleSetRaidDifficultyOpcode: player %d tried to reset the instance while inside!", m_Player->GetGUIDLow());
+                    TC_LOG_ERROR("network", "WorldSession::HandleSetRaidDifficultyOpcode: player %d tried to reset the instance while inside!", m_Player->GetGUIDLow());
                     return;
                 }
             }
@@ -2071,7 +2071,7 @@ void WorldSession::HandleCancelQueuedSpellOpcode(WorldPacket& recvData)
 void WorldSession::HandleRequestPetInfoOpcode(WorldPacket& /*recvData */)
 {
     /*
-    sLog->outDebug(LOG_FILTER_PACKETIO, "WORLD: CMSG_REQUEST_PET_INFO");
+    TC_LOG_DEBUG(LOG_FILTER_PACKETIO, "WORLD: CMSG_REQUEST_PET_INFO");
     recvData.hexlike();
     */
 }
@@ -2224,7 +2224,7 @@ void WorldSession::HandleInstanceLockResponse(WorldPacket& recvPacket)
 
     if (!m_Player->HasPendingBind())
     {
-        sLog->outInfo(LOG_FILTER_NETWORKIO, "InstanceLockResponse: Player %s (guid %u) tried to bind himself/teleport to graveyard without a pending bind!", m_Player->GetName(), m_Player->GetGUIDLow());
+        TC_LOG_INFO("network", "InstanceLockResponse: Player %s (guid %u) tried to bind himself/teleport to graveyard without a pending bind!", m_Player->GetName(), m_Player->GetGUIDLow());
         return;
     }
 
@@ -2297,7 +2297,7 @@ void WorldSession::HandleObjectUpdateFailedOpcode(WorldPacket & p_Packet)
     if (l_WorldObject)
         l_WorldObject->SendUpdateToPlayer(GetPlayer());
 
-    sLog->outError(LOG_FILTER_NETWORKIO, "Object update failed for object " UI64FMTD " (%s) for player %s (%u)", uint64(l_ObjectGUID), l_WorldObject ? l_WorldObject->GetName() : "object-not-found", GetPlayerName().c_str(), GetGuidLow());
+    TC_LOG_ERROR("network", "Object update failed for object " UI64FMTD " (%s) for player %s (%u)", uint64(l_ObjectGUID), l_WorldObject ? l_WorldObject->GetName() : "object-not-found", GetPlayerName().c_str(), GetGuidLow());
 }
 
 // DestrinyFrame.xml : lua function NeutralPlayerSelectFaction

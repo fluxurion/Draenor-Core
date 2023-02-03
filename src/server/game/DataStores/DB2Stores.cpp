@@ -206,7 +206,7 @@ uint32 DB2FilesCount = 0;
 
 static bool LoadDB2_assert_print(uint32 fsize,uint32 rsize, const std::string& filename)
 {
-    sLog->outError(LOG_FILTER_GENERAL, "Size of '%s' setted by format string (%u) not equal size of C++ structure (%u).", filename.c_str(), fsize, rsize);
+    SF_LOG_ERROR("server.worldserver", "Size of '%s' setted by format string (%u) not equal size of C++ structure (%u).", filename.c_str(), fsize, rsize);
 
     // ASSERT must fail after function call
     return false;
@@ -783,7 +783,7 @@ void LoadDB2Stores(const std::string& dataPath)
     /// error checks
     if (bad_db2_files.size() >= DB2FilesCount)
     {
-        sLog->outError(LOG_FILTER_GENERAL, "\nIncorrect DataDir value in worldserver.conf or ALL required *.db2 files (%d) not found by path: %sdb2", DB2FilesCount, dataPath.c_str());
+        SF_LOG_ERROR("server.worldserver", "\nIncorrect DataDir value in worldserver.conf or ALL required *.db2 files (%d) not found by path: %sdb2", DB2FilesCount, dataPath.c_str());
         exit(1);
     }
     else if (!bad_db2_files.empty())
@@ -792,7 +792,7 @@ void LoadDB2Stores(const std::string& dataPath)
         for (std::list<std::string>::iterator i = bad_db2_files.begin(); i != bad_db2_files.end(); ++i)
             str += *i + "\n";
 
-        sLog->outError(LOG_FILTER_GENERAL, "\nSome required *.db2 files (%u from %d) not found or not compatible:\n%s", (uint32)bad_db2_files.size(), DB2FilesCount,str.c_str());
+        SF_LOG_ERROR("server.worldserver", "\nSome required *.db2 files (%u from %d) not found or not compatible:\n%s", (uint32)bad_db2_files.size(), DB2FilesCount,str.c_str());
         exit(1);
     }
 
@@ -800,10 +800,10 @@ void LoadDB2Stores(const std::string& dataPath)
     if (!sItemStore.LookupEntry(128706) ||              ///< Last item added in 6.2.0 (20216)
         !sItemExtendedCostStore.LookupEntry(5923) )     ///< Last item extended cost added in 6.2.0 (20216)
     {
-        sLog->outError(LOG_FILTER_GENERAL, "Please extract correct db2 files from client 6.2.0 (20216)");
+        SF_LOG_ERROR("server.worldserver", "Please extract correct db2 files from client 6.2.0 (20216)");
         exit(1);
     }
-    sLog->outInfo(LOG_FILTER_GENERAL, ">> Initialized %d DB2 data stores.", DB2FilesCount);
+    TC_LOG_INFO("misc", ">> Initialized %d DB2 data stores.", DB2FilesCount);
 }
 
 std::vector<ItemBonusEntry const*> const* GetItemBonusesByID(uint32 Id)

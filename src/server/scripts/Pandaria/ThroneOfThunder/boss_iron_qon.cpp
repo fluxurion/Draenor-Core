@@ -658,7 +658,7 @@ public:
                         if (l_PlayerList.empty())
                             break;
 
-                        JadeCore::RandomResizeList(l_PlayerList, 1);
+                        Trinity::RandomResizeList(l_PlayerList, 1);
                         if (Unit* l_Target = l_PlayerList.front())
                         {
                             ++m_SpearIndex;
@@ -1174,7 +1174,7 @@ class mob_quetzal : public CreatureScript
 
                                 if (!l_PlayerList.empty())
                                 {
-                                    JadeCore::RandomResizeList(l_PlayerList, 1);
+                                    Trinity::RandomResizeList(l_PlayerList, 1);
                                     l_Victim = l_PlayerList.front();
                                 }
                             }
@@ -1657,7 +1657,7 @@ class mob_lightning_cloud : public CreatureScript
                             return;
 
                         // Selecting only one player
-                        JadeCore::RandomResizeList(l_PlayerList, 1);
+                        Trinity::RandomResizeList(l_PlayerList, 1);
                         l_Player = l_PlayerList.front();
                         me->CastSpell(l_Player, SPELL_LIGHTNING_STORM, false);
                         me->DespawnOrUnsummon();
@@ -1732,7 +1732,7 @@ class mob_iron_qon_invisible_man : public CreatureScript
                         return;
 
                     // Selecting storms that will remain - Keeping only 4 storms
-                    JadeCore::RandomResizeList(m_StormList, 4);
+                    Trinity::RandomResizeList(m_StormList, 4);
                     for (uint64 l_StormGuid : m_StormList)
                     {
                         if (Creature* l_Storm = Creature::GetCreature(*me, l_StormGuid))
@@ -2306,8 +2306,8 @@ class at_quilen_spear : public AreaTriggerEntityScript
             uint32 l_AuraTrigger = l_SpellId == SPELL_BURNING_CINDERS_AT ? SPELL_BURNING_CINDERS_AURA : l_SpellId == SPELL_STORM_CLOUD_AT ? SPELL_STORM_CLOUD_AURA : SPELL_FROZEN_BLOOD_AURA;
             uint32 l_AuraDamage  = l_SpellId == SPELL_BURNING_CINDERS_AT ? SPELL_BURNING_CINDERS_DMG  : l_SpellId == SPELL_STORM_CLOUD_AT ? SPELL_STORM_CLOUD_DMG  : SPELL_FROZEN_BLOOD_DMG;
 
-            JadeCore::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             for (Unit* l_Unit : l_TargetList)
@@ -2341,8 +2341,8 @@ class at_rushing_winds : public AreaTriggerEntityScript
             std::list<Unit*> l_TargetList;
             float l_Radius = 50.0f;
 
-            JadeCore::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger  , l_TargetList, l_Check);
+            Trinity::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+            Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger  , l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             for (Unit* l_Unit : l_TargetList)

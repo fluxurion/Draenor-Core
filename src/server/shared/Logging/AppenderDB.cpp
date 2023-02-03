@@ -9,20 +9,17 @@
 #include "AppenderDB.h"
 #include "Database/DatabaseEnv.h"
 
-AppenderDB::AppenderDB(uint8 id, std::string const& name, LogLevel level, uint32 realmId)
-    : Appender(id, name, APPENDER_DB, level), realm(realmId), enable(false)
-{
-}
+AppenderDB::AppenderDB(uint8 id, std::string const& name, LogLevel level)
+    : Appender(id, name, AppenderType::APPENDER_DB, level), realmId(0), enabled(false) { }
 
-AppenderDB::~AppenderDB()
-{
-}
+AppenderDB::~AppenderDB() { }
 
-void AppenderDB::_write(LogMessage& message)
+void AppenderDB::_write(LogMessage const& message)
 {
-    // Avoid infinite loop, PExecute triggers Logging with LOG_FILTER_SQL type
+    // Avoid infinite loop, PExecute triggers Logging with "sql.sql" type
     if (!enabled || !message.type.find("sql"))
         return;
+
     PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_LOG);
     stmt->setUInt64(0, message.mtime);
     stmt->setUInt32(1, realmId);
@@ -32,7 +29,8 @@ void AppenderDB::_write(LogMessage& message)
     LoginDatabase.Execute(stmt);
 }
 
-void AppenderDB::setEnable(bool _enable)
+void AppenderDB::setRealmId(uint32 _realmId)
 {
-    enable = _enable;
+    enabled = true;
+    realmId = _realmId;
 }

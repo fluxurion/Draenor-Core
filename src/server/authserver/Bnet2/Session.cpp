@@ -112,13 +112,13 @@ namespace BNet2 {
                 {
                     if ((uint8)OpcodeTable[l_I].Opcode == l_Opcode && (uint8)OpcodeTable[l_I].Channel == l_Channel)
                     {
-                        sLog->outDebug(LOG_FILTER_AUTHSERVER, "BNet2::Session::OnRead Got data for opcode %u channel %u recv length %u", l_Opcode, l_Channel, l_Size);
+                        TC_LOG_DEBUG("server.authserver", "BNet2::Session::OnRead Got data for opcode %u channel %u recv length %u", l_Opcode, l_Channel, l_Size);
 
                         m_CurrentPacket = &l_Packet;
 
                         if (!(*this.*OpcodeTable[l_I].Handler)(&l_Packet))
                         {
-                            sLog->outDebug(LOG_FILTER_AUTHSERVER, "BNet2::Session::OnRead Command handler failed for opcode %u channel %u recv length %u", l_Opcode, l_Channel, l_Size);
+                            TC_LOG_DEBUG("server.authserver", "BNet2::Session::OnRead Command handler failed for opcode %u channel %u recv length %u", l_Opcode, l_Channel, l_Size);
                             GetSocket().shutdown();
                             m_CurrentPacket = NULL;
                             return;
@@ -130,7 +130,7 @@ namespace BNet2 {
                 // Report unknown packets in the error log
                 if (l_I == AUTH_TOTAL_COMMANDS)
                 {
-                    sLog->outError(LOG_FILTER_AUTHSERVER, "BNet2::Session::OnRead Got unknown packet from '%s' opcode %u channel %u size %u", GetSocket().getRemoteAddress().c_str(), l_Opcode, l_Channel, l_Size);
+                    TC_LOG_ERROR("server.authserver", "BNet2::Session::OnRead Got unknown packet from '%s' opcode %u channel %u size %u", GetSocket().getRemoteAddress().c_str(), l_Opcode, l_Channel, l_Size);
 					m_CurrentPacket = NULL;
                     return;
                 }
@@ -146,12 +146,12 @@ namespace BNet2 {
     /// On accept
     void Session::OnAccept(void)
     {
-        sLog->outDebug(LOG_FILTER_AUTHSERVER, "BNet2::Session::OnAccept '%s:%d' Accepting connection", GetSocket().getRemoteAddress().c_str(), GetSocket().getRemotePort());
+        TC_LOG_DEBUG("server.authserver", "BNet2::Session::OnAccept '%s:%d' Accepting connection", GetSocket().getRemoteAddress().c_str(), GetSocket().getRemotePort());
     }
     /// On close
     void Session::OnClose(void)
     {
-        sLog->outDebug(LOG_FILTER_AUTHSERVER, "BNet2::Session::OnClose");
+        TC_LOG_DEBUG("server.authserver", "BNet2::Session::OnClose");
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -169,7 +169,7 @@ namespace BNet2 {
 
          GetSocket().send((char const*)l_Data, p_Packet->GetSize());
 
-         sLog->outDebug(LOG_FILTER_AUTHSERVER, "BNet2::Session::Send opcode %u channel %u size %u", p_Packet->GetOpcode(), p_Packet->GetChannel(), p_Packet->GetSize());
+         TC_LOG_DEBUG("server.authserver", "BNet2::Session::Send opcode %u channel %u size %u", p_Packet->GetOpcode(), p_Packet->GetChannel(), p_Packet->GetSize());
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -318,7 +318,7 @@ namespace BNet2 {
             if (l_Result != BNet2::BATTLENET2_AUTH_OK)
             {
                 SendAuthResult(l_Result);
-                sLog->outDebug(LOG_FILTER_AUTHSERVER, "BNet2::Session::None_Handle_InformationRequest Component(%s %s %u) not allowed, error code => %u", l_Component.Program.c_str(), l_Component.Platform.c_str(), l_Component.Build, l_Result);
+                TC_LOG_DEBUG("server.authserver", "BNet2::Session::None_Handle_InformationRequest Component(%s %s %u) not allowed, error code => %u", l_Component.Program.c_str(), l_Component.Platform.c_str(), l_Component.Build, l_Result);
 
                 return true;
             }
@@ -337,7 +337,7 @@ namespace BNet2 {
             if (l_Result)
             {
                 SendAuthResult(BNet2::BATTLENET2_AUTH_ACCOUNT_TEMP_BANNED);
-                sLog->outDebug(LOG_FILTER_AUTHSERVER, "BNet2::Session::None_Handle_InformationRequest '%s:%d' Banned ip tries to login!", GetSocket().getRemoteAddress().c_str(), GetSocket().getRemotePort());
+                TC_LOG_DEBUG("server.authserver", "BNet2::Session::None_Handle_InformationRequest '%s:%d' Banned ip tries to login!", GetSocket().getRemoteAddress().c_str(), GetSocket().getRemotePort());
                 return true;
             }
 
@@ -356,17 +356,17 @@ namespace BNet2 {
                 bool l_Locked = false;
                 if (l_Fields[2].GetUInt16() == 1)                  // if ip is locked
                 {
-                    sLog->outDebug(LOG_FILTER_AUTHSERVER, "BNet2::Session::None_Handle_InformationRequest Account '%s' is locked to IP - '%s'", l_AccountName.c_str(), l_Fields[3].GetCString());
-                    sLog->outDebug(LOG_FILTER_AUTHSERVER, "BNet2::Session::None_Handle_InformationRequest Player address is '%s'", l_IPAddress.c_str());
+                    TC_LOG_DEBUG("server.authserver", "BNet2::Session::None_Handle_InformationRequest Account '%s' is locked to IP - '%s'", l_AccountName.c_str(), l_Fields[3].GetCString());
+                    TC_LOG_DEBUG("server.authserver", "BNet2::Session::None_Handle_InformationRequest Player address is '%s'", l_IPAddress.c_str());
 
                     if (strcmp(l_Fields[4].GetCString(), l_IPAddress.c_str()) != 0)
                     {
-                        sLog->outDebug(LOG_FILTER_AUTHSERVER, "[AuthChallenge] Account IP differs");
+                        TC_LOG_DEBUG("server.authserver", "[AuthChallenge] Account IP differs");
                         SendAuthResult(BNet2::BATTLENET2_AUTH_CONNECT_METHOD_CHANGED);
                         l_Locked = true;
                     }
                     else
-                        sLog->outDebug(LOG_FILTER_AUTHSERVER, "BNet2::Session::None_Handle_InformationRequest Account IP matches");
+                        TC_LOG_DEBUG("server.authserver", "BNet2::Session::None_Handle_InformationRequest Account IP matches");
                 }
 
                 if (!l_Locked)
@@ -385,12 +385,12 @@ namespace BNet2 {
                         if ((*l_BanResult)[0].GetUInt32() == (*l_BanResult)[1].GetUInt32())
                         {
                             SendAuthResult(BNet2::BATTLENET2_AUTH_ACCOUNT_TEMP_BANNED);
-                            sLog->outDebug(LOG_FILTER_AUTHSERVER, "'%s:%d' BNet2::Session::None_Handle_InformationRequest Banned account %s tried to login!", GetSocket().getRemoteAddress().c_str(), GetSocket().getRemotePort(), l_AccountName.c_str());
+                            TC_LOG_DEBUG("server.authserver", "'%s:%d' BNet2::Session::None_Handle_InformationRequest Banned account %s tried to login!", GetSocket().getRemoteAddress().c_str(), GetSocket().getRemotePort(), l_AccountName.c_str());
                         }
                         else
                         {
                             SendAuthResult(BNet2::BATTLENET2_AUTH_ACCOUNT_TEMP_BANNED);
-                            sLog->outDebug(LOG_FILTER_AUTHSERVER, "'%s:%d' BNet2::Session::None_Handle_InformationRequest Temporarily banned account %s tried to login!", GetSocket().getRemoteAddress().c_str(), GetSocket().getRemotePort(), l_AccountName.c_str());
+                            TC_LOG_DEBUG("server.authserver", "'%s:%d' BNet2::Session::None_Handle_InformationRequest Temporarily banned account %s tried to login!", GetSocket().getRemoteAddress().c_str(), GetSocket().getRemotePort(), l_AccountName.c_str());
                         }
                     }
                     else
@@ -430,7 +430,7 @@ namespace BNet2 {
                         m_AccountSecurityLevel  = l_Fields[4].GetUInt8() <= SEC_ADMINISTRATOR ? AccountTypes(l_Fields[4].GetUInt8()) : SEC_ADMINISTRATOR;
                         m_Locale                = l_Locale;
 
-                        sLog->outDebug(LOG_FILTER_AUTHSERVER, "'%s:%d' BNet2::Session::None_Handle_InformationRequest account %s is using '%s' locale (%u)", GetSocket().getRemoteAddress().c_str(), GetSocket().getRemotePort(),
+                        TC_LOG_DEBUG("server.authserver", "'%s:%d' BNet2::Session::None_Handle_InformationRequest account %s is using '%s' locale (%u)", GetSocket().getRemoteAddress().c_str(), GetSocket().getRemotePort(),
                             l_AccountName.c_str(), l_Locale.c_str(), GetLocaleByName(l_Locale));
                     }
                 }

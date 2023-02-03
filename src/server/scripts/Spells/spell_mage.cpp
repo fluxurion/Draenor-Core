@@ -166,8 +166,8 @@ public:
         float l_Radius = 20.0f;
         Unit* l_Caster = p_AreaTrigger->GetCaster();
 
-        JadeCore::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-        JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, targetList, u_check);
+        Trinity::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+        Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, targetList, u_check);
         p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
         for (auto itr : targetList)
@@ -185,8 +185,8 @@ public:
         float l_Radius = 10.0f;
         Unit* l_Caster = p_AreaTrigger->GetCaster();
 
-        JadeCore::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
-        JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, targetList, u_check);
+        Trinity::NearestAttackableUnitInObjectRangeCheck u_check(p_AreaTrigger, l_Caster, l_Radius);
+        Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> searcher(p_AreaTrigger, targetList, u_check);
         p_AreaTrigger->VisitNearbyObject(l_Radius, searcher);
 
         for (auto itr : targetList)
@@ -511,7 +511,7 @@ class spell_mage_greater_invisibility_triggered: public SpellScriptLoader
                         l_ListID.push_back(l_AuraDamage->GetId());
                     }
 
-                    JadeCore::Containers::RandomResizeList(l_ListID, 2);
+                    Trinity::Containers::RandomResizeList(l_ListID, 2);
                     for (uint32 l_ID : l_ListID)
                         l_Target->RemoveAura(l_ID);
                 }
@@ -1482,7 +1482,7 @@ class spell_mage_inferno_blast: public SpellScriptLoader
 						}
 
 						if (l_TargetList.size() > l_TargetCount)
-							JadeCore::Containers::RandomResizeList(l_TargetList, l_TargetCount);
+							Trinity::Containers::RandomResizeList(l_TargetList, l_TargetCount);
 
 						for (Unit* l_Unit : l_TargetList)
 						{

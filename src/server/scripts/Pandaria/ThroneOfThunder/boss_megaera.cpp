@@ -519,7 +519,7 @@ class boss_megaera : public CreatureScript
                 if (headList.empty())
                     return;
 
-                JadeCore::RandomResizeList(headList, twoHeads ? 2 : 1);
+                Trinity::RandomResizeList(headList, twoHeads ? 2 : 1);
                 for (Creature* head : headList)
                     head->AI()->DoAction(ACTION_ENABLE_HEAD);
             }

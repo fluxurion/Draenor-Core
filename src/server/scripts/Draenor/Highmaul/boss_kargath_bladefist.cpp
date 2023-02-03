@@ -877,7 +877,7 @@ class boss_kargath_bladefist : public CreatureScript
                         if (l_TigerList.empty())
                             break;
 
-                        JadeCore::RandomResizeList(l_TigerList, 1);
+                        Trinity::RandomResizeList(l_TigerList, 1);
 
                         for (Creature* l_Ravenous : l_TigerList)
                         {
@@ -954,7 +954,7 @@ class boss_kargath_bladefist : public CreatureScript
                 });
 
                 if (l_SpawnerList.size() > p_Count)
-                    JadeCore::RandomResizeList(l_SpawnerList, p_Count);
+                    Trinity::RandomResizeList(l_SpawnerList, p_Count);
 
                 for (Creature* l_Spawner : l_SpawnerList)
                 {
@@ -3161,7 +3161,7 @@ class spell_highmaul_chain_hurl : public SpellScriptLoader
 
                 /// Just in case of all tanks have the same amount of Open Wounds
                 if (!l_TanksList.empty() && l_TanksList.size() > eDatas::MaxLFRTank)
-                    JadeCore::RandomResizeList(l_TanksList, eDatas::MaxLFRTank);
+                    Trinity::RandomResizeList(l_TanksList, eDatas::MaxLFRTank);
 
                 l_HealersList.remove_if([this](Player* p_Player) -> bool
                 {
@@ -3175,7 +3175,7 @@ class spell_highmaul_chain_hurl : public SpellScriptLoader
                 });
 
                 if (!l_HealersList.empty() && l_HealersList.size() > eDatas::MaxLFRHealer)
-                    JadeCore::RandomResizeList(l_HealersList, eDatas::MaxLFRHealer);
+                    Trinity::RandomResizeList(l_HealersList, eDatas::MaxLFRHealer);
 
                 l_DamagersList.remove_if([this](Player* p_Player) -> bool
                 {
@@ -3189,7 +3189,7 @@ class spell_highmaul_chain_hurl : public SpellScriptLoader
                 });
 
                 if (!l_DamagersList.empty() && l_DamagersList.size() > eDatas::MaxLFRDamagers)
-                    JadeCore::RandomResizeList(l_DamagersList, eDatas::MaxLFRDamagers);
+                    Trinity::RandomResizeList(l_DamagersList, eDatas::MaxLFRDamagers);
 
                 m_Count = 0;
 
@@ -3241,7 +3241,7 @@ class spell_highmaul_chain_hurl : public SpellScriptLoader
                 if (l_PlayerList.empty())
                     return;
 
-                l_PlayerList.remove_if(JadeCore::UnitAuraCheck(true, eDatas::SpellObscured));
+                l_PlayerList.remove_if(Trinity::UnitAuraCheck(true, eDatas::SpellObscured));
 
                 if (l_PlayerList.empty())
                     return;
@@ -3253,7 +3253,7 @@ class spell_highmaul_chain_hurl : public SpellScriptLoader
                 /// Kargath uses his chain to lash the 5 closest enemies and toss them into the arena's stands.
                 else
                 {
-                    l_PlayerList.sort(JadeCore::ObjectDistanceOrderPred(l_Caster));
+                    l_PlayerList.sort(Trinity::ObjectDistanceOrderPred(l_Caster));
 
                     m_Count = 0;
                     for (Player* l_Player : l_PlayerList)
@@ -3268,7 +3268,7 @@ class spell_highmaul_chain_hurl : public SpellScriptLoader
                 }
 
                 if (p_Targets.size() > eDatas::MaxAffectedTargets)
-                    JadeCore::RandomResizeList(p_Targets, eDatas::MaxAffectedTargets);
+                    Trinity::RandomResizeList(p_Targets, eDatas::MaxAffectedTargets);
             }
 
             void Register() override
@@ -3646,7 +3646,7 @@ class spell_highmaul_blade_dance : public SpellScriptLoader
                 if (l_PlayerList.empty() && !l_SnapShot.empty())
                     l_PlayerList = l_SnapShot;
 
-                JadeCore::RandomResizeList(l_PlayerList, 1);
+                Trinity::RandomResizeList(l_PlayerList, 1);
                 p_Targets.push_back(l_PlayerList.front());
             }
 
@@ -3683,7 +3683,7 @@ class spell_highmaul_correct_searchers : public SpellScriptLoader
 
             void CorrectTargets(std::list<WorldObject*>& p_Targets)
             {
-                p_Targets.remove_if(JadeCore::UnitAuraCheck(true, eSpells::Obscured));
+                p_Targets.remove_if(Trinity::UnitAuraCheck(true, eSpells::Obscured));
 
                 if (GetSpellInfo()->Id == eSpells::BerserkerRush && !p_Targets.empty())
                 {
@@ -3706,7 +3706,7 @@ class spell_highmaul_correct_searchers : public SpellScriptLoader
                     /// Kargath will target one of the three furthest targets and chase them till he either kills the player.
                     if (l_Caster->GetMap()->IsMythic())
                     {
-                        p_Targets.sort(JadeCore::DistanceCompareOrderPred(l_Caster, false));
+                        p_Targets.sort(Trinity::DistanceCompareOrderPred(l_Caster, false));
 
                         uint8 l_Count = 0;
                         std::list<WorldObject*> l_NewTargets;
@@ -3723,7 +3723,7 @@ class spell_highmaul_correct_searchers : public SpellScriptLoader
                         p_Targets.clear();
 
                         if (!l_NewTargets.empty())
-                            JadeCore::RandomResizeList(l_NewTargets, l_Count);
+                            Trinity::RandomResizeList(l_NewTargets, l_Count);
 
                         if (!l_NewTargets.empty())
                             p_Targets.push_back(l_NewTargets.front());
@@ -3766,8 +3766,8 @@ class areatrigger_highmaul_molten_bomb : public AreaTriggerEntityScript
                 std::list<Unit*> l_TargetList;
                 float l_Radius = 3.0f;
 
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 std::set<uint64> l_Targets;
@@ -3881,8 +3881,8 @@ class areatrigger_highmaul_flame_jet : public AreaTriggerEntityScript
                         l_Ravenous->AI()->DoAction(eActions::InterruptRavenous);
                 }
 
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 std::set<uint64> l_Targets;
@@ -3958,8 +3958,8 @@ class areatrigger_highmaul_mauling_brew : public AreaTriggerEntityScript
                 std::list<Unit*> l_TargetList;
                 float l_Radius = 3.0f;
 
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 for (Unit* l_Unit : l_TargetList)

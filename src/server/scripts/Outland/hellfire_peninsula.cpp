@@ -135,7 +135,7 @@ public:
             if (creature->GetOwner() && creature->GetOwner()->IsPlayer())
                 Start(false, false, creature->GetOwner()->GetGUID());
             else
-                sLog->outError(LOG_FILTER_TSCR, "TRINITY: npc_ancestral_wolf can not obtain owner or owner is not a player.");
+                TC_LOG_ERROR("scripts", "TRINITY: npc_ancestral_wolf can not obtain owner or owner is not a player.");
 
             creature->SetSpeed(MOVE_WALK, 1.5f);
             Reset();
@@ -1260,8 +1260,8 @@ public:
 				case EVENT_INFERNAL_RAIN_ATTACK:
 				{
 					std::list<Creature*> infernalrainList;
-					JadeCore::AllCreaturesOfEntryInRange checkerInfernalrain(me, NPC_INFERNAL_RAIN, 200.0f);
-					JadeCore::CreatureListSearcher<JadeCore::AllCreaturesOfEntryInRange> searcherInfernal(me, infernalrainList, checkerInfernalrain);
+					Trinity::AllCreaturesOfEntryInRange checkerInfernalrain(me, NPC_INFERNAL_RAIN, 200.0f);
+					Trinity::CreatureListSearcher<Trinity::AllCreaturesOfEntryInRange> searcherInfernal(me, infernalrainList, checkerInfernalrain);
 					me->VisitNearbyObject(200.0f, searcherInfernal);
 
 					for (Creature* infernal : infernalrainList)
@@ -1273,8 +1273,8 @@ public:
 				case EVENT_FEAR_CONTROLLER_CAST:
 				{
 					std::list<Creature*> fearcontrollerList;
-					JadeCore::AllCreaturesOfEntryInRange checkerFear(me, NPC_FEAR_CONTROLLER, 200.0f);
-					JadeCore::CreatureListSearcher<JadeCore::AllCreaturesOfEntryInRange> searcherFear(me, fearcontrollerList, checkerFear);
+					Trinity::AllCreaturesOfEntryInRange checkerFear(me, NPC_FEAR_CONTROLLER, 200.0f);
+					Trinity::CreatureListSearcher<Trinity::AllCreaturesOfEntryInRange> searcherFear(me, fearcontrollerList, checkerFear);
 					me->VisitNearbyObject(200.0f, searcherFear);
 
 					for (Creature* fearController : fearcontrollerList)
@@ -1347,13 +1347,13 @@ public:
 				case EVENT_INFERNAL_RAIN_CAST:
 				{
 					std::list<Creature*> infernalrainList;
-					JadeCore::AllCreaturesOfEntryInRange checker(me, NPC_INFERNAL_RAIN, 200.0f);
-					JadeCore::CreatureListSearcher<JadeCore::AllCreaturesOfEntryInRange> searcher(me, infernalrainList, checker);
+					Trinity::AllCreaturesOfEntryInRange checker(me, NPC_INFERNAL_RAIN, 200.0f);
+					Trinity::CreatureListSearcher<Trinity::AllCreaturesOfEntryInRange> searcher(me, infernalrainList, checker);
 					me->VisitNearbyObject(200.0f, searcher);
 
 					if (!infernalrainList.empty())
 					{
-						Creature* random = JadeCore::Containers::SelectRandomContainerElement(infernalrainList);
+						Creature* random = Trinity::Containers::SelectRandomContainerElement(infernalrainList);
 						if (random->IsMoving() && random->GetPositionZ() < 118.0f)
 						{
 							me->CastSpell(random, SPELL_INFERNAL_RAIN, true);

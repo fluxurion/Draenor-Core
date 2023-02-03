@@ -65,9 +65,9 @@ uint32 AuctionHouseMgr::GetAuctionDeposit(uint32 p_DepositTime, Item* p_Item, ui
     uint32 l_RunTime    = p_DepositTime / 60;
     uint32 l_Deposit    = p_ItemCount * uint32(l_RunTime * l_Multiplier * floor(l_SellPrice * 5.0f / 100.0f)) * sWorld->getRate(Rates::RATE_AUCTION_DEPOSIT);
 
-    TC_LOG_DEBUG(LOG_FILTER_AUCTIONHOUSE, "SellPrice:  %u", l_SellPrice);
-    TC_LOG_DEBUG(LOG_FILTER_AUCTIONHOUSE, "Items:      %u", p_ItemCount);
-    TC_LOG_DEBUG(LOG_FILTER_AUCTIONHOUSE, "Deposit:    %u", l_Deposit);
+    TC_LOG_DEBUG("auctionHouse", "SellPrice:  %u", l_SellPrice);
+    TC_LOG_DEBUG("auctionHouse", "Items:      %u", p_ItemCount);
+    TC_LOG_DEBUG("auctionHouse", "Deposit:    %u", l_Deposit);
 
     if (l_Deposit < eAuctionHouse::AH_MINIMUM_DEPOSIT * sWorld->getRate(Rates::RATE_AUCTION_DEPOSIT))
         return eAuctionHouse::AH_MINIMUM_DEPOSIT * sWorld->getRate(Rates::RATE_AUCTION_DEPOSIT);
@@ -262,7 +262,7 @@ void AuctionHouseMgr::LoadAuctionItems()
 
     if (!result)
     {
-        sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 auction items. DB table `auctionhouse` or `item_instance` is empty!");
+        TC_LOG_INFO("server.loading", ">> Loaded 0 auction items. DB table `auctionhouse` or `item_instance` is empty!");
 
         return;
     }
@@ -279,7 +279,7 @@ void AuctionHouseMgr::LoadAuctionItems()
         ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemEntry);
         if (!proto)
         {
-            sLog->outError(LOG_FILTER_GENERAL, "AuctionHouseMgr::LoadAuctionItems: Unknown item (GUID: %u id: #%u) in auction, skipped.", item_guid, itemEntry);
+            TC_LOG_ERROR("server.worldserver", "AuctionHouseMgr::LoadAuctionItems: Unknown item (GUID: %u id: #%u) in auction, skipped.", item_guid, itemEntry);
             continue;
         }
 
@@ -295,7 +295,7 @@ void AuctionHouseMgr::LoadAuctionItems()
     }
     while (result->NextRow());
 
-    sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded %u auction items in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    TC_LOG_INFO("server.loading", ">> Loaded %u auction items in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 
 }
 
@@ -308,7 +308,7 @@ void AuctionHouseMgr::LoadAuctions()
 
     if (!result)
     {
-        sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 auctions. DB table `auctionhouse` is empty.");
+        TC_LOG_INFO("server.loading", ">> Loaded 0 auctions. DB table `auctionhouse` is empty.");
 
         return;
     }
@@ -335,7 +335,7 @@ void AuctionHouseMgr::LoadAuctions()
 
     CharacterDatabase.CommitTransaction(trans);
 
-    sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded %u auctions in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    TC_LOG_INFO("server.loading", ">> Loaded %u auctions in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 
 }
 
@@ -599,7 +599,7 @@ bool AuctionEntry::BuildAuctionInfo(WorldPacket& p_Data) const
     Item* l_Item = sAuctionMgr->GetAItem(itemGUIDLow);
     if (!l_Item)
     {
-        sLog->outError(LOG_FILTER_GENERAL, "AuctionEntry::BuildAuctionInfo: Auction %u has a non-existent item: %u", Id, itemGUIDLow);
+        TC_LOG_ERROR("server.worldserver", "AuctionEntry::BuildAuctionInfo: Auction %u has a non-existent item: %u", Id, itemGUIDLow);
         return false;
     }
 
@@ -690,14 +690,14 @@ bool AuctionEntry::LoadFromDB(Field* fields)
     CreatureData const* auctioneerData = sObjectMgr->GetCreatureData(auctioneer);
     if (!auctioneerData)
     {
-        sLog->outError(LOG_FILTER_GENERAL, "Auction %u has not a existing auctioneer (GUID : %u)", Id, auctioneer);
+        TC_LOG_ERROR("server.worldserver", "Auction %u has not a existing auctioneer (GUID : %u)", Id, auctioneer);
         return false;
     }
 
     CreatureTemplate const* auctioneerInfo = sObjectMgr->GetCreatureTemplate(auctioneerData->id);
     if (!auctioneerInfo)
     {
-        sLog->outError(LOG_FILTER_GENERAL, "Auction %u has not a existing auctioneer (GUID : %u Entry: %u)", Id, auctioneer, auctioneerData->id);
+        TC_LOG_ERROR("server.worldserver", "Auction %u has not a existing auctioneer (GUID : %u Entry: %u)", Id, auctioneer, auctioneerData->id);
         return false;
     }
 
@@ -705,7 +705,7 @@ bool AuctionEntry::LoadFromDB(Field* fields)
     auctionHouseEntry = AuctionHouseMgr::GetAuctionHouseEntry(factionTemplateId);
     if (!auctionHouseEntry)
     {
-        sLog->outError(LOG_FILTER_GENERAL, "Auction %u has auctioneer (GUID : %u Entry: %u) with wrong faction %u", Id, auctioneer, auctioneerData->id, factionTemplateId);
+        TC_LOG_ERROR("server.worldserver", "Auction %u has auctioneer (GUID : %u Entry: %u) with wrong faction %u", Id, auctioneer, auctioneerData->id, factionTemplateId);
         return false;
     }
 
@@ -713,7 +713,7 @@ bool AuctionEntry::LoadFromDB(Field* fields)
     // and itemEntry in fact (GetAItem will fail if problematic in result check in AuctionHouseMgr::LoadAuctionItems)
     if (!sAuctionMgr->GetAItem(itemGUIDLow))
     {
-        sLog->outError(LOG_FILTER_GENERAL, "Auction %u has not a existing item : %u", Id, itemGUIDLow);
+        TC_LOG_ERROR("server.worldserver", "Auction %u has not a existing item : %u", Id, itemGUIDLow);
         return false;
     }
     return true;
@@ -737,7 +737,7 @@ void AuctionHouseMgr::DeleteExpiredAuctionsAtStartup()
 
     if (!expAuctions)
     {
-        sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> No expired auctions to delete");
+        TC_LOG_INFO("server.loading", ">> No expired auctions to delete");
         return;
     }
 
@@ -785,7 +785,7 @@ void AuctionHouseMgr::DeleteExpiredAuctionsAtStartup()
     }
     while (expAuctions->NextRow());
 
-    sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Deleted %u expired auctions in %u ms", expirecount, GetMSTimeDiffToNow(oldMSTime));
+    TC_LOG_INFO("server.loading", ">> Deleted %u expired auctions in %u ms", expirecount, GetMSTimeDiffToNow(oldMSTime));
 }
 
 bool AuctionEntry::LoadFromFieldList(Field* fields)
@@ -812,14 +812,14 @@ bool AuctionEntry::LoadFromFieldList(Field* fields)
     CreatureData const* auctioneerData = sObjectMgr->GetCreatureData(auctioneer);
     if (!auctioneerData)
     {
-        sLog->outError(LOG_FILTER_GENERAL, "AuctionEntry::LoadFromFieldList() - Auction %u has not a existing auctioneer (GUID : %u)", Id, auctioneer);
+        TC_LOG_ERROR("server.worldserver", "AuctionEntry::LoadFromFieldList() - Auction %u has not a existing auctioneer (GUID : %u)", Id, auctioneer);
         return false;
     }
 
     CreatureTemplate const* auctioneerInfo = sObjectMgr->GetCreatureTemplate(auctioneerData->id);
     if (!auctioneerInfo)
     {
-        sLog->outError(LOG_FILTER_GENERAL, "AuctionEntry::LoadFromFieldList() - Auction %u has not a existing auctioneer (GUID : %u Entry: %u)", Id, auctioneer, auctioneerData->id);
+        TC_LOG_ERROR("server.worldserver", "AuctionEntry::LoadFromFieldList() - Auction %u has not a existing auctioneer (GUID : %u Entry: %u)", Id, auctioneer, auctioneerData->id);
         return false;
     }
 
@@ -828,7 +828,7 @@ bool AuctionEntry::LoadFromFieldList(Field* fields)
 
     if (!auctionHouseEntry)
     {
-        sLog->outError(LOG_FILTER_GENERAL, "AuctionEntry::LoadFromFieldList() - Auction %u has auctioneer (GUID : %u Entry: %u) with wrong faction %u", Id, auctioneer, auctioneerData->id, factionTemplateId);
+        TC_LOG_ERROR("server.worldserver", "AuctionEntry::LoadFromFieldList() - Auction %u has auctioneer (GUID : %u Entry: %u) with wrong faction %u", Id, auctioneer, auctioneerData->id, factionTemplateId);
         return false;
     }
 

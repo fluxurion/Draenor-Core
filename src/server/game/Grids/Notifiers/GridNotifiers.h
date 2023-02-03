@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Project-Hellscream https://hellscream.org
-// Copyright (C) 2018-2020 Project-Hellscream-6.2
-// Discord https://discord.gg/CWCF3C9
+//  MILLENIUM-STUDIO
+//  Copyright 2016 Millenium-studio SARL
+//  All Rights Reserved.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -26,7 +26,7 @@
 class Player;
 //class Map;
 
-namespace JadeCore
+namespace Trinity
 {
     struct VisibleNotifier
     {
@@ -1758,37 +1758,37 @@ namespace JadeCore
     };
 
 
-	class AllFriendlyCreaturesInRange
-	{
-	public:
-		AllFriendlyCreaturesInRange(Unit const* obj, float maxRange) : m_unit(obj), m_fRange(maxRange) { }
-		bool operator() (Unit* unit)
-		{
-			if (unit->isAlive() && unit->IsVisible() && unit->IsFriendlyTo(m_unit) && unit->IsWithinDist(m_unit, m_fRange, false))
-				return true;
+    class AllFriendlyCreaturesInRange
+    {
+    public:
+        AllFriendlyCreaturesInRange(Unit const* obj, float maxRange) : m_unit(obj), m_fRange(maxRange) { }
+        bool operator() (Unit* unit)
+        {
+            if (unit->isAlive() && unit->IsVisible() && unit->IsFriendlyTo(m_unit) && unit->IsWithinDist(m_unit, m_fRange, false))
+                return true;
 
-			return false;
-		}
-	private:
-		Unit const* m_unit;
-		float m_fRange;
-	};
+            return false;
+        }
+    private:
+        Unit const* m_unit;
+        float m_fRange;
+    };
 
-	class AllUnfriendlyCreaturesInRange
-	{
-	public:
-		AllUnfriendlyCreaturesInRange(Unit const* obj, float maxRange) : m_unit(obj), m_fRange(maxRange) { }
-		bool operator() (Unit* unit)
-		{
-			if (unit->isAlive() && unit->IsVisible() && !unit->IsFriendlyTo(m_unit) && unit->IsWithinDist(m_unit, m_fRange, false))
-				return true;
+    class AllUnfriendlyCreaturesInRange
+    {
+    public:
+        AllUnfriendlyCreaturesInRange(Unit const* obj, float maxRange) : m_unit(obj), m_fRange(maxRange) { }
+        bool operator() (Unit* unit)
+        {
+            if (unit->isAlive() && unit->IsVisible() && !unit->IsFriendlyTo(m_unit) && unit->IsWithinDist(m_unit, m_fRange, false))
+                return true;
 
-			return false;
-		}
-	private:
-		Unit const* m_unit;
-		float m_fRange;
-	};
+            return false;
+        }
+    private:
+        Unit const* m_unit;
+        float m_fRange;
+    };
 
 
     class PlayerAtMinimumRangeAway

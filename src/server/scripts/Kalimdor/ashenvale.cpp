@@ -660,8 +660,8 @@ public:
 		bool DoCheckForPlayer()
 		{
 			std::list<Player*> PlayerList;
-			JadeCore::AnyPlayerInObjectRangeCheck checker(me, 50.0f);
-			JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> searcher(me, PlayerList, checker);
+			Trinity::AnyPlayerInObjectRangeCheck checker(me, 50.0f);
+			Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(me, PlayerList, checker);
 			me->VisitNearbyWorldObject(50.0, searcher);
 			if (PlayerList.empty()) return false;
 			for (std::list<Player*>::const_iterator itr = PlayerList.begin(); itr != PlayerList.end(); ++itr)
@@ -768,8 +768,8 @@ public:
 		void DoCheckForNearPlayerWithQuest()
 		{
 			std::list<Player*> PlayerList;
-			JadeCore::AnyPlayerInObjectRangeCheck checker(me, 50.0f);
-			JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> searcher(me, PlayerList, checker);
+			Trinity::AnyPlayerInObjectRangeCheck checker(me, 50.0f);
+			Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(me, PlayerList, checker);
 			me->VisitNearbyWorldObject(50.0, searcher);
 			if (PlayerList.empty()) return;
 			for (std::list<Player*>::const_iterator itr = PlayerList.begin(); itr != PlayerList.end(); ++itr)

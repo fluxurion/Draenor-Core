@@ -418,8 +418,8 @@ namespace MS { namespace Instances { namespace Bloodmaul
                         std::list<Unit*> l_TargetList;
                         float l_Radius = 15.0f;
 
-                        JadeCore::NearestAttackableUnitInObjectRangeCheck u_check(l_Caster, l_Caster, l_Radius);
-                        JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> searcher(l_Caster, l_TargetList, u_check);
+                        Trinity::NearestAttackableUnitInObjectRangeCheck u_check(l_Caster, l_Caster, l_Radius);
+                        Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> searcher(l_Caster, l_TargetList, u_check);
                         l_Caster->VisitNearbyObject(l_Radius, searcher);
 
                         for (Unit* l_Unit : l_TargetList)
@@ -516,8 +516,8 @@ namespace MS { namespace Instances { namespace Bloodmaul
                     std::list<Unit*> l_TargetList;
                     float l_Radius = 4.0f;
 
-                    JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                    JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                    Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                    Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                     p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                     for (Unit* l_Unit : l_TargetList)

@@ -76,7 +76,7 @@ void BattlegroundTTP::HandleKillPlayer(Player* player, Player* killer)
 
     if (!killer)
     {
-        sLog->outError(LOG_FILTER_BATTLEGROUND, "BattlegroundTV: Killer player not found");
+        TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BattlegroundTV: Killer player not found");
         return;
     }
 
@@ -128,7 +128,7 @@ bool BattlegroundTTP::SetupBattleground()
         || !AddObject(BG_TTP_OBJECT_BUFF_1, BG_TTP_OBJECT_TYPE_BUFF_1, 566.788f, 602.743f, 383.68f, 1.5724f, 0.0f, 0.0f, 0.707673f, 0.70654f, 120)
         || !AddObject(BG_TTP_OBJECT_BUFF_2, BG_TTP_OBJECT_TYPE_BUFF_2, 566.661f, 664.311f, 383.681f, 4.66374f, 0.0f, 0.0f, 0.724097f, -0.689698f, 120))
     {
-        sLog->outError(LOG_FILTER_SQL, "BattlegroundTTP: Failed to spawn some object!");
+        TC_LOG_ERROR("sql.sql", "BattlegroundTTP: Failed to spawn some object!");
         return false;
     }
 

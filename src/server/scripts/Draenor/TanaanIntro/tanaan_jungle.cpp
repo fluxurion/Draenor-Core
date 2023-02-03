@@ -1850,10 +1850,10 @@ public:
 						{
 							std::list<Unit*> targetList;
 
-							JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Ucheck(me, me, 30.0f);
-							JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(me, targetList, l_Ucheck);
+							Trinity::AnyFriendlyUnitInObjectRangeCheck l_Ucheck(me, me, 30.0f);
+							Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(me, targetList, l_Ucheck);
 							me->VisitNearbyObject(30.0f, l_Searcher);
-							JadeCore::Containers::RandomResizeList(targetList, 1);
+							Trinity::Containers::RandomResizeList(targetList, 1);
 
 							for (auto itr : targetList)
 							{

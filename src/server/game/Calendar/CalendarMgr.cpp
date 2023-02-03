@@ -99,7 +99,7 @@ void CalendarMgr::LoadFromDB()
         while (l_Result->NextRow());
     }
 
-    sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded %u calendar events", l_Count);
+    TC_LOG_INFO("server.loading", ">> Loaded %u calendar events", l_Count);
     l_Count = 0;
 
     //                                                       0   1      2        3       4       5           6     7
@@ -128,7 +128,7 @@ void CalendarMgr::LoadFromDB()
         while (l_Result->NextRow());
     }
 
-    sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded %u calendar invites", l_Count);
+    TC_LOG_INFO("server.loading", ">> Loaded %u calendar invites", l_Count);
 
     for (uint64 l_I = 1; l_I < m_MaxEventID; ++l_I)
     {

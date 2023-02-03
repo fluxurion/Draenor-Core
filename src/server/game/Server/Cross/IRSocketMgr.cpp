@@ -133,7 +133,7 @@ class ReactorRunnable : protected ACE_Task_Base
 
         virtual int svc()
         {
-            sLog->outDebug(LOG_FILTER_INTERREALM, "Network Thread Starting");
+            TC_LOG_DEBUG("server.interrealm", "Network Thread Starting");
 
             ACE_ASSERT (m_Reactor);
 
@@ -168,7 +168,7 @@ class ReactorRunnable : protected ACE_Task_Base
                 }
             }
 
-            sLog->outDebug(LOG_FILTER_INTERREALM, "Network Thread exits");
+            TC_LOG_DEBUG("server.interrealm", "Network Thread exits");
 
             return 0;
         }
@@ -221,7 +221,7 @@ IRSocketMgr::StartReactiveIO (ACE_UINT16 port)
 
     if (m_SockOutUBuff <= 0)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "Network.OutUBuff is wrong in your config file");
+        TC_LOG_ERROR("server.interrealm", "Network.OutUBuff is wrong in your config file");
         return -1;
     }
 
@@ -232,7 +232,7 @@ IRSocketMgr::StartReactiveIO (ACE_UINT16 port)
 
     if (m_Acceptor->open(listen_addr, m_NetThreads[0].GetReactor(), ACE_NONBLOCK) == -1)
     {
-        sLog->outError(LOG_FILTER_INTERREALM, "Failed to open acceptor, check if the port is free");
+        TC_LOG_ERROR("server.interrealm", "Failed to open acceptor, check if the port is free");
         return -1;
     }
 
@@ -245,7 +245,7 @@ IRSocketMgr::StartReactiveIO (ACE_UINT16 port)
 int
 IRSocketMgr::StartNetwork(ACE_UINT16 port)
 {
-    if (!sLog->ShouldLog(LOG_FILTER_GENERAL, LOG_LEVEL_DEBUG))
+    if (!sLog->ShouldLog("misc", LOG_LEVEL_DEBUG))
         ACE_Log_Msg::instance()->priority_mask (LM_ERROR, ACE_Log_Msg::PROCESS);
 
     if (StartReactiveIO(port) == -1)
@@ -292,7 +292,7 @@ IRSocketMgr::OnSocketOpen (IRSocket* sock)
             (void*) & m_SockOutKBuff,
             sizeof (int)) == -1 && errno != ENOTSUP)
         {
-            sLog->outError(LOG_FILTER_INTERREALM, "IRSocketMgr::OnSocketOpen set_option SO_SNDBUF");
+            TC_LOG_ERROR("server.interrealm", "IRSocketMgr::OnSocketOpen set_option SO_SNDBUF");
             return -1;
         }
     }
@@ -307,7 +307,7 @@ IRSocketMgr::OnSocketOpen (IRSocket* sock)
             (void*)&ndoption,
             sizeof (int)) == -1)
         {
-            sLog->outError(LOG_FILTER_INTERREALM, "IRSocketMgr::OnSocketOpen: peer().set_option TCP_NODELAY errno = %s", ACE_OS::strerror (errno));
+            TC_LOG_ERROR("server.interrealm", "IRSocketMgr::OnSocketOpen: peer().set_option TCP_NODELAY errno = %s", ACE_OS::strerror (errno));
             return -1;
         }
     }

@@ -67,10 +67,10 @@ void LoadRandomEnchantmentsTable()
         }
         while (result->NextRow());
 
-        sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded %u Item Enchantment definitions in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+        TC_LOG_INFO("server.loading", ">> Loaded %u Item Enchantment definitions in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
     }
     else
-        sLog->outError(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 Item Enchantment definitions. DB table `item_enchantment_template` is empty.");
+        TC_LOG_ERROR("server.loading", ">> Loaded 0 Item Enchantment definitions. DB table `item_enchantment_template` is empty.");
 }
 
 uint32 GetItemEnchantMod(int32 entry, uint32 type)
@@ -84,7 +84,7 @@ uint32 GetItemEnchantMod(int32 entry, uint32 type)
     EnchantmentStore::const_iterator tab = type == ENCHANTMENT_RANDOM_PROPERTY ? RandomPropertyItemEnch.find(entry) : RandomSuffixItemEnch.find(entry) ;
     if (tab == (type == ENCHANTMENT_RANDOM_PROPERTY ? RandomPropertyItemEnch.end() : RandomSuffixItemEnch.end()))
     {
-        sLog->outError(LOG_FILTER_SQL, "Item RandomProperty / RandomSuffix id #%u used in `item_template` but it does not have records in `item_enchantment_template` table.", entry);
+        TC_LOG_ERROR("sql.sql", "Item RandomProperty / RandomSuffix id #%u used in `item_template` but it does not have records in `item_enchantment_template` table.", entry);
         return 0;
     }
 

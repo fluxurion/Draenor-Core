@@ -614,8 +614,8 @@ public:
 			if (m_Timer <= p_Diff)
 			{
 				std::list<Player*> l_PlayerList;
-				JadeCore::AnyPlayerInObjectRangeCheck check(me, 2.0f);
-				JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> searcher(me, l_PlayerList, check);
+				Trinity::AnyPlayerInObjectRangeCheck check(me, 2.0f);
+				Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(me, l_PlayerList, check);
 				me->VisitNearbyObject(2.0f, searcher);
 				if (!l_PlayerList.empty())
 				{
@@ -904,8 +904,8 @@ class shadowmoon_burial_grounds_nhallish_at_vd : public AreaTriggerEntityScript
 		if (m_Diff <= p_Time)
 		{
 			std::list<Player*> l_ListPlayers;
-			JadeCore::AnyPlayerInObjectRangeCheck check(p_AreaTrigger, 1.5f);
-			JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> searcher(p_AreaTrigger, l_ListPlayers, check);
+			Trinity::AnyPlayerInObjectRangeCheck check(p_AreaTrigger, 1.5f);
+			Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(p_AreaTrigger, l_ListPlayers, check);
 			p_AreaTrigger->VisitNearbyObject(2.0f, searcher);
 			if (!l_ListPlayers.empty())
 			{

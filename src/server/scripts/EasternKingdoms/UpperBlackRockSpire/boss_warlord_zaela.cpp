@@ -490,7 +490,7 @@ class boss_warlord_zaela : public CreatureScript
                         if (l_EmberscaleList.empty())
                             break;
 
-                        if (Creature* l_Emberscale = JadeCore::Containers::SelectRandomContainerElement(l_EmberscaleList))
+                        if (Creature* l_Emberscale = Trinity::Containers::SelectRandomContainerElement(l_EmberscaleList))
                         {
                             l_Emberscale->AI()->SetData(0, m_BurningBreathCount);
                             l_Emberscale->AI()->DoAction(eActions::ActionBurningBreath);
@@ -831,8 +831,8 @@ class areatrigger_burning_bridge : public AreaTriggerEntityScript
             std::list<Unit*> l_TargetList;
             float l_Radius = 3.5f;
 
-            JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
-            JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+            Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
+            Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
             p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
             for (Unit* l_Unit : l_TargetList)

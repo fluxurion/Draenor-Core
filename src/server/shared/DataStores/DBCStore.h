@@ -110,7 +110,7 @@ class DBCStorage
                     // Check if sql index pos is valid
                     if (int32(result->GetFieldCount() - 1) < sql->sqlIndexPos)
                     {
-                        sLog->outError(LOG_FILTER_GENERAL, "Invalid index pos for dbc:'%s'", sql->sqlTableName.c_str());
+                        TC_LOG_ERROR("server.worldserver", "Invalid index pos for dbc:'%s'", sql->sqlTableName.c_str());
                         return false;
                     }
                 }
@@ -143,7 +143,7 @@ class DBCStorage
                             uint32 id = fields[sql->sqlIndexPos].GetUInt32();
                             if (indexTable.asT[id])
                             {
-                                sLog->outError(LOG_FILTER_GENERAL, "Index %d already exists in dbc:'%s'", id, sql->sqlTableName.c_str());
+                                TC_LOG_ERROR("server.worldserver", "Index %d already exists in dbc:'%s'", id, sql->sqlTableName.c_str());
                                 return false;
                             }
                             indexTable.asT[id] = reinterpret_cast<T*>(&sqlDataTable[offset]);
@@ -199,7 +199,7 @@ class DBCStorage
                                         offset += 1;
                                         break;
                                     case FT_STRING:
-                                        sLog->outError(LOG_FILTER_GENERAL, "Unsupported data type in table '%s' at char %d", sql->sqlTableName.c_str(), columnNumber);
+                                        TC_LOG_ERROR("server.worldserver", "Unsupported data type in table '%s' at char %d", sql->sqlTableName.c_str(), columnNumber);
                                         return false;
                                     case FT_SORT:
                                         break;
@@ -212,14 +212,14 @@ class DBCStorage
                             }
                             else
                             {
-                                sLog->outError(LOG_FILTER_GENERAL, "Incorrect sql format string '%s' at char %d", sql->sqlTableName.c_str(), columnNumber);
+                                TC_LOG_ERROR("server.worldserver", "Incorrect sql format string '%s' at char %d", sql->sqlTableName.c_str(), columnNumber);
                                 return false;
                             }
                         }
 
                         if (sqlColumnNumber != (result->GetFieldCount() - 1))
                         {
-                            sLog->outError(LOG_FILTER_GENERAL, "SQL and DBC format strings are not matching for table: '%s'", sql->sqlTableName.c_str());
+                            TC_LOG_ERROR("server.worldserver", "SQL and DBC format strings are not matching for table: '%s'", sql->sqlTableName.c_str());
                             return false;
                         }
 

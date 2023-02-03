@@ -5302,13 +5302,13 @@ class spell_item_loot_a_rang : public SpellScriptLoader
                 float l_Radius = l_SpellInfo->Effects[EFFECT_0].RadiusEntry->radiusHostile;
 
                 std::list<Creature*> l_CreatureList;
-                CellCoord l_CellCoord(JadeCore::ComputeCellCoord(l_Caster->GetPositionX(), l_Caster->GetPositionY()));
+                CellCoord l_CellCoord(Trinity::ComputeCellCoord(l_Caster->GetPositionX(), l_Caster->GetPositionY()));
                 Cell l_Cell(l_CellCoord);
                 l_Cell.SetNoCreate();
 
-                JadeCore::AllDeadCreaturesInRange l_Check(l_Caster, l_Radius, 0);
-                JadeCore::CreatureListSearcher<JadeCore::AllDeadCreaturesInRange> l_Searcher(l_Caster, l_CreatureList, l_Check);
-                TypeContainerVisitor<JadeCore::CreatureListSearcher<JadeCore::AllDeadCreaturesInRange>, GridTypeMapContainer> l_CellSearcher(l_Searcher);
+                Trinity::AllDeadCreaturesInRange l_Check(l_Caster, l_Radius, 0);
+                Trinity::CreatureListSearcher<Trinity::AllDeadCreaturesInRange> l_Searcher(l_Caster, l_CreatureList, l_Check);
+                TypeContainerVisitor<Trinity::CreatureListSearcher<Trinity::AllDeadCreaturesInRange>, GridTypeMapContainer> l_CellSearcher(l_Searcher);
                 l_Cell.Visit(l_CellCoord, l_CellSearcher, *(l_Caster->GetMap()), *l_Caster, l_Radius);
 
                 if (l_CreatureList.empty())

@@ -1204,8 +1204,8 @@ class auchindoun_kaathar_at_fissure : public AreaTriggerEntityScript
         if (m_Diff <= p_Time)
         {
             std::list<Player*> l_PlayerList;
-            JadeCore::AnyPlayerInObjectRangeCheck check(p_AreaTrigger, 1.0f);
-            JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> searcher(p_AreaTrigger, l_PlayerList, check);
+            Trinity::AnyPlayerInObjectRangeCheck check(p_AreaTrigger, 1.0f);
+            Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(p_AreaTrigger, l_PlayerList, check);
             p_AreaTrigger->VisitNearbyObject(2.0f, searcher);
 
             if (!l_PlayerList.empty())
@@ -1260,8 +1260,8 @@ class auchindoun_kaathar_at_hallowed_ground : public AreaTriggerEntityScript
             p_AreaTrigger->SetObjectScale(m_Size);
 
             std::list<Player*> l_PlayerList;
-            JadeCore::AnyPlayerInObjectRangeCheck check(p_AreaTrigger, 2.0f);
-            JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> searcher(p_AreaTrigger, l_PlayerList, check);
+            Trinity::AnyPlayerInObjectRangeCheck check(p_AreaTrigger, 2.0f);
+            Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(p_AreaTrigger, l_PlayerList, check);
             p_AreaTrigger->VisitNearbyObject(2.0f, searcher);
 
             if (!l_PlayerList.empty())

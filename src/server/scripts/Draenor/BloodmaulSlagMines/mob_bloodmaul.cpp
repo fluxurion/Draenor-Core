@@ -1513,8 +1513,8 @@ namespace MS { namespace Instances { namespace Bloodmaul
                         std::list<Unit*> l_TargetList;
                         float l_Radius = 15.0f;
 
-                        JadeCore::NearestAttackableUnitInObjectRangeCheck u_check(l_Caster, l_Caster, l_Radius);
-                        JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> searcher(l_Caster, l_TargetList, u_check);
+                        Trinity::NearestAttackableUnitInObjectRangeCheck u_check(l_Caster, l_Caster, l_Radius);
+                        Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> searcher(l_Caster, l_TargetList, u_check);
                         l_Caster->VisitNearbyObject(l_Radius, searcher);
 
                         if (l_TargetList.empty())

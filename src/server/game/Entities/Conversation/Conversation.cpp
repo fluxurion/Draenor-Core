@@ -65,7 +65,7 @@ bool Conversation::StartConversation(Unit* p_Source, uint32 p_ConversationEntry)
 
     if (!IsPositionValid())
     {
-        TC_LOG_ERROR(LOG_FILTER_GENERAL, "Conversation::StartConversation -> Invalid coordinates for Conversation [%u] (X: %.3f, Y: %.3f, Z: %.3f)",
+        TC_LOG_ERROR("misc", "Conversation::StartConversation -> Invalid coordinates for Conversation [%u] (X: %.3f, Y: %.3f, Z: %.3f)",
             p_ConversationEntry,
             m_positionX,
             m_positionY,
@@ -77,14 +77,14 @@ bool Conversation::StartConversation(Unit* p_Source, uint32 p_ConversationEntry)
     InstanceScript* l_InstanceScript = p_Source->GetInstanceScript();
     if (l_InstanceScript == nullptr)
     {
-        TC_LOG_ERROR(LOG_FILTER_GENERAL, "Conversation::StartConversation -> Conversation [%u] isn't in an instanced map.", p_ConversationEntry);
+        TC_LOG_ERROR("misc", "Conversation::StartConversation -> Conversation [%u] isn't in an instanced map.", p_ConversationEntry);
         return false;
     }
 
     ConversationTemplate const* l_ConvTemplate = sObjectMgr->GetConversationTemplate(p_ConversationEntry);
     if (l_ConvTemplate == nullptr)
     {
-        TC_LOG_ERROR(LOG_FILTER_GENERAL, "Conversation::StartConversation -> Conversation [%u] doesn't have a template.", p_ConversationEntry);
+        TC_LOG_ERROR("misc", "Conversation::StartConversation -> Conversation [%u] doesn't have a template.", p_ConversationEntry);
         return false;
     }
 

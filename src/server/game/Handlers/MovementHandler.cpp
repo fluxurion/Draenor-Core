@@ -62,7 +62,7 @@ void WorldSession::HandleMoveWorldportAckOpcode()
     Map* oldMap = GetPlayer()->GetMap();
     if (GetPlayer()->IsInWorld())
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "Player (Name %s) is still in world when teleported from map %u to new map %u", GetPlayer()->GetName(), oldMap->GetId(), loc.GetMapId());
+        TC_LOG_ERROR("network", "Player (Name %s) is still in world when teleported from map %u to new map %u", GetPlayer()->GetName(), oldMap->GetId(), loc.GetMapId());
         oldMap->RemovePlayerFromMap(GetPlayer(), false);
     }
 
@@ -72,7 +72,7 @@ void WorldSession::HandleMoveWorldportAckOpcode()
     // while the player is in transit, for example the map may get full
     if (!newMap || !newMap->CanEnter(GetPlayer()))
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "Map %d could not be created for player %d, porting player to homebind", loc.GetMapId(), GetPlayer()->GetGUIDLow());
+        TC_LOG_ERROR("network", "Map %d could not be created for player %d, porting player to homebind", loc.GetMapId(), GetPlayer()->GetGUIDLow());
         GetPlayer()->TeleportTo(GetPlayer()->m_homebindMapId, GetPlayer()->m_homebindX, GetPlayer()->m_homebindY, GetPlayer()->m_homebindZ, GetPlayer()->GetOrientation());
         return;
     }
@@ -85,7 +85,7 @@ void WorldSession::HandleMoveWorldportAckOpcode()
     GetPlayer()->SendInitialPacketsBeforeAddToMap();
     if (!GetPlayer()->GetMap()->AddPlayerToMap(GetPlayer()))
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "WORLD: failed to teleport player %s (%d) to map %d (%s) because of unknown reason!",
+        TC_LOG_ERROR("network", "WORLD: failed to teleport player %s (%d) to map %d (%s) because of unknown reason!",
             GetPlayer()->GetName(), GetPlayer()->GetGUIDLow(), loc.GetMapId(), newMap ? newMap->GetMapName() : "Unknown");
         GetPlayer()->ResetMap();
         GetPlayer()->SetMap(oldMap);
@@ -109,7 +109,7 @@ void WorldSession::HandleMoveWorldportAckOpcode()
         else if (Battleground* bg = m_Player->GetBattleground())
         {
 #ifdef CROSS
-            sLog->outAshran("WorldSession::HandleMoveWorldportAckOpcode: bg instance id %u, bg status: %u, player guid %u", m_Player->GetBattlegroundId(), bg->GetStatus(), m_Player->GetRealGUIDLow());
+            TC_LOG_ERROR("server.worldserver", "WorldSession::HandleMoveWorldportAckOpcode: bg instance id %u, bg status: %u, player guid %u", m_Player->GetBattlegroundId(), bg->GetStatus(), m_Player->GetRealGUIDLow());
 #endif /* CROSS */
             if (m_Player->IsInvitedForBattlegroundInstance(m_Player->GetBattlegroundId()))
             {
@@ -294,12 +294,12 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& p_Packet)
     // prevent tampered movement data
     if (l_MovementInfo.guid != l_Mover->GetGUID())
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "HandleMovementOpcodes: guid error");
+        TC_LOG_DEBUG("network", "HandleMovementOpcodes: guid error");
         return;
     }
     if (!l_MovementInfo.pos.IsPositionValid())
     {
-        sLog->outDebug(LOG_FILTER_NETWORKIO, "HandleMovementOpcodes: Invalid Position");
+        TC_LOG_DEBUG("network", "HandleMovementOpcodes: Invalid Position");
         return;
     }
 
@@ -526,7 +526,7 @@ void WorldSession::HandleForceSpeedChangeAck(WorldPacket& p_Packet)
         case CMSG_MOVE_FORCE_PITCH_RATE_CHANGE_ACK:        l_MoveType = MOVE_PITCH_RATE;  break;
 
         default:
-            sLog->outError(LOG_FILTER_NETWORKIO, "WorldSession::HandleForceSpeedChangeAck: Unknown move type opcode: %u", l_Opcode);
+            TC_LOG_ERROR("network", "WorldSession::HandleForceSpeedChangeAck: Unknown move type opcode: %u", l_Opcode);
             return;
     }
 
@@ -545,13 +545,13 @@ void WorldSession::HandleForceSpeedChangeAck(WorldPacket& p_Packet)
     {
         if (m_Player->GetSpeed(l_MoveType) > l_Speed)         // must be greater - just correct
         {
-            sLog->outError(LOG_FILTER_NETWORKIO, "%sSpeedChange player %s is NOT correct (must be %f instead %f), force set to correct value",
+            TC_LOG_ERROR("network", "%sSpeedChange player %s is NOT correct (must be %f instead %f), force set to correct value",
                 l_MoveTypeName[l_MoveType], m_Player->GetName(), m_Player->GetSpeed(l_MoveType), l_Speed);
             m_Player->SetSpeed(l_MoveType, m_Player->GetSpeedRate(l_MoveType), true);
         }
         else                                                // must be lesser - cheating
         {
-            sLog->outDebug(LOG_FILTER_GENERAL, "Player %s from account id %u kicked for incorrect speed (must be %f instead %f)",
+            TC_LOG_DEBUG("misc", "Player %s from account id %u kicked for incorrect speed (must be %f instead %f)",
                 m_Player->GetName(), m_Player->GetSession()->GetAccountId(), m_Player->GetSpeed(l_MoveType), l_Speed);
             /*m_Player->GetSession()->KickPlayer();*/
         }
@@ -631,7 +631,7 @@ void WorldSession::ReadMovementInfo(WorldPacket& p_Data, MovementInfo* p_Movemen
 
     if (l_Sequence == nullptr)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "WorldSession::ReadMovementInfo: No movement sequence found for opcode 0x%04X", uint32(p_Data.GetOpcode()));
+        TC_LOG_ERROR("network", "WorldSession::ReadMovementInfo: No movement sequence found for opcode 0x%04X", uint32(p_Data.GetOpcode()));
         return;
     }
 
@@ -826,7 +826,7 @@ void WorldSession::ReadMovementInfo(WorldPacket& p_Data, MovementInfo* p_Movemen
         { \
             if (check) \
             { \
-                sLog->outDebug(LOG_FILTER_UNITS, "WorldSession::ReadMovementInfo: Violation of MovementFlags found (%s). " \
+                TC_LOG_DEBUG(LOG_FILTER_UNITS, "WorldSession::ReadMovementInfo: Violation of MovementFlags found (%s). " \
                     "MovementFlags: %u, MovementFlags2: %u for player GUID: %u. Mask %u will be removed.", \
                     STRINGIZE(check), p_MovementInformation->GetMovementFlags(), p_MovementInformation->GetExtraMovementFlags(), GetPlayer()->GetGUIDLow(), maskToRemove); \
                 p_MovementInformation->RemoveMovementFlag((maskToRemove)); \
@@ -898,7 +898,7 @@ void WorldSession::WriteMovementInfo(WorldPacket & p_Data, MovementInfo* p_Movem
 
     if (!l_Sequence)
     {
-        sLog->outError(LOG_FILTER_NETWORKIO, "WorldSession::WriteMovementInfo: No movement sequence found for opcode 0x%04X", uint32(p_Data.GetOpcode()));
+        TC_LOG_ERROR("network", "WorldSession::WriteMovementInfo: No movement sequence found for opcode 0x%04X", uint32(p_Data.GetOpcode()));
         return;
     }
 

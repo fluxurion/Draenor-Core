@@ -38,7 +38,7 @@ namespace MS
             }
 
             ACE_Stack_Trace l_Trace;
-            sLog->outError(LOG_FILTER_WORLDSERVER, "MS::SignalHandler : can't rescue the thread, shutdown the server  StackTrace : %s", l_Trace.c_str());
+            TC_LOG_ERROR("server.worldserver", "MS::SignalHandler : can't rescue the thread, shutdown the server  StackTrace : %s", l_Trace.c_str());
 
 #ifdef _MSC_VER
             /// Pause process execution on windows only to let time to the dev

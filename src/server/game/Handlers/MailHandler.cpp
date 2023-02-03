@@ -279,7 +279,7 @@ void WorldSession::HandleSendMail(WorldPacket& p_Packet)
     m_Player->SaveInventoryAndGoldToDB(trans);
     CharacterDatabase.CommitTransaction(trans);
 
-    sLog->outInfo(LOG_FILTER_SERVER_LOADING, "Time diff on mail send %u ms", GetMSTimeDiffToNow(l_OldMSTime));
+    TC_LOG_INFO("server.loading", "Time diff on mail send %u ms", GetMSTimeDiffToNow(l_OldMSTime));
 }
 
 // Called when mail is read

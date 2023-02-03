@@ -265,7 +265,7 @@ public:
                     {
                         if (!announceID.empty())
                         {
-                            int32 announce = JadeCore::Containers::SelectRandomContainerElement(announceID);
+                            int32 announce = Trinity::Containers::SelectRandomContainerElement(announceID);
                             DoScriptText(announce, me, player);
                             announceID.erase(announce);
                         }

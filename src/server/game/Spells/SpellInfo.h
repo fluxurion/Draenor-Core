@@ -657,11 +657,6 @@ public:
     void SetRangeIndex(uint32 index);
     void SetCastTimeIndex(uint32 index);
 
-    // correction helpers
-    void SetDurationIndex(uint32 index);
-    void SetRangeIndex(uint32 index);
-    void SetCastTimeIndex(uint32 index);
-
     // unloading helpers
     void _UnloadImplicitTargetConditionLists();
 

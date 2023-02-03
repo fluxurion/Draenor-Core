@@ -13,8 +13,8 @@ std::string LogMessage::getTimeStr(time_t time)
 {
     tm aTm;
     ACE_OS::localtime_r(&time, &aTm);
-    char buf[20];
-    snprintf(buf, 20, "%04d-%02d-%02d_%02d:%02d:%02d", aTm.tm_year + 1900, aTm.tm_mon + 1, aTm.tm_mday, aTm.tm_hour, aTm.tm_min, aTm.tm_sec);
+    char buf[72];
+    snprintf(buf, sizeof(buf), "%04d-%02d-%02d_%02d:%02d:%02d", aTm.tm_year + 1900, aTm.tm_mon + 1, aTm.tm_mday, aTm.tm_hour, aTm.tm_min, aTm.tm_sec);
     return std::string(buf);
 }
 
@@ -23,14 +23,10 @@ std::string LogMessage::getTimeStr()
     return getTimeStr(mtime);
 }
 
-Appender::Appender(uint8 _id, std::string const& _name, AppenderType _type /* = APPENDER_NONE*/, LogLevel _level /* = LOG_LEVEL_DISABLED */, AppenderFlags _flags /* = APPENDER_FLAGS_NONE */):
-id(_id), name(_name), type(_type), level(_level), flags(_flags)
-{
-}
+Appender::Appender(uint8 _id, std::string const& _name, AppenderType _type /* = APPENDER_NONE*/, LogLevel _level /* = LOG_LEVEL_DISABLED */, AppenderFlags _flags /* = APPENDER_FLAGS_NONE */) :
+    id(_id), name(_name), type(_type), level(_level), flags(_flags) { }
 
-Appender::~Appender()
-{
-}
+Appender::~Appender() { }
 
 uint8 Appender::getId() const
 {
@@ -64,11 +60,8 @@ void Appender::setLogLevel(LogLevel _level)
 
 void Appender::write(LogMessage& message)
 {
-    if (!level || level > message.level)
-    {
-        //fprintf(stderr, "Appender::write: Appender %s, Level %s. Msg %s Level %s Type %s WRONG LEVEL MASK\n", getName().c_str(), getLogLevelString(level), message.text.c_str(), getLogLevelString(message.level), getLogFilterTypeString(message.type)); // DEBUG - RemoveMe
+    if (level == LogLevel::LOG_LEVEL_DISABLED || level > message.level)
         return;
-    }
 
     message.prefix.clear();
     if (flags & APPENDER_FLAGS_PREFIX_TIMESTAMP)
@@ -104,19 +97,19 @@ const char* Appender::getLogLevelString(LogLevel level)
 {
     switch (level)
     {
-        case LOG_LEVEL_FATAL:
-            return "FATAL";
-        case LOG_LEVEL_ERROR:
-            return "ERROR";
-        case LOG_LEVEL_WARN:
-            return "WARN";
-        case LOG_LEVEL_INFO:
-            return "INFO";
-        case LOG_LEVEL_DEBUG:
-            return "DEBUG";
-        case LOG_LEVEL_TRACE:
-            return "TRACE";
-        default:
-            return "DISABLED";
+    case LogLevel::LOG_LEVEL_FATAL:
+        return "FATAL";
+    case LogLevel::LOG_LEVEL_ERROR:
+        return "ERROR";
+    case LogLevel::LOG_LEVEL_WARN:
+        return "WARN";
+    case LogLevel::LOG_LEVEL_INFO:
+        return "INFO";
+    case LogLevel::LOG_LEVEL_DEBUG:
+        return "DEBUG";
+    case LogLevel::LOG_LEVEL_TRACE:
+        return "TRACE";
+    default:
+        return "DISABLED";
     }
 }

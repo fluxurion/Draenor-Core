@@ -289,8 +289,8 @@ class spell_sha_high_tide : public SpellScriptLoader
                         return;
 
                     std::list<Unit*> l_TempList;
-                    JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(l_FirstTarget, l_Caster, GetSpellInfo()->RangeEntry->maxRangeFriend);
-                    JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_FirstTarget, l_TempList, l_Check);
+                    Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(l_FirstTarget, l_Caster, GetSpellInfo()->RangeEntry->maxRangeFriend);
+                    Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_FirstTarget, l_TempList, l_Check);
                     l_Caster->VisitNearbyObject(GetSpellInfo()->RangeEntry->maxRangeFriend, l_Searcher);
                     
                     if (l_TempList.empty())
@@ -311,7 +311,7 @@ class spell_sha_high_tide : public SpellScriptLoader
                     if (l_TempList.empty())
                         return;
 
-                    l_TempList.sort(JadeCore::HealthPctOrderPred());
+                    l_TempList.sort(Trinity::HealthPctOrderPred());
                     SpellInfo const* l_SpellInfo = sSpellMgr->GetSpellInfo(eSpells::SpellHighTide);
 
                     if (l_SpellInfo == nullptr)
@@ -917,7 +917,7 @@ class spell_sha_ancestral_guidance_heal : public SpellScriptLoader
             {
                 if (p_Targets.size() > 3)
                 {
-                    p_Targets.sort(JadeCore::HealthPctOrderPred());
+                    p_Targets.sort(Trinity::HealthPctOrderPred());
                     p_Targets.resize(3);
                 }
             }
@@ -1170,8 +1170,8 @@ class spell_sha_fire_nova: public SpellScriptLoader
             SpellCastResult HandleCheckCast()
             {
                 UnitList targets;
-                JadeCore::AnyUnitHavingBuffInObjectRangeCheck u_check(GetCaster(), GetCaster(), 100, SPELL_SHA_FLAME_SHOCK, false);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnitHavingBuffInObjectRangeCheck> searcher(GetCaster(), targets, u_check);
+                Trinity::AnyUnitHavingBuffInObjectRangeCheck u_check(GetCaster(), GetCaster(), 100, SPELL_SHA_FLAME_SHOCK, false);
+                Trinity::UnitListSearcher<Trinity::AnyUnitHavingBuffInObjectRangeCheck> searcher(GetCaster(), targets, u_check);
                 GetCaster()->VisitNearbyObject(100, searcher);
 
                 return targets.size() == 0 ? SPELL_FAILED_CANT_DO_THAT_RIGHT_NOW : SPELL_CAST_OK;
@@ -1355,7 +1355,7 @@ class spell_sha_healing_stream: public SpellScriptLoader
 
                 if (p_Targets.size() > 1)
                 {
-                    p_Targets.sort(JadeCore::HealthPctOrderPred());
+                    p_Targets.sort(Trinity::HealthPctOrderPred());
 
                     if (l_Caster->HasAura(eSpells::RushingStreams)) ///< Your Healing Stream Totem now heals two targets
                         p_Targets.resize(2);
@@ -1687,7 +1687,7 @@ class spell_sha_healing_rain_heal : public SpellScriptLoader
             {
                 /// Healing up to 6 allies
                 if (p_Targets.size() > 6)
-                    JadeCore::RandomResizeList(p_Targets, 6);
+                    Trinity::RandomResizeList(p_Targets, 6);
             }
 
             void Register()
@@ -1863,7 +1863,7 @@ class spell_sha_lava_lash_spread: public SpellScriptLoader
                 });
 
                 if (p_Targets.size() > l_MaxTargets)
-                    JadeCore::RandomResizeList(p_Targets, l_MaxTargets);
+                    Trinity::RandomResizeList(p_Targets, l_MaxTargets);
             }
 
             void Register()
@@ -2095,14 +2095,14 @@ class spell_sha_healing_wave : public SpellScriptLoader
 						float l_Radius = 40.0f;
 
 						std::list<Unit*> l_FriendlyUnitList;
-						JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(l_ExplTarget, l_ExplTarget, l_Radius);
-						JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_ExplTarget, l_FriendlyUnitList, l_Check);
+						Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(l_ExplTarget, l_ExplTarget, l_Radius);
+						Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_ExplTarget, l_FriendlyUnitList, l_Check);
 						l_Target->VisitNearbyObject(l_Radius, l_Searcher);
 
 						/// Sort friendly unit by pourcentage of health and get the most injured
 						if (l_FriendlyUnitList.size() > 1)
 						{
-							l_FriendlyUnitList.sort(JadeCore::HealthPctOrderPred());
+							l_FriendlyUnitList.sort(Trinity::HealthPctOrderPred());
 							l_FriendlyUnitList.resize(1);
 						}
 
@@ -2891,7 +2891,7 @@ class spell_sha_chain_heal : public SpellScriptLoader
                         if (!roll_chance_i(l_T17Restoration->GetAmount()))
                             return;
 
-                        m_ProcTarget = JadeCore::Containers::SelectRandomContainerElement(p_Targets)->GetGUID();
+                        m_ProcTarget = Trinity::Containers::SelectRandomContainerElement(p_Targets)->GetGUID();
                     }
                 }
             }
@@ -2925,14 +2925,14 @@ class spell_sha_chain_heal : public SpellScriptLoader
 						float l_Radius = 40.0f;
 
 						std::list<Unit*> l_FriendlyUnitList;
-						JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(l_ExplTarget, l_ExplTarget, l_Radius);
-						JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_ExplTarget, l_FriendlyUnitList, l_Check);
+						Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(l_ExplTarget, l_ExplTarget, l_Radius);
+						Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_ExplTarget, l_FriendlyUnitList, l_Check);
 						l_Target->VisitNearbyObject(l_Radius, l_Searcher);
 
 						/// Sort friendly unit by pourcentage of health and get the most injured
 						if (l_FriendlyUnitList.size() > 1)
 						{
-							l_FriendlyUnitList.sort(JadeCore::HealthPctOrderPred());
+							l_FriendlyUnitList.sort(Trinity::HealthPctOrderPred());
 							l_FriendlyUnitList.resize(1);
 						}
 
@@ -3552,8 +3552,8 @@ class spell_sha_eye_of_the_storm : public SpellScriptLoader
                 float l_Radius = 6.0f;
 
                 std::list<Unit*> l_AlliesList;
-                JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_AlliesList, l_Check);
+                Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_AlliesList, l_Check);
                 l_Caster->VisitNearbyObject(l_Radius, l_Searcher);
 
                 for (auto l_Target : l_AlliesList)
@@ -3808,14 +3808,14 @@ public:
 					float l_Radius = 40.0f;
 
 					std::list<Unit*> l_FriendlyUnitList;
-					JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(l_ExplTarget, l_ExplTarget, l_Radius);
-					JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_ExplTarget, l_FriendlyUnitList, l_Check);
+					Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(l_ExplTarget, l_ExplTarget, l_Radius);
+					Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(l_ExplTarget, l_FriendlyUnitList, l_Check);
 					l_Target->VisitNearbyObject(l_Radius, l_Searcher);
 
 					/// Sort friendly unit by pourcentage of health and get the most injured
 					if (l_FriendlyUnitList.size() > 1)
 					{
-						l_FriendlyUnitList.sort(JadeCore::HealthPctOrderPred());
+						l_FriendlyUnitList.sort(Trinity::HealthPctOrderPred());
 						l_FriendlyUnitList.resize(1);
 					}
 

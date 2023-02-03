@@ -992,8 +992,8 @@ namespace MS
                     std::list<Unit*> l_TargetList;
                     float l_Radius = 10.0f;
 
-                    JadeCore::AnyFriendlyUnitInObjectRangeCheck l_Check(me, me, l_Radius);
-                    JadeCore::UnitListSearcher<JadeCore::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
+                    Trinity::AnyFriendlyUnitInObjectRangeCheck l_Check(me, me, l_Radius);
+                    Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
                     me->VisitNearbyObject(l_Radius, l_Searcher);
 
                     for (Unit* l_Unit : l_TargetList)

@@ -837,7 +837,7 @@ class boss_sha_of_fear : public CreatureScript
                             if (!playerList.empty())
                             {
                                 if (playerList.size() > uint8(Is25ManRaid() ? 5 : 2))
-                                    JadeCore::RandomResizeList(playerList, Is25ManRaid() ? 5 : 2);
+                                    Trinity::RandomResizeList(playerList, Is25ManRaid() ? 5 : 2);
 
                                 for (Player* plr : playerList)
                                     me->AddAura(SPELL_HUDDLE_IN_TERROR, plr);
@@ -907,7 +907,7 @@ class boss_sha_of_fear : public CreatureScript
 
                             if (!playerList.empty())
                             {
-                                JadeCore::RandomResizeList(playerList, 1);
+                                Trinity::RandomResizeList(playerList, 1);
 
                                 Player* victim  = playerList.front();
                                 AttackStart(victim);
@@ -1732,8 +1732,8 @@ class spell_breath_of_fear : public SpellScriptLoader
                     return;
 
                 // All targets on the platform, who are not afflicted by Wall of Light or Fearless will be hit by this spell.
-                targets.remove_if(JadeCore::UnitAuraCheck(true, SPELL_WALL_OF_LIGHT_BUFF));
-                targets.remove_if(JadeCore::UnitAuraCheck(true, SPELL_FEARLESS));
+                targets.remove_if(Trinity::UnitAuraCheck(true, SPELL_WALL_OF_LIGHT_BUFF));
+                targets.remove_if(Trinity::UnitAuraCheck(true, SPELL_FEARLESS));
             }
 
             void Register()
@@ -1793,7 +1793,7 @@ class spell_penetrating_bolt : public SpellScriptLoader
                 targetGuid = 0;
 
                 if (!targets.empty())
-                    JadeCore::Containers::RandomResizeList(targets, 1);
+                    Trinity::Containers::RandomResizeList(targets, 1);
 
                 for (auto itr : targets)
                     if (itr->GetGUID())
@@ -2238,7 +2238,7 @@ class spell_sha_waterspout : public SpellScriptLoader
                     return;
 
                 if (playerList.size() > uint8(caster->GetInstanceScript()->instance->Is25ManRaid() ? 5 : 2))
-                    JadeCore::RandomResizeList(playerList, caster->GetInstanceScript()->instance->Is25ManRaid() ? 5 : 2);
+                    Trinity::RandomResizeList(playerList, caster->GetInstanceScript()->instance->Is25ManRaid() ? 5 : 2);
 
                 for (Player* target : playerList)
                     caster->CastSpell(target, SPELL_WATERSPOUT_DAMAGE, false);

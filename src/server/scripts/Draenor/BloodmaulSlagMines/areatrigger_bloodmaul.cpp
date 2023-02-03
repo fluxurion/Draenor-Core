@@ -58,8 +58,8 @@ namespace MS
                     std::list<Unit*> l_TargetList;
                     float l_Radius = 5.0f;
 
-                    JadeCore::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
-                    JadeCore::UnitListSearcher<JadeCore::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                    Trinity::NearestAttackableUnitInObjectRangeCheck l_Check(p_AreaTrigger, p_AreaTrigger->GetCaster(), l_Radius);
+                    Trinity::UnitListSearcher<Trinity::NearestAttackableUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                     p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                     std::forward_list<uint64> l_ToRemove; // We need to do it in two phase, otherwise it will break iterators.

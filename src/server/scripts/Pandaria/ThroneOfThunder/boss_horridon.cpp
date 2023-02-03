@@ -2152,7 +2152,7 @@ class mob_direhorn_spirit : public CreatureScript
                     return;
                 }
 
-                JadeCore::RandomResizeList(plrList, 1);
+                Trinity::RandomResizeList(plrList, 1);
 
                 if (Unit* target = plrList.front())
                 {

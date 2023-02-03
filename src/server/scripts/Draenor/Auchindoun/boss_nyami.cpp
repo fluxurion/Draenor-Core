@@ -453,8 +453,8 @@ class auchindoun_nyami_mob_bubble : public CreatureScript
 				if (m_SpellDiff <= p_Diff)
 				{
 					std::list<Player*> l_PlayerList;
-					JadeCore::AnyPlayerInObjectRangeCheck check(me, 20.0f);
-					JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> searcher(me, l_PlayerList, check);
+					Trinity::AnyPlayerInObjectRangeCheck check(me, 20.0f);
+					Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(me, l_PlayerList, check);
 					me->VisitNearbyObject(12.0f, searcher);
 					if (!l_PlayerList.empty())
 					{
@@ -923,8 +923,8 @@ class auchindoun_nyami_at_radiant_star : public AreaTriggerEntityScript
         if (m_Diff <= p_Time)
         {
             std::list<Player*> l_ListPlayers;
-            JadeCore::AnyPlayerInObjectRangeCheck check(p_AreaTrigger, 1.2f);
-            JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> searcher(p_AreaTrigger, l_ListPlayers, check);
+            Trinity::AnyPlayerInObjectRangeCheck check(p_AreaTrigger, 1.2f);
+            Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(p_AreaTrigger, l_ListPlayers, check);
             p_AreaTrigger->VisitNearbyObject(3.0f, searcher);
 
             if (!l_ListPlayers.empty())

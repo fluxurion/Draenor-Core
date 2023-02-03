@@ -183,13 +183,13 @@ void WorldSession::HandleLootMoneyOpcode(WorldPacket& /*recvData*/)
                 else
                 {
                     std::list<Creature*> linkedLootCreatures;
-                    CellCoord p(JadeCore::ComputeCellCoord(player->GetPositionX(), player->GetPositionY()));
+                    CellCoord p(Trinity::ComputeCellCoord(player->GetPositionX(), player->GetPositionY()));
                     Cell cell(p);
                     cell.SetNoCreate();
 
-                    JadeCore::AllDeadCreaturesInRange check(player, 25.0f, creature->GetGUID());
-                    JadeCore::CreatureListSearcher<JadeCore::AllDeadCreaturesInRange> searcher(player, linkedLootCreatures, check);
-                    TypeContainerVisitor<JadeCore::CreatureListSearcher<JadeCore::AllDeadCreaturesInRange>, GridTypeMapContainer> cSearcher(searcher);
+                    Trinity::AllDeadCreaturesInRange check(player, 25.0f, creature->GetGUID());
+                    Trinity::CreatureListSearcher<Trinity::AllDeadCreaturesInRange> searcher(player, linkedLootCreatures, check);
+                    TypeContainerVisitor<Trinity::CreatureListSearcher<Trinity::AllDeadCreaturesInRange>, GridTypeMapContainer> cSearcher(searcher);
                     cell.Visit(p, cSearcher, *(player->GetMap()), *player,  25.0f);
 
                     for (auto itr : linkedLootCreatures)
@@ -568,7 +568,7 @@ void WorldSession::HandleDoMasterLootRollOpcode(WorldPacket & p_Packet)
 
     if (l_LootListID >= l_Loot->Items.size() + l_Loot->QuestItems.size())
     {
-        sLog->outDebug(LOG_FILTER_LOOT, "MasterLootItem: Player %s might be using a hack! (slot %d, size %lu)", GetPlayer()->GetName(), l_LootListID, (unsigned long)l_Loot->Items.size());
+        TC_LOG_DEBUG(LOG_FILTER_LOOT, "MasterLootItem: Player %s might be using a hack! (slot %d, size %lu)", GetPlayer()->GetName(), l_LootListID, (unsigned long)l_Loot->Items.size());
         return;
     }
 
@@ -653,7 +653,7 @@ void WorldSession::HandleMasterLootItemOpcode(WorldPacket & p_Packet)
 
         if (l_SlotID >= l_Loot->Items.size() + l_Loot->QuestItems.size())
         {
-            sLog->outDebug(LOG_FILTER_LOOT, "MasterLootItem: Player %s might be using a hack! (slot %d, size %lu)", GetPlayer()->GetName(), l_SlotID, (unsigned long)l_Loot->Items.size());
+            TC_LOG_DEBUG(LOG_FILTER_LOOT, "MasterLootItem: Player %s might be using a hack! (slot %d, size %lu)", GetPlayer()->GetName(), l_SlotID, (unsigned long)l_Loot->Items.size());
             return;
         }
 

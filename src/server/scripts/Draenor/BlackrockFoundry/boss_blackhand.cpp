@@ -1145,8 +1145,8 @@ class npc_foundry_blackrock_foundry : public CreatureScript
 
                     std::list<Unit*> l_TargetList;
 
-                    JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, 90.0f);
-                    JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
+                    Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(me, me, 90.0f);
+                    Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(me, l_TargetList, l_Check);
                     me->VisitNearbyObject(90.0f, l_Searcher);
 
                     float l_BaseRadius = 54.5f;
@@ -2402,8 +2402,8 @@ class spell_foundry_marked_for_death : public SpellScriptLoader
 
                 std::list<Unit*> l_PotentialTargets;
 
-                JadeCore::AnyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster->GetDistance(l_Target));
-                JadeCore::UnitListSearcher<JadeCore::AnyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_PotentialTargets, l_Check);
+                Trinity::AnyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster->GetDistance(l_Target));
+                Trinity::UnitListSearcher<Trinity::AnyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_PotentialTargets, l_Check);
                 l_Caster->VisitNearbyObject(l_Caster->GetDistance(l_Target), l_Searcher);
 
                 if (!l_PotentialTargets.empty())
@@ -2428,7 +2428,7 @@ class spell_foundry_marked_for_death : public SpellScriptLoader
 
                 if (!l_PotentialTargets.empty())
                 {
-                    l_PotentialTargets.sort(JadeCore::ObjectDistanceOrderPred(l_Caster));
+                    l_PotentialTargets.sort(Trinity::ObjectDistanceOrderPred(l_Caster));
 
                     if (l_PhaseID < 2)
                         l_Target = l_PotentialTargets.front();
@@ -2570,7 +2570,7 @@ class spell_foundry_fixate_searcher : public SpellScriptLoader
                 if (p_Targets.empty())
                     return;
 
-                p_Targets.sort(JadeCore::ObjectDistanceOrderPred(GetCaster()));
+                p_Targets.sort(Trinity::ObjectDistanceOrderPred(GetCaster()));
 
                 WorldObject* l_Target = p_Targets.front();
 
@@ -2962,8 +2962,8 @@ class areatrigger_foundry_slag_bomb : public AreaTriggerEntityScript
                 std::list<Unit*> l_TargetList;
                 float l_Radius = 2.0f;
 
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(p_AreaTrigger, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 for (Unit* l_Iter : l_TargetList)
@@ -3008,8 +3008,8 @@ class areatrigger_foundry_blaze : public AreaTriggerEntityScript
                 std::list<Unit*> l_TargetList;
                 float l_Radius = 5.0f;
 
-                JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
-                JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_TargetList, l_Check);
+                Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
+                Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_TargetList, l_Check);
                 l_Caster->VisitNearbyObject(l_Radius, l_Searcher);
 
                 std::set<uint64> l_Targets;
@@ -3104,8 +3104,8 @@ class areatrigger_foundry_overheated : public AreaTriggerEntityScript
                         std::list<Unit*> l_TargetList;
                         float l_Radius = 70.0f;
 
-                        JadeCore::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
-                        JadeCore::UnitListSearcher<JadeCore::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_TargetList, l_Check);
+                        Trinity::AnyUnfriendlyUnitInObjectRangeCheck l_Check(l_Caster, l_Caster, l_Radius);
+                        Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> l_Searcher(l_Caster, l_TargetList, l_Check);
                         l_Caster->VisitNearbyObject(l_Radius, l_Searcher);
 
                         for (Unit* l_Iter : l_TargetList)
@@ -3206,8 +3206,8 @@ class areatrigger_foundry_falling_ash : public AreaTriggerEntityScript
                 std::list<Player*> l_TargetList;
                 float l_Radius = 1.0f;
 
-                JadeCore::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, l_Radius);
-                JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
+                Trinity::AnyPlayerInObjectRangeCheck l_Check(p_AreaTrigger, l_Radius);
+                Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> l_Searcher(p_AreaTrigger, l_TargetList, l_Check);
                 p_AreaTrigger->VisitNearbyObject(l_Radius, l_Searcher);
 
                 for (Player* l_Iter : l_TargetList)

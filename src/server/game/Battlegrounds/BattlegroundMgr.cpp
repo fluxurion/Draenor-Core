@@ -280,7 +280,7 @@ namespace MS
             Battleground* l_BattlegroundTemplate = GetBattlegroundTemplate(p_BgType);
             if (!l_BattlegroundTemplate)
             {
-                sLog->outError(LOG_FILTER_BATTLEGROUND, "Battleground: CreateNewBattleground - bg template not found for %u", p_BgType);
+                TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "Battleground: CreateNewBattleground - bg template not found for %u", p_BgType);
                 return nullptr;
             }
 
@@ -492,7 +492,7 @@ namespace MS
 
             if (!l_Result)
             {
-                sLog->outError(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 battlegrounds. DB table `battleground_template` is empty.");
+                TC_LOG_ERROR("server.loading", ">> Loaded 0 battlegrounds. DB table `battleground_template` is empty.");
                 return;
             }
 
@@ -511,7 +511,7 @@ namespace MS
                 l_Bl = sBattlemasterListStore.LookupEntry(l_BgTypeId);
                 if (!l_Bl)
                 {
-                    sLog->outError(LOG_FILTER_BATTLEGROUND, "Battleground ID %u not found in BattlemasterList.dbc. Battleground not created.", l_BgTypeId);
+                    TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "Battleground ID %u not found in BattlemasterList.dbc. Battleground not created.", l_BgTypeId);
                     continue;
                 }
 
@@ -525,7 +525,7 @@ namespace MS
 
                 if (l_Data.MinPlayersPerTeam == 0)
                 {
-                    sLog->outError(LOG_FILTER_SQL, "Table `battleground_template` for id %u has bad values for MinPlayersPerTeam (%u)",
+                    TC_LOG_ERROR("sql.sql", "Table `battleground_template` for id %u has bad values for MinPlayersPerTeam (%u)",
                         l_Data.bgTypeId, l_Data.MinPlayersPerTeam, l_Data.MaxPlayersPerTeam); ///< Data argument not used by format string
                     assert(false);
                 }
@@ -533,14 +533,14 @@ namespace MS
                 // check values from DB
                 if (l_Data.MaxPlayersPerTeam == 0 || l_Data.MinPlayersPerTeam > l_Data.MaxPlayersPerTeam)
                 {
-                    sLog->outError(LOG_FILTER_SQL, "Table `battleground_template` for id %u has bad values for MinPlayersPerTeam (%u) and MaxPlayersPerTeam(%u)",
+                    TC_LOG_ERROR("sql.sql", "Table `battleground_template` for id %u has bad values for MinPlayersPerTeam (%u) and MaxPlayersPerTeam(%u)",
                         l_Data.bgTypeId, l_Data.MinPlayersPerTeam, l_Data.MaxPlayersPerTeam);
                     continue;
                 }
 
                 if (l_Data.LevelMin == 0 || l_Data.LevelMax == 0 || l_Data.LevelMin > l_Data.LevelMax)
                 {
-                    sLog->outError(LOG_FILTER_SQL, "Table `battleground_template` for id %u has bad values for LevelMin (%u) and LevelMax(%u)",
+                    TC_LOG_ERROR("sql.sql", "Table `battleground_template` for id %u has bad values for LevelMin (%u) and LevelMax(%u)",
                         l_Data.bgTypeId, l_Data.LevelMin, l_Data.LevelMax);
                     continue;
                 }
@@ -562,7 +562,7 @@ namespace MS
                 }
                 else
                 {
-                    sLog->outError(LOG_FILTER_SQL, "Table `battleground_template` for id %u have non-existed WorldSafeLocs.dbc id %u in field `AllianceStartLoc`. BG not created.", l_Data.bgTypeId, l_StartId);
+                    TC_LOG_ERROR("sql.sql", "Table `battleground_template` for id %u have non-existed WorldSafeLocs.dbc id %u in field `AllianceStartLoc`. BG not created.", l_Data.bgTypeId, l_StartId);
                     continue;
                 }
 
@@ -583,7 +583,7 @@ namespace MS
                 }
                 else
                 {
-                    sLog->outError(LOG_FILTER_SQL, "Table `battleground_template` for id %u have non-existed WorldSafeLocs.dbc id %u in field `HordeStartLoc`. BG not created.", l_Data.bgTypeId, l_StartId);
+                    TC_LOG_ERROR("sql.sql", "Table `battleground_template` for id %u have non-existed WorldSafeLocs.dbc id %u in field `HordeStartLoc`. BG not created.", l_Data.bgTypeId, l_StartId);
                     continue;
                 }
 
@@ -613,7 +613,7 @@ namespace MS
                 ++l_Count;
             } while (l_Result->NextRow());
 
-            sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded %u battlegrounds in %u ms", l_Count, GetMSTimeDiffToNow(l_OldMSTime));
+            TC_LOG_INFO("server.loading", ">> Loaded %u battlegrounds in %u ms", l_Count, GetMSTimeDiffToNow(l_OldMSTime));
         }
 
         void BattlegroundMgr::TeleportToBattleground(Player* p_Player, uint32 p_InstanceId, BattlegroundType::Type p_BgType)
@@ -628,12 +628,12 @@ namespace MS
                     l_Team = p_Player->GetTeam();
                 l_Bg->GetTeamStartLoc(l_Team, l_X, l_Y, l_Z, l_O);
 
-                sLog->outInfo(LOG_FILTER_BATTLEGROUND, "BATTLEGROUND: Sending %s to map %u, X %f, Y %f, Z %f, O %f", p_Player->GetName(), l_MapId, l_X, l_Y, l_Z, l_O);
+                TC_LOG_INFO(LOG_FILTER_BATTLEGROUND, "BATTLEGROUND: Sending %s to map %u, X %f, Y %f, Z %f, O %f", p_Player->GetName(), l_MapId, l_X, l_Y, l_Z, l_O);
                 p_Player->TeleportTo(l_MapId, l_X, l_Y, l_Z, l_O);
             }
             else
             {
-                sLog->outError(LOG_FILTER_BATTLEGROUND, "player %u is trying to port to non-existent bg instance %u", p_Player->GetGUIDLow(), p_InstanceId);
+                TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "player %u is trying to port to non-existent bg instance %u", p_Player->GetGUIDLow(), p_InstanceId);
             }
         }
 
@@ -692,7 +692,7 @@ namespace MS
 
             if (!l_Result)
             {
-                sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 battlemaster entries. DB table `battlemaster_entry` is empty!");
+                TC_LOG_INFO("server.loading", ">> Loaded 0 battlemaster entries. DB table `battlemaster_entry` is empty!");
                 return;
             }
 
@@ -707,14 +707,14 @@ namespace MS
                 uint32 l_BgTypeId = l_Fields[1].GetUInt32();
                 if (!sBattlemasterListStore.LookupEntry(l_BgTypeId))
                 {
-                    sLog->outError(LOG_FILTER_SQL, "Table `battlemaster_entry` contain entry %u for not existed battleground type %u, ignored.", l_Entry, l_BgTypeId);
+                    TC_LOG_ERROR("sql.sql", "Table `battlemaster_entry` contain entry %u for not existed battleground type %u, ignored.", l_Entry, l_BgTypeId);
                     continue;
                 }
 
                 m_BattleMastersMap[l_Entry] = BattlegroundTypeId(l_BgTypeId);
             } while (l_Result->NextRow());
 
-            sLog->outInfo(LOG_FILTER_SERVER_LOADING, ">> Loaded %u battlemaster entries in %u ms", l_Count, GetMSTimeDiffToNow(l_OldMSTime));
+            TC_LOG_INFO("server.loading", ">> Loaded %u battlemaster entries in %u ms", l_Count, GetMSTimeDiffToNow(l_OldMSTime));
         }
 
         //////////////////////////////////////////////////////////////////////////

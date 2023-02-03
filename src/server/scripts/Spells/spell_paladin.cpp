@@ -393,7 +393,7 @@ class spell_pal_daybreak: public SpellScriptLoader
 
                 if (p_Targets.size() > (MaximumSecondaryTarget + 1 /* Main Target */))
                 {
-                    p_Targets.sort(JadeCore::HealthPctOrderPred());
+                    p_Targets.sort(Trinity::HealthPctOrderPred());
                     p_Targets.resize(MaximumSecondaryTarget + 1 /* Main Target */);
                 }
 
@@ -1000,7 +1000,7 @@ class spell_pal_seal_of_insight: public SpellScriptLoader
             {
                 if (p_Targets.size() > 1)
                 {
-                    p_Targets.sort(JadeCore::HealthPctOrderPred());
+                    p_Targets.sort(Trinity::HealthPctOrderPred());
                     p_Targets.resize(1);
                 }
             }
@@ -1532,7 +1532,7 @@ class spell_pal_holy_prism_visual: public SpellScriptLoader
             {
                 /// Healing up to 5 allies or ennemies
                 if (p_Targets.size() > 5)
-                    JadeCore::RandomResizeList(p_Targets, 5);
+                    Trinity::RandomResizeList(p_Targets, 5);
             }
 
             void HandleOnHit()

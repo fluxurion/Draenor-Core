@@ -67,7 +67,7 @@ void WorldSession::HandleChangeSeatsOnControlledVehicle(WorldPacket& p_RecvData)
     if (!l_VehicleSeat->CanSwitchFromSeat())
     {
         p_RecvData.rfinish();
-        sLog->outError(LOG_FILTER_NETWORKIO, "HandleChangeSeatsOnControlledVehicle, Opcode: %u, Player %u tried to switch seats but current seatflags %u don't permit that.",
+        TC_LOG_ERROR("network", "HandleChangeSeatsOnControlledVehicle, Opcode: %u, Player %u tried to switch seats but current seatflags %u don't permit that.",
             p_RecvData.GetOpcode(), GetPlayer()->GetGUIDLow(), l_VehicleSeat->m_flags);
         return;
     }
@@ -169,7 +169,7 @@ void WorldSession::HandleEjectPassenger(WorldPacket& p_RecvData)
     if (!vehicle)
     {
         p_RecvData.rfinish();
-        sLog->outError(LOG_FILTER_NETWORKIO, "HandleEjectPassenger: Player %u is not in a vehicle!", GetPlayer()->GetGUIDLow());
+        TC_LOG_ERROR("network", "HandleEjectPassenger: Player %u is not in a vehicle!", GetPlayer()->GetGUIDLow());
         return;
     }
 
@@ -181,13 +181,13 @@ void WorldSession::HandleEjectPassenger(WorldPacket& p_RecvData)
         Player* l_Player = ObjectAccessor::FindPlayer(l_Guid);
         if (!l_Player)
         {
-            sLog->outError(LOG_FILTER_NETWORKIO, "Player %u tried to eject player %u from vehicle, but the latter was not found in world!", GetPlayer()->GetGUIDLow(), GUID_LOPART(l_Guid));
+            TC_LOG_ERROR("network", "Player %u tried to eject player %u from vehicle, but the latter was not found in world!", GetPlayer()->GetGUIDLow(), GUID_LOPART(l_Guid));
             return;
         }
 
         if (!l_Player->IsOnVehicle(vehicle->GetBase()))
         {
-            sLog->outError(LOG_FILTER_NETWORKIO, "Player %u tried to eject player %u, but they are not in the same vehicle", GetPlayer()->GetGUIDLow(), GUID_LOPART(l_Guid));
+            TC_LOG_ERROR("network", "Player %u tried to eject player %u, but they are not in the same vehicle", GetPlayer()->GetGUIDLow(), GUID_LOPART(l_Guid));
             return;
         }
 
@@ -196,7 +196,7 @@ void WorldSession::HandleEjectPassenger(WorldPacket& p_RecvData)
         if (l_VehicleSeat->IsEjectable())
             l_Player->ExitVehicle();
         else
-            sLog->outError(LOG_FILTER_NETWORKIO, "Player %u attempted to eject player %u from non-ejectable seat.", GetPlayer()->GetGUIDLow(), GUID_LOPART(l_Guid));
+            TC_LOG_ERROR("network", "Player %u attempted to eject player %u from non-ejectable seat.", GetPlayer()->GetGUIDLow(), GUID_LOPART(l_Guid));
     }
 
     else if (IS_CREATURE_GUID(l_Guid))
@@ -204,13 +204,13 @@ void WorldSession::HandleEjectPassenger(WorldPacket& p_RecvData)
         Unit* l_Unit = ObjectAccessor::GetUnit(*m_Player, l_Guid);
         if (!l_Unit) // creatures can be ejected too from player mounts
         {
-            sLog->outError(LOG_FILTER_NETWORKIO, "Player %u tried to eject creature guid %u from vehicle, but the latter was not found in world!", GetPlayer()->GetGUIDLow(), GUID_LOPART(l_Guid));
+            TC_LOG_ERROR("network", "Player %u tried to eject creature guid %u from vehicle, but the latter was not found in world!", GetPlayer()->GetGUIDLow(), GUID_LOPART(l_Guid));
             return;
         }
 
         if (!l_Unit->IsOnVehicle(vehicle->GetBase()))
         {
-            sLog->outError(LOG_FILTER_NETWORKIO, "Player %u tried to eject unit %u, but they are not in the same vehicle", GetPlayer()->GetGUIDLow(), GUID_LOPART(l_Guid));
+            TC_LOG_ERROR("network", "Player %u tried to eject unit %u, but they are not in the same vehicle", GetPlayer()->GetGUIDLow(), GUID_LOPART(l_Guid));
             return;
         }
 
@@ -222,7 +222,7 @@ void WorldSession::HandleEjectPassenger(WorldPacket& p_RecvData)
             l_Unit->ExitVehicle();
         }
         else
-            sLog->outError(LOG_FILTER_NETWORKIO, "Player %u attempted to eject creature GUID %u from non-ejectable seat.", GetPlayer()->GetGUIDLow(), GUID_LOPART(l_Guid));
+            TC_LOG_ERROR("network", "Player %u attempted to eject creature GUID %u from non-ejectable seat.", GetPlayer()->GetGUIDLow(), GUID_LOPART(l_Guid));
     }
 }
 
@@ -235,7 +235,7 @@ void WorldSession::HandleRequestVehicleExit(WorldPacket& /*p_RecvData*/)
             if (l_VehicleSeat->CanEnterOrExit())
                 GetPlayer()->ExitVehicle();
             else
-                sLog->outError(LOG_FILTER_NETWORKIO, "Player %u tried to exit vehicle, but seatflags %u (ID: %u) don't permit that.", GetPlayer()->GetGUIDLow(), l_VehicleSeat->m_ID, l_VehicleSeat->m_flags);
+                TC_LOG_ERROR("network", "Player %u tried to exit vehicle, but seatflags %u (ID: %u) don't permit that.", GetPlayer()->GetGUIDLow(), l_VehicleSeat->m_ID, l_VehicleSeat->m_flags);
         }
     }
 }

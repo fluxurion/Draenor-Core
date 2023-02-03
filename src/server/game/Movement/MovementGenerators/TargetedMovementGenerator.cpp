@@ -81,8 +81,8 @@ void TargetedMovementGeneratorMedium<T, D>::_setTargetLocation(T* owner, bool up
             ///        p_OutX = l_InterpolatedPosition.GetPositionX() + (i_target->GetObjectSize() + p_Distance2D) * std::cos(p_AbsAngle);
             ///        p_OutY = l_InterpolatedPosition.GetPositionY() + (i_target->GetObjectSize() + p_Distance2D) * std::sin(p_AbsAngle);
             ///
-            ///        JadeCore::NormalizeMapCoord(p_OutX);
-            ///        JadeCore::NormalizeMapCoord(p_OutY);
+            ///        Trinity::NormalizeMapCoord(p_OutX);
+            ///        Trinity::NormalizeMapCoord(p_OutY);
             ///    };
             ///
             ///    /// Copied from Object::IsWithinLOS

@@ -555,10 +555,10 @@ class spell_saronite_vapors: public SpellScriptLoader // Spell 63323
                 if (Unit* caster = ObjectAccessor::FindUnit(_caster))
                 {
                     std::list<Player*> players;
-                    JadeCore::AnyPlayerInObjectRangeCheck u_check(caster, 150.0f, true);
-                    JadeCore::PlayerListSearcher<JadeCore::AnyPlayerInObjectRangeCheck> searcher(caster, players, u_check);
+                    Trinity::AnyPlayerInObjectRangeCheck u_check(caster, 150.0f, true);
+                    Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(caster, players, u_check);
                     caster->VisitNearbyObject(30.0f, searcher);
-                    players.sort(JadeCore::ObjectDistanceOrderPred(caster));
+                    players.sort(Trinity::ObjectDistanceOrderPred(caster));
                     for (std::list<Player*>::iterator it = players.begin(); it != players.end(); ++it)
                     {
                         if (Player* player = *it)

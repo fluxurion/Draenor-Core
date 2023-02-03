@@ -230,7 +230,7 @@ namespace MS
         void BattlegroundScheduler::RemovePlayer(uint64 p_Guid, BattlegroundType::Type p_Type)
         {
 #ifdef CROSS
-            sLog->outAshran("BattlegroundScheduler::RemovePlayer: bg type: %u, player guid %u 2", p_Type, p_Guid);
+            TC_LOG_ERROR("server.worldserver", "BattlegroundScheduler::RemovePlayer: bg type: %u, player guid %u 2", p_Type, p_Guid);
 
 #endif /* CROSS */
             /// Remove player from map, if he's there.
@@ -258,11 +258,11 @@ namespace MS
             int32 l_BracketId = l_Group->m_BracketId;
             if (l_BracketId == -1)
             {
-                sLog->outError(LOG_FILTER_BATTLEGROUND, "BattlegroundQueue: ERROR Cannot find groupinfo for player GUID: %u", GUID_LOPART(p_Guid));
+                TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "BattlegroundQueue: ERROR Cannot find groupinfo for player GUID: %u", GUID_LOPART(p_Guid));
                 return;
             }
 
-            sLog->outDebug(LOG_FILTER_BATTLEGROUND, "BattlegroundQueue: Removing player GUID %u, from bracket_id %u", GUID_LOPART(p_Guid), (uint32)l_BracketId);
+            TC_LOG_DEBUG(LOG_FILTER_BATTLEGROUND, "BattlegroundQueue: Removing player GUID %u, from bracket_id %u", GUID_LOPART(p_Guid), (uint32)l_BracketId);
 
             // ALL variables are correctly set
             // We can ignore leveling up in queue - it should not cause crash
