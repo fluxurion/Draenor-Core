@@ -18987,7 +18987,7 @@ void Unit::Kill(Unit* p_KilledVictim, bool p_DurabilityLoss, SpellInfo const* p_
             l_KilledCreature->DeleteThreatList();
 
                 // must be after setDeathState which resets dynamic flags
-            if (!l_KilledCreature->loot.empty())
+            if (!l_KilledCreature->loot.isLooted())
                 l_KilledCreature->SetFlag(OBJECT_FIELD_DYNAMIC_FLAGS, UNIT_DYNFLAG_LOOTABLE);
             else
                     l_KilledCreature->AllLootRemovedFromCorpse();
