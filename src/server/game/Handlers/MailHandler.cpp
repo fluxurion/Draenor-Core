@@ -695,7 +695,7 @@ void WorldSession::HandleMailCreateTextItem(WorldPacket & p_Packet)
         return;
 
     Mail * l_Mail = m_Player->GetMail(l_MailID);
-    if (!l_Mail || (l_Mail->body.empty() && !l_Mail->mailTemplateId) || l_Mail->state == MAIL_STATE_DELETED || l_Mail->deliver_time > time(NULL))
+    if (!l_Mail || (l_Mail->body.empty() && !l_Mail->mailTemplateId) || l_Mail->state == MAIL_STATE_DELETED || l_Mail->deliver_time > time(NULL) || (l_Mail->checked & MAIL_CHECK_MASK_COPIED))
     {
         m_Player->SendMailResult(l_MailID, MAIL_MADE_PERMANENT, MAIL_ERR_INTERNAL_ERROR);
         return;
