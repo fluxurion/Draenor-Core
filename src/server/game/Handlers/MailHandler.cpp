@@ -93,6 +93,14 @@ void WorldSession::HandleSendMail(WorldPacket& p_Packet)
     uint32 cost = l_AttachmentsCount ? 30 * l_AttachmentsCount : 30;  // price hardcoded in client
 
     uint64 reqmoney = cost + l_SendMoney;
+
+    // Check for overflow
+    if (reqmoney < l_SendMoney)
+    {
+        m_Player->SendMailResult(0, MAIL_SEND, MAIL_ERR_NOT_ENOUGH_MONEY);
+        return;
+    }
+
     if (!m_Player->HasEnoughMoney(reqmoney) && !m_Player->isGameMaster())
     {
         m_Player->SendMailResult(0, MAIL_SEND, MAIL_ERR_NOT_ENOUGH_MONEY);
