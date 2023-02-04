@@ -609,6 +609,8 @@ void KillRewarder::Reward()
     }
 }
 
+}
+
 // == Player ====================================================
 // we can disable this warning for this since it only
 // causes undefined behavior when passed to the base class constructor

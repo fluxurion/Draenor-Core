@@ -33,7 +33,7 @@
 #include "TemporarySummon.h"
 #include "Vehicle.h"
 #include "WorldSession.h"
-#include "Gilneas.h"
+#include "gilneas.h"
 
 enum eDuskHaven
 {

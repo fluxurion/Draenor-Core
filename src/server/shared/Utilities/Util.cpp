@@ -142,16 +142,13 @@ nullable_string PackDBBinary(void const* unpackedData, uint32 unpackedCount)
     return nullable_string((char const*)unpackedData, unpackedCount);
 }
 
-struct tm* localtime_r(const time_t* time, struct tm *result)
-{
 #if (defined(WIN32) || defined(_WIN32) || defined(__WIN32__))
+struct tm* localtime_r(const time_t* time, struct tm* result)
+{
     localtime_s(result, time);
     return result;
-#else
-    return localtime_r(&time, &result); // POSIX
-#endif
 }
-
+#endif
 
 std::string secsToTimeString(uint64 timeInSecs, bool shortText, bool hoursOnly)
 {

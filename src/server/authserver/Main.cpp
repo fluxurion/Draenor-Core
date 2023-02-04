@@ -41,6 +41,12 @@
 #include "Bnet2/WoWModules/SelectGameAccountAuth.hpp"
 #include "Bnet2/Session.hpp"
 
+#ifdef __linux__
+#include <sched.h>
+#include <sys/resource.h>
+#define PROCESS_HIGH_PRIORITY -15 // [-20, 19], default is 0
+#endif
+
 #ifndef _TRINITY_REALM_CONFIG
 # define _TRINITY_REALM_CONFIG  "authserver.conf"
 #endif

@@ -7,7 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "Gorgrond.hpp"
+#include "gorgrond.hpp"
 
 #include "ScriptPCH.h"
 #include "ScriptedEscortAI.h"

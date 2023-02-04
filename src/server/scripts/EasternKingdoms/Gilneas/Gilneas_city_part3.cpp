@@ -34,7 +34,7 @@
 #include "ObjectMgr.h"
 #include "ScriptMgr.h"
 #include "SpellScript.h"
-#include "Gilneas.h"
+#include "gilneas.h"
 
 enum eBattleForGilneas
 {
