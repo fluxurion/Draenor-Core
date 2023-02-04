@@ -1840,6 +1840,10 @@ void WorldSession::HandleItemRefund(WorldPacket& p_Packet)
     if (!l_Item)
         return;
 
+    // Don't try to refund item currently being disenchanted
+    if (m_Player->GetLootGUID() == l_Guid)
+        return;
+
     m_Player->RefundItem(l_Item);
 }
 
