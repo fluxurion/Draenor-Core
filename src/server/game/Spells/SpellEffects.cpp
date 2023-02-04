@@ -6028,8 +6028,20 @@ void Spell::EffectSkinning(SpellEffIndex /*effIndex*/)
 
     uint32 skill = creature->GetCreatureTemplate()->GetRequiredLootSkill();
 
+    bool awardPoints = true;
+
+    // Check if a skinning loot table was already generated for this creature
+    if (creature->loot.loot_type == LOOT_SKINNING)
+    {
+        if (creature->GetSkinner() != m_caster->GetGUID())
+            return;
+
+        awardPoints = false; // Do not grant skill points for this loot, they were already granted the first time.
+    }
+    else
+        creature->SetSkinner(m_caster->GetGUID());
+
     m_caster->ToPlayer()->SendLoot(creature->GetGUID(), LOOT_SKINNING);
-    creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_SKINNABLE);
 
     int32 reqValue = 0;
 
@@ -6058,8 +6070,8 @@ void Spell::EffectSkinning(SpellEffIndex /*effIndex*/)
 
     int32 skillValue = m_caster->ToPlayer()->GetPureSkillValue(skill);
 
-    // Double chances for elites
-    m_caster->ToPlayer()->UpdateGatherSkill(skill, skillValue, reqValue, creature->isElite() ? 2 : 1);
+    if (awardPoints)
+        m_caster->ToPlayer()->UpdateGatherSkill(skill, skillValue, reqValue, creature->isElite() ? 2 : 1);
 }
 
 void Spell::EffectCharge(SpellEffIndex effIndex)

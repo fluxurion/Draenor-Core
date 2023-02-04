@@ -12503,8 +12503,12 @@ void Player::SendLoot(uint64 p_Guid, LootType p_LootType, bool p_FetchLoot, floa
                 /// Possible only if creature->lootForBody && loot->empty() at spell cast check
                 if (p_LootType == LOOT_SKINNING)
                 {
-                    l_LinkedLoot->clear();
-                    l_LinkedLoot->FillLoot(l_LinkedCreature->GetCreatureTemplate()->SkinLootId, LootTemplates_Skinning, this, true);
+                    if (l_LinkedCreature->lootForSkinned)
+                    {
+                        l_LinkedCreature->lootForSkinned = true;
+                        l_LinkedLoot->clear();
+                        l_LinkedLoot->FillLoot(l_LinkedCreature->GetCreatureTemplate()->SkinLootId, LootTemplates_Skinning, this, true);
+                    }
                     l_Perm = OWNER_PERMISSION;
                 }
                 /// Set group rights only for loot_type != LOOT_SKINNING
