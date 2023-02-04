@@ -416,6 +416,13 @@ void WorldSession::HandleMailTakeItem(WorldPacket& p_Packet)
         return;
     }
 
+    // verify that the mail has the item to avoid cheaters taking COD items without paying
+    if (std::find_if(l_Mail->items.begin(), l_Mail->items.end(), [l_ItemID](MailItemInfo info){ return info.item_guid == l_ItemID; }) == l_Mail->items.end())
+    {
+        m_Player->SendMailResult(l_MailID, MAIL_ITEM_TAKEN, MAIL_ERR_INTERNAL_ERROR);
+        return;
+    }
+
     // prevent cheating with skip client money check
     if (!m_Player->HasEnoughMoney(uint64(l_Mail->COD)))
     {
