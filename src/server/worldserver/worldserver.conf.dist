@@ -899,6 +899,7 @@ AllFlightPaths = 0
 #                     of making them wait while flying.
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
+#                     2 - (Enabled, but the player can toggle instant flight off or on at each flight master)
 
 InstantFlightPaths = 0
 
@@ -2709,6 +2710,14 @@ PvPToken.ItemCount = 1
 NoResetTalentsCost = 0
 
 #
+#    ToggleXP.Cost
+#        Description: Cost of locking/unlocking XP
+#        Default:     100000 - (10 Gold)
+#
+
+ToggleXP.Cost = 100000
+
+#
 #     Guild.AllowMultipleGuildMaster
 #        Description: Allow more than one guild master. Additional Guild Masters must be set using
 #                     the ".guild rank" command.
@@ -2926,7 +2935,48 @@ Logger.sql.sql=5,Console DBErrors
 #Logger.warden=3,Console Server
 #Logger.Profiling=42,5,Console Profiling
 
+#
+#    Log.Async.Enable
+#        Description: Enables asyncronous message logging.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
 
+Log.Async.Enable = 0
+
+#
+###################################################################################################
+
+###################################################################################################
+# PACKET SPOOF PROTECTION SETTINGS
+#
+# These settings determine which action to take when harmful packet spoofing is detected.
+#
+#    PacketSpoof.Policy
+#        Description: Determines the course of action when packet spoofing is detected.
+#        Default:     1 - Log + kick
+#                    0 - Log only ("network")
+#                    2 - Log + kick + ban
+
+PacketSpoof.Policy = 1
+
+#
+#    PacketSpoof.BanMode
+#        Description: If PacketSpoof.Policy equals 2, this will determine the ban mode.
+#        Note: Banning by character not supported for logical reasons.
+#        Default:    0 - Ban Account
+#                    2 - Ban IP
+#
+
+PacketSpoof.BanMode = 0
+
+#
+#    PacketSpoof.BanDuration
+#        Description: Duration of the ban in seconds. Only valid if PacketSpoof.Policy is set to 2.
+#                     Set to 0 for permanent ban.
+#        Default:     86400 seconds (1 day)
+#
+
+PacketSpoof.BanDuration = 86400
 
 #
 ###################################################################################################

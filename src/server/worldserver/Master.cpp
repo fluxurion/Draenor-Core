@@ -1,10 +1,20 @@
-////////////////////////////////////////////////////////////////////////////////
-//
-// Project-Hellscream https://hellscream.org
-// Copyright (C) 2018-2020 Project-Hellscream-6.2
-// Discord https://discord.gg/CWCF3C9
-//
-////////////////////////////////////////////////////////////////////////////////
+/*
+* Copyright (C) 2008-2020 TrinityCore <http://www.trinitycore.org/>
+* Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
+*
+* This program is free software; you can redistribute it and/or modify it
+* under the terms of the GNU General Public License as published by the
+* Free Software Foundation; either version 2 of the License, or (at your
+* option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+* more details.
+*
+* You should have received a copy of the GNU General Public License along
+* with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #include <ace/Sig_Handler.h>
 
@@ -90,30 +100,28 @@ class WorldServerSignalHandler : public Trinity::SignalHandler
 
 class FreezeDetectorRunnable : public ACE_Based::Runnable
 {
+private:
+    uint32 _loops;
+    uint32 _lastChange;
+    uint32 _delaytime;
+    bool _canstop;
 public:
     FreezeDetectorRunnable()
     {
-        m_Delaytime = 0;
-        m_CanStop = false;
+        _delaytime = 0;
+        _canstop = false;
     }
 
-    uint32 m_loops, m_lastchange;
-    uint32 m_Delaytime;
+    void SetDelayTime(uint32 t) { _delaytime = t; }
 
-    bool m_CanStop;
-
-    void SetDelayTime(uint32 t) { m_Delaytime = t; }
-    void SetCanStop() { m_CanStop = true; }
-
-    void run(void)
+    void run() override
     {
-        if (!m_Delaytime)
+        if (!_delaytime)
             return;
 
-        TC_LOG_INFO("server.worldserver", "Starting up anti-freeze thread (%u seconds max stuck time)...", m_Delaytime / 1000);
-
-        m_loops = 0;
-        m_lastchange = 0;
+        TC_LOG_INFO("server.worldserver", "Starting up anti-freeze thread (%u seconds max stuck time)...", _delaytime/1000);
+        _loops = 0;
+        _lastChange = 0;
 
         /// Protect against freeze in world loop
         while (!World::IsStopped())
@@ -122,24 +130,23 @@ public:
             uint32 curtime = getMSTime();
             // normal work
             uint32 worldLoopCounter = World::m_worldLoopCounter;
-            if (m_loops != worldLoopCounter)
+            if (_loops != worldLoopCounter)
             {
-                m_lastchange = curtime;
-                m_loops = worldLoopCounter;
+                _lastChange = curtime;
+                _loops = worldLoopCounter;
             }
             // possible freeze
-            else if (getMSTimeDiff(m_lastchange, curtime) > m_Delaytime)
+            else if (getMSTimeDiff(_lastChange, curtime) > _delaytime)
             {
                 TC_LOG_ERROR("server.worldserver", "World Thread hangs, kicking out server!");
                 assert(false);
-                abort();
             }
         }
 
         /// Protect against freeze on shutdown
         uint32 l_WorldStopTime = time(nullptr);
 
-        while (!m_CanStop)
+        while (!_canstop)
         {
             ACE_Based::Thread::Sleep(1000);
 
@@ -413,19 +420,21 @@ const char* dumpTables[32] =
 int Master::Run()
 {
     OpenSSLCrypto::threadsSetup();
-    init_sfmt();
     BigNumber seed1;
     seed1.SetRand(16 * 8);
 
     TC_LOG_INFO("server.worldserver", "%s (worldserver-daemon)", GitRevision::GetFullVersion());
     TC_LOG_INFO("server.worldserver", "<Ctrl-C> to stop.\n");
-    TC_LOG_INFO("server.worldserver", "               _                      _____                      ");
-    TC_LOG_INFO("server.worldserver", "     /\\       | |                    / ____|                    ");
-    TC_LOG_INFO("server.worldserver", "    /  \\   ___| |__  _ __ __ _ _ __ | |     ___  _ __ ___       ");
-    TC_LOG_INFO("server.worldserver", "   / /\\ \\ / __| '_ \\| '__/ _` | '_ \\| |    / _ \\| '__/ _ \\ ");
-    TC_LOG_INFO("server.worldserver", "  / ____ \\\\__ | | | | | | (_| | | | | |___| (_) | | |  __/     ");
-    TC_LOG_INFO("server.worldserver", " /_/    \\_|___|_| |_|_|  \\__,_|_| |_|\\_____\\___/|_|  \\___|  ");
-    TC_LOG_INFO("server.worldserver", " MILLENIUM STUDIO SARL\n");
+    TC_LOG_INFO("server.worldserver", "################################################### ");
+    TC_LOG_INFO("server.worldserver", " ______                       __");
+    TC_LOG_INFO("server.worldserver", "/\\__  _\\       __          __/\\ \\__");
+    TC_LOG_INFO("server.worldserver", "\\/_/\\ \\/ _ __ /\\_\\    ___ /\\_\\ \\, _\\  __  __");
+    TC_LOG_INFO("server.worldserver", "   \\ \\ \\/\\`'__\\/\\ \\ /' _ `\\/\\ \\ \\ \\/ /\\ \\/\\ \\");
+    TC_LOG_INFO("server.worldserver", "    \\ \\ \\ \\ \\/ \\ \\ \\/\\ \\/\\ \\ \\ \\ \\ \\_\\ \\ \\_\\ \\");
+    TC_LOG_INFO("server.worldserver", "     \\ \\_\\ \\_\\  \\ \\_\\ \\_\\ \\_\\ \\_\\ \\__\\\\/`____ \\");
+    TC_LOG_INFO("server.worldserver", "      \\/_/\\/_/   \\/_/\\/_/\\/_/\\/_/\\/__/ `/___/> \\");
+    TC_LOG_INFO("server.worldserver", "                                 C O R E  /\\___/");
+    TC_LOG_INFO("server.worldserver", "http://TrinityCore.org                    \\/__/\n");
 
     /// worldserver PID file creation
     std::string pidFile = sConfigMgr->GetStringDefault("PidFile", "");
@@ -497,7 +506,6 @@ int Master::Run()
     {
         HANDLE hProcess = GetCurrentProcess();
 
-        uint32 affinity = sConfigMgr->GetIntDefault("UseProcessors", 0);
         if (affinity > 0)
         {
             ULONG_PTR appAff;
@@ -516,9 +524,6 @@ int Master::Run()
             }
         }
 
-        if (bool priority = sConfigMgr->GetBoolDefault("ProcessPriority", false))
-
-        //if (Prio && (m_ServiceStatus == -1)  /* need set to default process priority class in service mode*/)
         if (highPriority)
         {
             if (SetPriorityClass(hProcess, HIGH_PRIORITY_CLASS))
@@ -568,8 +573,7 @@ int Master::Run()
         soapThread = new ACE_Based::Thread(runnable, "SoapRunnable");
     }
 
-    FreezeDetectorRunnable* fdr = nullptr;
-
+    ///- Start up freeze catcher thread
     if (uint32 freezeDelay = sConfigMgr->GetIntDefault("MaxCoreStuckTime", 0))
     {
         fdr = new FreezeDetectorRunnable();
@@ -595,7 +599,7 @@ int Master::Run()
 #ifndef CROSS
         TC_LOG_ERROR("server.worldserver", "Failed to start network");
 #else /* CROSS */
-        TC_LOG_ERROR("server.interrealm", "Failed to start network");
+        TC_LOG_ERROR("interrealm", "Failed to start network");
 #endif /* CROSS */
         World::StopNow(ERROR_EXIT_CODE);
         // go down and shutdown the server
@@ -690,7 +694,6 @@ int Master::Run()
     //UnloadScriptingModule();
 
     OpenSSLCrypto::threadsCleanup();
-
     // Exit the process with specified return value
     return World::GetExitCode();
 }

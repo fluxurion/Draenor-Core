@@ -186,8 +186,7 @@ extern int main(int argc, char** argv)
     RegisterBNet2Components();
     RegisterBNet2WoWModules();
 	
-    sLog->SetRealmId(0);                                               // ensure we've set realm to 0 (authserver realmid)
-
+    
     // Get the list of realms for the server
     sRealmList->Initialize(sConfigMgr->GetIntDefault("RealmsStateUpdateDelay", 20));
     if (sRealmList->size() == 0)
@@ -236,7 +235,6 @@ extern int main(int argc, char** argv)
     {
         HANDLE hProcess = GetCurrentProcess();
 
-        uint32 affinity = sConfigMgr->GetIntDefault("UseProcessors", 0);
         if (affinity > 0)
         {
             ULONG_PTR appAff;
@@ -255,8 +253,6 @@ extern int main(int argc, char** argv)
             }
 
         }
-
-        bool Prio = sConfigMgr->GetBoolDefault("ProcessPriority", false);
 
         if (highPriority)
         {
