@@ -574,6 +574,8 @@ int Master::Run()
     }
 
     ///- Start up freeze catcher thread
+
+    FreezeDetectorRunnable* fdr = nullptr;
     if (uint32 freezeDelay = sConfigMgr->GetIntDefault("MaxCoreStuckTime", 0))
     {
         FreezeDetectorRunnable* fdr = nullptr;
