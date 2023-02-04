@@ -88,7 +88,7 @@ void WorldSession::HandleLootItemOpcode(WorldPacket & p_RecvData)
         {
             Creature* l_Creature = GetPlayer()->GetMap()->GetCreature(l_LootGuid);
 
-            bool l_IsLootAllowed = l_Creature && l_Creature->isAlive() == (m_Player->getClass() == CLASS_ROGUE && l_Creature->lootForPickPocketed);
+            bool l_IsLootAllowed = l_Creature && l_Creature->isAlive() == (m_Player->getClass() == CLASS_ROGUE && l_Creature->loot.loot_type == LOOT_PICKPOCKETING);
 
             /// Check for Glyph of Fetch too
             if (!l_IsLootAllowed || (!l_Creature->IsWithinDistInMap(m_Player, 40.0f) && !m_Player->HasSpell(125050)))
@@ -171,7 +171,7 @@ void WorldSession::HandleLootMoneyOpcode(WorldPacket& /*recvData*/)
         case HIGHGUID_VEHICLE:
         {
             Creature* creature = player->GetMap()->GetCreature(guid);
-            bool lootAllowed = creature && creature->isAlive() == (player->getClass() == CLASS_ROGUE && creature->lootForPickPocketed);
+            bool lootAllowed = creature && creature->isAlive() == (player->getClass() == CLASS_ROGUE && creature->loot.loot_type == LOOT_PICKPOCKETING);
 
             /// Check for Glyph of Fetch too
             if (lootAllowed && (creature->IsWithinDistInMap(player, INTERACTION_DISTANCE) || m_Player->HasSpell(125050)))
@@ -451,7 +451,7 @@ void WorldSession::DoLootRelease(uint64 lguid)
     {
         Creature* creature = GetPlayer()->GetMap()->GetCreature(lguid);
 
-        bool lootAllowed = creature && creature->isAlive() == (player->getClass() == CLASS_ROGUE && creature->lootForPickPocketed);
+        bool lootAllowed = creature && creature->isAlive() == (player->getClass() == CLASS_ROGUE && creature->loot.loot_type == LOOT_PICKPOCKETING);
 
         /// Check for Glyph of Fetch too
         if (!lootAllowed || (!creature->IsWithinDistInMap(m_Player, INTERACTION_DISTANCE) && !m_Player->HasSpell(125050)))
@@ -461,9 +461,6 @@ void WorldSession::DoLootRelease(uint64 lguid)
         if (loot->isLooted())
         {
             creature->RemoveFlag(OBJECT_FIELD_DYNAMIC_FLAGS, UNIT_DYNFLAG_LOOTABLE);
-
-            if (loot->loot_type == LOOT_SKINNING)
-                creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_SKINNABLE);
 
             // skip pickpocketing loot for speed, skinning timer reduction is no-op in fact
             if (!creature->isAlive())

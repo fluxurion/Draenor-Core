@@ -135,8 +135,8 @@ bool ForcedDespawnDelayEvent::Execute(uint64 /*e_time*/, uint32 /*p_time*/)
 }
 
 Creature::Creature(bool isWorldObject) : Unit(isWorldObject), MapObject(),
-lootForPickPocketed(false), lootForBody(false), lootForSkinned(false), _skinner(0), m_groupLootTimer(0), lootingGroupLowGUID(0),
-m_PlayerDamageReq(0), m_lootRecipient(0), m_lootRecipientGroup(0), m_corpseRemoveTime(0), m_respawnTime(0),
+_pickpocketLootRestore(0), m_groupLootTimer(0), lootingGroupLowGUID(0), m_PlayerDamageReq(0),
+m_lootRecipient(0), m_lootRecipientGroup(0), _skinner(0), m_corpseRemoveTime(0), m_respawnTime(0),
 m_respawnDelay(300), m_corpseDelay(60), m_respawnradius(0.0f), m_reactState(REACT_AGGRESSIVE),
 m_defaultMovementType(IDLE_MOTION_TYPE), m_DBTableGuid(0), m_equipmentId(0), m_OriginalEquipmentId(0), m_AlreadyCallAssistance(false),
 m_AlreadySearchedAssistance(false), m_regenHealth(true), m_AI_locked(false), m_meleeDamageSchoolMask(SPELL_SCHOOL_MASK_NORMAL),
@@ -660,6 +660,16 @@ void Creature::Update(uint32 diff)
 
             /// - Handle regen timers
             {
+
+                time_t now = time(NULL);
+
+                // Check if we should refill the pickpocketing loot
+                if (loot.loot_type == LOOT_PICKPOCKETING && _pickpocketLootRestore && _pickpocketLootRestore <= now)
+                {
+                    loot.clear();
+                    _pickpocketLootRestore = 0;
+                }
+
                 if (m_RegenPowerTimer > 0)
                 {
                     if (diff >= m_RegenPowerTimer)
@@ -1913,11 +1923,6 @@ void Creature::setDeathState(DeathState s)
 
         setActive(false);
 
-        if (!isPet() && GetCreatureTemplate()->SkinLootId)
-            if (LootTemplates_Skinning.HaveLootFor(GetCreatureTemplate()->SkinLootId))
-                if (hasLootRecipient())
-                    SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_SKINNABLE);
-
         if (HasSearchedAssistance())
         {
             SetNoSearchAssistance(false);
@@ -1994,8 +1999,8 @@ void Creature::DoRespawn()
 
         TC_LOG_DEBUG("entities.unit", "Respawning creature %s (GuidLow: %u, Full GUID: " UI64FMTD " Entry: %u)", GetName(), GetGUIDLow(), GetGUID(), GetEntry());
         m_respawnTime = 0;
-        lootForPickPocketed = false;
-        lootForBody = false;
+        _pickpocketLootRestore = 0;
+        loot.clear();
 
         if (m_originalEntry != GetEntry())
             UpdateEntry(m_originalEntry);
@@ -2847,26 +2852,22 @@ void Creature::GetRespawnPosition(float &x, float &y, float &z, float* ori, floa
 
 void Creature::AllLootRemovedFromCorpse()
 {
-    if (!HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_SKINNABLE))
-    {
+    if (loot.loot_type != LOOT_SKINNING && !isPet() && GetCreatureTemplate()->SkinLootId && hasLootRecipient())
+        if (LootTemplates_Skinning.HaveLootFor(GetCreatureTemplate()->SkinLootId))
+            SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_SKINNABLE);
+
         time_t now = time(NULL);
         if (m_corpseRemoveTime <= now)
             return;
 
-        float decayRate;
-        CreatureTemplate const* cinfo = GetCreatureTemplate();
-
-        decayRate = sWorld->getRate(RATE_CORPSE_DECAY_LOOTED);
-        uint32 diff = uint32((m_corpseRemoveTime - now) * decayRate);
-
-        m_respawnTime -= diff;
-
+        float decayRate = sWorld->getRate(RATE_CORPSE_DECAY_LOOTED);
         // corpse skinnable, but without skinning flag, and then skinned, corpse will despawn next update
-        if (cinfo && cinfo->SkinLootId)
+        if (loot.loot_type == LOOT_SKINNING)
             m_corpseRemoveTime = time(NULL);
         else
-            m_corpseRemoveTime -= diff;
-    }
+            m_corpseRemoveTime = now + m_corpseDelay * decayRate;
+
+        m_respawnTime = m_corpseRemoveTime + m_respawnTime;
 }
 
 uint8 Creature::getLevelForTarget(WorldObject const* target) const
@@ -3155,4 +3156,9 @@ void Creature::DumpGroup()
     l_GroupDump.Dump = l_Dump.str();
 
     AddGroupDump(l_GroupDump);
+}
+
+void Creature::StartPickPocketRefillTimer()
+{
+    _pickpocketLootRestore = time(NULL) + sWorld->getIntConfig(CONFIG_CREATURE_PICKPOCKET_REFILL);
 }

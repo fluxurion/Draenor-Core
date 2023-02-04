@@ -18778,8 +18778,8 @@ void Unit::Kill(Unit* p_KilledVictim, bool p_DurabilityLoss, SpellInfo const* p_
         {
             Loot* l_Loot = &l_KilledCreature->loot;
 
-            if (l_KilledCreature->lootForPickPocketed)
-                l_KilledCreature->lootForPickPocketed = false;
+            if (l_KilledCreature->loot.loot_type == LOOT_PICKPOCKETING)
+                l_KilledCreature->ResetPickPocketRefillTimer();
 
             l_Loot->clear();
 
@@ -18986,9 +18986,11 @@ void Unit::Kill(Unit* p_KilledVictim, bool p_DurabilityLoss, SpellInfo const* p_
         {
             l_KilledCreature->DeleteThreatList();
 
-            CreatureTemplate const* l_CreatureTemplate = l_KilledCreature->GetCreatureTemplate();
-            if (l_CreatureTemplate && (l_CreatureTemplate->lootid || l_CreatureTemplate->maxgold > 0))
+                // must be after setDeathState which resets dynamic flags
+            if (!l_KilledCreature->loot.empty())
                 l_KilledCreature->SetFlag(OBJECT_FIELD_DYNAMIC_FLAGS, UNIT_DYNFLAG_LOOTABLE);
+            else
+                    l_KilledCreature->AllLootRemovedFromCorpse();
         }
 
         /// Call KilledUnit for creatures, this needs to be called after the lootable flag is set

@@ -1164,6 +1164,8 @@ void World::LoadConfigSettings(bool reload)
     // Loyalty configs
     m_bool_configs[CONFIG_LOYALTY_EVENTS_ENABLE] = sConfigMgr->GetBoolDefault("Loyalty.EnableLoyaltyEvents", false);
 
+    m_int_configs[CONFIG_CREATURE_PICKPOCKET_REFILL] = sConfigMgr->GetIntDefault("Creature.PickPocketRefillDelay", 10 * MINUTE);
+
     if (int32 clientCacheId = sConfigMgr->GetIntDefault("ClientCacheVersion", 0))
     {
         // overwrite DB/old value

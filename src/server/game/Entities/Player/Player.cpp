@@ -12424,9 +12424,9 @@ void Player::SendLoot(uint64 p_Guid, LootType p_LootType, bool p_FetchLoot, floa
 
         if (p_LootType == LOOT_PICKPOCKETING)
         {
-            if (!l_Creature->lootForPickPocketed)
+            if (l_Loot->loot_type != LOOT_PICKPOCKETING)
             {
-                l_Creature->lootForPickPocketed = true;
+                l_Creature->StartPickPocketRefillTimer();
                 l_Loot->clear();
 
                 if (uint32 l_LootID = l_Creature->GetCreatureTemplate()->pickpocketLootId)
@@ -12472,10 +12472,8 @@ void Player::SendLoot(uint64 p_Guid, LootType p_LootType, bool p_FetchLoot, floa
                 }
 
                 Loot* l_LinkedLoot = &l_LinkedCreature->loot;
-                if (!l_LinkedCreature->lootForBody)
+                if (l_Loot->loot_type == LOOT_NONE)
                 {
-                    l_LinkedCreature->lootForBody = true;
-
                     /// For creature, loot is filled when creature is killed.
                     if (Group* l_Group = l_Recipient->GetGroup())
                     {
@@ -12500,15 +12498,17 @@ void Player::SendLoot(uint64 p_Guid, LootType p_LootType, bool p_FetchLoot, floa
                 PermissionTypes l_Perm = NONE_PERMISSION;
 
                 /// TODO: handle this case with new radius loot system
-                /// Possible only if creature->lootForBody && loot->empty() at spell cast check
-                if (p_LootType == LOOT_SKINNING)
+                // if loot is already skinning loot then don't do anything else
+                if (l_Loot->loot_type == LOOT_SKINNING)
                 {
-                    if (l_LinkedCreature->lootForSkinned)
-                    {
-                        l_LinkedCreature->lootForSkinned = true;
-                        l_LinkedLoot->clear();
-                        l_LinkedLoot->FillLoot(l_LinkedCreature->GetCreatureTemplate()->SkinLootId, LootTemplates_Skinning, this, true);
-                    }
+                    p_LootType = LOOT_SKINNING;
+                    l_Perm = l_Creature->GetSkinner() == GetGUID() ? OWNER_PERMISSION : NONE_PERMISSION;
+                }
+                else if (p_LootType == LOOT_SKINNING)
+                {
+                    l_Loot->clear();
+                    l_Loot->FillLoot(l_Creature->GetCreatureTemplate()->SkinLootId, LootTemplates_Skinning, this, true);
+                    l_Creature->SetSkinner(GetGUID());
                     l_Perm = OWNER_PERMISSION;
                 }
                 /// Set group rights only for loot_type != LOOT_SKINNING
@@ -22394,6 +22394,9 @@ bool Player::isAllowedToLoot(const Creature* creature)
     const Loot* loot = &creature->loot;
     if (loot->isLooted()) // nothing to loot or everything looted.
         return false;
+
+    if (loot->loot_type == LOOT_SKINNING)
+        return creature->GetSkinner() == GetGUID();
 
     if (loot->AllowedPlayers.IsEnabled())
     {
