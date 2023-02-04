@@ -1,3 +1,22 @@
+/*
+* Copyright (C) 2008-2020 TrinityCore <http://www.trinitycore.org/>
+* Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
+* Copyright (C) 2023 MagicStorm
+*
+* This program is free software; you can redistribute it and/or modify it
+* under the terms of the GNU General Public License as published by the
+* Free Software Foundation; either version 2 of the License, or (at your
+* option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+* more details.
+*
+* You should have received a copy of the GNU General Public License along
+* with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "Log.h"
 #include "Common.h"
 #include "Config.h"
@@ -9,17 +28,23 @@
 
 #include <cstdarg>
 #include <cstdio>
-#include <sstream>
+#include <future>
 
 Log::Log() : worker(NULL)
 {
     m_logsTimestamp = "_" + GetTimestampStr();
     LoadFromConfig();
+
+    std::string ashranLogPath = m_logsDir + "ashran.log";
+    ashranLog = fopen(ashranLogPath.c_str(), "a");
 }
 
 Log::~Log()
 {
     Close();
+
+    fclose(ashranLog);
+    ashranLog = NULL;
 }
 
 uint8 Log::NextAppenderId()
@@ -53,7 +78,7 @@ void Log::CreateAppenderFromConfig(std::string const& appenderName)
     if (appenderName.empty())
         return;
 
-    // Format=type, level, flags, optional1, optional2
+    // Format=type,level,flags,optional1,optional2
     // if type = File. optional1 = file and option2 = mode
     // if type = Console. optional1 = Color
     std::string options = sConfigMgr->GetStringDefault(appenderName.c_str(), "");
@@ -74,9 +99,9 @@ void Log::CreateAppenderFromConfig(std::string const& appenderName)
     AppenderType type = AppenderType(atoi(*iter++));
     LogLevel level = LogLevel(atoi(*iter++));
 
-    if (level > LogLevel::LOG_LEVEL_FATAL)
+    if (level > LOG_LEVEL_FATAL)
     {
-        fprintf(stderr, "Log::CreateAppenderFromConfig: Wrong Log Level %d for appender %s\n", static_cast<int>(level), name.c_str());
+        fprintf(stderr, "Log::CreateAppenderFromConfig: Wrong Log Level %u for appender %s\n", level, name.c_str());
         return;
     }
 
@@ -85,58 +110,58 @@ void Log::CreateAppenderFromConfig(std::string const& appenderName)
 
     switch (type)
     {
-    case AppenderType::APPENDER_CONSOLE:
-    {
-        AppenderConsole* appender = new AppenderConsole(NextAppenderId(), name, level, flags);
-        appenders[appender->getId()] = appender;
-        if (size > 3)
-            appender->InitColors(*iter++);
-        //fprintf(stdout, "Log::CreateAppenderFromConfig: Created Appender %s (%u), Type CONSOLE, Mask %u\n", appender->getName().c_str(), appender->getId(), appender->getLogLevel());
-        break;
-    }
-    case AppenderType::APPENDER_FILE:
-    {
-        std::string filename;
-        std::string mode = "a";
-
-        if (size < 4)
+        case APPENDER_CONSOLE:
         {
-            fprintf(stderr, "Log::CreateAppenderFromConfig: Missing file name for appender %s\n", name.c_str());
-            return;
+            AppenderConsole* appender = new AppenderConsole(NextAppenderId(), name, level, flags);
+            appenders[appender->getId()] = appender;
+            if (size > 3)
+                appender->InitColors(*iter++);
+            //fprintf(stdout, "Log::CreateAppenderFromConfig: Created Appender %s (%u), Type CONSOLE, Mask %u\n", appender->getName().c_str(), appender->getId(), appender->getLogLevel());
+            break;
         }
-
-        filename = *iter++;
-
-        if (size > 4)
-            mode = *iter++;
-
-        if (flags & APPENDER_FLAGS_USE_TIMESTAMP)
+        case APPENDER_FILE:
         {
-            size_t dot_pos = filename.find_last_of(".");
-            if (dot_pos != filename.npos)
-                filename.insert(dot_pos, m_logsTimestamp);
-            else
-                filename += m_logsTimestamp;
+            std::string filename;
+            std::string mode = "a";
+
+            if (size < 4)
+            {
+                fprintf(stderr, "Log::CreateAppenderFromConfig: Missing file name for appender %s\n", name.c_str());
+                return;
+            }
+
+            filename = *iter++;
+
+            if (size > 4)
+                mode = *iter++;
+
+            if (flags & APPENDER_FLAGS_USE_TIMESTAMP)
+            {
+                size_t dot_pos = filename.find_last_of(".");
+                if (dot_pos != filename.npos)
+                    filename.insert(dot_pos, m_logsTimestamp);
+                else
+                    filename += m_logsTimestamp;
+            }
+
+            uint64 maxFileSize = 0;
+            if (size > 5)
+                maxFileSize = atoi(*iter++);
+
+            uint8 id = NextAppenderId();
+            appenders[id] = new AppenderFile(id, name, level, filename.c_str(), m_logsDir.c_str(), mode.c_str(), flags, maxFileSize);
+            //fprintf(stdout, "Log::CreateAppenderFromConfig: Created Appender %s (%u), Type FILE, Mask %u, File %s, Mode %s\n", name, id, level, filename.c_str(), mode.c_str());
+            break;
         }
-
-        uint64 maxFileSize = 0;
-        if (size > 5)
-            maxFileSize = atoi(*iter++);
-
-        uint8 id = NextAppenderId();
-        appenders[id] = new AppenderFile(id, name, level, filename.c_str(), m_logsDir.c_str(), mode.c_str(), flags, maxFileSize);
-        //fprintf(stdout, "Log::CreateAppenderFromConfig: Created Appender %s (%u), Type FILE, Mask %u, File %s, Mode %s\n", name.c_str(), id, level, filename.c_str(), mode.c_str());
-        break;
-    }
-    case AppenderType::APPENDER_DB:
-    {
-        uint8 id = NextAppenderId();
-        appenders[id] = new AppenderDB(id, name, level);
-        break;
-    }
-    default:
-        fprintf(stderr, "Log::CreateAppenderFromConfig: Unknown type %d for appender %s\n", static_cast<int>(type), name.c_str());
-        break;
+        case APPENDER_DB:
+        {
+            uint8 id = NextAppenderId();
+            appenders[id] = new AppenderDB(id, name, level);
+            break;
+        }
+        default:
+            fprintf(stderr, "Log::CreateAppenderFromConfig: Unknown type %u for appender %s\n", type, name.c_str());
+            break;
     }
 }
 
@@ -145,7 +170,7 @@ void Log::CreateLoggerFromConfig(std::string const& appenderName)
     if (appenderName.empty())
         return;
 
-    LogLevel level = LogLevel::LOG_LEVEL_DISABLED;
+    LogLevel level = LOG_LEVEL_DISABLED;
     uint8 type = uint8(-1);
 
     std::string options = sConfigMgr->GetStringDefault(appenderName.c_str(), "");
@@ -174,11 +199,19 @@ void Log::CreateLoggerFromConfig(std::string const& appenderName)
     }
 
     level = LogLevel(atoi(*iter++));
-    if (level > LogLevel::LOG_LEVEL_FATAL)
+    if (level > LOG_LEVEL_FATAL)
     {
         fprintf(stderr, "Log::CreateLoggerFromConfig: Wrong Log Level %u for logger %s\n", type, name.c_str());
         return;
     }
+
+    /*
+    m_LogLevelTypeByFilterCache[type] = level;
+    m_LogTypePresentCache[type] = 1;
+    */
+
+    //if (level < lowestLogLevel)
+    //    lowestLogLevel = level;
 
     logger.Create(name, level);
     //fprintf(stdout, "Log::CreateLoggerFromConfig: Created Logger %s, Level %u\n", name.c_str(), level);
@@ -221,6 +254,12 @@ void Log::ReadLoggersFromConfig()
         keys.pop_front();
     }
 
+    /*LoggerMap::const_iterator it = loggers.begin();
+
+    while (it != loggers.end() && it->first)
+      ++it;
+    */
+
     // Bad config configuration, creating default config
     if (loggers.find(LOGGER_ROOT) == loggers.end())
     {
@@ -229,15 +268,15 @@ void Log::ReadLoggersFromConfig()
 
         Close(); // Clean any Logger or Appender created
 
-        AppenderConsole* appender = new AppenderConsole(NextAppenderId(), "Console", LogLevel::LOG_LEVEL_DEBUG, APPENDER_FLAGS_NONE);
+        AppenderConsole* appender = new AppenderConsole(NextAppenderId(), "Console", LOG_LEVEL_DEBUG, APPENDER_FLAGS_NONE);
         appenders[appender->getId()] = appender;
 
         Logger& logger = loggers[LOGGER_ROOT];
-        logger.Create(LOGGER_ROOT, LogLevel::LOG_LEVEL_ERROR);
+        logger.Create(LOGGER_ROOT, LOG_LEVEL_ERROR);
         logger.addAppender(appender->getId(), appender);
 
         logger = loggers["server"];
-        logger.Create("server", LogLevel::LOG_LEVEL_ERROR);
+        logger.Create("server", LOG_LEVEL_ERROR);
         logger.addAppender(appender->getId(), appender);
     }
 }
@@ -269,15 +308,21 @@ std::string Log::GetTimestampStr()
 
     std::tm aTm;
     localtime_r(&tt, &aTm);
+    //       YYYY   year
+    //       MM     month (2 digits 01-12)
+    //       DD     day (2 digits 01-31)
+    //       HH     hour (2 digits 00-23)
+    //       MM     minutes (2 digits 00-59)
+    //       SS     seconds (2 digits 00-59)
     char buf[20];
-    snprintf(buf, sizeof(buf), "%u-%u-%u_%u-%u-%u", uint32(aTm.tm_year + 1900), uint32(aTm.tm_mon + 1), uint32(aTm.tm_mday), uint32(aTm.tm_hour), uint32(aTm.tm_min), uint32(aTm.tm_sec));
+    snprintf(buf, 20, "%04d-%02d-%02d_%02d-%02d-%02d", aTm.tm_year + 1900, aTm.tm_mon + 1, aTm.tm_mday, aTm.tm_hour, aTm.tm_min, aTm.tm_sec);
     return std::string(buf);
 }
 
 bool Log::SetLogLevel(std::string const& name, const char* newLevelc, bool isLogger /* = true */)
 {
     LogLevel newLevel = LogLevel(atoi(newLevelc));
-    if (newLevel < LogLevel::LOG_LEVEL_DISABLED)
+    if (newLevel < 0)
         return false;
 
     if (isLogger)
@@ -290,6 +335,7 @@ bool Log::SetLogLevel(std::string const& name, const char* newLevelc, bool isLog
             return false;
 
         it->second.setLogLevel(newLevel);
+        //m_LogLevelTypeByFilterCache[it->second.getType()] = newLevel;
     }
     else
     {
@@ -299,52 +345,55 @@ bool Log::SetLogLevel(std::string const& name, const char* newLevelc, bool isLog
 
         appender->setLogLevel(newLevel);
     }
-
     return true;
 }
-
 void Log::outCharDump(char const* str, uint32 accountId, uint32 guid, char const* name)
 {
-    if (!str || !ShouldLog("entities.player.dump", LogLevel::LOG_LEVEL_INFO))
+    if (!str || !ShouldLog("entities.player.dump", LOG_LEVEL_INFO))
         return;
-
     std::ostringstream ss;
     ss << "== START DUMP == (account: " << accountId << " guid: " << guid << " name: " << name
         << ")\n" << str << "\n== END DUMP ==\n";
-
-    LogMessage* msg = new LogMessage(LogLevel::LOG_LEVEL_INFO, "entities.player.dump", ss.str());
+    LogMessage* msg = new LogMessage(LOG_LEVEL_INFO, "entities.player.dump", ss.str());
     std::ostringstream param;
     param << guid << '_' << name;
-
     msg->param1 = param.str();
-
     write(msg);
 }
 
-void Log::outCommand(uint32 account, const char* str, ...)
+void Log::outCommand(uint32 gm_account_id  , std::string gm_account_name,
+                     uint32 gm_character_id, std::string gm_character_name,
+                     uint32 sc_account_id  , std::string sc_account_name,
+                     uint32 sc_character_id, std::string sc_character_name,
+                     const char * str, ...)
 {
-    if (!str || !ShouldLog("commands.gm", LogLevel::LOG_LEVEL_INFO))
+    if (!str)
         return;
+
+    GmCommand * new_command = new GmCommand;
+    new_command->accountID[0]       = gm_account_id;
+    new_command->accountID[1]       = sc_account_id;
+    new_command->accountName[0]     = gm_account_name;
+    new_command->accountName[1]     = sc_account_name;
+    new_command->characterID[0]     = gm_character_id;
+    new_command->characterID[1]     = sc_character_id;
+    new_command->characterName[0]   = gm_character_name;
+    new_command->characterName[1]   = sc_character_name;
 
     va_list ap;
     va_start(ap, str);
-    char text[MAX_QUERY_LEN];
-    vsnprintf(text, MAX_QUERY_LEN, str, ap);
+    char buffer[1024]; //buffer.
+    vsprintf(buffer, str, ap);
     va_end(ap);
+    new_command->command = buffer;
 
-    LogMessage* msg = new LogMessage(LogLevel::LOG_LEVEL_INFO, "commands.gm", text);
-
-    std::ostringstream ss;
-    ss << account;
-    msg->param1 = ss.str();
-
-    write(msg);
+    GmLogQueue.add(new_command);
 }
 
 void Log::SetRealmId(uint32 id)
 {
     for (AppenderMap::iterator it = appenders.begin(); it != appenders.end(); ++it)
-        if (it->second && it->second->getType() == AppenderType::APPENDER_DB)
+        if (it->second && it->second->getType() == APPENDER_DB)
             ((AppenderDB*)it->second)->setRealmId(id);
 }
 
@@ -365,40 +414,81 @@ void Log::LoadFromConfig()
 {
     Close();
 
-    if (sConfigMgr->GetBoolDefault("Log.Async.Enable", false))
-        worker = new LogWorker();
-
+    lowestLogLevel = LOG_LEVEL_FATAL;
     AppenderId = 0;
+    worker = new LogWorker();
     m_logsDir = sConfigMgr->GetStringDefault("LogsDir", "");
     if (!m_logsDir.empty())
         if ((m_logsDir.at(m_logsDir.length() - 1) != '/') && (m_logsDir.at(m_logsDir.length() - 1) != '\\'))
             m_logsDir.push_back('/');
-
     ReadAppendersFromConfig();
     ReadLoggersFromConfig();
+
+    /// Init slack
+    m_SlackEnable  = sConfigMgr->GetBoolDefault("Slack.Enable", false);
+    m_SlackApiUrl  = sConfigMgr->GetStringDefault("Slack.ApiUrl", "");
+    m_SlackAppName = sConfigMgr->GetStringDefault("Slack.AppName", "Firestorm - WoD");
 }
 
-void Log::outGmChat(uint32 message_type,
-    uint32 from_account_id, std::string from_account_name,
-    uint32 from_character_id, std::string from_character_name,
-    uint32 to_account_id, std::string to_account_name,
-    uint32 to_character_id, std::string to_character_name,
-    const char* str)
+void Log::outGmChat( uint32 message_type,
+                     uint32 from_account_id  , std::string from_account_name,
+                     uint32 from_character_id, std::string from_character_name,
+                     uint32 to_account_id  , std::string to_account_name,
+                     uint32 to_character_id, std::string to_character_name,
+                     const char * str)
 {
     if (!str)
         return;
 
-    GmChat* new_message = new GmChat;
-    new_message->type = message_type;
-    new_message->accountID[0] = from_account_id;
-    new_message->accountID[1] = to_account_id;
-    new_message->accountName[0] = from_account_name;
-    new_message->accountName[1] = to_account_name;
-    new_message->characterID[0] = from_character_id;
-    new_message->characterID[1] = to_character_id;
-    new_message->characterName[0] = from_character_name;
-    new_message->characterName[1] = to_character_name;
-    new_message->message = str;
+    GmChat * new_message = new GmChat;
+    new_message->type               = message_type;
+    new_message->accountID[0]       = from_account_id;
+    new_message->accountID[1]       = to_account_id;
+    new_message->accountName[0]     = from_account_name;
+    new_message->accountName[1]     = to_account_name;
+    new_message->characterID[0]     = from_character_id;
+    new_message->characterID[1]     = to_character_id;
+    new_message->characterName[0]   = from_character_name;
+    new_message->characterName[1]   = to_character_name;
+    new_message->message            = str;
 
     GmChatLogQueue.add(new_message);
+}
+
+void Log::outArena(const char * str, ...)
+{
+    if (!str)
+        return;
+
+    char result[MAX_QUERY_LEN];
+    va_list ap;
+
+    va_start(ap, str);
+    vsnprintf(result, MAX_QUERY_LEN, str, ap);
+    va_end(ap);
+
+    std::string query = result;
+
+    ArenaLog * log = new ArenaLog;
+    log->timestamp = time(NULL);
+    log->str = query;
+
+    ArenaLogQueue.add(log);
+}
+
+void Log::outAshran(const char* str, ...)
+{
+    if (!str)
+        return;
+
+    char result[MAX_QUERY_LEN];
+    va_list ap;
+
+    va_start(ap, str);
+    vsnprintf(result, MAX_QUERY_LEN, str, ap);
+    va_end(ap);
+
+    std::string date = GetTimestampStr();
+    fprintf(ashranLog, "[%s] Ashran LOG : %s\n", date.c_str(), result);
+    fflush(ashranLog);
 }
