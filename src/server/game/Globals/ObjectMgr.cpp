@@ -557,12 +557,11 @@ void ObjectMgr::LoadCreatureTemplatesDifficulties()
 	uint32 l_Count = 0;
 	do
 	{
-		uint8 l_Index = 0;
 		Field* l_Fields = l_Result->Fetch();
 
-		uint32 l_Entry = l_Fields[l_Index++].GetUInt32();
-		uint32 l_DifficultyIndex = l_Fields[l_Index++].GetUInt32() - 2;
-		uint32 l_DifficultyEntry = l_Fields[l_Index++].GetUInt32();
+		uint32 l_Entry = l_Fields[0].GetUInt32();
+		uint32 l_DifficultyIndex = l_Fields[1].GetUInt32() - 2;
+		uint32 l_DifficultyEntry = l_Fields[2].GetUInt32();
 
 		if (l_DifficultyIndex >= Difficulty::MaxDifficulties)
 			continue;
@@ -1071,9 +1070,8 @@ void ObjectMgr::LoadEquipmentTemplates()
 	do
 	{
 		Field* fields = result->Fetch();
-		uint8 l_Index = 0;
 
-		uint32 entry = fields[l_Index++].GetUInt32();
+		uint32 entry = fields[0].GetUInt32();
 
 		if (!sObjectMgr->GetCreatureTemplate(entry))
 		{
@@ -1081,7 +1079,7 @@ void ObjectMgr::LoadEquipmentTemplates()
 			continue;
 		}
 
-		uint8 id = fields[l_Index++].GetUInt8();
+		uint8 id = fields[1].GetUInt8();
 		if (!id)
 		{
 			TC_LOG_ERROR("sql.sql", "Creature equipment template with ID 0 found for creature %u, skipped.", entry);
@@ -1090,9 +1088,9 @@ void ObjectMgr::LoadEquipmentTemplates()
 
 		EquipmentInfo& equipmentInfo = _equipmentInfoStore[entry][id];
 
-		equipmentInfo.ItemEntry[0] = fields[l_Index++].GetUInt32();
-		equipmentInfo.ItemEntry[1] = fields[l_Index++].GetUInt32();
-		equipmentInfo.ItemEntry[2] = fields[l_Index++].GetUInt32();
+		equipmentInfo.ItemEntry[0] = fields[2].GetUInt32();
+		equipmentInfo.ItemEntry[1] = fields[3].GetUInt32();
+		equipmentInfo.ItemEntry[2] = fields[4].GetUInt32();
 
 		for (uint8 i = 0; i < MAX_EQUIPMENT_ITEMS; ++i)
 		{
@@ -2240,23 +2238,22 @@ void ObjectMgr::LoadRealmCompletedChallenges()
 
 	do
 	{
-		uint32 l_Index = 0;
 		Field* l_Fields = l_Result->Fetch();
-		uint32 l_MapID = l_Fields[l_Index++].GetUInt32();
+		uint32 l_MapID = l_Fields[0].GetUInt32();
 
 		RealmCompletedChallenge& l_RealmChallenge = m_GroupsCompletedChallenges[l_MapID];
 
 		l_RealmChallenge.m_GuildID = 0;
-		l_RealmChallenge.m_AttemptID = l_Fields[l_Index++].GetUInt32();
-		l_RealmChallenge.m_CompletionTime = l_Fields[l_Index++].GetUInt32();
-		l_RealmChallenge.m_CompletionDate = l_Fields[l_Index++].GetUInt32();
-		l_RealmChallenge.m_MedalEarned = l_Fields[l_Index++].GetUInt8();
-		l_RealmChallenge.m_MembersCount = l_Fields[l_Index++].GetUInt8();
+		l_RealmChallenge.m_AttemptID = l_Fields[1].GetUInt32();
+		l_RealmChallenge.m_CompletionTime = l_Fields[2].GetUInt32();
+		l_RealmChallenge.m_CompletionDate = l_Fields[3].GetUInt32();
+		l_RealmChallenge.m_MedalEarned = l_Fields[4].GetUInt8();
+		l_RealmChallenge.m_MembersCount = l_Fields[5].GetUInt8();
 
 		for (uint8 l_I = 0; l_I < 5; ++l_I)
 		{
-			l_RealmChallenge.m_Members[l_I].m_Guid = MAKE_NEW_GUID(l_Fields[l_Index++].GetUInt32(), 0, HIGHGUID_PLAYER);
-			l_RealmChallenge.m_Members[l_I].m_SpecID = l_Fields[l_Index++].GetUInt32();
+			l_RealmChallenge.m_Members[l_I].m_Guid = MAKE_NEW_GUID(l_Fields[6 + l_I].GetUInt32(), 0, HIGHGUID_PLAYER);
+			l_RealmChallenge.m_Members[l_I].m_SpecID = l_Fields[7 + l_I].GetUInt32();
 		}
 
 		++l_Count;
@@ -2272,23 +2269,22 @@ void ObjectMgr::LoadRealmCompletedChallenges()
 
 	do
 	{
-		uint32 l_Index = 0;
 		Field* l_Fields = l_Result->Fetch();
-		uint32 l_MapID = l_Fields[l_Index++].GetUInt32();
+		uint32 l_MapID = l_Fields[0].GetUInt32();
 
 		RealmCompletedChallenge& l_RealmChallenge = m_GuildsCompletedChallenges[l_MapID];
 
-		l_RealmChallenge.m_GuildID = l_Fields[l_Index++].GetUInt32();
-		l_RealmChallenge.m_AttemptID = l_Fields[l_Index++].GetUInt32();
-		l_RealmChallenge.m_CompletionTime = l_Fields[l_Index++].GetUInt32();
-		l_RealmChallenge.m_CompletionDate = l_Fields[l_Index++].GetUInt32();
-		l_RealmChallenge.m_MedalEarned = l_Fields[l_Index++].GetUInt8();
-		l_RealmChallenge.m_MembersCount = l_Fields[l_Index++].GetUInt8();
+		l_RealmChallenge.m_GuildID = l_Fields[1].GetUInt32();
+		l_RealmChallenge.m_AttemptID = l_Fields[2].GetUInt32();
+		l_RealmChallenge.m_CompletionTime = l_Fields[3].GetUInt32();
+		l_RealmChallenge.m_CompletionDate = l_Fields[4].GetUInt32();
+		l_RealmChallenge.m_MedalEarned = l_Fields[5].GetUInt8();
+		l_RealmChallenge.m_MembersCount = l_Fields[6].GetUInt8();
 
 		for (uint8 l_I = 0; l_I < 5; ++l_I)
 		{
-			l_RealmChallenge.m_Members[l_I].m_Guid = MAKE_NEW_GUID(l_Fields[l_Index++].GetUInt32(), 0, HIGHGUID_PLAYER);
-			l_RealmChallenge.m_Members[l_I].m_SpecID = l_Fields[l_Index++].GetUInt32();
+			l_RealmChallenge.m_Members[l_I].m_Guid = MAKE_NEW_GUID(l_Fields[7 + l_I].GetUInt32(), 0, HIGHGUID_PLAYER);
+			l_RealmChallenge.m_Members[l_I].m_SpecID = l_Fields[8 + l_I].GetUInt32();
 		}
 
 		++l_Count;
@@ -2312,19 +2308,18 @@ void ObjectMgr::LoadChallengeRewards()
 
 	do
 	{
-		uint32 l_Index = 0;
 		Field* l_Fields = l_Result->Fetch();
-		uint32 l_MapID = l_Fields[l_Index++].GetUInt32();
+		uint32 l_MapID = l_Fields[0].GetUInt32();
 
 		ChallengeReward& l_Rewards = m_ChallengeRewardsMap[l_MapID];
 
 		l_Rewards.MapID = l_MapID;
-
-		for (uint8 l_I = 0; l_I < 4; ++l_I)
-			l_Rewards.MoneyReward[l_I] = l_Fields[l_Index++].GetUInt32();
-
-		l_Rewards.TitleID = l_Fields[l_Index++].GetUInt32();
-		l_Rewards.AchievementID = l_Fields[l_Index++].GetUInt32();
+		l_Rewards.MoneyReward[1] = l_Fields[1].GetUInt32();
+		l_Rewards.MoneyReward[2] = l_Fields[2].GetUInt32();
+		l_Rewards.MoneyReward[3] = l_Fields[3].GetUInt32();
+		l_Rewards.MoneyReward[4] = l_Fields[4].GetUInt32();
+		l_Rewards.TitleID = l_Fields[5].GetUInt32();
+		l_Rewards.AchievementID = l_Fields[6].GetUInt32();
 
 		++l_Count;
 	} while (l_Result->NextRow());
@@ -3243,12 +3238,11 @@ void ObjectMgr::LoadAreaTriggerMoveTemplates()
 	do
 	{
 		Field* l_Fields = l_Result->Fetch();
-		uint8 l_Index = 0;
 
 		AreaTriggerMoveTemplate l_Template;
-		l_Template.m_move_id = l_Fields[l_Index++].GetUInt32();
-		l_Template.m_path_size = l_Fields[l_Index++].GetUInt32();
-		l_Template.m_duration = l_Fields[l_Index++].GetUInt32();
+		l_Template.m_move_id = l_Fields[0].GetUInt32();
+		l_Template.m_path_size = l_Fields[1].GetUInt32();
+		l_Template.m_duration = l_Fields[2].GetUInt32();
 
 		m_AreaTriggerMoveTemplate.insert(std::make_pair(l_Template.m_move_id, l_Template));
 
@@ -3277,14 +3271,13 @@ void ObjectMgr::LoadAreaTriggerMoveSplines()
 	do
 	{
 		Field* l_Fields = l_Result->Fetch();
-		uint8 l_Index = 0;
 
 		AreaTriggerMoveSplines l_MoveSplines;
-		l_MoveSplines.m_move_id = l_Fields[l_Index++].GetUInt32();
-		l_MoveSplines.m_path_id = l_Fields[l_Index++].GetUInt32();
-		l_MoveSplines.m_path_x = l_Fields[l_Index++].GetFloat();
-		l_MoveSplines.m_path_y = l_Fields[l_Index++].GetFloat();
-		l_MoveSplines.m_path_z = l_Fields[l_Index++].GetFloat();
+		l_MoveSplines.m_move_id = l_Fields[0].GetUInt32();
+		l_MoveSplines.m_path_id = l_Fields[1].GetUInt32();
+		l_MoveSplines.m_path_x = l_Fields[2].GetFloat();
+		l_MoveSplines.m_path_y = l_Fields[3].GetFloat();
+		l_MoveSplines.m_path_z = l_Fields[4].GetFloat();
 
 		m_AreaTriggerMoveSplines.insert(std::make_pair(std::make_pair(l_MoveSplines.m_move_id, l_MoveSplines.m_path_id), l_MoveSplines));
 
@@ -3303,72 +3296,69 @@ void ObjectMgr::LoadAreaTriggerTemplates()
 
 	uint32 l_Count = 0;
 
-	//                                                      0           1          2        3        4          5         6            7               8                   9
-	QueryResult l_Result = WorldDatabase.Query("SELECT `spell_id`, `eff_index`, `entry`, `type`, `scale_x`, `scale_y`, `flags`, `move_curve_id`, `scale_curve_id`, `morph_curve_id`,"
-		//                                                         10            11        12      13       14       15       16        17      18          19                20
-		"`facing_curve_id`, `data0`, `data1`, `data2`, `data3`, `data4`, `data5`, `data6`, `data7`, `ScriptName`, `creature_visual` FROM `areatrigger_template`");
-	if (!l_Result)
+    //                                                      0           1          2        3        4          5         6            7               8                   9
+    QueryResult l_Result = WorldDatabase.Query("SELECT `spell_id`, `eff_index`, `entry`, `type`, `scale_x`, `scale_y`, `flags`, `move_curve_id`, `scale_curve_id`, `morph_curve_id`,"
+    //                                                         10            11        12      13       14       15       16        17      18          19                20
+                                                       "`facing_curve_id`, `data0`, `data1`, `data2`, `data3`, `data4`, `data5`, `data6`, `data7`, `ScriptName`, `creature_visual` FROM `areatrigger_template`");
+    if (!l_Result)
 	{
 		TC_LOG_INFO("server.loading", ">> Loaded 0 Areatrigger template in %u ms", GetMSTimeDiffToNow(l_OldMSTime));
 		return;
 	}
 
 	do
-	{
-		Field* l_Fields = l_Result->Fetch();
-		uint8 l_Index = 0;
+    {
+        Field* l_Fields = l_Result->Fetch();
 
-		AreaTriggerTemplate l_Template;
-		l_Template.m_SpellID = l_Fields[l_Index++].GetUInt32();
-		l_Template.m_EffIndex = l_Fields[l_Index++].GetUInt32();
-		l_Template.m_Entry = l_Fields[l_Index++].GetUInt32();
-		l_Template.m_Type = l_Fields[l_Index++].GetUInt32();
-		l_Template.m_ScaleX = l_Fields[l_Index++].GetFloat();
-		l_Template.m_ScaleY = l_Fields[l_Index++].GetFloat();
-		l_Template.m_Flags = l_Fields[l_Index++].GetUInt32();
-		l_Template.m_MoveCurveID = l_Fields[l_Index++].GetUInt32();
-		l_Template.m_ScaleCurveID = l_Fields[l_Index++].GetUInt32();
-		l_Template.m_MorphCurveID = l_Fields[l_Index++].GetUInt32();
-		l_Template.m_FacingCurveID = l_Fields[l_Index++].GetUInt32();
+        AreaTriggerTemplate l_Template;
+        l_Template.m_SpellID       = l_Fields[0].GetUInt32();
+        l_Template.m_EffIndex      = l_Fields[1].GetUInt32();
+        l_Template.m_Entry         = l_Fields[2].GetUInt32();
+        l_Template.m_Type          = l_Fields[3].GetUInt32();
+        l_Template.m_ScaleX        = l_Fields[4].GetFloat();
+        l_Template.m_ScaleY        = l_Fields[5].GetFloat();
+        l_Template.m_Flags         = l_Fields[6].GetUInt32();
+        l_Template.m_MoveCurveID   = l_Fields[7].GetUInt32();
+        l_Template.m_ScaleCurveID  = l_Fields[8].GetUInt32();
+        l_Template.m_MorphCurveID  = l_Fields[9].GetUInt32();
+        l_Template.m_FacingCurveID = l_Fields[10].GetUInt32();
 
-		switch (l_Template.m_Type)
-		{
-		case AREATRIGGER_TYPE_POLYGON:
-			l_Template.m_PolygonDatas.m_Vertices[0] = l_Fields[l_Index++].GetFloat();
-			l_Template.m_PolygonDatas.m_Vertices[1] = l_Fields[l_Index++].GetFloat();
-			l_Template.m_PolygonDatas.m_HeightTarget = l_Fields[l_Index++].GetFloat();
-			l_Template.m_PolygonDatas.m_VerticesTarget[0] = l_Fields[l_Index++].GetFloat();
-			l_Template.m_PolygonDatas.m_VerticesTarget[1] = l_Fields[l_Index++].GetFloat();
-			l_Template.m_PolygonDatas.m_Height = l_Fields[l_Index++].GetFloat();
-			l_Template.m_PolygonDatas.m_VerticesCount = l_Fields[l_Index++].GetUInt32();
-			l_Template.m_PolygonDatas.m_VerticesTargetCount = l_Fields[l_Index++].GetUInt32();
-			break;
-		case AREATRIGGER_TYPE_BOX:
-			l_Template.m_BoxDatas.m_ExtentTarget[0] = l_Fields[l_Index++].GetFloat();
-			l_Template.m_BoxDatas.m_Extent[2] = l_Fields[l_Index++].GetFloat();
-			l_Template.m_BoxDatas.m_ExtentTarget[1] = l_Fields[l_Index++].GetFloat();
-			l_Template.m_BoxDatas.m_Extent[1] = l_Fields[l_Index++].GetFloat();
-			l_Template.m_BoxDatas.m_ExtentTarget[2] = l_Fields[l_Index++].GetFloat();
-			l_Template.m_BoxDatas.m_Extent[0] = l_Fields[l_Index++].GetFloat();
-			l_Index++;
-			l_Index++;
-			break;
-		case AREATRIGGER_TYPE_SPHERE:
-		case AREATRIGGER_TYPE_CYLINDER:
-		case AREATRIGGER_TYPE_SPLINE:
-		default:
-			l_Index += 8;
-			break;
-		}
-
-		l_Template.m_ScriptId = sObjectMgr->GetScriptId(l_Fields[l_Index++].GetCString());
-		l_Template.m_CreatureVisualEntry = l_Fields[l_Index++].GetUInt32();
+        switch (l_Template.m_Type)
+        {
+            case AREATRIGGER_TYPE_POLYGON:
+                l_Template.m_PolygonDatas.m_Vertices[0]         = l_Fields[11].GetFloat();
+                l_Template.m_PolygonDatas.m_Vertices[1]         = l_Fields[12].GetFloat();
+                l_Template.m_PolygonDatas.m_HeightTarget        = l_Fields[13].GetFloat();
+                l_Template.m_PolygonDatas.m_VerticesTarget[0]   = l_Fields[14].GetFloat();
+                l_Template.m_PolygonDatas.m_VerticesTarget[1]   = l_Fields[15].GetFloat();
+                l_Template.m_PolygonDatas.m_Height              = l_Fields[16].GetFloat();
+                l_Template.m_PolygonDatas.m_VerticesCount       = l_Fields[17].GetUInt32();
+                l_Template.m_PolygonDatas.m_VerticesTargetCount = l_Fields[18].GetUInt32();
+                break;
+            case AREATRIGGER_TYPE_BOX:
+                l_Template.m_BoxDatas.m_ExtentTarget[0] = l_Fields[11].GetFloat();
+                l_Template.m_BoxDatas.m_Extent[2]       = l_Fields[12].GetFloat();
+                l_Template.m_BoxDatas.m_ExtentTarget[1] = l_Fields[13].GetFloat();
+                l_Template.m_BoxDatas.m_Extent[1]       = l_Fields[14].GetFloat();
+                l_Template.m_BoxDatas.m_ExtentTarget[2] = l_Fields[15].GetFloat();
+                l_Template.m_BoxDatas.m_Extent[0]       = l_Fields[16].GetFloat();
+                break;
+            case AREATRIGGER_TYPE_SPHERE:
+            case AREATRIGGER_TYPE_CYLINDER:
+            case AREATRIGGER_TYPE_SPLINE:
+            default:
+                break;
+        }
+		
+		l_Template.m_ScriptId = sObjectMgr->GetScriptId(l_Fields[19].GetCString());
+		l_Template.m_CreatureVisualEntry = l_Fields[20].GetUInt32();
 
 		m_AreaTriggerTemplates[l_Template.m_Entry].push_back(l_Template);
 		m_AreaTriggerTemplatesSpell[l_Template.m_SpellID].push_back(l_Template);
 
 		++l_Count;
-	} while (l_Result->NextRow());
+	}
+	while (l_Result->NextRow());
 
 	TC_LOG_INFO("server.loading", ">> Loaded %u Areatrigger templates in %u ms", l_Count, GetMSTimeDiffToNow(l_OldMSTime));
 }
@@ -3392,20 +3382,19 @@ void ObjectMgr::LoadPetStatInfo()
 	do
 	{
 		Field* l_Fields = l_Result->Fetch();
-		uint32 l_Index = 0;
-		uint32 l_Entry = l_Fields[l_Index++].GetUInt32();
+		uint32 l_Entry = l_Fields[0].GetUInt32();
 
 		PetStatInfo l_PetStat;
-		l_PetStat.m_Speed = l_Fields[l_Index++].GetFloat();
-		l_PetStat.m_PowerStat = PetStatInfo::PowerStatBase(l_Fields[l_Index++].GetUInt32());
-		l_PetStat.m_ArmorCoef = l_Fields[l_Index++].GetFloat();
-		l_PetStat.m_APSPCoef = l_Fields[l_Index++].GetFloat();
-		l_PetStat.m_HealthCoef = l_Fields[l_Index++].GetFloat();
-		l_PetStat.m_DamageCoef = l_Fields[l_Index++].GetFloat();
-		l_PetStat.m_AttackSpeed = l_Fields[l_Index++].GetFloat();
-		l_PetStat.m_Power = Powers(l_Fields[l_Index++].GetUInt32());
-		l_PetStat.m_CreatePower = l_Fields[l_Index++].GetFloat();
-		l_PetStat.m_SecondaryStatCoef = l_Fields[l_Index++].GetFloat();
+		l_PetStat.m_Speed = l_Fields[1].GetFloat();
+		l_PetStat.m_PowerStat = PetStatInfo::PowerStatBase(l_Fields[2].GetUInt32());
+		l_PetStat.m_ArmorCoef = l_Fields[3].GetFloat();
+		l_PetStat.m_APSPCoef = l_Fields[4].GetFloat();
+		l_PetStat.m_HealthCoef = l_Fields[5].GetFloat();
+		l_PetStat.m_DamageCoef = l_Fields[6].GetFloat();
+		l_PetStat.m_AttackSpeed = l_Fields[7].GetFloat();
+		l_PetStat.m_Power = Powers(l_Fields[8].GetUInt32());
+		l_PetStat.m_CreatePower = l_Fields[9].GetFloat();
+		l_PetStat.m_SecondaryStatCoef = l_Fields[10].GetFloat();
 
 		m_PetInfoStore.insert(std::make_pair(std::move(l_Entry), std::move(l_PetStat)));
 
@@ -6596,20 +6585,19 @@ void ObjectMgr::LoadLFRAccessRequirements()
 		LFRAccessRequirement l_LFRAccessReq;
 
 		Field* l_Fields = l_Result->Fetch();
-		uint32 l_Index = 0;
-		uint32 l_DungeonID = l_Fields[l_Index++].GetUInt32();
+		uint32 l_DungeonID = l_Fields[0].GetUInt32();
 
-		l_LFRAccessReq.LevelMin = l_Fields[l_Index++].GetUInt8();
-		l_LFRAccessReq.LevelMax = l_Fields[l_Index++].GetUInt8();
-		l_LFRAccessReq.Item = l_Fields[l_Index++].GetUInt32();
-		l_LFRAccessReq.Item2 = l_Fields[l_Index++].GetUInt32();
-		l_LFRAccessReq.QuestA = l_Fields[l_Index++].GetUInt32();
-		l_LFRAccessReq.QuestH = l_Fields[l_Index++].GetUInt32();
-		l_LFRAccessReq.Achievement = l_Fields[l_Index++].GetUInt32();
-		l_LFRAccessReq.LeaderAchievement = l_Fields[l_Index++].GetUInt32();
-		l_LFRAccessReq.ItemLevelMin = l_Fields[l_Index++].GetUInt32();
-		l_LFRAccessReq.ItemLevelMax = l_Fields[l_Index++].GetUInt32();
-		l_LFRAccessReq.QuestFailedText = l_Fields[l_Index++].GetString();
+		l_LFRAccessReq.LevelMin = l_Fields[1].GetUInt8();
+		l_LFRAccessReq.LevelMax = l_Fields[2].GetUInt8();
+		l_LFRAccessReq.Item = l_Fields[3].GetUInt32();
+		l_LFRAccessReq.Item2 = l_Fields[4].GetUInt32();
+		l_LFRAccessReq.QuestA = l_Fields[5].GetUInt32();
+		l_LFRAccessReq.QuestH = l_Fields[6].GetUInt32();
+		l_LFRAccessReq.Achievement = l_Fields[7].GetUInt32();
+		l_LFRAccessReq.LeaderAchievement = l_Fields[8].GetUInt32();
+		l_LFRAccessReq.ItemLevelMin = l_Fields[9].GetUInt32();
+		l_LFRAccessReq.ItemLevelMax = l_Fields[10].GetUInt32();
+		l_LFRAccessReq.QuestFailedText = l_Fields[11].GetString();
 
 		if (l_LFRAccessReq.Item)
 		{
@@ -11270,14 +11258,13 @@ void ObjectMgr::LoadConversationTemplates()
 		ConversationTemplate l_Conversation;
 
 		Field* l_Fields = l_Result->Fetch();
-		uint8 l_Index = 0;
 
-		l_Conversation.Entry = l_Fields[l_Index++].GetUInt32();
-		l_Conversation.Duration = l_Fields[l_Index++].GetUInt32();
+		l_Conversation.Entry = l_Fields[0].GetUInt32();
+		l_Conversation.Duration = l_Fields[1].GetUInt32();
 
-		uint32 l_ActorsCount = l_Fields[l_Index++].GetUInt32();
+		uint32 l_ActorsCount = l_Fields[2].GetUInt32();
 
-		Tokenizer l_Tokens(l_Fields[l_Index++].GetString(), ' ', l_ActorsCount);
+		Tokenizer l_Tokens(l_Fields[3].GetString(), ' ', l_ActorsCount);
 
 		if (l_Tokens.size() == l_ActorsCount)
 		{
@@ -11299,12 +11286,11 @@ void ObjectMgr::LoadConversationTemplates()
 			ConversationLine l_ConversationLine;
 
 			l_Fields = l_LinesResult->Fetch();
-			l_Index = 0;
-			l_ConversationLine.LineID = l_Fields[l_Index++].GetUInt32();
-			l_ConversationLine.BroadcastTextID = l_Fields[l_Index++].GetUInt32();
-			l_ConversationLine.UnkValue = l_Fields[l_Index++].GetUInt32();
-			l_ConversationLine.Timer = l_Fields[l_Index++].GetUInt32();
-			l_ConversationLine.Type = l_Fields[l_Index++].GetUInt32();
+			l_ConversationLine.LineID = l_Fields[0].GetUInt32();
+			l_ConversationLine.BroadcastTextID = l_Fields[1].GetUInt32();
+			l_ConversationLine.UnkValue = l_Fields[2].GetUInt32();
+			l_ConversationLine.Timer = l_Fields[3].GetUInt32();
+			l_ConversationLine.Type = l_Fields[4].GetUInt32();
 
 			l_Conversation.Lines.push_back(l_ConversationLine);
 		} while (l_LinesResult->NextRow());
