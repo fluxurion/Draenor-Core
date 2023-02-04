@@ -67,8 +67,8 @@ char** cli_completion(const char* text, int start, int /*end*/)
     if (start)
 /*#ifdef PLATFORM != PLATFORM_APPLE
        rl_bind_key('\t', rl_abort);
-#endif*/
     else
+#endif*/
         matches = rl_completion_matches((char*)text, &command_finder);
     return matches;
 }

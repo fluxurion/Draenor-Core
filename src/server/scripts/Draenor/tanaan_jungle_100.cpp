@@ -29,7 +29,7 @@
 #include "Unit.h"
 #include "Vehicle.h"
 #include "ZoneScript.h"
-#include "Tanaan_jungle_100.h"
+#include "tanaan_jungle_100.h"
 #include "Common.h"
 #include "GuardAI.h"
 
