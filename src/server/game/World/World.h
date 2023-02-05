@@ -18,6 +18,7 @@
 #include <ace/Atomic_Op.h>
 #include "SharedDefines.h"
 #include "QueryResult.h"
+#include <ace/Null_Mutex.h>
 #include "Callback.h"
 #include "TimeDiffMgr.h"
 #include "DatabaseWorkerPool.h"
