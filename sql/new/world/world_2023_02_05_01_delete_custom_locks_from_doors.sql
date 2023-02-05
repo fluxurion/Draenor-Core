@@ -1,0 +1,1 @@
+UPDATE gameobject_template SET DATA1 = 0 WHERE TYPE = 0 AND DATA1 > 5000000; -- remove custom locks from doors (maybe custom too)
