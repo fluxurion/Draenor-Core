@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Project-Hellscream https://hellscream.org
-// Copyright (C) 2018-2020 Project-Hellscream-6.2
-// Discord https://discord.gg/CWCF3C9
+//  MILLENIUM-STUDIO
+//  Copyright 2016 Millenium-studio SARL
+//  All Rights Reserved.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -18,49 +18,45 @@ class BigNumber
 {
 public:
     BigNumber();
-    BigNumber(BigNumber const& bn);
+    BigNumber(const BigNumber& bn);
     BigNumber(uint32);
     ~BigNumber();
 
     void SetDword(uint32);
     void SetQword(uint64);
-    void SetBinary(uint8 const* bytes, int32 len);
-    void SetHexStr(char const* str);
+    void SetBinary(const uint8* bytes, int len);
+    void SetHexStr(const char* str);
 
-    void SetRand(int32 numbits);
+    void SetRand(int numbits);
 
-    BigNumber& operator=(BigNumber const& bn);
+    BigNumber& operator=(const BigNumber& bn);
 
-    BigNumber operator+=(BigNumber const& bn);
-    BigNumber operator+(BigNumber const& bn)
+    BigNumber operator+=(const BigNumber& bn);
+    BigNumber operator+(const BigNumber& bn)
     {
         BigNumber t(*this);
         return t += bn;
     }
-
-    BigNumber operator-=(BigNumber const& bn);
-    BigNumber operator-(BigNumber const& bn)
+    BigNumber operator-=(const BigNumber& bn);
+    BigNumber operator-(const BigNumber& bn)
     {
         BigNumber t(*this);
         return t -= bn;
     }
-
-    BigNumber operator*=(BigNumber const& bn);
-    BigNumber operator*(BigNumber const& bn)
+    BigNumber operator*=(const BigNumber& bn);
+    BigNumber operator*(const BigNumber& bn)
     {
         BigNumber t(*this);
         return t *= bn;
     }
-
-    BigNumber operator/=(BigNumber const& bn);
-    BigNumber operator/(BigNumber const& bn)
+    BigNumber operator/=(const BigNumber& bn);
+    BigNumber operator/(const BigNumber& bn)
     {
         BigNumber t(*this);
         return t /= bn;
     }
-
-    BigNumber operator%=(BigNumber const& bn);
-    BigNumber operator%(BigNumber const& bn)
+    BigNumber operator%=(const BigNumber& bn);
+    BigNumber operator%(const BigNumber& bn)
     {
         BigNumber t(*this);
         return t %= bn;
@@ -68,18 +64,18 @@ public:
 
     bool isZero() const;
 
-    BigNumber ModExp(BigNumber const& bn1, BigNumber const& bn2);
-    BigNumber Exp(BigNumber const&);
+    BigNumber ModExp(const BigNumber& bn1, const BigNumber& bn2);
+    BigNumber Exp(const BigNumber&);
 
-    int32 GetNumBytes(void);
+    int GetNumBytes(void);
 
     struct bignum_st* BN() { return _bn; }
 
     uint32 AsDword();
-    uint8* AsByteArray(int32 minSize = 0, bool reverse = true);
+    uint8* AsByteArray(int minSize = 0, bool reverse = true);
 
-    char* AsHexStr() const;
-    char* AsDecStr() const;
+    const char* AsHexStr();
+    const char* AsDecStr();
 
 private:
     struct bignum_st* _bn;
@@ -90,4 +86,3 @@ private:
 
 };
 #endif
-

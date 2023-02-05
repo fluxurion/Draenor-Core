@@ -46,7 +46,6 @@
 #include "Util.h"
 
 #include "BigNumber.h"
-#include "OpenSSLCrypto.h"
 
 #ifdef CROSS
 #include "Cross/IRSocketMgr.h"
@@ -419,7 +418,6 @@ const char* dumpTables[32] =
 /// Main function
 int Master::Run()
 {
-    OpenSSLCrypto::threadsSetup();
     BigNumber seed1;
     seed1.SetRand(16 * 8);
 
@@ -694,7 +692,6 @@ int Master::Run()
     // fixes a memory leak related to detaching threads from the module
     //UnloadScriptingModule();
 
-    OpenSSLCrypto::threadsCleanup();
     // Exit the process with specified return value
     return World::GetExitCode();
 }
