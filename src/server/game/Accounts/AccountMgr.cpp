@@ -311,6 +311,7 @@ namespace AccountMgr
         return (result) ? true : false;
     }
 
+#ifndef CROSS
     uint32 AccountMgr::GetCharactersCount(uint32 accountId)
     {
         // check character count
@@ -320,6 +321,7 @@ namespace AccountMgr
 
         return (result) ? (*result)[0].GetUInt64() : 0;
     }
+#endif
 
     bool normalizeString(std::string& utf8String, bool upper /* = true */)
     {
