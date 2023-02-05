@@ -15,10 +15,7 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # Set projectname (must be done AFTER setting configurationtypes)
-add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
-add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
-
-project(Trinity)
+project(DraenorCore)
 
 # CMake policies (can not be handled elsewhere)
  cmake_minimum_required(VERSION 2.8.9)
