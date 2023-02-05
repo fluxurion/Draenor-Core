@@ -698,7 +698,7 @@ struct MotdText
 class World
 {
     public:
-        static std::atomic<unsigned int> m_worldLoopCounter;
+        static ACE_Atomic_Op<ACE_Thread_Mutex, uint32> m_worldLoopCounter;
 
         World();
         ~World();
