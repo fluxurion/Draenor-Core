@@ -1,20 +1,30 @@
-////////////////////////////////////////////////////////////////////////////////
-//
-// Project-Hellscream https://hellscream.org
-// Copyright (C) 2018-2020 Project-Hellscream-6.2
-// Discord https://discord.gg/CWCF3C9
-//
-////////////////////////////////////////////////////////////////////////////////
+/*
+* Copyright (C) 2008-2020 TrinityCore <http://www.trinitycore.org/>
+* Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
+* Copyright (C) 2023 MagicStorm
+*
+* This program is free software; you can redistribute it and/or modify it
+* under the terms of the GNU General Public License as published by the
+* Free Software Foundation; either version 2 of the License, or (at your
+* option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+* more details.
+*
+* You should have received a copy of the GNU General Public License along
+* with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #include "AppenderFile.h"
 #include "Common.h"
-
 #if PLATFORM == PLATFORM_WINDOWS
 # include <Windows.h>
 #endif
 
-AppenderFile::AppenderFile(uint8 id, std::string const& name, LogLevel level, const char* _filename, const char* _logDir, const char* _mode, AppenderFlags _flags, uint64 fileSize) :
-    Appender(id, name, AppenderType::APPENDER_FILE, level, _flags),
+AppenderFile::AppenderFile(uint8 id, std::string const& name, LogLevel level, const char* _filename, const char* _logDir, const char* _mode, AppenderFlags _flags, uint64 fileSize):
+    Appender(id, name, APPENDER_FILE, level, _flags),
     logfile(NULL),
     filename(_filename),
     logDir(_logDir),
@@ -26,7 +36,7 @@ AppenderFile::AppenderFile(uint8 id, std::string const& name, LogLevel level, co
     backup = (_flags & APPENDER_FLAGS_MAKE_FILE_BACKUP) != 0;
 
     if (!dynamicName)
-    logfile = OpenFile(_filename, _mode, mode == "w" && backup);
+        logfile = OpenFile(_filename, _mode, mode == "w" && backup);
 }
 
 AppenderFile::~AppenderFile()
@@ -42,33 +52,38 @@ void AppenderFile::_write(LogMessage const& message)
     {
         char namebuf[TRINITY_PATH_MAX];
         snprintf(namebuf, TRINITY_PATH_MAX, filename.c_str(), message.param1.c_str());
-        logfile = OpenFile(namebuf, mode, backup || exceedMaxSize);
+        // always use "a" with dynamic name otherwise it could delete the log we wrote in last _write() call
+        FILE* file = OpenFile(namebuf, "a", backup || exceedMaxSize);
+        if (!file)
+            return;
+        fprintf(file, "%s%s", message.prefix.c_str(), message.text.c_str());
+        fflush(file);
+        fileSize += uint64(message.Size());
+        fclose(file);
+        return;
     }
     else if (exceedMaxSize)
         logfile = OpenFile(filename, "w", true);
 
-    if (!logfile)
+    if (logfile)
         return;
-
+    
     fprintf(logfile, "%s%s", message.prefix.c_str(), message.text.c_str());
     fflush(logfile);
     fileSize += uint64(message.Size());
-
-    if (dynamicName)
-        CloseFile();
 }
 
-FILE* AppenderFile::OpenFile(std::string const& filename, std::string const& mode, bool backup)
+FILE* AppenderFile::OpenFile(std::string const &filename, std::string const &mode, bool backup)
 {
     std::string fullName(logDir + filename);
-    if (backup)
+    if (mode == "w" && backup)
     {
         CloseFile();
-        std::string newName(fullName);
+        std::string newName(filename);
         newName.push_back('.');
         newName.append(LogMessage::getTimeStr(time(NULL)));
         std::replace(newName.begin(), newName.end(), ':', '-');
-        rename(fullName.c_str(), newName.c_str()); // no error handling... if we couldn't make a backup, just ignore
+        rename(filename.c_str(), newName.c_str()); // no error handling... if we couldn't make a backup, just ignore
     }
 
     if (FILE* ret = fopen(fullName.c_str(), mode.c_str()))
@@ -76,7 +91,6 @@ FILE* AppenderFile::OpenFile(std::string const& filename, std::string const& mod
         fileSize = ftell(ret);
         return ret;
     }
-
     return NULL;
 }
 

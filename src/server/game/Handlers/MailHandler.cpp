@@ -93,6 +93,14 @@ void WorldSession::HandleSendMail(WorldPacket& p_Packet)
     uint32 cost = l_AttachmentsCount ? 30 * l_AttachmentsCount : 30;  // price hardcoded in client
 
     uint64 reqmoney = cost + l_SendMoney;
+
+    // Check for overflow
+    if (reqmoney < l_SendMoney)
+    {
+        m_Player->SendMailResult(0, MAIL_SEND, MAIL_ERR_NOT_ENOUGH_MONEY);
+        return;
+    }
+
     if (!m_Player->HasEnoughMoney(reqmoney) && !m_Player->isGameMaster())
     {
         m_Player->SendMailResult(0, MAIL_SEND, MAIL_ERR_NOT_ENOUGH_MONEY);
@@ -416,6 +424,13 @@ void WorldSession::HandleMailTakeItem(WorldPacket& p_Packet)
         return;
     }
 
+    // verify that the mail has the item to avoid cheaters taking COD items without paying
+    if (std::find_if(l_Mail->items.begin(), l_Mail->items.end(), [l_ItemID](MailItemInfo info){ return info.item_guid == l_ItemID; }) == l_Mail->items.end())
+    {
+        m_Player->SendMailResult(l_MailID, MAIL_ITEM_TAKEN, MAIL_ERR_INTERNAL_ERROR);
+        return;
+    }
+
     // prevent cheating with skip client money check
     if (!m_Player->HasEnoughMoney(uint64(l_Mail->COD)))
     {
@@ -688,7 +703,7 @@ void WorldSession::HandleMailCreateTextItem(WorldPacket & p_Packet)
         return;
 
     Mail * l_Mail = m_Player->GetMail(l_MailID);
-    if (!l_Mail || (l_Mail->body.empty() && !l_Mail->mailTemplateId) || l_Mail->state == MAIL_STATE_DELETED || l_Mail->deliver_time > time(NULL))
+    if (!l_Mail || (l_Mail->body.empty() && !l_Mail->mailTemplateId) || l_Mail->state == MAIL_STATE_DELETED || l_Mail->deliver_time > time(NULL) || (l_Mail->checked & MAIL_CHECK_MASK_COPIED))
     {
         m_Player->SendMailResult(l_MailID, MAIL_MADE_PERMANENT, MAIL_ERR_INTERNAL_ERROR);
         return;

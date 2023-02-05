@@ -70,6 +70,8 @@ enum LootItemType
 
 enum LootType
 {
+    LOOT_NONE                   = 0,
+
     LOOT_CORPSE                 = 1,
     LOOT_PICKPOCKETING          = 2,
     LOOT_FISHING                = 3,
@@ -374,6 +376,7 @@ struct Loot
         Gold = 0;
         UnlootedCount = 0;
         RoundRobinPlayer = 0;
+        loot_type = LOOT_NONE;
         AdditionalLinkedGold = 0;
         i_LootValidatorRefManager.clearReferences();
         m_IsAoELoot = false;

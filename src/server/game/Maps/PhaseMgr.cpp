@@ -225,11 +225,6 @@ void PhaseMgr::SetCustomPhase(uint32 const phaseMask)
 
 void PhaseData::GetActivePhases(std::set<uint32>& phases) const
 {
-    for (PhaseInfoContainer::const_iterator itr = spellPhaseInfo.begin(); itr != spellPhaseInfo.end(); ++itr)
-        for (auto phase = itr->second.begin(); phase != itr->second.end(); ++phase)
-            if (phase->phaseId)
-                phases.insert(phase->phaseId);
-
 	// Phases from Auras.
 	if (!spellPhaseInfo.empty())
         for (PhaseInfoContainer::const_iterator phaseInfoContainer = spellPhaseInfo.begin(); phaseInfoContainer != spellPhaseInfo.end(); ++phaseInfoContainer)

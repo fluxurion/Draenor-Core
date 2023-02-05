@@ -1164,6 +1164,8 @@ void World::LoadConfigSettings(bool reload)
     // Loyalty configs
     m_bool_configs[CONFIG_LOYALTY_EVENTS_ENABLE] = sConfigMgr->GetBoolDefault("Loyalty.EnableLoyaltyEvents", false);
 
+    m_int_configs[CONFIG_CREATURE_PICKPOCKET_REFILL] = sConfigMgr->GetIntDefault("Creature.PickPocketRefillDelay", 10 * MINUTE);
+
     if (int32 clientCacheId = sConfigMgr->GetIntDefault("ClientCacheVersion", 0))
     {
         // overwrite DB/old value
@@ -2331,6 +2333,8 @@ void World::SetInitialWorldSettings()
     QueryResult l_Result = LoginDatabase.PQuery("SELECT max(id) FROM account_log_ip");
     if (l_Result)
         m_LastAccountLogId = l_Result->Fetch()[0].GetUInt64();
+
+    TC_LOG_INFO("server.worldserver", "World initialized in %u minutes %u seconds", (startupDuration / 60000), ((startupDuration % 60000) / 1000));
 
     if (uint32 realmId = sConfigMgr->GetIntDefault("RealmID", 0)) // 0 reserved for auth
         sLog->SetRealmId(realmId);

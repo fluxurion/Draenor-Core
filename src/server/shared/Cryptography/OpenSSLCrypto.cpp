@@ -17,23 +17,23 @@
 
 #include <OpenSSLCrypto.h>
 #include <openssl/crypto.h>
-#include <ace/Thread_Mutex.h>
 #include <vector>
-#include <ace/Thread.h>
+#include <thread>
+#include <mutex>
 
-std::vector<ACE_Thread_Mutex*> cryptoLocks;
+std::vector<std::mutex*> cryptoLocks;
 
 void lockingCallback(int mode, int type, const char *file, int line)
 {
     if (mode & CRYPTO_LOCK)
-        cryptoLocks[type]->acquire();
+        cryptoLocks[type]->lock();
     else
-        cryptoLocks[type]->release();
+        cryptoLocks[type]->unlock();
 }
 
 void threadIdCallback(CRYPTO_THREADID * id)
 {
-    CRYPTO_THREADID_set_numeric(id, ACE_Thread::self());
+    CRYPTO_THREADID_set_numeric(id, std::this_thread::get_id().hash());
 }
 
 void OpenSSLCrypto::threadsSetup()
@@ -41,7 +41,7 @@ void OpenSSLCrypto::threadsSetup()
     cryptoLocks.resize(CRYPTO_num_locks());
     for(int i = 0 ; i < CRYPTO_num_locks(); ++i)
     {
-        cryptoLocks[i] = new ACE_Thread_Mutex();
+        cryptoLocks[i] = new std::mutex;
     }
     CRYPTO_THREADID_set_callback(threadIdCallback);
     CRYPTO_set_locking_callback(lockingCallback);

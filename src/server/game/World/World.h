@@ -18,6 +18,7 @@
 #include <ace/Atomic_Op.h>
 #include "SharedDefines.h"
 #include "QueryResult.h"
+#include <ace/Null_Mutex.h>
 #include "Callback.h"
 #include "TimeDiffMgr.h"
 #include "DatabaseWorkerPool.h"
@@ -427,6 +428,7 @@ enum WorldIntConfigs
     CONFIG_ACCOUNT_BIND_SHOP_GROUP_MASK,
     CONFIG_ACCOUNT_BIND_ALLOWED_GROUP_MASK,
     CONFIG_ONLY_MAP,
+    CONFIG_CREATURE_PICKPOCKET_REFILL,
     INT_CONFIG_VALUE_COUNT
 };
 
