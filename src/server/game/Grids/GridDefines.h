@@ -217,7 +217,7 @@ namespace Trinity
 
     inline bool IsValidMapCoord(float c)
     {
-        return std::isfinite(c) && (std::fabs(c) <= MAP_HALFSIZE - 0.5f);
+        return std::isfinite(c) && (std::fabs(c) <= MAP_HALFSIZE - CENTER_GRID_OFFSET - 0.5f);
     }
 
     inline bool IsValidMapCoord(float x, float y)
