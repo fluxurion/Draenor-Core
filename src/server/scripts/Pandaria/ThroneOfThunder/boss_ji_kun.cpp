@@ -798,7 +798,7 @@ class mob_fall_catcher : public CreatureScript
         {
             mob_fall_catcherAI(Creature* p_Creature) : ScriptedAI(p_Creature), m_Vehicle(p_Creature->GetVehicleKit())
             {
-                ASSERT(m_Vehicle)
+                ASSERT(m_Vehicle);
                 m_Instance = p_Creature->GetInstanceScript();
             }
 

@@ -1230,7 +1230,7 @@ uint32 InterRealmClient::GenerateLocalRealmLowGuid(HighGuid p_HighGuid)
             break;
     }
 
-    ASSERT(false);
+    ABORT();
     return 0;
 }
 

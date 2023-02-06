@@ -93,7 +93,7 @@ WorldObject::~WorldObject()
         if (GetTypeId() == TYPEID_CORPSE)
         {
             TC_LOG_FATAL("misc", "Object::~Object Corpse guid=" UI64FMTD ", type=%d, entry=%u deleted but still in map!!", GetGUID(), ((Corpse*)this)->GetType(), GetEntry());
-            ASSERT(false);
+            ABORT();
         }
         ResetMap();
     }
@@ -106,14 +106,15 @@ Object::~Object()
         TC_LOG_FATAL("misc", "Object::~Object - guid=" UI64FMTD ", typeid=%d, entry=%u deleted but still in world!!", GetGUID(), GetTypeId(), GetEntry());
         if (isType(TYPEMASK_ITEM))
             TC_LOG_FATAL("misc", "Item slot %u", ((Item*)this)->GetSlot());
-        //ASSERT(false);
+        //ABORT();
         RemoveFromWorld();
     }
 
     if (m_objectUpdated)
     {
+
         TC_LOG_FATAL("misc", "Object::~Object - guid=" UI64FMTD ", typeid=%d, entry=%u deleted but still in update list!!", GetGUID(), GetTypeId(), GetEntry());
-        //ASSERT(false);
+        //ABORT();
         sObjectAccessor->RemoveUpdateObject(this);
     }
 
@@ -435,10 +436,7 @@ void Object::BuildMovementUpdate(ByteBuffer* p_Data, uint32 p_Flags) const
                 *p_Data << uint32(l_Unit->m_movementInfo.fallTime);         ///< Fall time
                 *p_Data << float(l_Unit->m_movementInfo.JumpVelocity);      ///< Horizontal speed
 
-                p_Data->WriteBit(l_HasFallDirection);                       ///< Has fall direction
-                p_Data->FlushBits();
-
-                if (l_HasFallDirection)
+                if (p_Data->WriteBit(l_HasFallDirection))                   ///< Has fall direction
                 {
                     *p_Data << float(l_Unit->m_movementInfo.j_cosAngle);    ///< Cos angle
                     *p_Data << float(l_Unit->m_movementInfo.j_sinAngle);    ///< Sin angle
@@ -456,6 +454,7 @@ void Object::BuildMovementUpdate(ByteBuffer* p_Data, uint32 p_Flags) const
         *p_Data << l_Unit->GetSpeed(MOVE_FLIGHT_BACK);                      ///< Flight back speed
         *p_Data << l_Unit->GetSpeed(MOVE_TURN_RATE);                        ///< Turn rate
         *p_Data << l_Unit->GetSpeed(MOVE_PITCH_RATE);                       ///< Pitch rate
+
         *p_Data << uint32(l_MovementForceCount);                            ///< Movement Force count
 
         for (uint32 l_Frame = 0; l_Frame < l_MovementForceCount; l_Frame++)
@@ -466,7 +465,6 @@ void Object::BuildMovementUpdate(ByteBuffer* p_Data, uint32 p_Flags) const
             *p_Data << float(0);                                            ///< Direction Z
             *p_Data << uint32(0);                                           ///< Transport ID
             *p_Data << float(0);                                            ///< Magnitude
-
             p_Data->WriteBits(0, 2);                                        ///< Type
             p_Data->FlushBits();
         }
@@ -2860,7 +2858,7 @@ void WorldObject::SetMap(Map* map)
     if (m_currMap)
     {
         TC_LOG_FATAL("misc", "WorldObject::SetMap: obj %u new map %u %u, old map %u %u", (uint32)GetTypeId(), map->GetId(), map->GetInstanceId(), m_currMap->GetId(), m_currMap->GetInstanceId());
-        ASSERT(false);
+        ABORT();
     }
     m_currMap = map;
     m_mapId = map->GetId();

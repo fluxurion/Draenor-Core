@@ -139,7 +139,8 @@ public:
             else if (getMSTimeDiff(_lastChange, curtime) > _delaytime)
             {
                 TC_LOG_ERROR("server.worldserver", "World Thread hangs, kicking out server!");
-                assert(false);
+                ABORT();
+                abort();
             }
         }
 
@@ -153,7 +154,7 @@ public:
             if ((time(nullptr) - l_WorldStopTime) > 60)
             {
                 TC_LOG_ERROR("server.worldserver", "Freeze on shutdown, kill the server!");
-                assert(false);
+                ABORT();
                 abort();
             }
         }

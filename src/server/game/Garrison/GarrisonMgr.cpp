@@ -52,7 +52,7 @@ namespace MS {
 
 			case FactionIndex::Max:
 			default:
-				ASSERT(false);
+				ABORT();
 				break;
 
 			}
@@ -132,7 +132,7 @@ namespace MS {
 
 			case FactionIndex::Max:
 			default:
-				ASSERT(false);
+				ABORT();
 				break;
 
 			}
@@ -488,7 +488,7 @@ namespace MS {
 
 				case FactionIndex::Max:
 				default:
-					ASSERT(false);
+					ABORT();
 					break;
 
 				}
@@ -4795,7 +4795,7 @@ namespace MS {
 
 			case FactionIndex::Max:
 			default:
-				ASSERT(false);
+				ABORT();
 				break;
 
 			}

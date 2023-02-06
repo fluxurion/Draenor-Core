@@ -6891,8 +6891,8 @@ uint32 ObjectMgr::GenerateLowGuid(HighGuid p_GuidHigh, uint32 p_Range)
 		break;
 	}
 
-	ASSERT(false);
-	return 0;
+    ABORT();
+    return 0;
 #else /* CROSS */
 	return _mailId++;
 #endif /* CROSS */

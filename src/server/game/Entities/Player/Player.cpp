@@ -25704,7 +25704,7 @@ void Player::StopCastingCharm()
         if (charm->GetCharmerGUID())
         {
             TC_LOG_FATAL("entities.player", "Charmed unit has charmer guid " UI64FMTD, charm->GetCharmerGUID());
-            ASSERT(false);
+            ABORT();
         }
         else
             SetCharm(charm, false);
@@ -32742,7 +32742,7 @@ void Player::RefundItem(Item* p_Item)
         {
             ItemPosCountVec l_Dest;
             InventoryResult l_InvResult = CanStoreNewItem(NULL_BAG, NULL_SLOT, l_Dest, l_ItemID, l_Count);
-            ASSERT(l_InvResult == EQUIP_ERR_OK) ///< Already checked before
+            ASSERT(l_InvResult == EQUIP_ERR_OK); ///< Already checked before
             Item* l_Item = StoreNewItem(l_Dest, l_ItemID, true);
             SendNewItem(l_Item, l_Count, true, false, true);
         }
