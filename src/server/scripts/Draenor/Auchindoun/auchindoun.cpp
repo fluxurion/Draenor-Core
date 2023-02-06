@@ -16,7 +16,7 @@ enum eEmotes
 
 Position const g_PositionKaatharCrystalPosition = { 1909.75f, 3188.70f, 66.786f, 5.401960f };
 
-/// 1st Starting Event
+/// Intro Tuulani
 class EventTuulaniIntroduction : public BasicEvent
 {
     public:
@@ -53,23 +53,25 @@ class EventTuulaniIntroduction : public BasicEvent
                                         l_Trigger->AddAura(eAuchindounSpells::SpellVoidFormTriggerBuff, l_Trigger);
                                         l_Nyami->CastSpell(l_Trigger, eAuchindounSpells::SpellShadowBeam);
                                     }
-
-                                    l_Tuulina->AI()->Talk(eAuchindounTalks::TUULANITALK18);
-                                    l_Tuulina->GetMotionMaster()->MovePoint(eAuchindounMovementInforms::MovementInformTuulani02, g_PositionTuulaniMovements[1]);
+										
+										l_Tuulina->AI()->Talk(eAuchindounTalks::TUULANITALK1); 
+										l_Tuulina->AI()->Talk(eAuchindounTalks::TUULANITALK2); 
+										l_Tuulina->GetMotionMaster()->MovePoint(eAuchindounMovementInforms::MovementInformTuulani02, g_PositionTuulaniMovements[1]); 
                                     break;
                                 }
                                 case 1:
                                 {
-                                    l_Tuulina->AI()->Talk(eAuchindounTalks::TUULANITALK3);
+									l_Tuulina->AI()->Talk(eAuchindounTalks::TUULANITALK3); 
                                     l_Tuulina->GetMotionMaster()->MovePoint(eAuchindounMovementInforms::MovementInformTuulani03, g_PositionTuulaniMovements[2]);
                                     break;
                                 }
+								
                                 case 3:
-                                {
-                                    l_Guard->SetFacingToObject(l_Tuulina);
+                                { 
+									l_Guard->SetFacingToObject(l_Tuulina);
                                     l_Guard->RemoveAura(eAuchindounSpells::SpellKneel);
                                     l_Guard->AI()->Talk(eAuchindounTalks::AUCHENAIDEFENDERTALK1);
-                                    l_Guard->m_Events.AddEvent(new EventTuulaniIntroduction(l_Guard, 4, m_InstanceScript), l_Guard->m_Events.CalculateTime(7 * TimeConstants::IN_MILLISECONDS));
+                                    l_Guard->m_Events.AddEvent(new EventTuulaniIntroduction(l_Guard, 4, m_InstanceScript), l_Guard->m_Events.CalculateTime(5 * TimeConstants::IN_MILLISECONDS));
                                     break;
                                 }
                                 case 4:
@@ -94,7 +96,7 @@ class EventTuulaniIntroduction : public BasicEvent
                                     if (GameObject* l_NearestHolyWall = l_Tuulina->FindNearestGameObject(eAuchindounObjects::GameobjectHolyWall, 60.0f))
                                         l_NearestHolyWall->Delete();
 
-                                    l_Tuulina->AI()->Talk(eAuchindounTalks::TUULANITALK2);
+                                    l_Tuulina->AI()->Talk(eAuchindounTalks::TUULANITALK18); 
                                     l_Tuulina->GetMotionMaster()->MovePoint(eAuchindounMovementInforms::MovementInformTuulani05, g_PositionTuulaniMovements[5]);
                                     break;
                                 }
@@ -274,15 +276,17 @@ class auchindoun_mob_tuulani : public CreatureScript
         {       
             events.Reset();
             m_First = false;
-            me->setFaction(FriendlyFaction);
-            Talk(eAuchindounTalks::TUULANITALK1);
+			
+            me->setFaction(FriendlyFaction);												 
+												 
             me->SetSpeed(UnitMoveType::MOVE_RUN, 1.2f, true);
             me->SetSpeed(UnitMoveType::MOVE_WALK, 1.2f, true);
             me->SetFlag(EUnitFields::UNIT_FIELD_FLAGS, eUnitFlags::UNIT_FLAG_IMMUNE_TO_NPC);
 			//check here
-            AddTimedDelayedOperation(18 * TimeConstants::IN_MILLISECONDS, [this]() -> void
-            {
-                 me->GetMotionMaster()->MovePoint(eAuchindounMovementInforms::MovementInformTuulani01, g_PositionTuulaniMovements[0]);
+            AddTimedDelayedOperation(4 * TimeConstants::IN_MILLISECONDS, [this]() -> void 
+            { 
+				 Talk(eAuchindounTalks::TUULANITALK1);
+				 me->GetMotionMaster()->MovePoint(eAuchindounMovementInforms::MovementInformTuulani01, g_PositionTuulaniMovements[0]); 
             });      
         }
 
