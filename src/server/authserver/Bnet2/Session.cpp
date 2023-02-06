@@ -257,7 +257,7 @@ namespace BNet2 {
             bool l_HaveOptData = true;
 
             char l_Bufffer[31];
-            sprintf(l_Bufffer, "%u", m_AccountID);
+            snprintf(l_Bufffer, sizeof(l_Bufffer), "%u", m_AccountID);
 
             std::string l_AccountName = l_Bufffer;
 
@@ -722,7 +722,7 @@ namespace BNet2 {
         char sSessionKey[sizeof(l_SessionKey)* 3];
         for (uint32_t l_It = 0; l_It < sizeof(l_SessionKey); ++l_It)
         {
-            sprintf(sSessionKey + l_It * 2, "%02X", l_SessionKey[l_It]);
+            snprintf(sSessionKey + l_It * 2, sizeof(sSessionKey + l_It * 2), "%02X", l_SessionKey[l_It]);
         }
 
         sSessionKey[sizeof(sSessionKey)-1] = 0;

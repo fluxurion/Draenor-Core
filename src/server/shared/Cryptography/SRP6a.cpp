@@ -134,7 +134,7 @@ namespace BNet2 {
         {
             l_IHexString += "  ";
 
-            sprintf(&(l_IHexString[l_I * 2]), "%02X", (unsigned char)I[l_I]);
+            snprintf(&(l_IHexString[l_I * 2]), sizeof(&(l_IHexString[l_I * 2])), "%02X", (unsigned char)I[l_I]);
         }
         uint8_t l_I_Hash[SHA256_DIGEST_LENGTH];
         Sha256(l_IHexString, l_I_Hash);

@@ -115,10 +115,10 @@ std::string GetScriptCommandName(ScriptCommands command)
 	case SCRIPT_COMMAND_PLAYMOVIE: res = "SCRIPT_COMMAND_PLAYMOVIE"; break;
 	default:
 	{
-		char sz[32];
-		sprintf(sz, "Unknown command: %d", command);
-		res = sz;
-		break;
+            char sz[32];
+            snprintf(sz, sizeof(sz), "Unknown command: %d", command);
+            res = sz;
+            break;
 	}
 	}
 	return res;
@@ -126,9 +126,9 @@ std::string GetScriptCommandName(ScriptCommands command)
 
 std::string ScriptInfo::GetDebugInfo() const
 {
-	char sz[256];
-	sprintf(sz, "%s ('%s' script id: %u)", GetScriptCommandName(command).c_str(), GetScriptsTableNameByType(type).c_str(), id);
-	return std::string(sz);
+    char sz[256];
+    snprintf(sz, sizeof(sz), "%s ('%s' script id: %u)", GetScriptCommandName(command).c_str(), GetScriptsTableNameByType(type).c_str(), id);
+    return std::string(sz);
 }
 
 bool normalizePlayerName(std::string& p_Name)

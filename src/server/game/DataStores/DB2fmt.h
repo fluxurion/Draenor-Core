@@ -14,7 +14,7 @@
 
 char const PathNodeEntryfmt[] =
 {
-    FT_IND,
+    FT_INDEX,
     FT_INT,
     FT_INT,
     FT_INT,
@@ -23,7 +23,7 @@ char const PathNodeEntryfmt[] =
 
 char const LocationEntryfmt[] =
 {
-    FT_IND,
+    FT_INDEX,
     FT_FLOAT,
     FT_FLOAT,
     FT_FLOAT,
@@ -88,7 +88,7 @@ const char MailTemplateEntryfmt[] = "ns";
 const char WbAccessControlListfmt[] = "nsiiii";
 const char WbCertWhitelistfmt[] =
 {
-    FT_IND,
+    FT_INDEX,
     FT_STRING,
     FT_BYTE,
     FT_BYTE,
@@ -98,7 +98,7 @@ const char WbCertWhitelistfmt[] =
 
 const char GlyphRequiredSpecfmt[] =
 {
-    FT_IND,
+    FT_INDEX,
     FT_INT,
     FT_INT,
     FT_END
@@ -110,13 +110,13 @@ const char GlyphRequiredSpecfmt[] =
 
 const char AreaGroupEntryfmt[] =
 {
-    FT_IND,
+    FT_INDEX,
     FT_END,
 };
 
 const char AreaGroupMemberEntryfmt[] =
 {
-    FT_IND,
+    FT_INDEX,
     FT_INT,
     FT_INT,
     FT_END
@@ -134,7 +134,7 @@ const char GarrMissionEntryfmt[] = "niiiiiiiiiiisssiiiiiiiiii";
 const char GarrMissionRewardEntryfmt[] = "niiiiiiiiii";
 const char GarrMissionXEncouterEntryfmt[] =
 {
-    FT_IND,
+    FT_INDEX,
     FT_INT,
     FT_INT,
     FT_END
@@ -143,7 +143,7 @@ const char GarrMissionXEncouterEntryfmt[] =
 const char GarrBuildingEntryfmt[] = "niiiiissssiiiiiiiiiiiiii";
 const char GarrPlotBuildingEntryfmt[] =
 {
-    FT_IND,
+    FT_INDEX,
     FT_INT,
     FT_INT,
     FT_END
@@ -155,7 +155,7 @@ const char GarrAbilityEntryfmt[] = "nissiiii";
 const char GarrAbilityEffectEntryfmt[] = "niiiiiffiiix";
 const char GarrFollowerXAbilityEntryfmt[] =
 {
-    FT_IND,
+    FT_INDEX,
     FT_INT,
     FT_INT,
     FT_INT,
@@ -164,7 +164,7 @@ const char GarrFollowerXAbilityEntryfmt[] =
 
 const char GarrBuildingPlotInstEntryfmt[] =
 {
-    FT_IND,
+    FT_INDEX,
     FT_INT,
     FT_INT,
     FT_INT,
@@ -175,7 +175,7 @@ const char GarrBuildingPlotInstEntryfmt[] =
 
 const char GarrMechanicTypeEntryfmt[] =
 {
-    FT_IND,
+    FT_INDEX,
     FT_INT,
     FT_STRING,
     FT_STRING,
@@ -185,7 +185,7 @@ const char GarrMechanicTypeEntryfmt[] =
 
 const char GarrMechanicEntryfmt[] =
 {
-    FT_IND,
+    FT_INDEX,
     FT_INT,
     FT_FLOAT,
     FT_END
@@ -193,7 +193,7 @@ const char GarrMechanicEntryfmt[] =
 
 const char GarrEncouterXMechanicEntryfmt[] =
 {
-    FT_IND,
+    FT_INDEX,
     FT_INT,
     FT_INT,
     FT_END
@@ -201,7 +201,7 @@ const char GarrEncouterXMechanicEntryfmt[] =
 
 const char GarrFollowerLevelXPEntryfmt[] =
 {
-    FT_IND,
+    FT_INDEX,
     FT_INT,
     FT_INT,
     FT_NA,
@@ -211,7 +211,7 @@ const char GarrFollowerLevelXPEntryfmt[] =
 
 const char GarrSpecializationEntryfmt[] =
 {
-    FT_IND,
+    FT_INDEX,
     FT_INT,
     FT_INT,
     FT_INT,
@@ -225,7 +225,7 @@ const char GarrSpecializationEntryfmt[] =
 
 const char CharShipmentEntryfmt[] =
 {
-    FT_IND,
+    FT_INDEX,
     FT_INT,
     FT_INT,
     FT_INT,
@@ -238,7 +238,7 @@ const char CharShipmentEntryfmt[] =
 
 const char CharShipmentContainerEntryfmt[] =
 {
-    FT_IND,
+    FT_INDEX,
     FT_INT,
     FT_INT,
     FT_STRING,
