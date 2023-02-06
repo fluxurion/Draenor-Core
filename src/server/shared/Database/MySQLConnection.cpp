@@ -487,7 +487,7 @@ bool MySQLConnection::_HandleMySQLErrno(uint32 errNo)
         case CR_SERVER_LOST:
 // for compatibility with newer versions of MariaDB
 #ifdef CR_INVALID_CONN_HANDLE
-        case CR_INVALID_CONN_HANDLE:
+        //case CR_INVALID_CONN_HANDLE: // not implemented also for linux it should be CR_INVALID_BUFFER_USE
 #endif
         case CR_SERVER_LOST_EXTENDED:
         {

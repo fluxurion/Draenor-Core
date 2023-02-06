@@ -536,7 +536,7 @@ PEXCEPTION_POINTERS pExceptionInfo)
 //======================================================================
 LPTSTR WheatyExceptionReport::GetExceptionString(DWORD dwCode)
 {
-    #define EXCEPTION(x) case EXCEPTION_##x: return _T(#x);
+    #define EXCEPTION(x) case EXCEPTION_##x: return (LPTSTR)_T(#x);
 
     switch (dwCode)
     {
@@ -869,7 +869,7 @@ DWORD dwTypeIndex,
 unsigned nestingLevel,
 DWORD_PTR offset,
 bool & bHandled,
-char* /*Name*/)
+char* Name)
 {
     bHandled = false;
 
@@ -927,7 +927,7 @@ char* /*Name*/)
 
         pszCurrBuffer = DumpTypeIndex(pszCurrBuffer, modBase,
             children.ChildId[i], nestingLevel+1,
-            offset, bHandled2, ""/*Name */);
+            offset, bHandled2, Name);
 
         // If the child wasn't a UDT, format it appropriately
         if (!bHandled2)

@@ -188,4 +188,7 @@ CMakeFiles
 Makefile
 cmake_install.cmake
 install_manifest.txt
+*.ini
+.vscode*/
+/out/build
 /.vs
