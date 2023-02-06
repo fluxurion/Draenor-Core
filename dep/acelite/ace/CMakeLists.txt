@@ -1,4 +1,5 @@
-# Copyright (C) 2008-2012 TrinityCore <http://www.trinitycore.org/>
+# Copyright (C) 2011-2021 Project SkyFire <https://www.projectskyfire.org/>
+# Copyright (C) 2008-2021 TrinityCore <http://www.trinitycore.org/>
 #
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without
@@ -457,7 +458,5 @@ endif()
 if( USE_COREPCH )
   add_cxx_pch(ace ${ace_PCH_HDR} ${ace_PCH_SRC})
 endif()
-
-set_property(TARGET ace PROPERTY FOLDER "dep")
 
 install(TARGETS ace RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}")

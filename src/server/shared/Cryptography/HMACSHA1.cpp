@@ -42,7 +42,7 @@ void HmacHash::Finalize()
 
 uint8 *HmacHash::ComputeHash(BigNumber* bn)
 {
-    HMAC_Update(m_ctx, bn->AsByteArray(), bn->GetNumBytes());
+    HMAC_Update(ctx, bn->AsByteArray(), bn->GetNumBytes());
     Finalize();
     return (uint8*)m_digest;
 }
