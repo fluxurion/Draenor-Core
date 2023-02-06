@@ -9,14 +9,7 @@
 #ifndef TRINITY_TIMER_H
 #define TRINITY_TIMER_H
 
-#include "ace/OS_NS_sys_time.h"
 #include <chrono>
-
-inline uint32 getMSTime()
-{
-    static const ACE_Time_Value ApplicationStartTime = ACE_OS::gettimeofday();
-    return (ACE_OS::gettimeofday() - ApplicationStartTime).msec();
-}
 
 inline uint32 getMSTime()
 {
