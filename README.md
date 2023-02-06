@@ -11,10 +11,10 @@ For those scarce few interested in the continuation of WoD emulation development
 
 Platform: Linux, Windows or Mac
 Git ≥ 1.7+
-ACE ≥ 6.2.0
+ACE ≥ 7.0.0
 MySQL ≥ 5.5.0+ (users of MySQL 5.7 and higher need to remove NO_ZERO_DATE, NO_ZERO_IN_DATE and ONLY_FULL_GROUP_BY from the global sql_mode)
 CMake ≥ 3.2+
-OpenSSL ≥ 1.0.0 (Recommend:1.0.2u x64)
+OpenSSL ≥ 1.1.1g
 GCC ≥ 4.7.2 (Linux only)
 MS Visual Studio ≥ 12 (2013) (Windows only, build with VS 2019 successfully)
 Xcode 7 (Mac only)
