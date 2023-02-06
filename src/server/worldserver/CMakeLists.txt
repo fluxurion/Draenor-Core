@@ -179,6 +179,8 @@ include_directories(
   ${MSFRAMEWORK_INCLUDE_DIR}
 )
 
+GroupSources(${CMAKE_CURRENT_SOURCE_DIR})
+
 add_executable(worldserver
   ${worldserver_SRCS}
   ${worldserver_PCH_SRC}
@@ -216,6 +218,7 @@ target_link_libraries(worldserver
   ${OPENSSL_EXTRA_LIBRARIES}
   ${ZLIB_LIBRARIES}
   ${MSFRAMEWORK_LIBRARIES}
+  ${Boost_LIBRARIES}
 )
 
 if( WIN32 )
@@ -229,11 +232,7 @@ endif()
 
 if( UNIX )
   install(TARGETS worldserver DESTINATION bin)
-  if ( CMAKE_INSTALL_PREFIX MATCHES "/usr/local" )
-    install(FILES worldserver.conf.dist DESTINATION "etc/firestorm")
-  else()
-    install(FILES worldserver.conf.dist DESTINATION etc)
-  endif()
+  install(FILES worldserver.conf.dist DESTINATION ${CONF_DIR})
 elseif( WIN32 )
   install(TARGETS worldserver DESTINATION "${CMAKE_INSTALL_PREFIX}")
   install(FILES worldserver.conf.dist DESTINATION "${CMAKE_INSTALL_PREFIX}")

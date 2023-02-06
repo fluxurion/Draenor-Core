@@ -1266,7 +1266,7 @@ struct BfWGGameObjectBuilding
     {
         if (go == nullptr)
         {
-            ASSERT(false);
+            ABORT();
             return;
         }
 

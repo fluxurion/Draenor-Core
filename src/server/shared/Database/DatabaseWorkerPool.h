@@ -21,6 +21,9 @@
 #include "AdhocStatement.h"
 #include "MSCallback.hpp"
 
+#include <ace/Stack_Trace.h>
+#include <ace/OS_NS_unistd.h>
+
 class PingOperation : public SQLOperation
 {
     //! Operation for idle delaythreads

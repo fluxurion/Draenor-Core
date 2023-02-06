@@ -2215,7 +2215,7 @@ void ScriptMgr::OnPlayerGrabRessource(Player* p_Player, GameObject* p_GameObject
 Battleground* ScriptMgr::CreateBattleground(BattlegroundTypeId /*p_TypeID*/)
 {
     // TODO: Implement script-side battlegrounds.
-    ASSERT(false);
+    ABORT();
     return NULL;
 }
 

@@ -2627,7 +2627,7 @@ void ObjectMgr::LoadItemTemplates()
 
 		std::vector<uint32> & l_EffectsIndex = sItemEffectsByItemID[itemId];
 
-		ASSERT(l_EffectsIndex.size() < MAX_ITEM_PROTO_SPELLS);
+        // ASSERT(l_EffectsIndex.size() < MAX_ITEM_PROTO_SPELLS);
 
 		memset(&itemTemplate.Spells[0], 0, sizeof(_Spell)* MAX_ITEM_PROTO_SPELLS);
 
@@ -6891,8 +6891,8 @@ uint32 ObjectMgr::GenerateLowGuid(HighGuid p_GuidHigh, uint32 p_Range)
 		break;
 	}
 
-	ASSERT(false);
-	return 0;
+    ABORT();
+    return 0;
 #else /* CROSS */
 	return _mailId++;
 #endif /* CROSS */

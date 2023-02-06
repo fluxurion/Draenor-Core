@@ -527,7 +527,7 @@ namespace MS
                 {
                     TC_LOG_ERROR("sql.sql", "Table `battleground_template` for id %u has bad values for MinPlayersPerTeam (%u)",
                         l_Data.bgTypeId, l_Data.MinPlayersPerTeam, l_Data.MaxPlayersPerTeam); ///< Data argument not used by format string
-                    assert(false);
+                    ABORT();
                 }
 
                 // check values from DB

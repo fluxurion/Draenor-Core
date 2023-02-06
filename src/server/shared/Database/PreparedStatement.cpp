@@ -292,13 +292,13 @@ bool MySQLPreparedStatement::CheckValidIndex(uint8 index)
     if (index >= m_paramCount)
     {
         TC_LOG_ERROR("sql.sql", "Invalid index %u for prepared statement %u", index, m_stmt->m_index);
-        ASSERT(false);
+        ABORT();
     }
 
     if (m_paramsSet[index])
     {
         TC_LOG_WARN("sql.sql", "[WARNING] Prepared Statement (id: %u) trying to bind value on already bound index (%u).", m_stmt->m_index, index);
-        ASSERT(false);
+        ABORT();
     }
     return true;
 }

@@ -964,7 +964,7 @@ class GameObject : public WorldObject, public GridObject<GameObject>, public Map
             // Owner already found and different than expected owner - remove object from old owner
             if (owner && GetOwnerGUID() && GetOwnerGUID() != owner)
             {
-                ASSERT(false);
+                ABORT();
             }
             m_spawnedByDefault = false;                     // all object with owner is despawned after delay
             SetGuidValue(GAMEOBJECT_FIELD_CREATED_BY, owner);
