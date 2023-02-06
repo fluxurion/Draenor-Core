@@ -20,9 +20,6 @@
 #include "G3D/BinaryFormat.h"
 #include "G3D/FileNotFound.h"
 #include <string>
-#ifdef G3D_LINUX
-#   include <sys/socket.h>
-#endif
 
 #ifdef G3D_OSX
 #define Zone OSX_Zone

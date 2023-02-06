@@ -44,8 +44,9 @@
 #   include <conio.h>
 #   include <sys/timeb.h>
 #   include "G3D/RegistryUtil.h"
-#   include <intrin.h>
+
 #include <Ole2.h>
+#include <intrin.h>
 
 #elif defined(G3D_LINUX) 
 
@@ -924,11 +925,7 @@ void System::initTime() {
         
         if (localTimeVals) {
             // tm_gmtoff is already corrected for daylight savings.
-            #ifdef __CYGWIN__
-            local = local + _timezone;
-            #else
             local = local + localTimeVals->tm_gmtoff;
-            #endif
         }
         
         m_realWorldGetTickTime0 = local;

@@ -15,9 +15,23 @@
 #if defined(OPENSSL_VERSION_NUMBER) && OPENSSL_VERSION_NUMBER < 0x10100000L
 HMAC_CTX* HMAC_CTX_new()
 {
-    HMAC_CTX* ctx = new HMAC_CTX();
+    HMAC_CTX *ctx = new HMAC_CTX();
     HMAC_CTX_init(ctx);
     return ctx;
+}
+
+void HMAC_CTX_free(HMAC_CTX* ctx)
+{
+    HMAC_CTX_cleanup(ctx);
+    delete ctx;
+}
+
+#endif
+HmacHash::HmacHash(uint32 len, uint8 *seed)
+{
+    ctx = HMAC_CTX_new();
+    HMAC_Init_ex(ctx, seed, len, EVP_sha1(), nullptr);
+    memset(m_digest, 0, sizeof(m_digest));
 }
 
 void HMAC_CTX_free(HMAC_CTX* ctx)

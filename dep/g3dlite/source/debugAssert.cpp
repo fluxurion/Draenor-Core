@@ -103,7 +103,7 @@ static void createErrorMessage(
         if (NULL != formatMsg) {
             realLastErr = formatMsg;
         } else {
-            realLastErr = _T("Last error code does not exist.");
+            realLastErr = (LPTSTR)_T("Last error code does not exist.");
         }
 
         if (lastErr != 0) {
@@ -121,6 +121,8 @@ static void createErrorMessage(
         const char* moduleName = strrchr(modulePath, '\\');
         outTitle = outTitle + string(" - ") + string(moduleName ? (moduleName + 1) : modulePath);
 
+    #else
+        (void)outTitle;
     #endif
 
     // Build the message.

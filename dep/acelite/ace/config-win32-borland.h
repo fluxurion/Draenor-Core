@@ -1,6 +1,4 @@
-// -*- C++ -*-
-//$Id: config-win32-borland.h 92102 2010-09-30 08:14:15Z johnnyw $
-
+//-*- C++ -*-
 // The following configuration file contains defines for Borland compilers.
 
 #ifndef ACE_CONFIG_WIN32_BORLAND_H
@@ -11,7 +9,7 @@
 #error Use config-win32.h in config.h instead of this header
 #endif /* ACE_CONFIG_WIN32_H */
 
-#define ACE_HAS_CUSTOM_EXPORT_MACROS
+#define ACE_HAS_CUSTOM_EXPORT_MACROS 1
 #define ACE_Proper_Export_Flag __declspec (dllexport)
 #define ACE_Proper_Import_Flag __declspec (dllimport)
 #define ACE_EXPORT_SINGLETON_DECLARATION(T) template class __declspec (dllexport) T
@@ -35,15 +33,13 @@
 
 #if (__BORLANDC__ >= 0x620)
 # define ACE_CC_PREPROCESSOR_ARGS "-q -Sl -o%s"
-#else
-# define ACE_CC_PREPROCESSOR_ARGS "-q -P- -o%s"
 #endif
 
-// Automatically define WIN32 macro if the compiler tells us it is our
-// target platform.
-# if defined (__WIN32__) && !defined (WIN32)
+#if !defined (WIN32)
+# if defined (__WIN32__) || defined (_WIN32)
 #  define WIN32 1
 # endif
+#endif
 
 // When building a VCL application, the main VCL header file should be
 // included before anything else. You can define ACE_HAS_VCL=1 in your
@@ -52,7 +48,19 @@
 #  include /**/ <vcl.h>
 # endif
 
+#if defined (_WIN64)
+# define ACE_HAS_BCC64
+#else
+# define ACE_HAS_BCC32
+#endif
+
+#if defined (ACE_HAS_BCC64)
+// Use 32bit pre processor because cpp64 doesn't have the same
+// options
 # define ACE_CC_PREPROCESSOR "CPP32.EXE"
+#else
+# define ACE_CC_PREPROCESSOR "CPP32.EXE"
+#endif
 
 # include "ace/config-win32-common.h"
 
@@ -60,8 +68,6 @@
 # define ACE_HAS_DIRENT
 
 #define ACE_USES_STD_NAMESPACE_FOR_STDC_LIB 1
-
-#define ACE_NEEDS_DL_UNDERSCORE
 
 #define ACE_LACKS_TERMIOS_H
 #define ACE_LACKS_NETINET_TCP_H
@@ -89,6 +95,7 @@
 #define ACE_LACKS_SYS_SEM_H
 #define ACE_LACKS_SYS_IOCTL_H
 #define ACE_LACKS_STROPTS_H
+#define ACE_LACKS_WCSRTOMBS
 
 #undef ACE_LACKS_STRUCT_DIR
 #undef ACE_LACKS_CLOSEDIR
@@ -104,23 +111,23 @@
 #define ACE_LACKS_STRRECVFD
 #define ACE_USES_EXPLICIT_STD_NAMESPACE
 
-#define ACE_HAS_TIME_T_LONG_MISMATCH
+#if defined (ACE_HAS_BCC64)
+# define ACE_HAS_TIME_T_LONG_MISMATCH
+#endif
 
-#define ACE_EXPORT_NESTED_CLASSES 1
-#define ACE_HAS_CPLUSPLUS_HEADERS 1
 #define ACE_HAS_NONCONST_SELECT_TIMEVAL
 #define ACE_HAS_SIG_ATOMIC_T
 #define ACE_HAS_STANDARD_CPP_LIBRARY 1
-#define ACE_HAS_STDCPP_STL_INCLUDES 1
 #define ACE_HAS_STRING_CLASS 1
 #define ACE_HAS_USER_MODE_MASKS 1
 #define ACE_LACKS_ACE_IOSTREAM 1
 #define ACE_LACKS_LINEBUFFERED_STREAMBUF 1
 #define ACE_HAS_NEW_NOTHROW
 #define ACE_TEMPLATES_REQUIRE_SOURCE 1
-#define ACE_SIZEOF_LONG_DOUBLE 10
-#define ACE_UINT64_FORMAT_SPECIFIER_ASCII "%Lu"
-#define ACE_INT64_FORMAT_SPECIFIER_ASCII "%Ld"
+#if defined (ACE_HAS_BCC32)
+# define ACE_UINT64_FORMAT_SPECIFIER_ASCII "%Lu"
+# define ACE_INT64_FORMAT_SPECIFIER_ASCII "%Ld"
+#endif
 #define ACE_USES_STD_NAMESPACE_FOR_STDCPP_LIB 1
 #define ACE_USES_STD_NAMESPACE_FOR_ABS 1
 #define ACE_ENDTHREADEX(STATUS) ::_endthreadex ((DWORD) STATUS)
@@ -133,32 +140,25 @@
 // You must link with the multi threaded libraries. Add -tWM to your
 // compiler options
 #  error You must link against multi-threaded libraries when using ACE (check your project settings)
-# endif /* !_MT && !ACE_HAS_WINCE */
+# endif /* !__MT__ */
 #endif /* ACE_MT_SAFE && ACE_MT_SAFE != 0 */
 
-#if (__BORLANDC__ < 0x620)
-# define ACE_LACKS_ISBLANK
-# define ACE_LACKS_ISWBLANK
-# define ACE_LACKS_PRAGMA_ONCE 1
-#endif
-
-#if (__BORLANDC__ < 0x630)
+#if (__BORLANDC__ <= 0x750)
 # define ACE_LACKS_ISWCTYPE
 # define ACE_LACKS_ISCTYPE
 #endif
 
-#if (__BORLANDC__ < 0x620)
-// Older Borland compilers can't handle assembly in inline methods or
-// templates (E2211). When we build for pentium optimized and we are inlining
-// then we disable inline assembly
-# if defined (ACE_HAS_PENTIUM) && defined(__ACE_INLINE__)
-#  define ACE_LACKS_INLINE_ASSEMBLY
-# endif
+#if (__BORLANDC__ >= 0x640) && (__BORLANDC__ <= 0x750)
+# define ACE_LACKS_STRTOK_R
 #endif
 
-#if (__BORLANDC__ == 0x621)
-// C++ Builder 2010 wcsncat seems broken
-# define ACE_LACKS_WCSNCAT
+#if (__BORLANDC__ <= 0x740)
+# define ACE_LACKS_LOCALTIME_R
+# define ACE_LACKS_GMTIME_R
+#endif
+
+#if (__BORLANDC__ <= 0x750)
+# define ACE_LACKS_ASCTIME_R
 #endif
 
 #define ACE_WCSDUP_EQUIVALENT ::_wcsdup
@@ -168,5 +168,44 @@
 #define ACE_FILENO_EQUIVALENT(X) (_get_osfhandle (::_fileno (X)))
 #define ACE_HAS_ITOA 1
 
+#if defined (ACE_HAS_BCC64)
+# if (__BORLANDC__ <= 0x730)
+#  define ACE_LACKS_SWAB
+# endif
+#endif
+
+#if defined (ACE_HAS_BCC32)
+// The bcc32 compiler can't handle assembly in inline methods or
+// templates (E2211). When we build for pentium optimized and we are inlining
+// then we disable inline assembly
+# if defined (ACE_HAS_PENTIUM) && defined(__ACE_INLINE__) && !defined(__clang__)
+#  define ACE_LACKS_INLINE_ASSEMBLY
+# endif
+# define ACE_SIZEOF_LONG_DOUBLE 10
+# define ACE_NEEDS_DL_UNDERSCORE
+#endif
+
+#ifdef __clang__
+# define ACE_ANY_OPS_USE_NAMESPACE
+# define ACE_HAS_BUILTIN_BSWAP16
+# define ACE_HAS_BUILTIN_BSWAP32
+# define ACE_HAS_BUILTIN_BSWAP64
+# define ACE_LACKS_INLINE_ASSEMBLY
+
+# if __cplusplus >= 201103L
+#  define ACE_HAS_CPP11
+# endif
+# if __cplusplus >= 201402L
+#  define ACE_HAS_CPP14
+# endif
+# if __cplusplus >= 201703L
+#  define ACE_HAS_CPP17
+# endif
+# if __cplusplus >= 202002L
+#  define ACE_HAS_CPP20
+# endif
+#endif /* __clang__ */
+
 #include /**/ "ace/post.h"
 #endif /* ACE_CONFIG_WIN32_BORLAND_H */
+
