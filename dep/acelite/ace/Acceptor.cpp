@@ -172,7 +172,7 @@ ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::info (ACE_TCHAR **strp,
   else if (addr.addr_to_string (addr_str, sizeof addr_str) == -1)
     return -1;
 
-  ACE_OS::snprintf (buf, BUFSIZ,
+  snprintf (buf, BUFSIZ,
                     ACE_TEXT ("%s\t %s %s"),
                     ACE_TEXT ("ACE_Acceptor"),
                     addr_str,

@@ -770,7 +770,7 @@ ACE_Connector<SVC_HANDLER, PEER_CONNECTOR>::info (ACE_TCHAR **strp, size_t lengt
   ACE_TRACE ("ACE_Connector<SVC_HANDLER, PEER_CONNECTOR>::info");
   ACE_TCHAR buf[BUFSIZ];
 
-  ACE_OS::snprintf (buf, BUFSIZ,
+  snprintf (buf, BUFSIZ,
                     ACE_TEXT ("%s\t %s"),
                     ACE_TEXT ("ACE_Connector"),
                     ACE_TEXT ("# connector factory\n"));

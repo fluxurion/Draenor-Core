@@ -47,7 +47,7 @@ ACE_OS::inet_ntop (int family, const void *addrptr, char *strptr, size_t len)
   if (family == AF_INET)
     {
       const u_char *const p = reinterpret_cast<const u_char *> (addrptr);
-      if (ACE_OS::snprintf (strptr, len, "%d.%d.%d.%d", p[0], p[1], p[2], p[3])
+      if (snprintf (strptr, len, "%d.%d.%d.%d", p[0], p[1], p[2], p[3])
           > static_cast<int> (len))
         {
           errno = ENOSPC;

@@ -13,6 +13,7 @@
 #include "SFMT.h"
 #include <ace/TSS_T.h>
 #include <ace/INET_Addr.h>
+#include <ace/OS_NS_stdio.h>
 
 # ifdef WIN32
     # include <ppl.h>
