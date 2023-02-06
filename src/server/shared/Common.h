@@ -96,6 +96,7 @@
 #include <ace/Guard_T.h>
 #include <ace/RW_Thread_Mutex.h>
 #include <ace/Thread_Mutex.h>
+#include <ace/Stack_Trace.h>
 #include <ace/Singleton.h>
 
 /// MSVC 18 (2013) have only partial support of thread_local (c++11)

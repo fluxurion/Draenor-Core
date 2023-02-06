@@ -40,10 +40,6 @@ if(SCRIPTS)
   include(Instant-100/CMakeLists.txt)
 endif()
 
-set(scripts_STAT_SRCS
-  ${scripts_STAT_SRCS}
-)
-
 message(STATUS "SCRIPT PREPARATION COMPLETE")
 message("")
 
