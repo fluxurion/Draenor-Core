@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Project-Hellscream https://hellscream.org
-// Copyright (C) 2018-2020 Project-Hellscream-6.2
-// Discord https://discord.gg/CWCF3C9
+//  MILLENIUM-STUDIO
+//  Copyright 2016 Millenium-studio SARL
+//  All Rights Reserved.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -17,6 +17,7 @@
 
 #include <cstddef>
 #include <cinttypes>
+
 #include "CompilerDefs.h"
 
 #define TRINITY_LITTLEENDIAN 0
@@ -87,7 +88,7 @@ enum DBCFormer
     FT_INT = 'i',                                             //uint32
     FT_BYTE = 'b',                                            //uint8
     FT_SORT = 'd',                                            //sorted by this field, field is not included
-    FT_IND = 'n',                                             //the same, but parsed to data
+    FT_INDEX = 'n',                                             //the same, but parsed to data
     FT_LOGIC = 'l',                                           //Logical (boolean)
     FT_SQL_PRESENT = 'p',                                     //Used in sql format to mark column present in sql dbc
     FT_SQL_ABSENT = 'a',                                      //Used in sql format to mark column absent in sql dbc

@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Project-Hellscream https://hellscream.org
-// Copyright (C) 2018-2020 Project-Hellscream-6.2
-// Discord https://discord.gg/CWCF3C9
+//  MILLENIUM-STUDIO
+//  Copyright 2016 Millenium-studio SARL
+//  All Rights Reserved.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -129,7 +129,6 @@
 
 #define I32FMT "%08I32X"
 #define I64FMT "%016I64X"
-#define snprintf _snprintf
 #define atoll _atoi64
 #define vsnprintf _vsnprintf
 #define llabs _abs64
@@ -160,7 +159,7 @@ enum TimeConstants
     IN_MILLISECONDS = 1000
 };
 
- enum AccountTypes
+enum AccountTypes
 {
     SEC_PLAYER                = 0,
     SEC_MODERATOR             = 1,
@@ -169,7 +168,7 @@ enum TimeConstants
     SEC_REALM_LEADER          = 4,
     SEC_GM_LEADER             = 5,
     SEC_ADMINISTRATOR         = 6,
-    SEC_CONSOLE               = 7
+    SEC_CONSOLE               = 7                                  // must be always last in list, accounts must have less security level always also
 };
 
 enum LocaleConstant
@@ -188,7 +187,7 @@ enum LocaleConstant
 };
 
 const uint8 TOTAL_LOCALES = 11;
-#define DEFAULT_LOCALE LOCALE_enUS
+const LocaleConstant DEFAULT_LOCALE = LOCALE_enUS;
 
 #define MAX_LOCALES TOTAL_LOCALES
 #define MAX_ACCOUNT_TUTORIAL_VALUES 8
@@ -258,14 +257,11 @@ struct GmChat
     std::string message;
 };
 
-
-
 struct ArenaLog
 {
     uint32 timestamp;
     std::string str;
 };
-
 
 extern ACE_Based::LockedQueue<GmCommand*, ACE_Thread_Mutex> GmLogQueue;
 extern ACE_Based::LockedQueue<GmChat*,    ACE_Thread_Mutex> GmChatLogQueue;

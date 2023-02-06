@@ -448,7 +448,7 @@ bool ChatHandler::SetDataForCommandInTable(ChatCommand* table, const char* text,
         table[i].SecurityLevel = security;
 
         char * l_NewHelp = new char[help.size() + 1];
-        sprintf(l_NewHelp, "%s", help.c_str());
+        snprintf(l_NewHelp, sizeof(l_NewHelp), "%s", help.c_str());
         l_NewHelp[help.size()] = '\0';
 
         table[i].Help = (char const*)l_NewHelp;

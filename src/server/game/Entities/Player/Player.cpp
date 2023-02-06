@@ -5263,7 +5263,7 @@ bool Player::addSpell(uint32 spellId, bool active, bool learning, bool dependent
         banString = "Auto-ban for spell cheat ";
         char buff[2048];
 
-        sprintf(buff, "(spellId : %u)", (uint32)spellId);
+        snprintf(buff, sizeof(buff), "(spellId : %u)", (uint32)spellId);
         banString += buff;
         sWorld->BanAccount(BAN_CHARACTER, GetName(), "-1", banString, "Auto-Ban");
 #endif
