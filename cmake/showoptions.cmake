@@ -76,6 +76,12 @@ else()
   message("* Use coreside debug     : No  (default)")
 endif()
 
+if( NOT WITH_SOURCE_TREE STREQUAL "no" )
+  message("* Show source tree       : Yes - \"${WITH_SOURCE_TREE}\"")
+else()
+  message("* Show source tree       : No")
+endif()
+
 if( WIN32 )
   if( USE_MYSQL_SOURCES )
     message("* Use MySQL sourcetree   : Yes (default)")

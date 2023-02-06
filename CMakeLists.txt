@@ -67,7 +67,6 @@ if( NOPCH )
 endif()
 
 include(CheckPlatform)
-
 include(GroupSources)
 
 # basic packagesearching and setup (further support will be needed, this is a preliminary release!)
