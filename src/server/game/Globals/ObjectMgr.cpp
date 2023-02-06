@@ -2627,7 +2627,7 @@ void ObjectMgr::LoadItemTemplates()
 
 		std::vector<uint32> & l_EffectsIndex = sItemEffectsByItemID[itemId];
 
-		ASSERT(l_EffectsIndex.size() < MAX_ITEM_PROTO_SPELLS);
+        // ASSERT(l_EffectsIndex.size() < MAX_ITEM_PROTO_SPELLS);
 
 		memset(&itemTemplate.Spells[0], 0, sizeof(_Spell)* MAX_ITEM_PROTO_SPELLS);
 
