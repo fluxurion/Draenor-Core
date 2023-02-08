@@ -206,18 +206,18 @@ namespace MS { namespace Garrison { namespace Sites
     /// Can upgrade the garrison
     /// @p_Owner                : Garrison owner
     /// @p_CurrentGarrisonLevel : Current garrison level
-    bool InstanceScript_GarrisonHordeLevel2::CanUpgrade(Player* /*p_Owner*/, uint32 p_CurrentGarrisonLevel)
+    bool InstanceScript_GarrisonHordeLevel2::CanUpgrade(Player* p_Owner, uint32 p_CurrentGarrisonLevel)
     {
         if (p_CurrentGarrisonLevel != 2)
             return false;
 		
-        if (p_Owner->getLevel() == 100)
+        if (p_Owner->getLevel() != 100)
             return false;
 
         if (!p_Owner->HasQuest(Quests::Horde_MyVeryOwnFortress))
             return false;
 
-        return false;
+        return true;
     }
 
     /// On upgrade the garrison
