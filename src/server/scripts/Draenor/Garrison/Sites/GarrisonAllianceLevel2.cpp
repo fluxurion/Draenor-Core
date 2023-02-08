@@ -195,7 +195,7 @@ namespace MS {
 			/// Can upgrade the garrison
 			/// @p_Owner                : Garrison owner
 			/// @p_CurrentGarrisonLevel : Current garrison level
-			bool InstanceScript_GarrisonAllianceLevel2::CanUpgrade(Player* /*p_Owner*/, uint32 p_CurrentGarrisonLevel)
+			bool InstanceScript_GarrisonAllianceLevel2::CanUpgrade(Player* p_Owner, uint32 p_CurrentGarrisonLevel)
 			{
 				if (p_CurrentGarrisonLevel != 2)
 					return false;
