@@ -257,7 +257,7 @@ void Object::BuildCreateUpdateBlockForPlayer(UpdateData* data, Player* target) c
     if (ToUnit() && ToUnit()->getVictim())
         flags |= UPDATEFLAG_HAS_COMBAT_VICTIM;
 
-    ByteBuffer buf(10 * 1024);
+    ByteBuffer buf(0x400);
     buf << uint8(updateType);
     buf.append(GetPackGUID());
     buf << uint8(m_objectTypeId);
@@ -265,7 +265,6 @@ void Object::BuildCreateUpdateBlockForPlayer(UpdateData* data, Player* target) c
     BuildMovementUpdate(&buf, flags);
     BuildValuesUpdate(updateType, &buf, target);
     BuildDynamicValuesUpdate(updateType, &buf, target);
-
     data->AddUpdateBlock(buf);
 }
 
@@ -283,10 +282,10 @@ void Object::SendUpdateToPlayer(Player* player)
 
 void Object::BuildValuesUpdateBlockForPlayer(UpdateData* data, Player* target) const
 {
-    ByteBuffer buf(5 * 1024);
+    ByteBuffer buf(500);
 
     buf << uint8(UPDATETYPE_VALUES);
-    buf.append(GetPackGUID());
+    buf << (GetPackGUID());
 
     BuildValuesUpdate(UPDATETYPE_VALUES, &buf, target);
     BuildDynamicValuesUpdate(UPDATETYPE_VALUES, &buf, target);
@@ -299,24 +298,17 @@ void Object::BuildOutOfRangeUpdateBlock(UpdateData* data) const
     data->AddOutOfRangeGUID(GetGUID());
 }
 
-void Object::DestroyForPlayer(Player* p_Target, bool /*p_OnDeath*/) const
+void Object::DestroyForPlayer(Player* target, bool /*p_OnDeath*/) const
 {
-    ASSERT(p_Target);
+    ASSERT(target);
 
-    /// @TODO Find about new OutOfRange system flags
+    WorldPacket packet(SMSG_UPDATE_OBJECT);
 
-    /// SMSG_DESTROY_OBJECT doesn't exist anymore, now blizz use OUT_OF_RANGE block
-    /// in SMSG_UPDATE_OBJECT to destroy an WorldObject
-    WorldPacket l_Data(SMSG_UPDATE_OBJECT);
+    UpdateData updateData(target->GetMapId());
+    updateData.AddOutOfRangeGUID(GetGUID());
+    updateData.BuildPacket(&packet);
 
-    // Player cannot see creatures from different map ;)
-    uint16 l_MapID = p_Target->GetMapId();
-
-    UpdateData l_Update(l_MapID);
-    l_Update.AddOutOfRangeGUID(GetGUID());
-    l_Update.BuildPacket(&l_Data);
-
-    p_Target->GetSession()->SendPacket(&l_Data);
+    target->GetSession()->SendPacket(&packet);
 }
 
 void Object::BuildMovementUpdate(ByteBuffer* data, uint32 flags) const

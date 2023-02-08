@@ -826,6 +826,12 @@ class spell_at_mage_arcane_orb : public AreaTriggerEntityScript
             }
         }
 
+        void OnRemove(AreaTrigger* p_AreaTrigger, uint32 /*p_Time*/)
+        {
+            if (Unit* l_Caster = p_AreaTrigger->GetCaster())
+                l_Caster->CastSpell(l_Caster, eArcaneOrbSpell::ArcaneOrbDamage, true);
+        }
+
         AreaTriggerEntityScript* GetAI() const
         {
             return new spell_at_mage_arcane_orb();

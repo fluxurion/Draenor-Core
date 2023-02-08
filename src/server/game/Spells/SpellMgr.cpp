@@ -5578,6 +5578,7 @@ void SpellMgr::LoadSpellCustomAttr()
             case 172073: ///< Meteoric Earthspire (Rokka & Lokk)
             case 135703: ///< Static Shock (Lei Shen - Throne of Thunder)
             case 136366: ///< Bounding Bolt (Lei Shen - Throne of Thunder)
+			case 144688: ///Magma Crush
                 /// ONLY SPELLS WITH SPELLFAMILY_GENERIC and EFFECT_SCHOOL_DAMAGE
                 spellInfo->AttributesCu |= SPELL_ATTR0_CU_SHARE_DAMAGE;
                 break;
@@ -7323,7 +7324,7 @@ void SpellMgr::LoadSpellCustomAttr()
                 break;
             case 74799: ///< Soul Consumption
             {
-                const SpellRadiusEntry* radius = sSpellRadiusStore.LookupEntry(32);
+                const SpellRadiusEntry* radius = sSpellRadiusStore.LookupEntry(12);
                 if (!radius)
                     break;
                 spellInfo->Effects[1].RadiusEntry = radius; ///< 200yards.
@@ -7912,6 +7913,12 @@ void SpellMgr::LoadSpellCustomAttr()
             case 127250:    ///< Ancient Knowledge
                 spellInfo->AttributesEx3 |= SPELL_ATTR3_DEATH_PERSISTENT;
                 break;
+            case 2764: // Throw
+                spellInfo->Effects[0].Effect       = SPELL_EFFECT_TRIGGER_SPELL;
+                spellInfo->Effects[0].TriggerSpell = 171524;
+                break;
+            case 191546: // Quest Foul Fertilizer
+                spellInfo->Effects[1].MiscValue = 0;
             default:
                 break;
         }
