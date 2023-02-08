@@ -758,7 +758,7 @@ public:
 			}
 		}
 
-		void OnRemove(AuraEffect const*/*p_AurEff*/, AuraEffectHandleModes /*p_Mode*/)
+		void OnRemove(AuraEffect const* /*p_AurEff*/, AuraEffectHandleModes /*p_Mode*/)
 		{
 			if (Unit* l_Caster = GetCaster())
 			{

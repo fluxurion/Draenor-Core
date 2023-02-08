@@ -41,15 +41,15 @@ enum eSkylordTorvaMovements
     MovementFlyPoint,
 };
 
-Position const g_TorvaFirstPosition = {1647.38f, 1956.70f, 121.945f};
-Position const g_TorvaHomePosition  = {1647.00f, 2000.29f, 107.789f};
+Position const g_TorvaFirstPosition = { 1647.38f, 1956.70f, 121.945f };
+Position const g_TorvaHomePosition  = { 1647.00f, 2000.29f, 107.789f };
 
-Position const g_DrakePointA = {1646.42f, 1909.48f, 134.486f};
-Position const g_DrakePointB = {1636.19f, 2079.83f, 137.453f};
+Position const g_DrakePointA = { 1646.42f, 1909.48f, 134.486f };
+Position const g_DrakePointB = { 1636.19f, 2079.83f, 137.453f };
 
 #define g_DrakeDisplay 55447
 #define g_TovraDisplay 55630
-float g_DrakeOrientationWhileFlightIntro = 1.524283;
+float g_DrakeOrientationWhileFlightIntro = 1.524283f;
 
 /// SkyLord Torva - 80005
 class boss_skylord_torva : public CreatureScript

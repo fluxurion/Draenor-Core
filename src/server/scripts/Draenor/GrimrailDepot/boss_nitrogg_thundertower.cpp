@@ -731,12 +731,6 @@ class grimrail_depot_nitrogg_thundertower_mob_assault_turret : public CreatureSc
 
             if (me->HasUnitState(UnitState::UNIT_STATE_CASTING))
                 return;
-
-            switch (events.ExecuteEvent())
-            {
-                default:
-                    break;
-            }
         }
     };
 
@@ -771,12 +765,6 @@ class grimrail_depot_nitrogg_thundertower_mob_iron_infantry : public CreatureScr
 
             if (me->HasUnitState(UnitState::UNIT_STATE_CASTING))
                 return;
-
-            switch (events.ExecuteEvent())
-            {
-            default:
-                break;
-            }
 
             DoMeleeAttackIfReady();
         }

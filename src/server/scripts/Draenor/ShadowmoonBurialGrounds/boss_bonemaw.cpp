@@ -276,7 +276,7 @@ class boss_bonemaw : public CreatureScript
 
 									if (l_Itr->IsWithinDistInMap(l_BonemawMouth, 2.0f))
 									{
-										l_Itr->NearTeleportTo(1874.083f, -513.131f, 195.507, l_Itr->GetOrientation());
+										l_Itr->NearTeleportTo(1874.083f, -513.131f, 195.507f, l_Itr->GetOrientation());
 										l_Itr->AddAura(eBoneMawSpells::SpellInhaleDamage, l_Itr);
 										l_ListPlayersInhale.remove(l_Itr);
 									}

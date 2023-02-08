@@ -44,7 +44,7 @@ Position const g_PositionNerzulHome                  = { 1723.754f, -799.859f, 7
 
 Position const g_PositionRituaOfSoulInitialRight     = { 1679.524f,  -799.805f,  73.736f, 4.900199f };
 
-Position const g_PositionRituaOfSoulInitialLeft      = { 1718.061f, -860.241,  73.360f, 2.248413f};
+Position const g_PositionRituaOfSoulInitialLeft      = { 1718.061f, -860.241f,  73.360f, 2.248413f };
 
 Position const g_PositionShadowLandPortal            = { 1727.250f, -810.651f, 73.806f, 3.561160f};
 
@@ -52,8 +52,8 @@ Position const g_PositionPortalFall					 = {1688.65f, -846.008f, 101.105f, 0.768
 
 Position const g_PositionVoidSpawns[2]               =
 {
-    {1758.760f, -736.028f, 234.828f, 1.251060f},
-    {1738.349f, -726.317f, 234.828f, 1.092460f}
+    { 1758.760f, -736.028f, 234.828f, 1.251060f },
+    { 1738.349f, -726.317f, 234.828f, 1.092460f }
 };
 
 /// Nerz'ul - 76407
