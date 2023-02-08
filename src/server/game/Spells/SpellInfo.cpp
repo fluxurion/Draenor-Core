@@ -2844,10 +2844,6 @@ AuraStateType SpellInfo::GetAuraState() const
     if (GetCategory() == 1133)
         return AURA_STATE_FAERIE_FIRE;
 
-    // Victorious
-    if (SpellFamilyName == SPELLFAMILY_WARRIOR &&  SpellFamilyFlags[1] & 0x00040000)
-        return AURA_STATE_WARRIOR_VICTORY_RUSH;
-
     // Swiftmend state on Regrowth & Rejuvenation
     if (SpellFamilyName == SPELLFAMILY_DRUID && SpellFamilyFlags[0] & 0x50)
         return AURA_STATE_SWIFTMEND;
@@ -2876,6 +2872,8 @@ AuraStateType SpellInfo::GetAuraState() const
         case 71465: // Divine Surge
         case 50241: // Evasive Charges
             return AURA_STATE_UNKNOWN22;
+        case 32216: // Victorious
+            return AURA_STATE_WARRIOR_VICTORY_RUSH;
         default:
             break;
     }
