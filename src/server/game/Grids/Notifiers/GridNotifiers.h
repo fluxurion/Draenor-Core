@@ -217,10 +217,10 @@ namespace Trinity
     template<class Check>
     struct WorldObjectSearcher
     {
-        uint32 i_mapTypeMask;
         uint32 i_phaseMask;
         WorldObject* &i_object;
         Check &i_check;
+        uint32 i_mapTypeMask;
 
         WorldObjectSearcher(WorldObject const* searcher, WorldObject* & result, Check& check, uint32 mapTypeMask = GRID_MAP_TYPE_MASK_ALL)
             : i_mapTypeMask(mapTypeMask), i_phaseMask(searcher->GetPhaseMask()), i_object(result), i_check(check) {}
