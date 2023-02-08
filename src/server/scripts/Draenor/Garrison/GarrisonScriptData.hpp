@@ -135,6 +135,7 @@ namespace MS {
 				QUEST_PALE_MOONLIGHT = 35174,
 				Alliance_BuildYourBarracks = 34587,
 				Alliance_QianaMoonshadow = 34646,
+				Alliance_MyVeryOwnCastle = 36615,
 				Alliance_DelegatingOnDraenor = 34692,
 				Alliance_AHerosWelcome = 33075,
 

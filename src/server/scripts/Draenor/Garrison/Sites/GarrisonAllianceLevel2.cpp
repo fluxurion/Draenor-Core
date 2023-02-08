@@ -200,6 +200,12 @@ namespace MS {
 				if (p_CurrentGarrisonLevel != 2)
 					return false;
 
+				if (p_Owner->getLevel() < 100)
+					return false;
+
+				if (!p_Owner->HasQuest(Quests::Alliance_MyVeryOwnCastle))
+					return false;
+		
 				return false;
 			}
 
