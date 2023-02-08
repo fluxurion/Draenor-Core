@@ -5578,6 +5578,7 @@ void SpellMgr::LoadSpellCustomAttr()
             case 172073: ///< Meteoric Earthspire (Rokka & Lokk)
             case 135703: ///< Static Shock (Lei Shen - Throne of Thunder)
             case 136366: ///< Bounding Bolt (Lei Shen - Throne of Thunder)
+			case 144688: ///Magma Crush
                 /// ONLY SPELLS WITH SPELLFAMILY_GENERIC and EFFECT_SCHOOL_DAMAGE
                 spellInfo->AttributesCu |= SPELL_ATTR0_CU_SHARE_DAMAGE;
                 break;
@@ -7323,7 +7324,7 @@ void SpellMgr::LoadSpellCustomAttr()
                 break;
             case 74799: ///< Soul Consumption
             {
-                const SpellRadiusEntry* radius = sSpellRadiusStore.LookupEntry(22);
+                const SpellRadiusEntry* radius = sSpellRadiusStore.LookupEntry(12);
                 if (!radius)
                     break;
                 spellInfo->Effects[1].RadiusEntry = radius; ///< 200yards.
