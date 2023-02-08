@@ -210,6 +210,12 @@ namespace MS { namespace Garrison { namespace Sites
     {
         if (p_CurrentGarrisonLevel != 2)
             return false;
+		
+        if (p_Owner->getLevel() == 100)
+            return false;
+
+        if (!p_Owner->HasQuest(Quests::Horde_MyVeryOwnFortress))
+            return false;
 
         return false;
     }
@@ -225,6 +231,7 @@ namespace MS { namespace Garrison { namespace Sites
 
         p_Owner->AddMovieDelayedTeleport(l_Entry->MovieID, l_Entry->MapID, 5622.5063f, 4465.5161f, 130.1637f, 0.0f);
         p_Owner->SendMovieStart(l_Entry->MovieID);
+		p_Owner->CompleteQuest(Quests::Horde_MyVeryOwnFortress);
     }
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////

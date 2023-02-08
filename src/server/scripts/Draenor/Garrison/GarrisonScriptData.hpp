@@ -185,6 +185,7 @@ namespace MS {
 				Horde_BuildYourBarracks = 34461,
 				Horde_LostInTransition = 37060,
 				Horde_BiggerIsBetter = 36567,
+				Horde_MyVeryOwnFortress = 36614,
 				Horde_MissionProbable = 34775,
 				Horde_AshranAppearance = 36706,
 				Horde_TheHeadHunterHarverst = 37046,
