@@ -95,12 +95,6 @@ class grimrail_depot_mob_assault_cannon : public CreatureScript
             if (me->HasUnitState(UnitState::UNIT_STATE_CASTING))
                 return;
 
-            switch (events.ExecuteEvent())
-            {
-            default:
-                break;
-            }
-
             DoMeleeAttackIfReady();
         }
     };

@@ -14,6 +14,8 @@
 #include "ObjectMgr.h"
 #include "ScriptMgr.h"
 #include "AchievementMgr.h"
+#include "Player.h"
+
 //#include "GameObject.h"
 //#include "Map.h"
 

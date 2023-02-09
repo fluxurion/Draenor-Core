@@ -194,10 +194,11 @@ bool AchievementCriteriaData::IsValid(CriteriaEntry const* p_Criteria)
                 return false;
             }
             return true;
-        /*
-        @Todo:
+
         case ACHIEVEMENT_CRITERIA_DATA_TYPE_MAP_DIFFICULTY:
-        */
+            if (!difficulty.id)
+                return false;
+            return true;
         case ACHIEVEMENT_CRITERIA_DATA_TYPE_MAP_PLAYER_COUNT:
             if (map_players.maxcount <= 0)
             {
@@ -314,6 +315,8 @@ bool AchievementCriteriaData::Meets(uint32 p_CriteriaID, Player const* p_Source,
             return sScriptMgr->OnCriteriaCheck(ScriptId, const_cast<Player*>(p_Source), const_cast<Unit*>(p_Target));
         case ACHIEVEMENT_CRITERIA_DATA_TYPE_MAP_PLAYER_COUNT:
             return p_Source->GetMap()->GetPlayersCountExceptGMs() <= map_players.maxcount;
+        case ACHIEVEMENT_CRITERIA_DATA_TYPE_MAP_DIFFICULTY:
+            return (1 << p_Source->GetMap()->GetDifficultyID()) & difficulty.id;
         case ACHIEVEMENT_CRITERIA_DATA_TYPE_T_TEAM:
             if (!p_Target || p_Target->GetTypeId() != TYPEID_PLAYER)
                 return false;

@@ -605,7 +605,8 @@ void InstanceScript::DoCompleteAchievement(uint32 achievement)
   if (!plrList.isEmpty())
       for (Map::PlayerList::const_iterator i = plrList.begin(); i != plrList.end(); ++i)
           if (Player *pPlayer = i->getSource())
-              pPlayer->CompletedAchievement(pAE);
+                //if (!pPlayer->HasAchieved(achievement))
+                    pPlayer->CompletedAchievement(pAE);
 }
 
 // Update Achievement Criteria for all players in instance
@@ -1819,7 +1820,7 @@ uint32 InstanceScript::GetEncounterIDForBoss(Creature* p_Boss) const
 void InstanceScript::UpdatePhasing()
 {
     PhaseUpdateData phaseUdateData;
-    phaseUdateData.AddConditionType(CONDITION_INSTANCE_DATA);
+    phaseUdateData.AddConditionType(CONDITION_INSTANCE_INFO);
 
     Map::PlayerList const& players = instance->GetPlayers();
     for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)

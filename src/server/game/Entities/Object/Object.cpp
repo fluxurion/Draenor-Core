@@ -285,7 +285,7 @@ void Object::BuildValuesUpdateBlockForPlayer(UpdateData* data, Player* target) c
     ByteBuffer buf(500);
 
     buf << uint8(UPDATETYPE_VALUES);
-    buf << (GetPackGUID());
+    buf.append(GetPackGUID());
 
     BuildValuesUpdate(UPDATETYPE_VALUES, &buf, target);
     BuildDynamicValuesUpdate(UPDATETYPE_VALUES, &buf, target);
