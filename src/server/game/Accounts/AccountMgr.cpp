@@ -68,10 +68,10 @@ namespace AccountMgr
 #ifndef CROSS
     AccountOpResult CreateAccount(std::string username, std::string password)
     {
-        if (utf8length(username) > MAX_ACCOUNT_STR)
+        if (utf8length(username) > MAX_EMAIL_STR)
             return AOR_NAME_TOO_LONG;                           // Username's too long
 
-        if (utf8length(password) > MAX_PASSWORD_LENGTH)
+        if (utf8length(password) > MAX_PASS_STR)
             return AOR_PASS_TOO_LONG;
 
         normalizeString(username);
@@ -188,10 +188,10 @@ namespace AccountMgr
         if (!result)
             return AOR_NAME_NOT_EXIST;
 
-        if (utf8length(newUsername) > MAX_ACCOUNT_STR)
+        if (utf8length(newUsername) > MAX_EMAIL_STR)
             return AOR_NAME_TOO_LONG;
 
-        if (utf8length(newPassword) > MAX_PASSWORD_LENGTH)
+        if (utf8length(newPassword) > MAX_PASS_STR)
             return AOR_PASS_TOO_LONG;
 
         // SRP6aCalculatePasswordVerifier requires a lowercase email
@@ -224,7 +224,7 @@ namespace AccountMgr
         if (!GetName(accountId, username))
             return AOR_NAME_NOT_EXIST;                          // Account doesn't exist
 
-        if (utf8length(newPassword) > MAX_PASSWORD_LENGTH)
+        if (utf8length(newPassword) > MAX_PASS_STR)
             return AOR_PASS_TOO_LONG;
 
         // SRP6aCalculatePasswordVerifier requires a lowercase email
@@ -325,9 +325,9 @@ namespace AccountMgr
 
     bool normalizeString(std::string& utf8String, bool upper /* = true */)
     {
-        wchar_t buffer[MAX_ACCOUNT_STR + 1];
+        wchar_t buffer[MAX_EMAIL_STR + 1];
 
-        size_t maxLength = MAX_ACCOUNT_STR;
+        size_t maxLength = MAX_EMAIL_STR;
         if (!Utf8toWStr(utf8String, buffer, maxLength))
             return false;
         std::transform(&buffer[0], buffer+maxLength, &buffer[0], upper ? wcharToUpperOnlyLatin : wcharToLowerOnlyLatin);
