@@ -776,6 +776,7 @@ enum TrinityStrings
     LANG_CHARACTER_DELETED_LIST_LINE_CHAT = 1026,
     LANG_SQLDRIVER_QUERY_LOGGING_ENABLED  = 1027,
     LANG_SQLDRIVER_QUERY_LOGGING_DISABLED = 1028,
+	LANG_ACCOUNT_INVALID_BNET_NAME        = 1029,
     // Room for more level 4              1029-1099 not used
 
     // Level 3 (continue)

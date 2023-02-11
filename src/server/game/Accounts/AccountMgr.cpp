@@ -98,9 +98,9 @@ namespace AccountMgr
 
         LoginDatabase.Execute(stmt);
 
-        stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_REALM_CHARACTERS_INIT);
+        //stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_REALM_CHARACTERS_INIT);
 
-        LoginDatabase.Execute(stmt);
+        //LoginDatabase.Execute(stmt);
 
         return AOR_OK;                                          // Everything's fine
     }
@@ -335,16 +335,19 @@ namespace AccountMgr
         return WStrToUtf8(buffer, maxLength, utf8String);
     }
 
-    std::string CalculateShaPassHash(std::string& name, std::string& password)
+    std::string CalculateShaPassHash(const std::string& name, const std::string& password)
     {
-        SHA1Hash sha;
-        sha.Initialize();
-        sha.UpdateData(name);
+        SHA256Hash email;
+        email.UpdateData(name);
+        email.Finalize();
+
+        SHA256Hash sha;
+        sha.UpdateData(ByteArrayToHexStr(email.GetDigest(), email.GetLength()));
         sha.UpdateData(":");
         sha.UpdateData(password);
         sha.Finalize();
 
-        return ByteArrayToHexStr(sha.GetDigest(), sha.GetLength());
+        return ByteArrayToHexStr(sha.GetDigest(), sha.GetLength(), true);
     }
 
     bool IsPlayerAccount(uint32 gmlevel)
