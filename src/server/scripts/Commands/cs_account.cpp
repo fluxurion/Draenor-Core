@@ -104,6 +104,13 @@ public:
         if (!accountName || !password)
             return false;
 
+        if (!strchr(accountName, '@'))
+        {
+            handler->SendSysMessage(LANG_ACCOUNT_INVALID_BNET_NAME);
+            handler->SetSentErrorMessage(true);
+            return false;
+        }
+
         AccountOpResult result = AccountMgr::CreateAccount(std::string(accountName), std::string(password));
         switch (result)
         {
@@ -126,6 +133,10 @@ public:
                 return false;
             case AOR_DB_INTERNAL_ERROR:
                 handler->PSendSysMessage(LANG_ACCOUNT_NOT_CREATED_SQL_ERROR, accountName);
+                handler->SetSentErrorMessage(true);
+                return false;
+            case AOR_PASS_TOO_LONG:
+                handler->SendSysMessage(LANG_PASSWORD_TOO_LONG);
                 handler->SetSentErrorMessage(true);
                 return false;
             default:
@@ -543,7 +554,11 @@ public:
     {
 #ifndef CROSS
         if (!*args)
+        {
+            handler->SendSysMessage(LANG_CMD_SYNTAX);
+            handler->SetSentErrorMessage(true);
             return false;
+        }
 
         ///- Get the command line arguments
         char* account = strtok((char*)args, " ");
